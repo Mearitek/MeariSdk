@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@id/top_view"
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+    <com.meari.test.pulltorefresh.PullToRefreshRecyclerView
+        android:id="@+id/listview_layout"
+        android:layout_width="match_parent"
+        android:overScrollMode="never"
+        android:layout_height="match_parent"
+        android:layout_above="@id/pps_message_del_layout"
+        android:layout_below="@id/top_view"
+        />
+
+    <RelativeLayout
+        android:id="@+id/pps_message_del_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+
+            android:id="@+id/ap_add_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/top_line"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <!-- android:layout_alignParentBottom="true" -->
+            <TextView
+                android:id="@+id/ap_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical|center"
+                android:paddingLeft="@dimen/dp30"
+                android:paddingRight="@dimen/dp30"
+                android:text="@string/ap_desc" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/color_line" />
+
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/ap_add_layout">
+
+            <TextView
+                android:id="@+id/pps_back_home"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/dp10"
+                android:layout_marginLeft="@dimen/dp60"
+                android:layout_marginRight="@dimen/dp60"
+                android:layout_marginTop="@dimen/dp8"
+                android:background="@drawable/btn_common_big"
+                android:contentDescription="@string/app_meari_name"
+                android:gravity="center"
+                android:text="@string/tocamera"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp15"
+                />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/imgeview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp5"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/device_layout"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginLeft="@dimen/dp12"
+            android:layout_marginRight="@dimen/dp12"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/select_layout"
+                android:layout_width="@dimen/dp64"
+                android:visibility="gone"
+                android:layout_height="match_parent"
+                >
+
+                <ImageView
+                    android:id="@+id/select_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/dp8"
+                    android:contentDescription="@string/app_meari_name"
+                    android:src="@mipmap/ic_select_n" />
+            </RelativeLayout>
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/preView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:layout_toRightOf="@id/select_layout"
+                fresco:failureImage="@mipmap/home_slt_gray"
+                fresco:failureImageScaleType="fitXY"
+                fresco:roundBottomLeft="true"
+                fresco:roundBottomRight="true"
+                fresco:roundTopLeft="true"
+                fresco:roundTopRight="true"
+                fresco:roundedCornerRadius="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/device_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp48"
+            android:layout_below="@id/device_layout"
+            android:layout_marginBottom="@dimen/dp10"
+            android:layout_toRightOf="@+id/device_type_img"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_marginRight="@dimen/dp36"
+                android:gravity="center"
+                android:paddingBottom="@dimen/dp4"
+               android:singleLine="true"
+                android:text="\Device Alias1"
+                android:textSize="18dp" />
+
+
+        </RelativeLayout>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@id/device_type_img"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp60"
+            android:layout_alignBottom="@id/device_info_layout"
+            android:layout_marginLeft="@dimen/dp24"
+            android:background="@mipmap/ic_preview_camrea"
+            android:scaleType="fitXY"
+            fresco:failureImageScaleType="centerInside"
+            fresco:roundWithOverlayColor="@color/blue" />
+
+    </RelativeLayout>
+</LinearLayout>

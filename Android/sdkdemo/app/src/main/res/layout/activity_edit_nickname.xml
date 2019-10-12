@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+
+    <RelativeLayout
+        android:id="@+id/nickmae_layout"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/dp16"
+        android:layout_height="@dimen/dp44"
+        android:background="?android:attr/selectableItemBackground"
+        >
+        <com.meari.test.widget.ClearEditText
+            android:id="@+id/nickname_text"
+            style="@style/text_big_style_dark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_circur_37_n"
+            android:gravity="center_vertical"
+            android:imeOptions="actionSend"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:maxLength="20"
+           android:singleLine="true"
+            android:text="@string/userNick"
+            android:textColor="@color/light_gray"
+            android:textCursorDrawable="@drawable/edittext_cursor"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/light_gray" />
+    <TextView
+        android:id="@+id/btn_save"
+        style="@style/text_big_style_dark"
+        android:layout_marginTop="@dimen/dp24"
+        android:layout_marginLeft="@dimen/dp75"
+        android:layout_marginRight="@dimen/dp75"
+        android:layout_width="match_parent"
+        android:text="@string/save"
+        android:gravity="center"
+        android:background="@drawable/btn_shape_circur_37"
+        android:textColor="@color/btn_gree_white"
+        android:layout_height="@dimen/dp41" />
+</LinearLayout>

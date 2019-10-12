@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android_custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp48"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:maxLength="30"
+       android:singleLine="true"
+        android:paddingLeft="@dimen/dp8"
+        android:paddingRight="@dimen/dp8"
+        android:text="@string/password"
+        android:textColor="@color/font_dark"
+        android:textSize="19sp" />
+
+    <ImageView
+        android:id="@+id/back_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/app_meari_name"
+        android:scaleType="centerInside"
+        android:src="@drawable/btn_back" />
+
+    <TextView
+        android:id="@+id/cancel_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/app_meari_name"
+        android:padding="@dimen/dp8"
+        android:scaleType="centerInside"
+        android:src="@drawable/btn_back"
+        android:visibility="gone" />
+
+
+    <ImageView
+        android:id="@+id/submitRegisterBtn"
+        android:layout_width="@dimen/dp48"
+        android:layout_height="@dimen/dp48"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:clickable="true"
+        android:contentDescription="@string/app_meari_name"
+        android:padding="@dimen/dp10"
+        android:scaleType="centerInside"
+        android:src="@drawable/btn_delete"
+        android:visibility="gone" />
+
+    <com.meari.test.widget.RoundProgressBar
+        android:id="@+id/search_progress"
+        android:layout_width="@dimen/dp32"
+        android:layout_height="@dimen/dp32"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dp16"
+        android:padding="@dimen/dp8"
+        android:visibility="gone"
+        android_custom:roundColor="@color/com_blue"
+        android_custom:roundProgressColor="@color/light_gray"
+        android_custom:roundWidth="2dip"
+        android_custom:style="STROKE"
+        android_custom:textColor="@color/com_blue"
+        android_custom:textSize="14sp" />
+
+    <RelativeLayout
+        android:id="@+id/action_bar_rl"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/title">
+        <TextView
+            android:id="@+id/right_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp16"
+            android:gravity="right"
+            android:singleLine="true"
+            android:text="@string/save"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/sp16" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

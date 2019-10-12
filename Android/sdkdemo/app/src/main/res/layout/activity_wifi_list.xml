@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/top_view"
+            layout="@layout/activity_actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp48" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="#ffeedd"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp20"
+                android:layout_marginRight="@dimen/dp20"
+                android:text="@string/wifi_tip"
+                android:textColor="#ff9900"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp66">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/light_gray" />
+
+            <TextView
+                android:id="@+id/ssid_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp16"
+                android:gravity="center_vertical"
+                android:text="@string/ssid"
+                android:textColor="@color/font_dark"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/wifi_name_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dp16"
+                android:layout_toRightOf="@id/ssid_text"
+                android:background="@null"
+                android:enabled="false"
+                android:gravity="center_vertical"
+                android:hint="@string/editssid_tip"
+               android:singleLine="true"
+                android:textColor="#b2000000"
+                android:textColorHint="@color/text_common_hint"
+                android:textCursorDrawable="@color/light_gray"
+                android:textSize="13sp" />
+
+            <ImageView
+
+                android:id="@+id/wifilist_ssid_clear"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp16"
+                android:background="@mipmap/ic_cancel_normal"
+                android:onClick="ssidClearClick" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/light_gray" />
+        </RelativeLayout>
+
+        <TextView
+            style="@style/text_normal_gray_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp4"
+            android:layout_marginLeft="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp16"
+            android:layout_marginTop="@dimen/dp4"
+            android:text="@string/ssid_warinig" />
+
+        <ImageView style="@style/common_line_vertical"
+            android:background="@color/light_gray"/>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp66">
+
+            <TextView
+                android:id="@+id/text_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp16"
+                android:drawablePadding="@dimen/dp8"
+                android:gravity="center_vertical|left"
+                android:paddingBottom="@dimen/dp12"
+                android:paddingRight="@dimen/dp16"
+                android:paddingTop="@dimen/dp12"
+               android:singleLine="true"
+                android:text="@string/password"
+                android:textColor="@color/font_dark"
+                android:textSize="16sp" />
+
+
+            <RelativeLayout
+                android:id="@+id/pwd_right_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:gravity="right">
+
+
+                <ImageView
+                    android:id="@+id/btn_pwd_clear"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_cancel_normal"
+                    android:onClick="pwdClearClick" />
+
+                <CheckBox
+                    android:id="@+id/laogin_lookpwdbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toRightOf="@id/btn_pwd_clear"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:button="@drawable/checkbox_password_style"
+                    android:checked="true" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/pwd_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_toLeftOf="@id/pwd_right_layout"
+                android:layout_toRightOf="@id/text_pwd"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/editpwd_tip"
+                android:inputType="textPassword"
+                android:paddingBottom="@dimen/dp12"
+                android:paddingTop="@dimen/dp12"
+               android:singleLine="true"
+                android:textColor="#b2000000"
+                android:textColorHint="@color/text_common_hint"
+                android:textCursorDrawable="@drawable/edittext_cursor"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/light_gray" />
+        </RelativeLayout>
+        <TextView
+            style="@style/text_normal_gray_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp4"
+            android:layout_marginLeft="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp16"
+            android:layout_marginTop="@dimen/dp4"
+            android:text="@string/psd_warinig" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp66"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp16"
+                android:text="@string/auto_wifi"
+                android:textColor="@color/font_dark"
+                android:textSize="@dimen/sp16" />
+
+            <CheckBox
+                android:id="@+id/wifi_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp16"
+                android:button="@drawable/checkbox_style"
+                android:enabled="false" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/light_gray" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btn_connect"
+        style="@style/text_big_style_dark"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp41"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp16"
+        android:layout_marginLeft="@dimen/dp72"
+        android:layout_marginRight="@dimen/dp72"
+        android:layout_marginTop="@dimen/dp53"
+        android:background="@drawable/btn_common_big"
+        android:gravity="center"
+        android:text="@string/next"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp16" />
+</RelativeLayout>

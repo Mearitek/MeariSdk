@@ -1,0 +1,251 @@
+<!--
+  Copyright 2011 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<resources>
+    <declare-styleable name="CircularProgressButton">
+        <attr name="cpb_selectorIdle" format="reference"/>
+        <attr name="cpb_selectorComplete" format="reference"/>
+        <attr name="cpb_selectorError" format="reference"/>
+        <attr name="cpb_textComplete" format="string"/>
+        <attr name="cpb_textIdle" format="string"/>
+        <attr name="cpb_textError" format="string"/>
+        <attr name="cpb_textProgress" format="string"/>
+        <attr name="cpb_colorProgress" format="color"/>
+        <attr name="cpb_colorIndicator" format="color"/>
+        <attr name="cpb_colorIndicatorBackground" format="color"/>
+        <attr name="cpb_iconError" format="reference"/>
+        <attr name="cpb_iconComplete" format="reference"/>
+        <attr name="cpb_cornerRadius" format="dimension"/>
+        <attr name="cpb_paddingProgress" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="SlidingMenu">
+        <attr name="mode">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+        <attr name="viewAbove" format="reference" />
+        <attr name="viewBehind" format="reference" />
+        <attr name="behindOffset" format="dimension" />
+        <attr name="behindWidth" format="dimension" />
+        <attr name="behindScrollScale" format="float" />
+        <attr name="touchModeAbove">
+            <enum name="margin" value="0" />
+            <enum name="fullscreen" value="1" />
+        </attr>
+        <attr name="touchModeBehind">
+            <enum name="margin" value="0" />
+            <enum name="fullscreen" value="1" />
+        </attr>
+        <attr name="shadowDrawable" format="reference" />
+        <attr name="shadowWidth" format="dimension" />
+        <attr name="fadeEnabled" format="boolean" />
+        <attr name="fadeDegree" format="float" />
+        <attr name="selectorEnabled" format="boolean" />
+        <attr name="selectorDrawable" format="reference" />
+    </declare-styleable>
+    <attr name="entrySummaries" format="reference" />
+
+    <declare-styleable name="IjkListPreference">
+        <attr name="entrySummaries" />
+    </declare-styleable>
+    <declare-styleable name="RoundProgressBar">
+        <attr name="roundColor" format="color"/>
+        <attr name="roundProgressColor" format="color"/>
+        <attr name="roundWidth" format="dimension"></attr>
+        <attr name="textColor" format="color" />
+        <attr name="textSize" format="dimension" />
+        <attr name="max" format="integer"></attr>
+        <attr name="textIsDisplayable" format="boolean"></attr>
+        <attr name="style">
+            <enum name="STROKE" value="0"></enum>
+            <enum name="FILL" value="1"></enum>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="BubbleSeekBar">
+        <attr name="bsb_min" format="integer|reference"/>
+        <attr name="bsb_max" format="integer|reference"/>
+        <attr name="bsb_progress" format="integer|reference"/>
+        <attr name="bsb_is_float_type" format="boolean"/>
+        <attr name="bsb_track_size" format="dimension|reference"/>
+        <attr name="bsb_second_track_size" format="dimension|reference"/>
+        <attr name="bsb_thumb_radius" format="dimension|reference"/>
+        <attr name="bsb_thumb_radius_on_dragging" format="dimension|reference"/>
+        <attr name="bsb_section_count" format="integer|reference"/>
+        <attr name="bsb_thumb_color" format="color|reference"/>
+        <attr name="bsb_track_color" format="color|reference"/>
+        <attr name="bsb_second_track_color" format="color|reference"/>
+        <attr name="bsb_show_section_text" format="boolean"/>
+        <attr name="bsb_section_text_size" format="dimension|reference"/>
+        <attr name="bsb_section_text_color" format="color|reference"/>
+        <attr name="bsb_section_text_position">
+            <enum name="sides" value="0"/>
+            <enum name="bottom_sides" value="1"/>
+            <enum name="below_section_mark" value="2"/>
+        </attr>
+        <attr name="bsb_section_text_interval" format="integer"/>
+        <attr name="bsb_show_thumb_text" format="boolean"/>
+        <attr name="bsb_thumb_text_size" format="dimension|reference"/>
+        <attr name="bsb_thumb_text_color" format="color|reference"/>
+        <attr name="bsb_bubble_color" format="color|reference"/>
+        <attr name="bsb_bubble_text_size" format="dimension|reference"/>
+        <attr name="bsb_bubble_text_color" format="color|reference"/>
+        <attr name="bsb_show_section_mark" format="boolean"/>
+        <attr name="bsb_auto_adjust_section_mark" format="boolean"/>
+        <attr name="bsb_show_progress_in_float" format="boolean"/>
+        <attr name="bsb_anim_duration" format="integer"/>
+        <attr name="bsb_touch_to_seek" format="boolean"/>
+        <attr name="bsb_seek_by_section" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="PullToRefresh">
+
+        <!-- A drawable to use as the background of the Refreshable View -->
+        <attr name="ptrRefreshableViewBackground" format="reference|color" />
+
+        <!-- A drawable to use as the background of the Header and Footer Loading Views -->
+        <attr name="ptrHeaderBackground" format="reference|color" />
+
+        <!-- Text Color of the Header and Footer Loading Views -->
+        <attr name="ptrHeaderTextColor" format="reference|color" />
+
+        <!-- Text Color of the Header and Footer Loading Views Sub Header -->
+        <attr name="ptrHeaderSubTextColor" format="reference|color" />
+
+        <!-- Mode of Pull-to-Refresh that should be used -->
+        <attr name="ptrMode">
+            <flag name="disabled" value="0x0" />
+            <flag name="pullFromStart" value="0x1" />
+            <flag name="pullFromEnd" value="0x2" />
+            <flag name="both" value="0x3" />
+            <flag name="manualOnly" value="0x4" />
+
+            <!-- These last two are depreacted -->
+            <flag name="pullDownFromTop" value="0x1" />
+            <flag name="pullUpFromBottom" value="0x2" />
+        </attr>
+
+        <!-- Whether the Indicator overlay(s) should be used -->
+        <attr name="ptrShowIndicator" format="reference|boolean" />
+
+        <!-- Drawable to use as Loading Indicator. Changes both Header and Footer. -->
+        <attr name="ptrDrawable" format="reference" />
+
+        <!-- Drawable to use as Loading Indicator in the Header View. Overrides value set in ptrDrawable. -->
+        <attr name="ptrDrawableStart" format="reference" />
+
+        <!-- Drawable to use as Loading Indicator in the Footer View. Overrides value set in ptrDrawable. -->
+        <attr name="ptrDrawableEnd" format="reference" />
+
+        <!-- Whether Android's built-in Over Scroll should be utilised for Pull-to-Refresh. -->
+        <attr name="ptrOverScroll" format="reference|boolean" />
+
+        <!-- Base text color, typeface, size, and style for Header and Footer Loading Views -->
+        <attr name="ptrHeaderTextAppearance" format="reference" />
+
+        <!-- Base text color, typeface, size, and style for Header and Footer Loading Views Sub Header -->
+        <attr name="ptrSubHeaderTextAppearance" format="reference" />
+
+        <!-- Style of Animation should be used displayed when pulling. -->
+        <attr name="ptrAnimationStyle">
+            <flag name="rotate" value="0x0" />
+            <flag name="flip" value="0x1" />
+        </attr>
+
+        <!-- Whether the user can scroll while the View is Refreshing -->
+        <attr name="ptrScrollingWhileRefreshingEnabled" format="reference|boolean" />
+
+        <!--
+        	Whether PullToRefreshListView has it's extras enabled. This allows the user to be
+        	able to scroll while refreshing, and behaves better. It acheives this by adding
+        	Header and/or Footer Views to the ListView.
+        -->
+        <attr name="ptrListViewExtrasEnabled" format="reference|boolean" />
+
+        <!--
+        	Whether the Drawable should be continually rotated as you pull. This only
+        	takes effect when using the 'Rotate' Animation Style.
+        -->
+        <attr name="ptrRotateDrawableWhilePulling" format="reference|boolean" />
+
+        <!-- BELOW HERE ARE DEPRECEATED. DO NOT USE. -->
+        <attr name="ptrAdapterViewBackground" format="reference|color" />
+        <attr name="ptrDrawableTop" format="reference" />
+        <attr name="ptrDrawableBottom" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="innerrect">
+        <attr name="inner_width" format="dimension"/>
+        <attr name="inner_height" format="dimension"/>
+        <attr name="inner_margintop" format="dimension" />
+        <attr name="inner_corner_color" format="color" />
+        <attr name="inner_corner_length" format="dimension" />
+        <attr name="inner_corner_width" format="dimension" />
+        <attr name="inner_scan_bitmap" format="reference" />
+        <attr name="inner_scan_speed" format="integer" />
+        <attr name="inner_scan_iscircle" format="boolean" />
+    </declare-styleable>
+
+    <!--IndicatorView start-->
+    <attr name="lineColor" format="color" /> <!--线条颜色 -->
+    <attr name="lineVisible" format="boolean" /> <!--线条是否可见 -->
+    <attr name="lineLength" format="dimension" /> <!--线条长度 -->
+    <attr name="lineWidth" format="dimension" /> <!--线条宽度-->
+
+    <attr name="dotSize" format="dimension" /> <!--小圆点大小 直径-->
+    <attr name="dotNum" format="integer"/> <!--小圆点个数 -->
+    <attr name="dotColor" format="color" /> <!--小圆点颜色 -->
+
+    <attr name="indicatorColor" format="color" /> <!--指示点颜色 -->
+    <attr name="indicatorSize" format="dimension" /> <!--指示点大小 直径-->
+    <attr name="indicatorPos" format="integer"/> <!--指示点位置，从1开始，水平最左面为1，纵向最上面为1-->
+
+    <attr name="duration" format="integer"/> <!--两点间移动动画时间 -->
+
+    <attr name="dotClickEnable" format="boolean"/><!--小圆点点点击时是否把指示点移到点击的小圆点处，若置为false则只能通过setIndicatorPos()方法改变指示点位置-->
+    <attr name="indicatorDragEnable" format="boolean"/><!--指示点拖拽是否可用-->
+    <attr name="touchEnable" format="boolean"/><!--同时禁用小圆点点击和指示点拖拽-->
+
+    <attr name="IndicatorSwitchAnimation" format="integer"> <!--使用默认提供的动画-->
+        <enum name="none" value="0"/> <!--不使用动画-->
+        <enum name="translation" value="1"/> <!--平移-->
+        <enum name="squeeze" value="2"/><!--"挤扁"-->
+    </attr>
+
+    <attr name="indicatorOrientation" format="integer"> <!--控件方向-->
+        <enum name="vertical" value="0"/> <!--纵向-->
+        <enum name="horizontal" value="1"/> <!--水平-->
+    </attr>
+
+
+    <declare-styleable name="IndicatorView">
+        <attr name="indicatorOrientation"/>
+        <attr name="dotColor" />
+        <attr name="dotSize" />
+        <attr name="dotNum" />
+        <attr name="lineColor" />
+        <attr name="lineVisible" />
+        <attr name="lineLength" />
+        <attr name="lineWidth" />
+        <attr name="indicatorColor" />
+        <attr name="indicatorSize" />
+        <attr name="indicatorPos" />
+        <attr name="duration" />
+        <attr name="IndicatorSwitchAnimation"/>
+        <attr name="dotClickEnable"/>
+        <attr name="indicatorDragEnable"/>
+        <attr name="touchEnable"/>
+    </declare-styleable>
+    <!--IndicatorView end-->
+
+</resources>

@@ -1,0 +1,160 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/item_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/item_select_layout"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <RelativeLayout
+                android:id="@+id/layout_play"
+                android:layout_width="77dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/btn_message_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="@string/app_meari_name"
+                    android:padding="@dimen/dp5"
+                    android:src="@drawable/btn_message_fir_play"
+                    android:textColor="#919191" />
+
+                <ImageView
+                    android:id="@+id/select_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp8"
+                    android:contentDescription="@string/app_meari_name"
+                    android:src="@mipmap/ic_select_n"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/line1"
+                android:layout_width="3px"
+                android:layout_height="match_parent"
+                android:layout_above="@id/layout_play"
+                android:layout_marginLeft="37.5dp"
+                android:background="@color/light_gray"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/line2"
+                android:layout_width="3px"
+                android:layout_height="match_parent"
+                android:layout_below="@id/layout_play"
+                android:layout_marginLeft="37.5dp"
+                android:background="@color/light_gray" />
+
+            <RelativeLayout
+                android:id="@+id/image_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/layout_play"
+                android:orientation="horizontal">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/img_pre"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:contentDescription="@string/app_meari_name"
+                    android:scaleType="fitXY" />
+
+                <LinearLayout
+                    android:id="@+id/time_info_h"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_toRightOf="@id/img_pre"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_type_v"
+                        style="@style/text_normal_gray_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="motion"
+                        android:textColor="#9A9A9A"
+                        android:textSize="14sp" />
+
+
+                    <TextView
+                        android:id="@+id/txt_time_v"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:gravity="center_vertical"
+                        android:text="motion"
+                        android:lineSpacingExtra="5dp"
+                        android:textColor="@color/text_red"
+                        android:textSize="15.5sp" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/line3"
+        android:layout_width="3px"
+        android:layout_height="66dp"
+        android:layout_below="@id/item_layout"
+        android:layout_marginLeft="37.5dp"
+        android:background="@color/light_gray" />
+
+    <LinearLayout
+        android:id="@+id/time_info_v"
+        android:layout_width="wrap_content"
+        android:layout_height="66dp"
+        android:layout_below="@id/item_layout"
+        android:layout_marginLeft="@dimen/dp88"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/text_motion_type"
+            style="@style/text_normal_gray_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp8"
+            android:gravity="center_vertical"
+            android:text="motion"
+            android:textColor="#9A9A9A"
+            android:textSize="15.5sp" />
+
+
+        <TextView
+            android:id="@+id/txt_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="motion"
+            android:textColor="@color/text_red"
+            android:textSize="17sp" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/dp72"
+    >
+
+    <RelativeLayout
+        android:id="@+id/menu_layout"
+        android:layout_marginLeft="@dimen/dp80"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dp72"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/menu_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_meari_name"
+            android:scaleType="centerInside"
+             />
+
+        <TextView
+            android:id="@+id/menu_text"
+            style="@style/text_normal_style"
+            android:layout_height="@dimen/dp60"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp24"
+            android:layout_marginStart="@dimen/dp24"
+            android:layout_toEndOf="@id/menu_image"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/sp17"
+            android:layout_toRightOf="@id/menu_image"
+             />
+
+        <ImageView
+            android:id="@+id/msgIsReadFlag"
+            android:layout_width="@dimen/dp10"
+            android:layout_height="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp8"
+            android:layout_gravity="right"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_toRightOf="@id/menu_text"
+            android:contentDescription="@string/app_meari_name"
+            android:src="@drawable/shape_ring" />
+    </RelativeLayout>
+</RelativeLayout>

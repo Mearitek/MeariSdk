@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ruler_precise_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/video_time_precise_layout"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:paddingTop="@dimen/dp4"
+        android:paddingBottom="@dimen/dp4"
+        android:orientation="horizontal"></RelativeLayout>
+
+    <LinearLayout
+        android:layout_below="@id/video_time_precise_layout"
+        android:layout_marginTop="7dp"
+        android:id="@+id/scale_precise_ruler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler0"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@mipmap/img_ruler0" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler1" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler2" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler3" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler4" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler5" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler6"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler6" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler7"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler7" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler8"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler8" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler9"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler9" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler10"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler10" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler11"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler11" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler12"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler12" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler13"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler13" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler14"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler14" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler15"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler15" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler16"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler16" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler17"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler17" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler18"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler18" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler19"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler19" />
+        <ImageView
+            android:id="@+id/precise_scale_ruler20"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler20" />
+        <ImageView
+            android:id="@+id/precise_scale_ruler21"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler21" />
+        <ImageView
+            android:id="@+id/precise_scale_ruler22"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+          
+            android:background="@mipmap/img_ruler22" />
+
+        <ImageView
+            android:id="@+id/precise_scale_ruler23"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@mipmap/img_ruler23" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/precise_evnet_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"></RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/video_mask_precise_layout"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:paddingTop="@dimen/dp4"
+        android:paddingBottom="@dimen/dp4"
+        android:orientation="horizontal"></RelativeLayout>
+</RelativeLayout>

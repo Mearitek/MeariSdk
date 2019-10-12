@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/pps_topview"
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+
+    <TextView
+        android:id="@+id/logout_tv"
+        style="@style/text_big_style_dark"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp41"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp36"
+        android:layout_marginLeft="@dimen/dp75"
+        android:layout_marginRight="@dimen/dp75"
+        android:layout_marginTop="@dimen/dp8"
+        android:background="@drawable/btn_common_big"
+        android:gravity="center"
+        android:text="@string/logout"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp16" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/logout_tv"
+        android:layout_below="@id/pps_topview"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="@dimen/dp195"
+                android:layout_height="@dimen/dp195"
+                android:layout_gravity="center_horizontal"
+                android:background="@mipmap/bg_account_head">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/head_icon"
+                    android:layout_width="131dp"
+                    android:layout_height="131dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerInside"
+                    fresco:placeholderImage="@mipmap/personalhead"
+                    fresco:placeholderImageScaleType="fitXY" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/head_icon"
+                    android:layout_alignRight="@id/head_icon"
+                    android:src="@mipmap/ic_edit_head" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/light_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp72"
+                    android:paddingBottom="@dimen/dp12"
+                    android:paddingTop="@dimen/dp12">
+
+                    <TextView
+                        android:id="@+id/text_title"
+                        style="@style/text_big_style_dark"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dp20"
+                        android:text="@string/account" />
+
+                    <TextView
+                        android:id="@+id/account_text"
+                        style="@style/text_big_style_dark"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:layout_toRightOf="@id/text_title"
+                        android:gravity="right"
+                       android:singleLine="true"
+                        android:textColor="@color/light_gray" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+                    android:id="@+id/nickmae_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp72"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:paddingBottom="@dimen/dp12"
+                    android:paddingTop="@dimen/dp12">
+
+                    <TextView
+                        android:id="@+id/text_nickname_title"
+                        style="@style/text_title_style"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:text="@string/userNick"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/nickname_text"
+                        style="@style/text_big_style_dark"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/text_nickname_title"
+                        android:background="@null"
+                        android:gravity="center_vertical|right"
+                        android:imeOptions="actionSend"
+                        android:maxLength="20"
+                        android:paddingBottom="@dimen/dp4"
+                        android:paddingRight="@dimen/dp16"
+                        android:paddingTop="@dimen/dp4"
+                       android:singleLine="true"
+                        android:text="@string/userNick"
+                        android:textColor="@color/light_gray"
+                        android:textCursorDrawable="@color/light_gray" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_gray" />
+
+                <RelativeLayout
+
+                    android:id="@+id/change_password_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp72"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:paddingBottom="@dimen/dp12"
+                    android:paddingTop="@dimen/dp12">
+
+                    <TextView
+                        style="@style/text_big_style_dark"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:text="@string/changepassword"
+                        android:textColor="@android:color/black" />
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:src="@mipmap/ic_arrow_right_n" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/light_gray" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

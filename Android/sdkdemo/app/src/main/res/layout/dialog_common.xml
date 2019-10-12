@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:background="@color/white"
+    android:minWidth="280dp"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dp8">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="@string/app_meari_name"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/line_dialog"
+        style="@style/common_line_vertical"
+        android:layout_below="@id/title" />
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line_dialog"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="@dimen/dp12"
+            android:gravity="center"
+            android:lineSpacingExtra="9dp"
+            android:textColor="#FF000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/message_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="@dimen/dp12"
+            android:gravity="center"
+            android:lineSpacingExtra="9dp"
+            android:textColor="@color/btn_gray_green"
+            android:textSize="15sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center|center_vertical"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/negativeButton_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/negativeButton"
+                    android:layout_width="@dimen/dp160"
+                    android:layout_height="@dimen/dp36"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/btn_ractange_bule"
+                    android:gravity="center"
+                    android:maxWidth="@dimen/dp150"
+                    android:singleLine="true"
+                    android:text="@string/cancel"
+                    android:textColor="@color/btn_green_light"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/positiveButton_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp40"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/positiveButton"
+                    android:layout_width="@dimen/dp160"
+                    android:layout_height="@dimen/dp36"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/btn_gradient_blue"
+                    android:gravity="center"
+                    android:maxWidth="150dp"
+                    android:singleLine="true"
+                    android:text="@string/ok"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

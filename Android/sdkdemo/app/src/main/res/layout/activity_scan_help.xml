@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/activity_actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp48" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/device_status_img"
+            android:layout_width="271dp"
+            android:layout_height="231dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="87dp" />
+
+        <TextView
+            android:id="@+id/device_status_tv"
+            style="@style/text_normal_gray_style"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp75"
+            android:background="@null"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
+            android:text="@string/device_status" />
+
+        <TextView
+            android:id="@+id/help_text"
+            style="@style/text_normal_gray_style"
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:gravity="center"
+            android:padding="@dimen/dp10"
+            android:text="@string/help_warning"
+            android:textColor="@color/btn_gree_white"
+            android:textSize="@dimen/sp12" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/scan_add_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp41"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp32"
+        android:layout_marginLeft="@dimen/dp72"
+        android:layout_marginRight="@dimen/dp72"
+        android:background="@drawable/btn_common_big"
+        android:gravity="center"
+        android:text="@string/next"
+        android:textColor="@color/white" />
+</RelativeLayout>

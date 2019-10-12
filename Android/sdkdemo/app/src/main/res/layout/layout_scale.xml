@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f8f8f8"
+    android:paddingBottom="@dimen/dp8">
+
+    <ImageView
+        android:id="@+id/bg_time"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp4"
+        android:background="#ffffff"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/line_event"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginTop="@dimen/dp14"
+        android:background="@color/light_gray"
+        android:visibility="gone" />
+
+    <com.meari.test.widget.RuleHorizontalScrollView
+        android:id="@+id/rought_rule_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/rough_layout"
+                layout="@layout/layout_rough_rule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+
+    </com.meari.test.widget.RuleHorizontalScrollView>
+
+    <com.meari.test.widget.RuleHorizontalScrollView
+        android:id="@+id/fine_rule_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rought_rule_layout"
+        android:scrollbars="none"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/fine_layout"
+                layout="@layout/layout_fine_rule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </FrameLayout>
+
+    </com.meari.test.widget.RuleHorizontalScrollView>
+
+    <ImageView
+        android:id="@+id/point_image"
+        android:layout_width="7dp"
+        android:layout_height="28dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
+        android:src="@mipmap/dividingrul_icon_model"
+        android:visibility="gone" />
+
+</RelativeLayout>

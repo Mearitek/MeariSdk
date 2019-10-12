@@ -1,0 +1,126 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android_custom="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/action_bar"
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_line"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/sd_capacity_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp77"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp16">
+
+            <TextView
+                style="@style/text_normal_dark_style"
+                android:layout_centerVertical="true"
+                android:text="@string/capacity"
+                />
+
+            <TextView
+                android:id="@+id/capacity_tv"
+                style="@style/text_normal_gray_style"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/app_meari_name" />
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_line"/>
+        <TextView
+            android:id="@+id/text_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp16"
+            android:text="@string/format_sdcard_nvr"
+            android:textColor="@color/text_common"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/sd_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp55"
+            android:layout_marginTop="@dimen/dp30"
+            android:background="@drawable/btn_shape_top"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp16">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/format_NVR"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/mirrirArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/app_meari_name"
+                android:src="@mipmap/ic_arrow_right_n" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/format_sdcard_tv"
+            android:layout_width="208dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp24"
+            android:background="@drawable/btn_shape_circur_37"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/format_NVR"
+            android:textColor="@color/btn_gree_white" />
+
+        <com.meari.test.widget.RoundProgressBar
+            android:id="@+id/format_pr"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp60"
+            android:visibility="gone"
+            android:layout_alignLeft="@+id/roundProgressBar1"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp24"
+            android_custom:roundColor="@color/little_white"
+            android_custom:style="STROKE"
+
+            android_custom:roundWidth="10dip"
+            android_custom:textColor="@color/com_blue"
+            android_custom:textSize="18sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/has_no_sd_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableTop="@mipmap/ic_error"
+            android:text="@string/no_sdcard" />
+    </RelativeLayout>
+
+
+</LinearLayout>

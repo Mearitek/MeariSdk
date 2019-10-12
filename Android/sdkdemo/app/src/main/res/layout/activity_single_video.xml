@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@id/top_view"
+        layout="@layout/activity_actionbar" />
+
+    <LinearLayout
+        android:id="@+id/layout_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp35"
+        android:layout_margin="@dimen/dp8">
+
+        <TextView
+            android:id="@+id/single_video_preview"
+            style="@style/text_normal_gray_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp6"
+            android:layout_marginRight="@dimen/dp6"
+            android:layout_weight="1.0"
+            android:background="@drawable/btn_tab_single"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="@string/Preview"
+            android:textColor="@color/tab_font_sigle"
+            android:textSize="@dimen/sp16" />
+
+        <TextView
+            android:id="@+id/single_video_palyback"
+            style="@style/text_normal_gray_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp6"
+            android:layout_marginRight="@dimen/dp6"
+            android:layout_weight="1.0"
+            android:background="@drawable/btn_tab_single"
+            android:enabled="true"
+            android:gravity="center"
+            android:tag="1"
+            android:text="@string/Playback"
+            android:textColor="@color/tab_font_sigle"
+            android:textSize="@dimen/sp16" />
+
+
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/single_video_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:background="@android:color/white"/>
+</LinearLayout>

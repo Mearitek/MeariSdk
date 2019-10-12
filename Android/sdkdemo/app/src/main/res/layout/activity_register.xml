@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+
+    <ImageView style="@style/common_line_horizontal" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/region_rl"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40"
+                android:layout_marginLeft="@dimen/dp32"
+                android:layout_marginRight="@dimen/dp32"
+                android:layout_marginTop="@dimen/dp32"
+                android:background="@color/light_c8">
+
+                <TextView
+                    android:id="@+id/region_tv"
+                    style="@style/text_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/dp16"
+                    android:text="@string/region"
+                    android:textColor="#727272" />
+
+                <TextView
+                    android:id="@+id/region_code_tv"
+                    style="@style/text_title_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="right"
+                    android:paddingRight="@dimen/dp16"
+                    android:text="--"
+                    android:textColor="@color/font_dark" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/email_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="@dimen/dp32"
+                android:layout_marginTop="@dimen/dp12"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dp32">
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:contentDescription="@string/app_meari_name"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ic_email" />
+
+                <EditText
+                    android:id="@+id/account_et"
+                    style="@style/yx_edit_default_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:digits="@string/register_name_digits"
+                    android:gravity="center_vertical"
+                    android:hint="@string/AccountNumber"
+                    android:maxLength="32"
+                    android:paddingLeft="@dimen/dp8"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/accountDel"
+                    android:layout_width="@dimen/dp24"
+                    android:layout_height="@dimen/dp24"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:contentDescription="@string/app_meari_name"
+                    android:src="@mipmap/ic_password_del"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="@dimen/dp32"
+                android:layout_marginRight="@dimen/dp32"
+                android:background="@color/color_line" />
+
+            <LinearLayout
+                android:id="@+id/nickname_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp32"
+                android:layout_marginTop="@dimen/dp8"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dp32">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp10"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:contentDescription="@string/app_meari_name"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ic_account" />
+
+                <EditText
+
+                    android:id="@+id/nickname_et"
+                    style="@style/yx_edit_default_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/userNick"
+                    android:maxLength="32"
+                    android:paddingLeft="@dimen/dp8"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="@dimen/dp32"
+                android:layout_marginRight="@dimen/dp32"
+                android:background="@color/color_line" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp41"
+                android:layout_marginLeft="@dimen/dp65"
+                android:layout_marginRight="@dimen/dp32"
+                android:layout_marginTop="@dimen/dp24">
+
+                <TextView
+                    android:id="@+id/verification_tv"
+                    style="@style/text_big_style_dark"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/btn_shape_circur_37"
+                    android:gravity="center"
+                    android:text="@string/getVerification"
+                    android:visibility="gone"
+                    android:textColor="@color/btn_gree_white"
+                    android:textSize="@dimen/sp14" />
+
+                <RelativeLayout
+                    android:id="@+id/text_time_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/verification_et"
+                        style="@style/yx_edit_default_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_shape_circur_37"
+                        android:digits="@string/register_name_digits"
+                        android:hint="@string/verificationCode"
+                        android:maxLength="6"
+                        android:paddingLeft="@dimen/dp20"
+                        android:singleLine="true"
+                        android:textCursorDrawable="@drawable/edittext_cursor"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/left_time_tv"
+                        android:layout_width="@dimen/dp37"
+                        android:layout_height="@dimen/dp37"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dp4"
+                        android:background="@drawable/btn_shape_circur_gree"
+                        android:gravity="center"
+                        android:textColor="@android:color/white" />
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp55"
+                android:layout_marginTop="@dimen/dp32"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dp32">
+
+                <ImageView
+                    android:layout_width="@dimen/dp25"
+                    android:layout_height="@dimen/dp25"
+                    android:layout_marginBottom="@dimen/dp16"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginTop="@dimen/dp16"
+                    android:contentDescription="@string/app_meari_name"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ic_key" />
+
+                <EditText
+                    android:id="@+id/pwd_tv"
+                    style="@style/yx_edit_default_normal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:digits="@string/register_name_digits"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:maxLength="20"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingRight="16dp"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@drawable/edittext_cursor"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="@dimen/dp32"
+                android:layout_marginRight="@dimen/dp32"
+                android:background="@color/color_line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp55"
+                android:layout_marginTop="@dimen/dp8"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dp32">
+
+                <ImageView
+                    android:layout_width="@dimen/dp25"
+                    android:layout_height="@dimen/dp25"
+                    android:layout_marginBottom="@dimen/dp16"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginTop="@dimen/dp16"
+                    android:contentDescription="@string/app_meari_name"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ic_password_key" />
+
+                <EditText
+                    android:id="@+id/reenter_pwd_tv"
+                    style="@style/yx_edit_default_normal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:digits="@string/register_name_digits"
+                    android:hint="@string/reenter_password"
+                    android:inputType="textPassword"
+                    android:maxLength="20"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingRight="16dp"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@drawable/edittext_cursor"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="@dimen/dp32"
+                android:layout_marginRight="@dimen/dp32"
+                android:background="@color/color_line" />
+
+            <TextView
+                android:id="@+id/register_des_tv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/dp32"
+                android:layout_marginRight="@dimen/dp32"
+                android:layout_marginTop="@dimen/dp20"
+                android:drawableLeft="@mipmap/ic_password_info"
+                android:drawablePadding="3dp"
+                android:drawableStart="@mipmap/ic_password_info"
+                android:paddingLeft="@dimen/dp10"
+                android:textColor="#ff0f0f"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/submit_tv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginLeft="@dimen/dp32"
+                android:layout_marginRight="@dimen/dp32"
+                android:layout_marginTop="@dimen/dp48"
+                android:background="@drawable/btn_common_big"
+                android:gravity="center"
+                android:text="@string/finish"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/dp18" />
+
+            <TextView
+                android:id="@+id/loginDes"
+                style="@style/text_normal_gray_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp16"
+                android:gravity="center"
+                android:text="or"
+                android:textSize="@dimen/sp13" />
+
+            <TextView
+                android:id="@+id/login_btn"
+                style="@style/text_big_style_dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp8"
+                android:padding="@dimen/dp8"
+                android:text="@string/pps_login"
+                android:textColor="@color/btn_green_light"
+                android:textSize="@dimen/sp18" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

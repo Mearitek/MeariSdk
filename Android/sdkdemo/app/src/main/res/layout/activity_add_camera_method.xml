@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/pps_topview"
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/top_wifi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/imageView3"
+                android:layout_width="155dp"
+                android:layout_height="155dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp80"
+                fresco:actualImageScaleType="fitCenter" />
+
+            <TextView
+                android:id="@+id/wifi_content"
+                style="@style/text_normal_gray_style"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp50"
+                android:background="@null"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dp16"
+                android:paddingRight="@dimen/dp16"
+                android:text="@string/content_wifi"
+                android:textSize="@dimen/sp12" />
+
+            <TextView
+                android:id="@+id/wifi_add_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp41"
+                android:layout_marginBottom="@dimen/dp8"
+                android:layout_marginLeft="@dimen/dp72"
+                android:layout_marginRight="@dimen/dp72"
+                android:layout_marginTop="@dimen/dp128"
+                android:background="@drawable/btn_common_big"
+                android:gravity="center"
+                android:text="@string/next"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/help_text"
+                style="@style/text_normal_gray_style"
+                android:layout_gravity="center_horizontal"
+                android:background="@null"
+                android:gravity="center"
+                android:padding="@dimen/dp16"
+                android:text="@string/help_warning"
+                android:textColor="@color/btn_gree_white"
+                android:textSize="@dimen/sp12" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

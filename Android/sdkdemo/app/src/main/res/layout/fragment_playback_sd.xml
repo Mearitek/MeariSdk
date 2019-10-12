@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/single_playback_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/view_single_playback"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/dark"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/single_playback_videoView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
+
+            <ImageView
+                android:id="@+id/single_playback_imgBtn_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/btn_video_refresh"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/text_sleep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_circur_37_n"
+                android:paddingBottom="@dimen/dp8"
+                android:paddingLeft="@dimen/dp16"
+                android:paddingRight="@dimen/dp16"
+                android:paddingTop="@dimen/dp8"
+                android:text="@string/sleep_playback"
+                android:textColor="@color/com_blue"
+                android:textSize="@dimen/dp14"
+                android:visibility="gone" />
+
+            <com.meari.test.widget.LoadingView
+                android:id="@+id/single_playback_waite_dialog"
+                android:layout_width="@dimen/refresh_size"
+                android:layout_height="@dimen/refresh_size"
+                android:layout_gravity="center" />
+
+            <LinearLayout
+                android:id="@+id/single_playback_ll_REC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:paddingBottom="20dp"
+                android:paddingRight="20dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/video_icon_rec" />
+
+                <TextView
+                    style="@style/redFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/REC" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_tool"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp40"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/img_darksand"
+                    android:gravity="right|center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="0dp">
+
+                    <ImageView
+                        android:id="@+id/iv_full"
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20"
+                        android:layout_marginRight="@dimen/dp10"
+                        android:src="@mipmap/ic_full_screen" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/single_playback_tool_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp48"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom|center"
+            android:background="@drawable/img_darksand"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/single_playback_camera_L"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:src="@drawable/btn_snop_w" />
+
+                <ImageView
+                    android:id="@+id/single_playback_video_L"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp50"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ic_rec_video_w"
+                    android:tag="0" />
+
+                <ImageView
+                    android:id="@+id/single_playback_pause_L"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp50"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/btn_pause_n" />
+
+                <ImageView
+                    android:id="@+id/single_playback_calendar_L"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp50"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/btn_style_calendar_w" />
+
+                <ImageView
+                    android:id="@+id/single_playback_voice_L"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp50"
+                    android:layout_marginRight="@dimen/dp20"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/img_voice_w" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_full_L"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp10"
+                android:src="@mipmap/ic_full_screen" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_single_playback_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff">
+
+            <RelativeLayout
+                android:id="@+id/layout_scale_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f8f8f8">
+
+                <TextView
+                    android:id="@+id/scale_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="@dimen/dp8"
+                    android:paddingTop="@dimen/dp8"
+                    android:text="00:00:00"
+                    android:textColor="@color/font_dark"
+                    android:textSize="10sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/scale_ruler_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_scale_time"
+                android:layout_gravity="top">
+
+                <com.meari.test.widget.ScaleView
+                    android:id="@+id/single_playback_scale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/arm_time_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/scale_ruler_layout"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp8"
+                    android:layout_marginTop="@dimen/dp4"
+                    android:gravity="center"
+                    android:text="@string/event_arming"
+                    android:textColor="@color/light_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp8"
+                    android:paddingRight="@dimen/dp8">
+
+                    <TextView
+                        android:id="@+id/tv_noAlarmTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/no_alarm_today"
+                        android:textColor="@color/font_dark"
+                        android:textSize="@dimen/sp16"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/calendarLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:contentDescription="@null"
+                        android:src="@drawable/btn_calendar_back"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/calendarRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:contentDescription="@null"
+                        android:src="@drawable/btn_calendar_next"
+                        android:visibility="gone" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/time_event_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/calendarRight"
+                        android:layout_toRightOf="@id/calendarLeft"
+                        android:foregroundGravity="center"></android.support.v7.widget.RecyclerView>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_imgEventTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/calendarRight"
+                        android:layout_toRightOf="@id/calendarLeft"
+                        android:foregroundGravity="center"></android.support.v7.widget.RecyclerView>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:background="@mipmap/ic_bar">
+
+                <ImageView
+                    android:id="@+id/single_playback_video"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ic_rec_video_n"
+                    android:tag="0" />
+
+
+                <ImageView
+                    android:id="@+id/single_playback_camera"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/btn_snop" />
+
+
+                <ImageView
+                    android:id="@+id/single_playback_pause"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/dp8"
+                    android:layout_marginTop="@dimen/dp8"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/btn_pause_n" />
+
+                 <ImageView
+                    android:id="@+id/single_playback_calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/btn_style_calendar" />
+
+                <ImageView
+                    android:id="@+id/single_playback_voice"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/ic_voice" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

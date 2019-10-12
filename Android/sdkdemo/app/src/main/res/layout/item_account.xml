@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:minHeight="48dp"
+
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/accountNum_input"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:hint="@string/AccountNumber"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        android:maxLength="32"
+        android:nextFocusForward="@+id/pass_input"
+       android:singleLine="true"
+        android:textColor="@color/font_dark"
+        android:textSize="@dimen/sp15"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <ImageView
+        android:id="@+id/accountNum_delete"
+        android:layout_width="@dimen/dp20"
+        android:layout_alignParentRight="true"
+        android:layout_height="@dimen/dp20"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dp16"
+        android:layout_toLeftOf="@id/account_arrow"
+        android:background="@mipmap/ic_password_del"
+        android:contentDescription="@string/app_meari_name" />
+    <ImageView
+        style="@style/common_line_vertical" />
+</RelativeLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true">
+
+    <TextView
+        android:id="@+id/empty"
+        style="@style/yx_text_small"
+        android:layout_centerInParent="true"
+        android:drawablePadding="8dp"
+        android:drawableTop="@mipmap/ic_error"
+        android:gravity="center"
+        android:lineSpacingExtra="@dimen/dp5"
+        android:text="@string/pps_str_default_list_no_data"
+        android:textColor="#A7A7A7" />
+
+    <LinearLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/prodlg_loading_iv"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="@dimen/dp40"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/dialog_anim"
+            android:contentDescription="@null" />
+
+        <TextView
+            style="@style/yx_text_small"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp5"
+            android:text="@string/loading"
+            android:textColor="#A7A7A7" />
+    </LinearLayout>
+
+</RelativeLayout>

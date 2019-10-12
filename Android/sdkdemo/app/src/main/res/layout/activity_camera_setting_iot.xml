@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/settingTitles"
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+
+    <ScrollView
+        android:overScrollMode="never"
+        android:layout_below="@id/settingTitles"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/dp8"
+        android:scrollbars="none"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                style="@style/common_line_vertical"
+                android:layout_alignParentBottom="true" />
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="@dimen/dp50">
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_weight="1"
+                   android:layout_height="match_parent"
+                   android:layout_marginStart="@dimen/dp16"
+                   android:gravity="center_vertical"
+                   android:textColor="@color/font_dark"
+                   android:textSize="@dimen/sp16"
+                   android:text="LED灯"/>
+               <com.meari.test.widget.SwitchButton
+                   android:id="@+id/switch_led"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+
+                   android:layout_marginRight="@dimen/dp16"
+                   android:checked="false" />
+           </LinearLayout>
+            <ImageView
+                style="@style/common_line_vertical"
+                android:layout_alignParentBottom="true" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+
+                <Button
+                    android:id="@+id/btn_upgrade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp16"
+                    android:text="升级固件"/>
+                <TextView
+                    android:id="@+id/tv_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/dp16"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/font_dark"
+                    android:textSize="@dimen/sp16"
+                    android:text="0%"/>
+
+            </LinearLayout>
+            <ImageView
+                style="@style/common_line_vertical"
+                android:layout_alignParentBottom="true" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

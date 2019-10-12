@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/top_view"
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp8"
+                android:background="#f8f8f8"
+                android:gravity="left"
+                android:layout_marginLeft="@dimen/dp8"
+                android:layout_marginRight="@dimen/dp8"
+                android:text="@string/period_desc" />
+
+            <RelativeLayout
+                android:id="@+id/start_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp68"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView style="@style/common_line_vertical" />
+
+                <TextView
+                    style="@style/text_normal_dark_style"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:text="@string/start_time"
+                    android:textSize="@dimen/sp17" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/text_start_time"
+                        style="@style/text_normal_gray_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dp16"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/sp16"
+                        android:textColor="@color/light_gray" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView style="@style/common_line_vertical" />
+
+            <RelativeLayout
+                android:id="@+id/end_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp68"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView style="@style/common_line_vertical" />
+
+                <TextView
+                    style="@style/text_normal_dark_style"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:text="@string/end_time"
+                    android:textSize="@dimen/sp17" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/text_end_time"
+                        style="@style/text_normal_gray_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:textSize="@dimen/sp16"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/light_gray" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <ImageView style="@style/common_line_vertical" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp30"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/text_week"
+                    style="@style/text_normal_gray_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp16"
+                   android:singleLine="true"
+                    android:text="@string/selected_week" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp68"
+                android:id="@+id/layout_mon"
+                android:background="?android:attr/selectableItemBackground">
+                <ImageView style="@style/common_line_vertical" />
+
+                <TextView
+                    android:id="@+id/text_mon_time"
+                    style="@style/text_normal_dark_style"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:text="@string/end_time"
+                    android:textSize="@dimen/sp17" />
+
+                <CheckBox
+                    android:id="@+id/text_mon_check"
+                    style="@style/CustomCheckboxTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:checked="false" />
+            </RelativeLayout>
+
+            <ImageView style="@style/common_line_vertical" />
+
+            <RelativeLayout
+                android:id="@+id/layout_tue"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp68"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView style="@style/common_line_vertical" />
+
+                <TextView
+                    android:id="@+id/text_tue_time"
+                    style="@style/text_normal_dark_style"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:text="@string/end_time"
+                    android:textSize="@dimen/sp17" />
+
+                <CheckBox
+                    android:id="@+id/text_tue_check"
+                    style="@style/CustomCheckboxTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:checked="false" />
+            </RelativeLayout>
+
+            <ImageView style="@style/common_line_vertical" />
+
+
+            <RelativeLayout
+                android:id="@+id/layout_wen"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp68"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView style="@style/common_line_vertical" />
+
+                <TextView
+                    android:id="@+id/text_wen_time"
+                    style="@style/text_normal_dark_style"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:text="@string/end_time"
+                    android:textSize="@dimen/sp17" />
+
+                <CheckBox
+                    android:id="@+id/text_wen_check"
+                    style="@style/CustomCheckboxTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:checked="false" />
+            </RelativeLayout>
+
+            <ImageView style="@style/common_line_vertical" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp68"
+                android:id="@+id/layout_thu"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView style="@style/common_line_vertical" />
+
+                <TextView
+                    android:id="@+id/text_thu_time"
+                    style="@style/text_normal_dark_style"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:text="@string/end_time"
+                    android:textSize="@dimen/sp17" />
+
+                <CheckBox
+                    android:id="@+id/text_thu_check"
+                    style="@style/CustomCheckboxTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:checked="false" />
+            </RelativeLayout>
+
+
+            <ImageView style="@style/common_line_vertical" />
+
+            <ImageView style="@style/common_line_vertical" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp68"
+                android:id="@+id/layout_fri"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView style="@style/common_line_vertical" />
+
+                <TextView
+                    android:id="@+id/text_fri_time"
+                    style="@style/text_normal_dark_style"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:text="@string/end_time"
+                    android:textSize="@dimen/sp17" />
+
+                <CheckBox
+                    android:id="@+id/text_fri_check"
+                    style="@style/CustomCheckboxTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:checked="false" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_sta"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp68"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView style="@style/common_line_vertical" />
+
+                <TextView
+                    android:id="@+id/text_sat_time"
+                    style="@style/text_normal_dark_style"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:textSize="@dimen/sp17"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:text="@string/end_time" />
+
+                <CheckBox
+                    android:id="@+id/text_sat_check"
+                    style="@style/CustomCheckboxTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:checked="false" />
+            </RelativeLayout>
+
+            <ImageView style="@style/common_line_vertical" />
+
+            <RelativeLayout
+                android:id="@+id/layout_sun"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp68"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView style="@style/common_line_vertical" />
+
+                <TextView
+                    android:id="@+id/text_sun_time"
+                    android:textSize="@dimen/sp17"
+                    style="@style/text_normal_dark_style"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:text="@string/end_time" />
+
+                <CheckBox
+                    android:id="@+id/text_sun_check"
+                    style="@style/CustomCheckboxTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/dp16"
+                    android:checked="false" />
+            </RelativeLayout>
+
+            <ImageView style="@style/common_line_vertical" />
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

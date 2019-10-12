@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f8f8f8"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/top_view"
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+
+    <RelativeLayout
+        android:id="@+id/bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp16">
+
+        <RelativeLayout
+            android:id="@+id/btn_delete"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp40"
+            android:layout_marginLeft="@dimen/dp65"
+            android:layout_marginRight="@dimen/dp65"
+            android:background="@drawable/btn_common_big"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableLeft="@mipmap/ic_delete_w"
+                android:drawablePadding="@dimen/dp4"
+                android:gravity="center"
+                android:text="@string/delete"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp15" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/add_time"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp40"
+            android:layout_marginLeft="@dimen/dp65"
+            android:layout_marginRight="@dimen/dp65"
+            android:background="@drawable/btn_common_big"
+            android:gravity="center"
+            android:text="@string/add_time"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp15"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/time_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_view"
+        android:layout_below="@id/top_view"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp8"
+            android:background="#f8f8f8"
+            android:gravity="center"
+            android:text="@string/home_desc" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/time_recyclerView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_desc"
+            android:background="@color/white"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:listSelector="?android:attr/selectableItemBackground" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/dp8"
+        android:background="#f8f8f8"
+        android:gravity="center"
+        android:text="@string/home_desc"
+        android:visibility="gone" />
+
+</RelativeLayout>

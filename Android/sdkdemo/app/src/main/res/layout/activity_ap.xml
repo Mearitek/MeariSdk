@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/pps_topview"
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/top_wifi"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_marginTop="@dimen/dp80"
+                android:layout_centerHorizontal="true"
+                android:layout_width="155dp"
+                android:layout_height="155dp"
+                android:id="@+id/imageView3" />
+
+            <TextView
+                android:id="@+id/wifi_content"
+                style="@style/text_normal_gray_style"
+                android:background="@null"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dp16"
+                android:paddingRight="@dimen/dp16"
+                android:layout_marginTop="@dimen/dp50"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/ap_frist_content"
+                android:textSize="@dimen/sp12" />
+            <TextView
+                android:id="@+id/wifi_add_btn"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/dp128"
+                android:layout_height="@dimen/dp41"
+                android:text="@string/next"
+                android:layout_marginLeft="@dimen/dp72"
+                android:layout_marginRight="@dimen/dp72"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/dp8"
+                android:background="@drawable/btn_common_big"/>
+
+            <TextView
+                android:id="@+id/help_text"
+                style="@style/text_normal_gray_style"
+                android:background="@null"
+                android:gravity="center"
+                android:padding="@dimen/dp16"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/help_warning"
+                android:textColor="@color/btn_gree_white"
+                android:textSize="@dimen/sp12" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

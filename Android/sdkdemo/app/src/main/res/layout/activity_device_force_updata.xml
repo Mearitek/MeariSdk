@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android_custom="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/action_bar"
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_line" />
+
+    <RelativeLayout
+
+        android:id="@+id/device_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp60"
+        android:orientation="horizontal">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_marginBottom="@dimen/dp8"
+            android:id="@+id/device_type_img"
+            android:layout_width="@dimen/dp48"
+            android:layout_height="@dimen/dp48"
+            android:layout_marginLeft="@dimen/dp16"
+            android:scaleType="fitXY"
+            android:layout_centerVertical="true"
+            android:transitionName="device_type_img"
+            android:src="@mipmap/ic_preview_camrea"
+            fresco:failureImageScaleType="fitXY"
+            />
+        <TextView
+            android:id="@+id/pps_device_info"
+            style="@style/text_normal_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/device_type_img"
+            android:layout_marginLeft="@dimen/dp10"
+            android:drawablePadding="@dimen/dp4"
+            android:gravity="center"
+           android:singleLine="true"
+            android:textColor="@color/font_dark"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_line" />
+
+    <RelativeLayout
+        android:id="@+id/device_version_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp60"
+        android:layout_below="@id/action_bar"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp16"
+            android:text="@string/cur_version"
+            android:textColor="@color/font_dark"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/device_text"
+            style="@style/text_normal_gray_style"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp16"
+            android:maxLength="20"
+            android:maxWidth="@dimen/dp150" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_line" />
+
+    <RelativeLayout
+        android:id="@+id/ser_version_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/device_version_layout"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/ser_version_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp60"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp16"
+                android:text="@string/ser_version"
+                android:textColor="@color/font_dark"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/ser_version_text"
+                style="@style/text_normal_gray_style"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp16" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_line" />
+
+    <TextView
+        android:id="@+id/updata_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ser_version_info_layout"
+        android:padding="@dimen/dp16"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/update_text"
+        android:layout_width="208dp"
+        android:layout_height="37dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp24"
+        android:visibility="gone"
+        android:background="@drawable/btn_shape_circur_37"
+        android:gravity="center"
+        android:text="@string/update"
+        android:textColor="@color/btn_gree_white" />
+
+    <com.meari.test.widget.RoundProgressBar
+        android:id="@+id/update_progress"
+        android:layout_width="@dimen/dp60"
+        android:layout_height="@dimen/dp60"
+        android:layout_alignLeft="@+id/roundProgressBar1"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp24"
+        android_custom:roundColor="@color/little_white"
+        android_custom:style="STROKE"
+        android:visibility="gone"
+        android_custom:roundWidth="10dip"
+        android_custom:textColor="@color/com_blue"
+        android_custom:textSize="18sp" />
+</LinearLayout>

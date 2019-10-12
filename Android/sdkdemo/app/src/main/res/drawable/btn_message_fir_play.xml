@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@mipmap/ic_message_fir_play_n" ></item>
+    <item android:drawable="@mipmap/ic_message_fir_play_n" android:state_pressed="true"></item>
+    <item android:drawable="@mipmap/ic_message_fir_play_p" android:state_focused="true"></item>
+</selector>

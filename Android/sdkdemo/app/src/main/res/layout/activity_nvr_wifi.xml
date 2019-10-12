@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/top_view"
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffeedd"
+        android:padding="@dimen/dp8"
+        android:paddingLeft="@dimen/dp20"
+        android:paddingRight="@dimen/dp20"
+        android:text="@string/connect_camera"
+        android:gravity="center"
+        android:textColor="#ff9900"
+        android:textSize="12sp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp66">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/light_gray"/>
+
+        <TextView
+            android:id="@+id/ssid_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp16"
+            android:gravity="center_vertical"
+            android:text="@string/ssid"
+            android:textColor="@color/font_dark"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/edit_ssid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/dp32"
+            android:layout_toRightOf="@id/ssid_text"
+            android:background="@null"
+            android:enabled="false"
+            android:gravity="center_vertical"
+            android:hint="@string/editssid_tip"
+           android:singleLine="true"
+            android:textColor="#919191"
+            android:textColorHint="@color/text_common_hint"
+            android:textCursorDrawable="@color/light_gray"
+            android:textSize="13sp"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/light_gray"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/dp36"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:id="@+id/btn_connect"
+            style="@style/text_big_style_dark"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp41"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/dp72"
+            android:layout_marginRight="@dimen/dp72"
+            android:layout_marginTop="@dimen/dp53"
+            android:background="@drawable/btn_common_big"
+            android:gravity="center"
+            android:text="@string/next"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp16"/>
+    </RelativeLayout>
+
+</LinearLayout>
+
+
+

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/activity_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48" />
+
+    <LinearLayout
+        android:id="@+id/rl_charm_matches_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow_bg"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_charm_matches"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_charmMatches"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp66"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_charm"
+            android:layout_width="@dimen/dp36"
+            android:layout_height="@dimen/dp36"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp20"
+            android:layout_marginRight="@dimen/dp8"
+            android:padding="4dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_charm"
+            android:text="@string/str_charmMatches"
+            android:textColor="@color/font_dark"
+            android:textSize="@dimen/sp15" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp16"
+            android:src="@mipmap/ic_arrow_right_n" />
+
+        <ImageView
+            style="@style/common_line_horizontal"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_ring"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+
+    <ImageView style="@style/common_line_horizontal" />
+
+    <ImageView style="@style/common_line_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp30"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp16"
+                android:text="@string/charm_volume"
+                android:textSize="@dimen/sp14" />
+        </LinearLayout>
+
+        <ImageView style="@style/common_line_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp66"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.meari.test.widget.IndicatorView
+                android:id="@+id/indicatorView_volume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="-10dp"
+                app:IndicatorSwitchAnimation="translation"
+                app:dotColor="@color/btn_green_light"
+                app:dotNum="3"
+                app:dotSize="@dimen/dp6"
+                app:indicatorColor="@color/white"
+                app:indicatorPos="1"
+                app:indicatorSize="@dimen/dp20"
+                app:lineColor="@color/btn_green_light"
+                app:lineLength="120dp"
+                app:lineWidth="@dimen/dp2" />
+
+            <TextView
+                android:id="@+id/tv_volume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/low"
+                android:textColor="@color/btn_green_light"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ImageView style="@style/common_line_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp30"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp16"
+                android:text="@string/charm_repeat"
+                android:textSize="@dimen/sp14" />
+        </LinearLayout>
+
+        <ImageView
+            style="@style/common_line_horizontal"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp66"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <com.meari.test.widget.IndicatorView
+                android:id="@+id/indicatorView_repeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="-10dp"
+                app:IndicatorSwitchAnimation="translation"
+                app:dotColor="@color/btn_green_light"
+                app:dotNum="5"
+                app:dotSize="@dimen/dp6"
+                app:indicatorColor="@color/white"
+                app:indicatorPos="1"
+                app:indicatorSize="@dimen/dp20"
+                app:lineColor="@color/btn_green_light"
+                app:lineLength="60dp"
+                app:lineWidth="@dimen/dp2" />
+
+            <TextView
+                android:id="@+id/tv_repeat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/low"
+                android:textColor="@color/btn_green_light"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ImageView style="@style/common_line_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp16"
+            android:text="@string/desc_bell_charm"
+            android:textSize="@dimen/sp14" />
+
+    </LinearLayout>
+
+</LinearLayout>

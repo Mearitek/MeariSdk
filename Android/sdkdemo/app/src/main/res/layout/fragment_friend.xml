@@ -1,0 +1,125 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <ImageView style="@style/common_line_vertical" />
+
+    <LinearLayout
+        android:id="@+id/addFriendInputTextId"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp64"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <!-- android:layout_below="@id/friendTitleId" -->
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/dp10"
+            android:layout_marginLeft="@dimen/dp20"
+            android:layout_marginRight="@dimen/dp10"
+            android:layout_marginStart="@dimen/dp20"
+            android:layout_weight="1"
+            android:focusable="true"
+
+            android:focusableInTouchMode="true">
+
+            <EditText
+                android:id="@+id/accountNum_Friend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp10"
+                android:background="@drawable/shape_ractange_bule_n"
+                android:digits="@string/register_name_digits"
+                android:gravity="center_vertical"
+                android:hint="@string/AccountNumber"
+                android:maxLength="32"
+               android:singleLine="true"
+                android:paddingLeft="@dimen/dp16"
+                android:paddingRight="@dimen/dp80"
+                android:textColor="@color/font_dark"
+                android:textColorHint="@color/text_common_hint"
+                android:textSize="15sp" />
+            <!-- android:textColor="@color/little_gray" -->
+            <TextView
+                android:id="@+id/friend_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/dp8"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_marginRight="@dimen/dp8"
+                android:layout_marginStart="@dimen/dp10"
+                android:background="@drawable/btn_common_big"
+                android:contentDescription="@string/app_meari_name"
+                android:paddingBottom="@dimen/dp6"
+                android:paddingLeft="@dimen/dp16"
+                android:paddingRight="@dimen/dp16"
+                android:paddingTop="@dimen/dp6"
+                android:text="@string/unAdd"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <ImageView
+        style="@style/common_line_vertical"
+        android:layout_below="@+id/addFriendInputTextId" />
+
+    <RelativeLayout
+        android:id="@+id/deleteFriend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp4"
+        android:layout_marginLeft="@dimen/dp65"
+        android:layout_marginRight="@dimen/dp65"
+        android:layout_marginTop="@dimen/dp4"
+        android:background="@drawable/btn_common_big"
+        android:paddingTop="@dimen/dp4"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/friendDelId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp16"
+            android:contentDescription="@string/app_meari_name"
+            android:drawableLeft="@mipmap/ic_delete_w"
+            android:drawablePadding="@dimen/dp8"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dp4"
+            android:paddingTop="@dimen/dp4"
+            android:text="@string/delete"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+
+    <com.meari.test.pulltorefresh.PullToRefreshRecyclerView
+        android:id="@+id/friendListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/deleteFriend"
+        android:layout_below="@id/addFriendInputTextId"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:dividerHeight="0px"
+        android:footerDividersEnabled="false"
+        android:listSelector="@color/white" />
+
+</RelativeLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/btn_item_sleep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="@dimen/dp3"
+        android:paddingBottom="@dimen/dp3"
+        android:paddingLeft="@dimen/dp8"
+        android:paddingRight="@dimen/dp8"
+       >
+
+        <ImageView
+            android:id="@+id/img_sleep"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_alarms_n" />
+
+        <TextView
+            android:id="@+id/text_sleep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/img_sleep"
+            android:text="@string/off"
+            android:textColor="@color/light_gray" />
+    </RelativeLayout>
+
+    <ImageView style="@style/common_line_vertical" />
+</RelativeLayout>
