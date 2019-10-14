@@ -1,0 +1,82 @@
+# Customise this file, documentation can be found here:
+# https://docs.fastlane.tools/actions/
+# All available actions: https://docs.fastlane.tools/actions
+# can also be listed using the `fastlane actions` command
+
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
+# update_fastlane
+
+# This is the minimum version number required.
+# Update this, if you use features of a newer version
+fastlane_version "2.61.0"
+
+default_platform :ios
+
+platform :ios do
+
+    lane :app_test do
+        gym(
+            scheme: "Meari-test",
+            configuration: "Ad_hoc",
+            output_directory: "~/Desktop/ipa/CloudEdge/Today",
+            output_name: "CloudEdge-test",
+            export_options: {
+                method: "ad-hoc",
+                provisioningProfiles: {
+                    "com.meari.smartcamera" => "Cloudedge_adhoc",
+                }
+            }
+        )
+    end
+
+    lane :app_prerelease do
+        gym(
+            scheme: "Meari-prerelease",
+            configuration: "Ad_hoc",
+            output_directory: "~/Desktop/ipa/CloudEdge/Today",
+            output_name: "CloudEdge-prerelease",
+            export_options: {
+                method: "ad-hoc",
+                provisioningProfiles: {
+                    "com.meari.smartcamera" => "Cloudedge_adhoc",
+                }
+            }
+        )
+    end
+
+    lane :app_release do
+        gym(
+            scheme: "Meari",
+            configuration: "Ad_hoc",
+            output_directory: "~/Desktop/ipa/XTest/Today",
+            output_name: "XTest-release",
+            export_options: {
+                method: "ad-hoc",
+                provisioningProfiles: {
+                    "com.meari.xtest" => "xtest_adhoc",
+                }
+            }
+        )
+    end
+
+    lane :app_appstore do
+        gym(
+            scheme: "Meari",
+            configuration: "Release",
+            output_directory: "~/Desktop/ipa/XTest/Today",
+            output_name: "CloudEdge-appstore",
+            export_options: {
+                method: "app-store",
+                provisioningProfiles: {
+                    "com.meari.smartcamera" => "Cloudedge_dis",
+                }
+            }
+        )
+    end
+
+
+end
+

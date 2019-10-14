@@ -1,0 +1,12 @@
+platform :ios, "8.0"
+target 'Meari' do
+    pod 'MJExtension', '3.0.17'
+    pod 'SDWebImage', '3.7.3'
+    pod 'Masonry', '0.6.3'
+    pod 'SVProgressHUD', '1.1'
+    pod 'MJRefresh', '3.0.0'
+    pod 'MWPhotoBrowser', '~> 2.1.1'
+    pod 'FXBlurView', '~> 1.6.4'
+    pod 'YLGIFImage', '~> 0.11'
+    pod 'LBCountry', '~> 0.0.3'
+end

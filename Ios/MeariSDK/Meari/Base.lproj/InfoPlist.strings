@@ -1,0 +1,26 @@
+/*
+ InfoPlist.strings
+ Meari
+ 
+ Created by 李兵 on 16/3/18.
+ Copyright © 2016年 PPStrong. All rights reserved.
+ */
+
+CFBundleDisplayName = "Meari";
+CFBundleName = "Meari";
+
+//权限
+NSBluetoothPeripheralUsageDescription    = "\"Meari\" need your authorization to access Bluetooth";
+NSCalendarsUsageDescription              = "\"Meari\" need your authorization to access Calendars";
+NSCameraUsageDescription                 = "\"Meari\" need your authorization to access Camera";
+NSContactsUsageDescription               = "\"Meari\" need your authorization to access Contacts";
+NSHealthShareUsageDescription            = "\"Meari\" need your authorization to access HealthShare";
+NSHealthUpdateUsageDescription           = "\"Meari\" need your authorization to access HealthUpdate";
+NSMotionUsageDescription                 = "\"Meari\" need your authorization to access Motion";
+NSMicrophoneUsageDescription             = "\"Meari\" need your authorization to access Microphone";
+NSAppleMusicUsageDescription             = "\"Meari\" need your authorization to access Apple music";
+NSRemindersUsageDescription              = "\"Meari\" need your authorization to access Reminders";
+NSPhotoLibraryUsageDescription           = "\"Meari\" need your authorization to access PhotoLibrary";
+NSSpeechRecognitionUsageDescription      = "\"Meari\" need your authorization to access Speech recognition";
+NSSiriUsageDescription                   = "\"Meari\" need your authorization to access Siri";
+NSVideoSubscriberAccountUsageDescription = "\"Meari\" need your authorization to access Video subscriber";

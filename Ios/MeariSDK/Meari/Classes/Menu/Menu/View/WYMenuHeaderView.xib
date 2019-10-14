@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="WYMenuHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="338" height="245"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="F5y-vD-ofu" userLabel="backgroundImageView">
+                    <rect key="frame" x="20" y="89" width="67" height="67"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="F5y-vD-ofu" secondAttribute="height" multiplier="1:1" id="fi7-sD-TcQ"/>
+                        <constraint firstAttribute="width" constant="67" id="kiB-e9-VaQ"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="nickName" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vwm-S6-2yK">
+                    <rect key="frame" x="115" y="114" width="195" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_person_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="bu1-3Q-2ca">
+                    <rect key="frame" x="22" y="91" width="63" height="63"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="bu1-3Q-2ca" secondAttribute="height" multiplier="1:1" id="p7A-7i-1c9"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="Vwm-S6-2yK" firstAttribute="leading" secondItem="F5y-vD-ofu" secondAttribute="trailing" constant="28" id="4r8-48-Abi"/>
+                <constraint firstItem="bu1-3Q-2ca" firstAttribute="width" secondItem="F5y-vD-ofu" secondAttribute="width" constant="-4" id="6bk-aE-twT"/>
+                <constraint firstAttribute="trailing" secondItem="Vwm-S6-2yK" secondAttribute="trailing" constant="28" id="A8o-O4-e4N"/>
+                <constraint firstItem="bu1-3Q-2ca" firstAttribute="centerX" secondItem="F5y-vD-ofu" secondAttribute="centerX" id="AUV-qf-AMT"/>
+                <constraint firstItem="bu1-3Q-2ca" firstAttribute="centerY" secondItem="F5y-vD-ofu" secondAttribute="centerY" id="NkB-ri-HH3"/>
+                <constraint firstItem="Vwm-S6-2yK" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="d47-fA-GUa"/>
+                <constraint firstItem="F5y-vD-ofu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="eYq-QX-BX6"/>
+                <constraint firstItem="F5y-vD-ofu" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="jmE-8H-ZHn"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="backgroundImageView" destination="F5y-vD-ofu" id="dIT-13-ca2"/>
+                <outlet property="headerImageView" destination="bu1-3Q-2ca" id="x59-WY-3yM"/>
+                <outlet property="nickNameLabel" destination="Vwm-S6-2yK" id="99r-Nr-yqg"/>
+            </connections>
+            <point key="canvasLocation" x="68" y="26.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="img_person_placeholder" width="100" height="100"/>
+    </resources>
+</document>

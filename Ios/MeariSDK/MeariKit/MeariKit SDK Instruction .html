@@ -1,0 +1,3645 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<title>MeariKit SDK Instruction </title>
+
+
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h1><center> Directory </center></h1>
+
+<p>[TOC]</p>
+
+<p><center></p>
+
+<hr>
+
+<table>
+<thead>
+<tr>
+<th>Version number</th>
+<th>Develop team</th>
+<th>Update date</th>
+<th>Notes</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>2.0.0</td>
+<td>Towers Perrin Technical Team</td>
+<td>2019.05.09</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<p></center></p>
+
+<h1 id="toc_0">1. Functional Overview</h1>
+
+<p>The Towers Technology APP SDK provides interface packaging with hardware devices and Towers Perrin, and accelerates the application development process, including the following functions:</p>
+
+<ul>
+<li>Hardware device related (with network, control, status report, firmware upgrade, preview playback, etc.)</li>
+<li>Account system (general account function such as mobile phone number, email registration, login, reset password, etc.)</li>
+<li>Device sharing</li>
+<li>Friends management</li>
+<li>Message Center</li>
+<li>Rui Rui cloud HTTPS API interface package (see 觅睿云api call)</li>
+</ul>
+
+<h1 id="toc_1">2. Integration preparation</h1>
+
+<p><strong>Prepare App Key and App Secert</strong></p>
+
+<p>Meari Technology Cloud Platform provides App ID and App Secert for users to access SDK quick access camera equipment</p>
+
+<h1 id="toc_2">3. Integrated SDK</h1>
+
+<h2 id="toc_3">3.1 Integration Preparation</h2>
+
+<h3 id="toc_4">(1) Introducing the sdk package</h3>
+
+<div><pre><code class="language-none">Drag the downloaded MeariKit.framework to the project</code></pre></div>
+
+<h3 id="toc_5">(2) Environment configuration</h3>
+
+<div><pre><code class="language-none">1. Add MeariKit.framework to target -&gt; General -&gt; Embedded Binaries
+2. Disable bitcode: In the project panel, select target -&gt; Build Settings -&gt; Build Options -&gt; Enable Bitcode -&gt; Set to No
+3. Add a file that supports C++: change any .m file to a .mm file, for example, change AppDelegate.m to AppDelegate.mm format.
+</code></pre></div>
+
+<h2 id="toc_6">3.2 Integrated SDK function</h2>
+
+<div><pre><code class="language-none">Affiliation:MeariSdk tool class</code></pre></div>
+
+<h3 id="toc_7">(1) Initialize sdk configuration in Application</h3>
+
+<div><pre><code class="language-none">【Description】
+    Mainly used to initialize internal resources, communication services and other functions.
+ 
+【Function Call】
+    /**
+    Start the SDK
+
+    @param appKey appKey
+    @param secretKey secret
+    */
+    - (void)startWithAppKey:(NSString *)appKey secretKey:(NSString *)secretKey;
+    
+    /**
+    Set debug print level
+    
+    @param logLevel print level
+    */
+    - (void)setLogLevel:(MeariLogLevel)logLevel;
+    
+    
+    /**
+    Configuring the server environment
+    
+    @param environment pre-issued or official
+    */
+    - (void)configEnvironment:(MearEnvironment)environment;
+
+【Code Example】
+    // Start the SDK
+    [[MeariSDK sharedInstance] startWithAppKey:@&quot;appKey&quot; secretKey:@&quot;secretKey&quot;];
+    
+    // Configure the server environment: pre- or formal, is currently a development version, only supports running on the pre-launch environment
+    [[MeariSDK sharedInstance] configEnvironment:MearEnvironmentRelease];
+    
+    // Set the debug log level, will print the input and output information of the internal interface, in order to troubleshoot the problem
+    [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelOff];
+    </code></pre></div>
+
+<h1 id="toc_8">4. User Management</h1>
+
+<div><pre><code class="language-none">Affiliation:MeariUser tool class</code></pre></div>
+
+<div><pre><code class="language-none">Towers Perrin Technology SDK provides two user management systems: common user system, UID user system
+
+Ordinary user system: account login, registration, password change, password recovery, verification code
+UID user system: uid login (up to 64 digits), no need to register without password system, please keep it safe</code></pre></div>
+
+<h2 id="toc_9">4.1 User uid login system</h2>
+
+<div><pre><code class="language-none">Towers Perrin provides the uid landing system. If the customer has its own user system, then you can access our sdk through the uid login system.</code></pre></div>
+
+<h3 id="toc_10">(1) Redirect</h3>
+
+<div><pre><code class="language-none">【Description】
+    Meari SDK supports global services. When selecting different countries, you need to reset the access address, and access the corresponding server according to the incoming country code when logging in.
+【Function Call】
+    // call the account, modify the country when called
+    - (void)resetRedirect;</code></pre></div>
+
+<h3 id="toc_11">(2) User uid login</h3>
+
+<div><pre><code class="language-none">【Description】
+    User uid registration, uid requires unique.
+
+【Function Call】
+    /**
+    Log in via Uid
+    
+    @param uid User ID, need to guarantee uniqueness, &lt;=32 bit
+    @param countryCode country code
+    @param phoneCode country code
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)loginWithUid:(NSString *)uid countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(MeariSuccess)success failure:(MeariFailure)failure
+    
+【Code Example】
+    // Login through Uid
+    [[MeariUser sharedInstance] loginWithUid:@&quot;abcdefghijklmn&quot; countryCode:@&quot;CN&quot; phoneCode:@&quot;86&quot; success:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];
+    </code></pre></div>
+
+<h3 id="toc_12">(3) User logout</h3>
+
+<div><pre><code class="language-none">【Description】
+    Log out and log out with a normal account
+
+【Function Call】
+    // Log out of the account
+    @param success Successful callback
+    @param failure failure callback
+    - (void)logoutSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+
+【Code Example】
+    // Log out of the account
+    [[MeariUser sharedInstance] logoutSuccess:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h2 id="toc_13">4.2 General User System Management</h2>
+
+<h3 id="toc_14">(1) Redirect</h3>
+
+<div><pre><code class="language-none">【Description】
+    Meari SDK supports global services. When selecting different countries, you need to reset the access address, and access the corresponding server according to the incoming country code when logging in.
+【Function Call】
+    // call the account, modify the country when called
+    - (void)resetRedirect;</code></pre></div>
+
+<h3 id="toc_15">(2) Register an account</h3>
+
+<div><pre><code class="language-none">【Description】
+    You need to get a verification code before registering an account.
+ 
+【Function Call】
+    //get verification code
+    @param userAccount User account: mailbox or mobile phone
+    @param countryCode country code
+    @param phoneCode country code
+    @param success Successful callback, return the remaining valid time of the verification code, in seconds
+    @param failure failure callback
+- (void)getValidateCodeWithAccount:(NSString *)userAccount countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(void(^)(NSInteger seconds))success failure:(MeariFailure)failure;
+
+    //Register an account
+    @param userAccount User account: E-mail or mobile phone number (in mainland China only)
+    @param password User password
+    @param countryCode country code
+    @param phoneCode country code
+    @param verificationCode verification code
+    @param nickname User nickname, can be modified after login
+    @param success Successful callback
+    @param failure failure callback
+    - (void)registerAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode nickname:(NSString *)nickname success:(MeariSuccess )success failure:(MeariFailure)failure;
+    
+【Code Example】
+    // Get the account verification code
+    [[MeariUser sharedInstance] getValidateCodeWithAccount:@&quot;john@163.com&quot; countryCode:@&quot;CN&quot; phoneCode:@&quot;86&quot; success:^(NSInteger seconds) {
+        //success
+    } failure:^(NSError *error) {
+        //failure
+    }];
+    //Register an account
+    [[MeariUser sharedInstance] registerAccount:@&quot;john@163.com&quot; password:@&quot;123456&quot; countryCode:@&quot;CN&quot; phoneCode:@&quot;86&quot; verificationCode:@&quot;7234&quot; nickname:@&quot;coder man&quot; success:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h3 id="toc_16">(3) Account login</h3>
+
+<div><pre><code class="language-none">【Description】
+    Support email login, mobile phone (in mainland China only) login
+ 
+【Function Call】
+    //Login
+    @param userAccount User account: mailbox or mobile phone
+    @param password User password
+    @param countryCode country code
+    @param phoneCode country code
+    @param success Successful callback
+    @param failure failure callback
+    - (void)loginAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(MeariSuccess)success failure:(MeariFailure)failure;
+    
+【Code Example】
+    [[MeariUser sharedInstance] loginAccount:@&quot;john@163.com&quot; password:@&quot;123456&quot; countryCode:@&quot;CN&quot; phoneCode:@&quot;86&quot; success:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h3 id="toc_17">(4) Retrieve password</h3>
+
+<div><pre><code class="language-none">【Description】
+    You need to get the verification code before you can retrieve your password.
+ 
+【Function Call】
+    //get verification code
+    @param userAccount User account: mailbox or mobile phone
+    @param countryCode country code
+    @param phoneCode country code
+    @param success Successful callback, return the remaining valid time of the verification code, in seconds
+    @param failure failure callback
+    - (void)getValidateCodeWithAccount:(NSString *)userAccount countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(void(^)(NSInteger seconds))success failure:(MeariFailure)failure;
+
+    // Retrieve password
+    @param userAccount User account: E-mail or mobile phone number (in mainland China only)
+    @param password new password
+    @param countryCode country code
+    @param phoneCode country code
+    @param verificationCode verification code
+    @param success Successful callback
+    @param failure failure callback
+    - (void)findPasswordWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode success:(MeariSuccess)success failure:(MeariFailure) Failure
+
+【Code Example】
+    // Get the account verification code
+    [[MeariUser sharedInstance] getValidateCodeWithAccount:@&quot;john@163.com&quot; countryCode:@&quot;CN&quot; phoneCode:@&quot;86&quot; success:^(NSInteger seconds) {
+        //success
+    } failure:^(NSError *error) {
+        //failure
+    }];
+    // Retrieve password
+    [[MeariUser sharedInstance] findPasswordWithAccount:@&quot;john@163.com&quot; password:@&quot;123123&quot; countryCode:@&quot;CN&quot; phoneCode:@&quot;86&quot; verificationCode:@&quot;6322&quot; success:^{
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h3 id="toc_18">(5) Change password</h3>
+
+<div><pre><code class="language-none">【Description】
+    Change the password after login, you need to obtain the verification code before modifying the password.
+
+【Function Call】
+    //get verification code
+    @param userAccount User account: mailbox or mobile phone
+    @param countryCode country code
+    @param phoneCode country code
+    @param success Successful callback, return the remaining valid time of the verification code, in seconds
+    @param failure failure callback
+    - (void)getValidateCodeWithAccount:(NSString *)userAccount countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(void(^)(NSInteger seconds))success failure:(MeariFailure)failure;
+
+    //change Password
+    @param userAccount User account: E-mail or mobile phone number (in mainland China only)
+    @param password User password
+    @param verificationCode verification code
+    @param success Successful callback
+    @param failure is bound to callback
+    - (void)changePasswordWithAccount:(NSString *)userAccount password:(NSString *)password verificationCode:(NSString *)verificationCode success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    // Get the account verification code
+    [[MeariUser sharedInstance] getValidateCodeWithAccount:@&quot;john@163.com&quot; countryCode:@&quot;CN&quot; phoneCode:@&quot;86&quot; success:^(NSInteger seconds) {
+        //success
+    } failure:^(NSError *error) {
+        //failure
+    }];
+    // Retrieve password
+    [[MeariUser sharedInstance] changePasswordWithAccount:@&quot;john@163.com&quot; password:@&quot;234567&quot; verificationCode:@&quot;8902&quot; success:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h3 id="toc_19">(6) Registration message push</h3>
+
+<div><pre><code class="language-none">【Description】
+    Sign up for Meari message push
+    Called after logging in, registering, and retrieving the password. If the interface returns an error, re-register the push at intervals.
+
+【Function Call】
+    @param deviceToken phone token
+    @param success Successful callback
+    @param failure failure callback
+    - (void)registerPushWithDeviceToken:(NSData *)deviceToken success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;</code></pre></div>
+
+<h3 id="toc_20">(7) User logout</h3>
+
+<div><pre><code class="language-none">【Description】
+    Log out, log out
+
+【Function Call】
+    // Log out of the account
+    @param success Successful callback
+    @param failure failure callback
+    - (void)logoutSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+
+【Code Example】
+    // Log out of the account
+    [[MeariUser sharedInstance] logoutSuccess:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h2 id="toc_21">4.3 User upload avatar</h2>
+
+<div><pre><code class="language-none">【Description】
+    User upload avatar
+ 
+【Function Call】
+    /*
+     @param image Image
+     @param success Successful callback, return the url of the avatar
+     @param failure failure callback
+     */
+    - (void)uploadUserAvatar:(UIImage *)image success:(MeariSuccess_Avatar)success failure:(MeariFailure)failure;
+        
+【Code Example】
+    [[MeariUser sharedInstance] uploadUserAvatar:[UIImage imageWithData:self.imageData] success:^(NSString *avatarUrl) {
+
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h2 id="toc_22">4.4 Modify? Nickname</h2>
+
+<div><pre><code class="language-none">【Description】
+    Modify the user nickname.
+ 
+【Function Call】
+    /*
+    @param name New nickname, length 6-20
+    @param success Successful callback
+    @param failure failure callback
+     */
+    - (void)renameNickname:(NSString *)name success:(MeariSuccess)success failure:(MeariFailure)failure;
+        
+【Code Example】
+    [[MeariUser sharedInstance] renameNickname:newName success:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h2 id="toc_23">4.5 Data Model</h2>
+
+<p>User-related data model.</p>
+
+<div><pre><code class="language-none">[MeariUserInfo]
+@property (nonatomic, strong) NSString * avatarUrl; //User avatar
+@property (nonatomic, strong) NSString * nickName; //user nickname
+@property (nonatomic, strong) NSString * userAccount; //user account
+@property (nonatomic, strong) NSString * userID; //user ID
+@property (nonatomic, strong) NSString * userToken; //user session
+@property (nonatomic, strong) NSString * loginTime; //user login time
+@property (nonatomic, strong) NSString * pushAlias; //User push alias for Aurora push (discard)
+@property (nonatomic, strong) NSString * token; //User valid ID
+@property (nonatomic, strong) NSString * secrect; //User valid ID
+@property (nonatomic, strong) NSString * userKey; //user key
+@property (nonatomic, strong) NSString * userName; //user name
+@property (nonatomic, strong) NSString * countryCode; //Register country code
+@property (nonatomic, strong) NSString * phoneCode; //Register the country phone code
+@property (nonatomic, assign) BOOL notificationSound; //If the message push has sound</code></pre></div>
+
+<h1 id="toc_24">5.Device message notification</h1>
+
+<div><pre><code class="language-none">Timely message notification is that MeariSDK promptly informs the current user of the App and some status of the device under the user account, so as to facilitate the App to achieve a better user experience.
+
+[Notification Type] See: MeariUser.h
+    MeariDeviceOnlineNotification (device online)
+    MeariDeviceOfflineNotification (device offline)
+    MeariDeviceCancelSharedNotification (device owner canceled sharing)
+    MeariDeviceHasVisitorNotification (visual doorbell device has a guest ringing the doorbell)
+    MeariDeviceVoiceBellHasVisitorNotification (Voice doorbell device has a guest ringing the doorbell)
+    MeariDeviceUnbundlingNotification (device has been unbundled)
+    MeariUserLoginInvalidNotification (login information is invalid, you need to log in again)
+【use】
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoginInvalidNotification:) name:MeariUserLoginInvalidNotification object:nil];</code></pre></div>
+
+<h1 id="toc_25">6.Equipment distribution network</h1>
+
+<div><pre><code class="language-none">Affiliation:MeariDevice tool class</code></pre></div>
+
+<div><pre><code class="language-none">Towers Perrin technology hardware modules support three distribution modes: SmartWifi distribution network, hotspot mode (AP mode), two-dimensional code distribution network mode.
+The QR code and SmartWifi operation are relatively simple. It is recommended to use the hotspot mode as an alternative after the distribution network fails. Among them, the success rate of the two-dimensional code distribution network is high.</code></pre></div>
+
+<h2 id="toc_26">6.1 smartwifi distribution network</h2>
+
+<div><pre><code class="language-none">Before the distribution network, you need to obtain the Token first, and then call the distribution network interface.</code></pre></div>
+
+<h3 id="toc_27">(1) Get Token</h3>
+
+<div><pre><code class="language-none">【Description】
+Smart wifi distribution network needs to provide the name and password of the connected wifi
+
+【Function Call】
+    /**
+    Get the distribution network token
+
+    @param tokenType Different distribution modes correspond to different Tokens
+    @param success Successful callback:
+    Token: for distribution network
+    validTime: The length of time the token is valid. If it exceeds the length, you need to reacquire the new token.
+    @param failure failure callback
+    */
+    - (void)getTokenForType:(MeariDeviceTokenType)tokenType success:(MeariSuccess_Token)success failure:(MeariFailure)failure;
+【Code Example】
+    [[MeariUser sharedInstance] getTokenForType:MeariDeviceTokenTypeSmartWifi success:^(NSString *token, NSInteger validTime) {
+        //Don&#39;t care about validTime, because this type of Token is long-lived
+    } failure:^(NSError *error) {
+
+    }]
+</code></pre></div>
+
+<h3 id="toc_28">(2) Start SmartWifi distribution network</h3>
+
+<div><pre><code class="language-none">【Description】
+    Smart wifi distribution network needs to provide the name and password of the connected wifi
+ 
+【Function Call】
+    /**
+    Start smartwifi distribution network
+    
+    @param wifiSSID wifi name
+    @param wifiPwd wifi password: no password, pass nil
+    @param success Successful callback
+    @param failure failure callback
+    */
+    + (void)startMonitorWifiSSID:(NSString *)wifiSSID wifiPwd:(NSString *)wifiPwd success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+        
+【Code Example】
+    [MeariDevice startMonitorWifiSSID:@&quot;wifi name&quot; wifiPwd:@&quot;12345678&quot; success:^{
+        //Successful callback will only return when stopped
+    } failure:^(NSError *error){
+        // The abnormal callback will return directly
+    }];</code></pre></div>
+
+<h3 id="toc_29">(3) Stop SmartWifi distribution network</h3>
+
+<div><pre><code class="language-none">    /**
+    Stop smartwifi distribution network
+    */
+    + (void)stopMonitor;</code></pre></div>
+
+<h2 id="toc_30">6.2 Hotspot mode (AP distribution network)</h2>
+
+<div><pre><code class="language-none">Before the distribution network, you need to obtain the Token first, and then call the distribution network interface.</code></pre></div>
+
+<h3 id="toc_31">(1) Get Token</h3>
+
+<div><pre><code class="language-none">【Description】
+    Get the Token required by the AP distribution network
+
+【Function Call】
+    /**
+    Get the distribution network token
+
+    @param tokenType Different distribution modes correspond to different Tokens
+    @param success Successful callback:
+    Token: for distribution network
+    validTime: The length of time the token is valid. If it exceeds the length, you need to reacquire the new token.
+    @param failure failure callback
+    */
+    - (void)getTokenForType:(MeariDeviceTokenType)tokenType success:(MeariSuccess_Token)success failure:(MeariFailure)failure;
+    
+【Code Example】
+    [[MeariUser sharedInstance] getTokenForType:MeariDeviceTokenTypeAP success:^(NSString *token, NSInteger validTime) {
+        // Do not care about validTime, Token has been valid in this mode
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h3 id="toc_32">(2) AP distribution network</h3>
+
+<div><pre><code class="language-none">【Description】
+    The ap distribution network needs to provide the name and password of the connected wifi, and it needs to be connected to the hotspot of the device before the distribution network. (The device hotspot name is: `STRN` plus `underscore `plus `sn number` such as: STRN_056566188)
+ 
+【Function Call】
+
+    /**
+    Start ap distribution network
+    
+    @param wifiSSID wifi name
+    @param wifiPwd wifi password
+    @param success Successful callback
+    @param failure failure callback
+    */
+    + (void)startAPConfigureWifiSSID:(NSString *)wifiSSID wifiPwd:(NSString *)wifiPwd success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+        
+【Code Example】
+    // Start smartwifi distribution network
+    [MeariDevice startAPConfigureWifiSSID:@&quot;wifi name&quot; wifiPwd:@&quot;12345678&quot; success:^{
+
+    } failure:^(NSString *error) {
+    
+    }];
+    </code></pre></div>
+
+<h2 id="toc_33">6.3 QR code distribution network</h2>
+
+<div><pre><code class="language-none">Before the distribution network, you need to obtain the Token first, and then call the distribution network interface.</code></pre></div>
+
+<h3 id="toc_34">(1) Get Token</h3>
+
+<div><pre><code class="language-none">【Description】
+    Obtain the Token required by the AP distribution network. Note that this Token has an expiration time.
+
+【Function Call】
+    /**
+    Get the distribution network token
+
+    @param tokenType Different distribution modes correspond to different Tokens
+    @param success Successful callback:
+    Token: for distribution network
+    validTime: The length of time the token is valid. If it exceeds the length, you need to reacquire the new token.
+    @param failure failure callback
+    */
+    - (void)getTokenForType:(MeariDeviceTokenType)tokenType success:(MeariSuccess_Token)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] getTokenForType:MeariDeviceTokenTypeQRCode success:^(NSString *token, NSInteger validTime) {
+        //validTime is the timeout period. The timeout Token cannot be used for the QR code distribution network. You need to regain the Token.
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h3 id="toc_35">(2) QR code distribution network</h3>
+
+<div><pre><code class="language-none">【Description】
+    The obtained token and the WiFi and password of the mobile phone generate a QR code picture, and the QR code picture is recommended: a 284px square picture
+ 
+【Function Call】
+    /**
+    Generate QR code
+    
+    @param ssid wifi name
+    @param password wifi password
+    @param token QR code token
+    @param size QR code size
+    @return QR code image
+    */
+    - (UIImage *)createQRWithSSID:(NSString *)ssid pasword:(NSString *)password token:(NSString *)token size:(CGSize)size;
+        
+【Code Example】
+
+    // Generate a QR code
+    UIImage *image = [[MeariUser sharedInstance] createQRWithSSID:@&quot;wifi name&quot; pasword:@&quot;123456&quot; token:token size:CGSizeMake(100, 100)];</code></pre></div>
+
+<h2 id="toc_36">6.4 Searching for devices</h2>
+
+<div><pre><code class="language-none">Search timing: After the device is successfully deployed, the blue light will be on, and the device can be searched.
+Search mechanism: The search interface does not have a timeout mechanism, and the search will not stop until the stop interface is called.
+Search mode: LAN search and cloud search</code></pre></div>
+
+<h3 id="toc_37">(1) smartwifi distribution network and ap distribution network search equipment</h3>
+
+<div><pre><code class="language-none">【Description】
+    IPC device: After the device is successfully connected to the network, the blue light is always on, and the device can be searched for display.
+    NVR device: The added NVR needs to be in the same network as the mobile phone before it can be searched.
+ 
+【Function Call】
+
+    /**
+    Start search: for smartwifi distribution network and ap distribution network
+    
+    @param success Successful callback: return the searched device
+    @param failure failure callback
+    */
+    + (void)startSearch:(MeariDeviceSucess_SearchDevice)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Start search: for smartwifi distribution network and ap distribution network
+    [MeariDevice startSearch:^(MeariDevice *device) {
+        
+    } failure:^(NSString *error) {
+        
+    }];</code></pre></div>
+
+<h3 id="toc_38">(2) QR code matching network search device</h3>
+
+<div><pre><code class="language-none">【Method One:】
+
+【Description】
+    After the device is successfully connected to the network, the blue light is always on, and the device can be searched for display.
+    
+    Note: The Token of the search needs to be consistent with the Token of the QR code distribution network, otherwise the device will not be searched.
+    
+【Function Call】
+    /**
+    Start search: only for QR code network
+
+    @param token QR code token
+    @param success Successful callback: return the searched device
+    @param failure failure callback
+    */
+    + (void)startSearchWithQRcodeToken:(NSString *)token success:(MeariDeviceSucess_SearchDevice)success failure:(MeariDeviceFailure)failure;
+
+【Method Two:】
+    
+【Description】
+    After the device is successfully connected to the network, the blue light is always on, and the device can be searched for display.
+
+    Note: You need to update the Token before searching. The Token to be searched must be consistent with the Token of the QR code. Otherwise, the device will not be searched.
+
+【Function Call】
+    /**
+    Update Token
+
+    @param token distribution net token
+    @param type Distribution network
+    */
+     + (void)updatetoken:(NSString *)token type:(MeariDeviceTokenType)type;
+    
+     /**
+     Start searching: Search for a generic interface
+     Make sure to call the updatetoken method when using this interface.
+     @param mode Distribution mode
+     @param success Successful callback: return the searched device
+     @param failure failure callback
+     */
+     + (void)startSearch:(MeariDeviceSearchMode)mode success:(MeariDeviceSucess_SearchDevice)success failure:(MeariDeviceFailure)failure;
+    
+【Code Example】
+     [MeariDevice updatetoken: self.token type:MeariDeviceTokenTypeQRCode];
+     [MeariDevice startSearch: MeariSearchModeCloud_QRCode success:^(MeariDevice *device) {
+   
+     } failure:^(NSError *error) {
+    
+     }];</code></pre></div>
+
+<h3 id="toc_39">(3) Equipment? Add</h3>
+
+<h4 id="toc_40"><1> Adding a camera</h4>
+
+<div><pre><code class="language-none">【Description】
+    After searching for the device, first query the device status query, and add the device operation without being added.
+
+【Be Applicable】
+    type:
+    MeariDeviceTypeIpc
+    subType:
+    All
+
+【Function Call】
+    // Query device status
+    @param type device type
+    @param devices Device to be queried: need to use the device interface to search for devices
+    @param success Successful callback: return to device list
+    @param failure failure callback
+    - (void)checkDeviceStatusWithDeviceType:(MeariDeviceType)type devices:(NSArray &lt;MeariDevice *&gt;*)devices success:(MeariSuccess_DeviceListForStatus)success failure:(MeariFailure)failure;
+
+    // Add equipment
+    @param type device type
+    @param uuid device uuid
+    @param sn device sn
+    @param tp device tp
+    @param success Successful callback
+    @param failure failure callback
+    - (void)addDeviceWithDeviceType:(MeariDeviceType)type uuid:(NSString *)uuid sn:(NSString *)sn tp:(NSString *)tp success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    // Query camera
+    [[MeariUser sharedInstance] checkDeviceStatusWithDeviceType:MeariDeviceTypeIpc devices:deviceArray success:^(NSArray&lt;MeariDevice *&gt; *devices) {
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    //Add camera
+    [[MeariUser sharedInstance] addDeviceWithDeviceType:MeariDeviceTypeIpc uuid:device.info.uuid sn:device.info.sn tp:device.info.tp success:^{
+
+    } failure:^(NSError *error) {
+
+    }];
+</code></pre></div>
+
+<h4 id="toc_41"><2> Adding network storage</h4>
+
+<div><pre><code class="language-none">【Description】
+    After searching for an NVR device, query the device status first, and add the device operation if it is not added.
+    
+【Be Applicable】
+Type:
+MeariDeviceTypeNVR
+
+【Function Call】
+    // Query device status
+    @param type device type
+    @param devices Device to be queried: need to use the device interface to search for devices
+    @param success Successful callback: return to device list
+    @param failure failure callback
+    - (void)checkDeviceStatusWithDeviceType:(MeariDeviceType)type devices:(NSArray &lt;MeariDevice *&gt;*)devices success:(MeariSuccess_DeviceListForStatus)success failure:(MeariFailure)failure;
+
+    // Add equipment
+    @param type device type
+    @param uuid device uuid
+    @param sn device sn
+    @param tp device tp
+    @param success Successful callback
+    @param failure failure callback
+    - (void)addDeviceWithDeviceType:(MeariDeviceType)type uuid:(NSString *)uuid sn:(NSString *)sn tp:(NSString *)tp success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    // Query nvr
+    [[MeariUser sharedInstance] checkDeviceStatusWithDeviceType:MeariDeviceTypeNvr devices:deviceArray success:^(NSArray&lt;MeariDevice *&gt; *devices) {
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    //Add nvr
+    [[MeariUser sharedInstance] addDeviceWithDeviceType:MeariDeviceTypeNvr uuid:device.info.uuid sn:device.info.sn tp:device.info.tp success:^{
+
+    } failure:^(NSError *error) {
+
+    }];
+</code></pre></div>
+
+<h3 id="toc_42">(4) Stop searching</h3>
+
+<div><pre><code class="language-none">【Description】
+    When you finish adding, if you have a search turned on, you need to stop the search operation.
+【Function Call】
+    /**
+    Stop searching
+    */
+    + (void)stopSearch;
+【Code Example】
+    [MeariDevice stopSearch];
+    [[MeariUser sharedInstance] cancelAllRequest];</code></pre></div>
+
+<h2 id="toc_43">6.5 Autobind Device</h2>
+
+<div><pre><code class="language-none">Before the distribution network, you need to obtain the Token first, and then call the distribution network interface.
+Allow the device to automatically add to the user account after scanning the QR code or AP mode.
+</code></pre></div>
+
+<h3 id="toc_44">(1) Get Token</h3>
+
+<div><pre><code class="language-none">【Description】
+    Get the Token required by the QRcode and AP mode
+
+【Function Call】
+    /**
+    token for config device
+ 
+    @param success return  config dictionary
+        token: config token
+        validTime: token invalid time
+        delaySmart: user for smartwifi (Deprecated)
+
+    @param failure return error
+    */
+    - (void)getTokenSuccess:(MeariSuccess_Token2)success failure:(MeariFailure)failure;;
+    
+【Code Example】
+    [[MeariDeviceActivator sharedInstance] getTokenSuccess:^(NSString *token, NSInteger validTime, NSInteger delaySmart) {
+     // Do not care about validTime, Token has been valid in this mode
+    } failure:^(NSError *error) {
+    //....
+    }];
+</code></pre></div>
+
+<h3 id="toc_45">(2) Start Config</h3>
+
+<div><pre><code class="language-none">【Description】
+    start search and config device
+【Function Call】
+    /**
+     start config 
+
+     @param mode    search device mode
+     @param token   config token
+     @param timeout  Timeout time, the default is 100 seconds. If it is less than 0, the distribution network will not be closed. You need to manually call stopSearch.
+    */
+    - (void)startConfigWiFi:(MeariDeviceSearchMode)mode  token:(NSString *)token type:(MeariDeviceTokenType)type nvr:(BOOL)isNvr timeout:(NSTimeInterval)timeout;
+  
+【Code Example】
+    [[MeariDeviceActivator sharedInstance] startConfigWiFi:(MeariSearchModeAll) token:token type:(MeariDeviceTokenTypeQRCode) nvr:NO timeout:100];
+</code></pre></div>
+
+<h3 id="toc_46">(3) Config Complete</h3>
+
+<div><pre><code class="language-none">【Description】
+    Obtain the device completed by the distribution network.  must set  [MeariDeviceActivator sharedInstance].delete = self; before implement this method
+【Function Call】
+   /**
+    Device Complete callback
+
+    @param activator activator
+    @param deviceModel return the device which config network completed
+    @param error return error
+    */
+    - (void)activator:(MeariDeviceActivator *)activator didReceiveDevice:(nullable MeariDevice *)deviceModel error:(nullable NSError *)error;
+  
+【Code Example】
+
+     - (void)activator:(MeariDeviceActivator *)activator didReceiveDevice:(nullable MeariDevice *)deviceModel error:(nullable NSError *)error {
+        // Use deviceModel.info.addStatus to determine whether the device is successfully added.
+       //BOOL success =  deviceModel.info.addStatus == MeariDeviceAddStatusSelf;
+
+     }
+</code></pre></div>
+
+<h1 id="toc_47">7 NVR Binding Device</h1>
+
+<h2 id="toc_48">7.1 Searching for devices</h2>
+
+<div><pre><code class="language-none">【Description】
+    The device blue light is always on to be searched. It is used to display the binding NVR to the user. MeariDevice-&gt;hasBindedNvr is used to determine whether the NVR has been bound.
+
+【Function Call】
+    /**
+    Start search: Search for devices under the current network
+
+    @param success Successful callback: return the searched device
+    @param failure failure callback
+    */
+    + (void)startSearch:(MeariDeviceSucess_SearchDevice)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Start search: for smartwifi distribution network and ap distribution network
+    [MeariDevice startSearch:^(MeariDevice *device) {
+
+    } failure:^(NSString *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_49">7.2 Binding device</h2>
+
+<div><pre><code class="language-none">【Description】
+    After the NVR is bound to the device, the video files of the device are stored in the NVR.
+
+【Function Call】
+    @param deviceID device ID
+    @param nvrID nvr ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)bindDevice:(NSInteger)deviceID toNVR:(NSInteger)nvrID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] bindDevice:model.device.info.ID toNVR:self.nvr.info.ID success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_50">7.3 End binding device</h2>
+
+<div><pre><code class="language-none">【Description】
+    When the binding ends, if there is a search, you need to stop the search operation.
+【Function Call】
+    /**
+    Stop searching
+    */
+    + (void)stopSearch;
+【Code Example】
+    [MeariDevice stopSearch];
+    [[MeariUser sharedInstance] cancelAllRequest];</code></pre></div>
+
+<h2 id="toc_51">7.4 Obtaining NVR-bound devices</h2>
+
+<div><pre><code class="language-none">【Description】
+    Used to check which devices are bound to the NVR.
+
+【Function Call】
+    @param nvrID nvr ID
+    @param success Successful callback: return the list of bound devices and unbound device list
+    @param failure failure callback
+    - (void)getBindDeviceList:(NSInteger)nvrID success:(MeariSuccess_DeviceListForNVR)success failure:(MeariFailure)failure;
+
+【Code Example】
+    // Query the list of bound devices
+    [[MeariUser sharedInstance] getBindDeviceList:self.nvr.info.ID success:^(NSArray&lt;MeariDevice *&gt; *bindedDevices, NSArray&lt;MeariDevice *&gt; *unbindedDevices) {
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_52">7.5 Unbinding the device from the NVR</h2>
+
+<div><pre><code class="language-none">【Description】
+    After the device is bound from the NVR, the video files of the device will not continue to be stored in the NVR.
+
+【Function Call】
+    @param deviceID device ID
+    @param nvrID nvr ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)unbindDevice:(NSInteger)deviceID toNVR:(NSInteger)nvrID success:(MeariSuccess)success failure:(MeariFailure)failure;
+    
+【Code Example】
+    @param deviceIDs Multiple device IDs
+    @param nvrID nvr ID
+    @param success Successful callback
+    @param failure failure callback
+    [[MeariUser sharedInstance] unbindDevices:arr toNVR:self.nvr.info.ID success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h1 id="toc_53">8. Device information acquisition</h1>
+
+<div><pre><code class="language-none">Affiliation:MeariUser</code></pre></div>
+
+<h2 id="toc_54">8.1 Getting Device Columns</h2>
+
+<div><pre><code class="language-none">Affiliation: MeariDeviceList</code></pre></div>
+
+<div><pre><code class="language-none">【Description】
+    After the device is added, obtain the device list through the interface of the MeariUser tool class and return it as a model.
+The device information is the info attribute of the device object (MeariDeviceInfo)
+
+【Function Call】
+    // Get a list of all devices
+    - (void)getDeviceList:(MeariSuccess_DeviceList)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] getDeviceList:^(MeariDeviceList *deviceList) {
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<p>MeariDeviceList attribute:</p>
+
+<div><pre><code class="language-none"> /** Camera */
+@property (nonatomic, strong) NSArray &lt;MeariDevice *&gt; *ipcs;
+/** Smart doorbell */
+@property (nonatomic, strong) NSArray &lt;MeariDevice *&gt; *bells;
+/** voice doorbell */
+@property (nonatomic, strong) NSArray &lt;MeariDevice *&gt; *voicebells;
+/** Battery Camera */
+@property (nonatomic, strong) NSArray &lt;MeariDevice *&gt; *batteryIpcs;
+/** Lamp camera */
+@property (nonatomic, strong) NSArray &lt;MeariDevice *&gt; *lights;
+/** Network Memory */
+@property (nonatomic, strong) NSArray &lt;MeariDevice *&gt; *nvrs;</code></pre></div>
+
+<h2 id="toc_55">8.2 Device Information</h2>
+
+<div><pre><code class="language-none">Affiliation:MeariDevice</code></pre></div>
+
+<div><pre><code class="language-none">@property (nonatomic, strong) MeariDeviceInfo *info; //Device information
+@property (nonatomic, strong) MeariDeviceParam *param; //Device parameters
+@property (nonatomic, assign, readonly, getter=isIpcCommon)BOOL ipcCommon; // Is it a normal camera?
+@property (nonatomic, assign, readonly, getter=isIpcBaby)BOOL ipcBaby; //is it a music camera?
+@property (nonatomic, assign, readonly, getter=isIpcBell)BOOL ipcBell; //whether it is a doorbell camera
+@property (nonatomic, assign, readonly, getter=isNvr)BOOL nvr; //whether it is a box
+@property (nonatomic, assign)BOOL hasBindedNvr; //Do you bind?
+@property (nonatomic, assign, readonly)BOOL sdkLogined; //whether logged in
+@property (nonatomic, assign, readonly)BOOL sdkLogining; //whether you are logged in
+@property (nonatomic, assign, readonly)BOOL sdkPlaying; //Whether previewing
+@property (nonatomic, assign, readonly)BOOL sdkPlayRecord; //Whether it is playing back
+@property (nonatomic, strong)NSDateComponents *playbackTime; //current playback time
+@property (nonatomic, assign, readonly)BOOL supportFullDuplex; //Do you support two-way voice intercom?
+@property (nonatomic, assign, readonly)BOOL supportVoiceTalk; //support voice intercom
+. . .</code></pre></div>
+
+<h2 id="toc_56">8.3 Deleting a device</h2>
+
+<div><pre><code class="language-none">【Description】
+    Device removal
+
+【Function Call】
+    // Remove the device
+    @param type device type
+    @param deviceID device ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)deleteDeviceWithDeviceType:(MeariDeviceType)type deviceID:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] deleteDeviceWithDeviceType:MeariDeviceTypeIpc deviceID:cell.camera.info.ID success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_57">8.4 Device nickname modification</h2>
+
+<div><pre><code class="language-none">【Description】
+    Device nickname modification
+
+【Function Call】
+    @param type device type
+    @param deviceID device ID
+    @param nickname New nickname, length 6-20
+    @param success Successful callback
+    @param failure failure callback
+    - (void)renameDeviceWithDeviceType:(MeariDeviceType)type deviceID:(NSInteger)deviceID nickname:(NSString *)nickname success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    // Modify the IPC device nickname
+    [[MeariUser sharedInstance] renameDeviceWithDeviceType:MeariDeviceTypeIpc deviceID:self.camera.info.ID nickname:newNickName success:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];
+    
+    // Modify the NVR device nickname
+    [[MeariUser sharedInstance] renameDeviceWithDeviceType:MeariDeviceTypeNVR deviceID:self.nvr.info.ID nickname:newNickName success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_58">8.5 Single device one day alarm time point acquisition</h2>
+
+<div><pre><code class="language-none">【Description】
+    Single device one day alarm time point acquisition
+
+【Function Call】
+    // a single device one day alarm time point to obtain
+    @param deviceID device ID
+    @param date Date: The format is 20171212
+    @param success Successful callback: return to the alarm time list
+    @param failure failure callback
+    - (void)getAlarmMessageTimes:(NSInteger)deviceID onDate:(NSString *)date success:(MeariSuccess_DeviceAlarmMsgTime)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] getAlarmMessageTimes:self.device.info.ID onDate:@&quot;20171212&quot; success:^(NSArray&lt;NSString *&gt; *time) {
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_59">8.6 Check if the device has a new version</h2>
+
+<div><pre><code class="language-none">【Description】
+    Check if the device has a new version
+
+【Function Call】
+    // Query the device for a new version
+    @param currentFirmware Current version
+    @param success Successful callback: Returns the latest version information of the device
+    @param failure failure callback
+    - (void)checkNewFirmwareWithCurrentFirmware:(NSString *)currentFirmware success:(MeariSuccess_DeviceFirmwareInfo)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] checkNewFirmwareWithCurrentFirmware:self.currentVersion success:^(MeariDeviceFirmwareInfo *info) {
+    
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<p>MeariDeviceFirmwareInfo:</p>
+
+<div><pre><code class="language-none">@property (nonatomic, copy) NSString *upgradeUrl; //Device upgrade address
+@property (nonatomic, copy) NSString *latestVersion; //The latest version of the device
+@property (nonatomic, copy) NSString *upgradeDescription; //Device upgrade description
+@property (nonatomic, assign) BOOL needUpgrade; //Do you need to upgrade?</code></pre></div>
+
+<h2 id="toc_60">8.7 Querying Device Online Status</h2>
+
+<div><pre><code class="language-none">【Description】
+    Check if the device has a new version
+
+【Function Call】
+    // Query the device for a new version
+    @param deviceID device ID
+    @param success Successful callback: Returns whether the device is online
+    @param failure failure callback
+    - (void)checkDeviceOnlineStatus:(NSInteger)deviceID success:(MeariSuccess_DeviceOnlineStatus)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] checkDeviceOnlineStatus:self.device.info.ID success:^(BOOL online) {
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_61">8.8 Querying the music list</h2>
+
+<div><pre><code class="language-none">【Description】
+    Query music list
+
+【Function Call】
+    // Query music list
+    @param success Successful callback: return to music list
+    @param failure failure callback
+    - (void)getMusicList:(MeariSuccess_Music)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] getMusicList:^(NSArray&lt;MeariMusicInfo *&gt; *musicList) {
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<div><pre><code class="language-none">MeariMusicInfo:
+@property (nonatomic, strong) NSString * musicFormat; //Music format
+@property (nonatomic, strong) NSString * musicID; //Music ID
+@property (nonatomic, strong) NSString * musicName; //music name
+@property (nonatomic, strong) NSString * musicUrl; //Music address</code></pre></div>
+
+<h2 id="toc_62">8.9 Generate distribution network QR code</h2>
+
+<div><pre><code class="language-none">【Description】
+    Generate distribution network QR code
+
+【Function Call】
+    // Get the QR code token
+    /**
+    Get the distribution network token
+    
+    @param tokenType Different distribution modes correspond to different Tokens
+    @param success Successful callback:
+    Token: for distribution network
+    validTime: The length of time the token is valid. If it exceeds the length, you need to reacquire the new token.
+    @param failure failure callback
+    */
+    - (void)getTokenForType:(MeariDeviceTokenType)tokenType success:(MeariSuccess_Token)success failure:(MeariFailure)failure;
+    // Generate distribution network QR code
+    @param ssid wifi name
+    @param password wifi password
+    @param token QR code token
+    @param size QR code size
+    @return QR code image
+    - (UIImage *)createQRWithSSID:(NSString *)ssid pasword:(NSString *)password token:(NSString *)token size:(CGSize)size;
+
+【Code Example】
+    // Get the QR code token
+    [[MeariUser sharedInstance] getTokenForQrcode:^(NSString *token) {
+
+    } failure:^(NSError *error) {
+
+    }];
+    
+    // Generate distribution network QR code
+   UIImage *image = [[MeariUser sharedInstance] createQRWithSSID:weakSelf.wifi.ssid pasword:weakSelf.wifi.password token:obj size:CGSizeMake(WY_ScreenWidth, WY_ScreenHeight)];</code></pre></div>
+
+<h2 id="toc_63">8.10 Remote wake-up doorbell</h2>
+
+<div><pre><code class="language-none">【Description】
+    Remote wake-up doorbell
+
+【Function Call】
+    // Remote wake doorbell
+    @param deviceID device ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)remoteWakeUp:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] remoteWakeUp:self.camera.info.ID success:^{
+
+    } failure:^(NSError *error) {
+
+    }];
+【Precautions】
+    For doorbell-type low-power products, you need to call the remote wake-up interface first, and then call the hole-punching interface.</code></pre></div>
+
+<h2 id="toc_64">8.11 Uploading the doorbell message</h2>
+
+<div><pre><code class="language-none">【Description】
+Upload doorbell message
+
+【Function Call】
+    /**
+    Upload message
+
+    @param deviceID device ID
+    @param file message file path
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)uploadVoice:(NSInteger)deviceID voiceFile:(NSString *)file success:(MeariSuccess_DeviceVoiceUrl)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] uploadVoice:self.camera.info.ID voiceFile:_filePath success:^(NSString *voiceUrl) {
+    
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h2 id="toc_65">8.12 Download the doorbell message</h2>
+
+<div><pre><code class="language-none">【Description】
+    Download the doorbell message
+
+【Function Call】
+    /**
+    Download message
+
+    @param voiceUrl Message address
+    @param success Successful callback, return value: audio data
+    @param failure failure callback
+    */
+    - (void)downloadVoice:(NSString *)voiceUrl success:(MeariSuccess_DeviceVoiceData)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] downloadVoice:urlStr success:^(NSData *data) {
+
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h2 id="toc_66">8.13 Deleting the doorbell message</h2>
+
+<div><pre><code class="language-none">【Description】
+    Delete doorbell message
+
+【Function Call】
+    /**
+    Delete message
+
+    @param deviceID device ID
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)deleteVoice:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] deleteVoice:self.camera.info.ID success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h1 id="toc_67">9.Device Control</h1>
+
+<div><pre><code class="language-none">Affiliation:MeariDevice</code></pre></div>
+
+<div><pre><code class="language-none">MeariDevice is responsible for all operations on the device, including preview, playback, settings, etc. For device settings, you need to make sure that you have established a connection with the device.</code></pre></div>
+
+<h2 id="toc_68">9.1 Connecting devices</h2>
+
+<div><pre><code class="language-none">【Description】
+    Before you can preview, play back, set up, etc., you need to connect the device first.
+
+【Function Call】
+    /**
+    Start connecting devices
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)startConnectSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    [self.device startConnectSuccess:^{
+
+    } failure:^(NSString *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_69">9.2 Disconnecting the device</h2>
+
+<div><pre><code class="language-none">【Description】
+    When you do not need to operate the device, you need to disconnect the device
+
+【Function Call】
+    /**
+    Disconnect device
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)stopConnectSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    [self.device stopConnectSuccess:^{
+
+    } failure:^(NSString *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_70">9.3 Get the bit rate</h2>
+
+<div><pre><code class="language-none">【Description】
+    When you do not need to operate the device, you need to disconnect the device
+
+【Function Call】
+    /**
+    Acquisition rate
+
+    @return code rate
+    */
+    - (NSString *)getBitrates;
+
+【Code Example】
+    [self.device getBitrates]</code></pre></div>
+
+<h2 id="toc_71">9.4 Preview</h2>
+
+<div><pre><code class="language-none">【Description】
+    Real-time streaming playback of the camera, support HD/SD switching
+
+【Function Call】
+    /**
+    Start previewing the device
+
+    @param playView play view control
+    @param HD Whether to play HD
+    @param success Successful callback
+    @param failure failure callback
+    @param close is in sleep mode, the lens is off, return value: sleep mode
+    */
+    - (void)startPreviewWithView:(MeariPlayView *)playView streamid:(BOOL)HD success:(MeariDeviceSucess)success failure:(void(^)(BOOL isPlaying))failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
+
+
+    /**
+    Stop previewing device
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)stopPreviewSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Switch HD SD
+
+    @param playView play view
+    @param HD Whether to play HD
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)switchPreviewWithView:(MeariPlayView *)playView streamid:(BOOL)HD success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Create a MeariPlayView
+    MeariPlayView *playView = [[MeariPlayView alloc] initWithFrame:CGRectMake(0, 0,160, 90];
+
+    // Start previewing the device
+    [self.camera startPreviewWithView:playView streamid:YES success:^{
+
+    } failure:^(BOOL isPlaying) {
+
+    } close:^(MeariDeviceSleepmode sleepmodeType) {
+
+    }];
+
+    // Stop preview device
+    [self.camera stopPreviewSuccess:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // Switch HD standard definition
+    [self.camera switchPreviewWithView:self.drawableView streamid:HD success:^{
+
+    } failure:^(NSString *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_72">9.5 Playback</h2>
+
+<div><pre><code class="language-none">【Description】
+    Play back the video of the camera
+    Note: The SDK does not check the playing time, so even if you pass in a time point without an alarm, the interface will return success, so the upper layer needs to judge by itself.
+
+【Function Call】
+    /**
+    Get the number of video days in a month
+
+    @param year year
+    @param month月
+    @param success Successful callback, return value: json array --[{&quot;date&quot; = &quot;20171228&quot;},...]
+    @param failure failure callback
+    */
+    - (void)getPlaybackVideoDaysWithYear:(NSInteger)year month:(NSInteger)month success:(MeariDeviceSucess_Days)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Get a video clip of a day
+
+    @param year year
+    @param month月
+    @param day
+    @param success Successful callback: return value: json array --[{&quot;endtime&quot; = &quot;20171228005958&quot;,&quot;starttime = 20171228000002&quot;},...]
+    @param failure failure callback
+    */
+    - (void)getPlaybackVideoTimesWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day success:(MeariDeviceSucess_Times)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    Start playback of video: only one person can view playback video at the same time
+
+    @param playView play view
+    @param startTime Start time: format is 20171228102035
+    @param success Successful callback
+    @param failure failure callback
+    @param otherPlaying others watching playback
+    */
+    - (void)startPlackbackWithView:(MeariPlayView *)playView startTime:(NSString *)startTime success:(MeariDeviceSucess)success failure:(void(^)(BOOL isPlaying))failure otherPlaying:(MeariDeviceSucess)otherPlaying;
+
+
+    /**
+    Stop playback
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)stopPlackbackSDCardSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Play from a certain time: This interface can only be used after the playback is successful, otherwise it will fail.
+
+    @param seekTime Start time: format is 20171228102035
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)seekPlackbackSDCardToTime:(NSString *)seekTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Pause playback
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)pausePlackbackSDCardSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Continue playback
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)resumePlackbackSDCardSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Get video days
+    [self.device getPlaybackVideoDaysWithYear:year month:month success:^(NSArray *days) {
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // Get the video duration of a certain day
+    [self.device getPlaybackVideoTimesWithYear:year month:month day:day success:^(NSArray *times) {
+
+    } failure:^(NSString *error) {
+
+    }];
+
+
+    // Start playing back the video
+    [self.device startPlackbackWithView:playview startTime:starttime success:^{
+
+    } failure:^(BOOL isPlaying) {
+
+    } otherPlaying:^{
+
+    }];
+
+    // stop playback
+    [self.device stopPlackbackSDCardSuccess:^{
+    WYDo_Block_Safe_Main(success)
+    } failure:^(NSString *error) {
+    WYDo_Block_Safe_Main(success)
+    }];
+
+    //seek playback
+    [self.device seekPlackbackSDCardToTime:self.currentComponents.timeStringWithNoSprit success:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // Pause playback
+    [self.device pausePlackbackSDCardSuccess:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // continue playback
+    [self.device resumePlackbackSDCardSuccess:^{
+
+    } failure:^(NSString *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_73">9.6 Silent</h2>
+
+<div><pre><code class="language-none">【Description】
+    Set mute
+
+【Function Call】
+    /**
+    Set mute
+
+    @param muted is mute?
+    */
+    - (void)setMute:(BOOL)muted;
+
+【Code Example】
+
+    // Set the mute
+    [self.device setMute:muted];
+</code></pre></div>
+
+<h2 id="toc_74">9.7 Voice Intercom</h2>
+
+<h3 id="toc_75">(1) One-way intercom</h3>
+
+<div><pre><code class="language-none">【Description】
+    One-way intercom is that the mobile phone and the device cannot talk at the same time. The mobile terminal starts the intercom call startVoicetalk, and the end of the speech needs to call to stop the intercom stopVoicetalkSuccess, otherwise the mobile phone terminal cannot receive the speech.
+    
+【Be Applicable】
+    subType:
+        MeariDeviceSubTypeIpcCommon = 1,
+        MeariDeviceSubTypeIpcBaby = 2,
+        MeariDeviceSubTypeIpcFloodlight = 6,
+
+【Function Call】
+
+    /**
+    Set the voice intercom type
+
+    @param type voice intercom type
+    */
+    - (void)setVoiceTalkType:(MeariVoiceTalkType)type;
+
+    /**
+    Get the real-time volume of the voice intercom
+
+    @return 0-1.0
+    */
+    - (CGFloat)getVoicetalkVolume;
+
+    /**
+    Start voice intercom
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)startVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Stop voice intercom
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)stopVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+
+    // Set the voice intercom type
+    [self.camera setVoiceTalkType:MeariVoiceTalkTypeOneWay];
+
+    // Get the real-time volume of the voice intercom
+    [self.camera getVoicetalkVolume]
+
+
+    // Start voice intercom
+    [self.camera startVoicetalkSuccess:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // Stop the voice intercom
+    [self.camera stopVoicetalkSuccess:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+</code></pre></div>
+
+<h3 id="toc_76">(2) Two-way intercom</h3>
+
+<div><pre><code class="language-none">【Description】
+    Two-way intercom is a mobile phone and device ** can ** speak at the same time, the mobile terminal starts the intercom call startVoicetalk, does not call stopVoicetalkSuccess, does not affect the sound from the device side
+    
+【Be Applicable】
+    subType:
+      MeariDeviceSubTypeIpcBell = 3,
+      MeariDeviceSubTypeIpcBattery = 4,
+
+【Function Call】
+
+    /**
+    Set the voice intercom type
+
+    @param type voice intercom type
+    */
+    - (void)setVoiceTalkType:(MeariVoiceTalkType)type;
+
+    /**
+    Start voice intercom
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)startVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    Stop voice intercom
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)stopVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+
+    // Set the voice intercom type
+    [self.camera setVoiceTalkType:MeariVoiceTalkTypeFullDuplex];
+
+ 
+    // Start voice intercom
+    [self.camera startVoicetalkSuccess:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // Stop the voice intercom
+    [self.camera stopVoicetalkSuccess:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+</code></pre></div>
+
+<h3 id="toc_77">(3) Voice doorbell intercom</h3>
+
+<div><pre><code class="language-none">【Description】
+    The voice doorbell intercom is different from other intercom modes. It supports two-way intercom. If the mobile phone needs to turn off the microphone, you can call the pause interface. When you need to re-open the microphone, you need to reset the intercom operation.
+    
+【Be Applicable】
+    subType:
+      MeariDeviceSubTypeIpcVoiceBell = 5,
+
+【Function Call】
+    /**
+    Set the voice intercom type
+
+    @param type voice intercom type
+    */
+    - (void)setVoiceTalkType:(MeariVoiceTalkType)type;
+
+    /**
+    Start voice intercom
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)startVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    Turn off the phone side microphone
+    
+    @param success Successful callback
+    @param failure Successful callback
+    */
+    - (void)pauseVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+    
+    /**
+    Turn on the phone microphone
+    
+    @param success successful callback
+    @param failure Successful callback
+    */
+    - (void)resumeVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+
+      // Set the voice intercom type
+     [self.camera setVoiceTalkType: MeariVoiceTalkTypeFullDuplex];
+
+     // Start voice intercom
+     [self.camera startVoicetalkSuccess:^{
+
+     } failure:^(NSString *error) {
+
+     }];
+
+    // Close the phone microphone
+    [self.camera pauseVoicetalkSuccess:^{
+    
+    } failure:^(NSError *error) {
+    
+    };
+
+    // Open the phone microphone
+    [self.camera resumeVoicetalkSuccess:^{
+    
+    } failure:^(NSError *error) {
+    
+    };
+    </code></pre></div>
+
+<h2 id="toc_78">9.8 Screenshot</h2>
+
+<div><pre><code class="language-none">【Description】
+    Capture video image
+
+【Function Call】
+
+    /**
+    Screenshot
+
+    @param path The path where the image is saved
+    @param isPreviewing is previewing
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)snapshotToPath:(NSString *)path isPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+
+    // screenshot
+    [self.camera snapshotToPath:snapShotPath isPreviewing:_isPreviewing success:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+</code></pre></div>
+
+<h2 id="toc_79">9.9 Video</h2>
+
+<div><pre><code class="language-none">【Description】
+    Video recording
+
+【Function Call】
+    /**
+    Start recording
+
+    @param path The path where the video is saved
+    @param isPreviewing is previewing
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)startRecordMP4ToPath:(NSString *)path isPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Stop recording
+
+    @param isPreviewing is previewing
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)stopRecordMP4IsPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+
+    // Start recording
+    [self.camera startRecordMP4ToPath:path isPreviewing:_isPreviewing success:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // Stop recording
+    [self.nvr stopRecordMP4IsPreviewing:_isPreviewing success:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+</code></pre></div>
+
+<h2 id="toc_80">9.10 PTZ control</h2>
+
+<div><pre><code class="language-none">【Description】
+    Rotate the camera
+
+【Function Call】
+
+/**
+    Start turning the camera
+
+    @param direction
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)startMoveToDirection:(MeariMoveDirection)direction success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Stop turning the camera
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)stopMoveSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+
+    // Start to turn
+    [self.camera startMoveToDirection:MeariMoveDirectionUp success:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // stop turning
+    [self.camera stopMoveSuccess:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+</code></pre></div>
+
+<h2 id="toc_81">9.11 Mirroring</h2>
+
+<div><pre><code class="language-none">【Description】
+    Mirror status acquisition and setting
+
+【Function Call】
+
+    /**
+    Get mirror status
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)getMirrorSuccesss:(MeariDeviceSucess_Mirror)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Setting mirror
+
+    @param open Whether to open the image
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)setMirrorOpen:(BOOL)open successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+
+    // Start to turn
+    [self.camera startMoveToDirection:MeariMoveDirectionUp success:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // stop turning
+    [self.camera stopMoveSuccess:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+</code></pre></div>
+
+<h2 id="toc_82">9.12 Motion Detection Alarm</h2>
+
+<div><pre><code class="language-none">【Description】
+    Alarm information acquisition and setting
+
+【Function Call】
+
+    /**
+    Get alarm information
+
+    @param success Successful callback, return value: alarm parameter information
+    @param failure failure callback
+    */
+    - (void)getAlarmSuccesss:(MeariDeviceSucess_Motion)success failure:(MeariDeviceFailure)failure
+
+
+    /**
+    Set the alarm level
+
+    @param level alarm level
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)setAlarmLevel:(MeariDeviceLevel)level successs:(MeariDeviceSucess_ID)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+
+    // Get the alarm information
+    [self.camera getAlarmSuccesss:^(MeariDeviceParamMotion *motion) {
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // Set the alarm level
+    [self.camera setAlarmLevel:level successs:^(id obj) {
+
+    } failure:^(NSString *error) {
+
+    }];
+</code></pre></div>
+
+<h2 id="toc_83">9.13 Storage (SD card)</h2>
+
+<div><pre><code class="language-none">【Description】
+    Stored information acquisition and formatting
+
+【Function Call】
+    /**
+    Get storage information
+
+    @param success Successful callback, return storage information
+    @param failure failure callback
+    */
+    - (void)getStorageInfoSuccess:(MeariDeviceSucess_Storage)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Get memory card formatting percentage
+
+    @param success Successful callback, return formatting percentage
+    @param failure failure callback
+    */
+    - (void)getFormatPercentSuccesss:(MeariDeviceSucess_StoragePercent)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    Format memory card
+
+    @param success Successful callback
+    @param failure
+    */
+    - (void)formatSuccesss:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+
+    // Get storage information
+    [self.device getStorageInfoSuccess:^(MeariDeviceParamStorage *storage) {
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // Get the formatting percentage
+    [self.device getFormatPercentSuccesss:^(NSInteger percent) {
+
+    } failure:^(NSString *error) {
+
+    }];
+
+    // Format the memory card
+    [self.device formatSuccesss:^{
+
+    } failure:^(NSString *error) {
+
+    }];
+</code></pre></div>
+
+<h2 id="toc_84">9.14 Firmware Upgrade</h2>
+
+<h3 id="toc_85">(1) Online upgrade</h3>
+
+<div><pre><code class="language-none">【Description】
+    Firmware information acquisition and upgrade, point upgrade equipment will be upgraded immediately.
+    Note: You need to operate the device online and establish a successful connection.
+    
+【Be Applicable】
+    subType:
+        MeariDeviceSubTypeIpcCommon = 1,
+        MeariDeviceSubTypeIpcBaby = 2,
+        MeariDeviceSubTypeIpcBell = 3,
+        MeariDeviceSubTypeIpcBattery = 4,
+        MeariDeviceSubTypeIpcFloodlight = 6,
+
+【Function Call】
+
+    /**
+    Get the firmware version
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)getVersionSuccesss:(MeariDeviceSucess_Version)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Get firmware upgrade percentage
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)getUpgradePercentSuccesss:(MeariDeviceSucess_VersionPercent)successFailure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Upgrade firmware
+
+    @param url firmware package address
+    @param currentVersion Firmware current version number
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)upgradeWithUrl:(NSString *)url currentVersion:(NSString *)currentVersion successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+【Code Example】
+
+    // Get the firmware version
+    [self getVersionSuccesss:^(id obj) {
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    // Get the firmware upgrade percentage
+    [self.camera getUpgradePercentSuccesss:^(NSInteger percent) {
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    // Upgrade the firmware
+    [weakSelf.camera upgradeWithUrl:weakSelf.devUrl currentVersion:weakSelf.currentVersion successs:^{
+
+    } failure:^(NSError *error) {
+
+    }];
+</code></pre></div>
+
+<h3 id="toc_86">(2) Plan to upgrade</h3>
+
+<div><pre><code class="language-none">【Description】
+    Firmware information acquisition and upgrade, point upgrade equipment will not be upgraded immediately, and the upgrade plan will not be executed until the device is started.
+    Note: The device can be upgraded if it is not online.
+    
+【Be Applicable】
+    subType:
+    MeariDeviceSubTypeIpcVoiceBell = 5,
+
+【Function Call】
+    1. Get device version information first.
+        /**
+    Get the version information: param.voiceBell.deviceVersion
+    
+    @param success Successful callback, return value: device parameter information
+    @param failure failure callback
+    */
+    - (void)getParamsSuccesss:(MeariDeviceSucess_Param)success failure:(MeariDeviceFailure)failure;
+    
+   2, check if you need to upgrade
+   [MeariUser:checkNewFirmwareWithCurrentFirmware](#8.6 Check if the device has a new version)
+
+    3, perform the upgrade operation
+    /**
+    Upgrade firmware
+    
+    @param url firmware package address
+    @param latestVersion latest firmware version number
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)upgradeVoiceBellWithUrl:(NSString *)url latestVersion:(NSString *)latestVersion successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure ;
+
+
+【Code Example】
+
+    [self.device getParamsSuccesss:^(MeariDeviceParam *param) {
+       weakSelf.deviceUrl = param.voiceBell.deviceVersion;
+        [[MeariUser sharedInstance] checkNewFirmwareWithCurrentFirmware:weakSelf.deviceUrl success:^(MeariDeviceFirmwareInfo *info) {
+            [weakSelf.device upgradeVoiceBellWithUrl:info.upgradeUrl latestVersion:info.latestVersion successs:^{
+            NSLog (@&quot;Upgrade voice doorbell success&quot;);
+            } failure:^(NSError *error) {
+                NSLog (@&quot;Upgrade voice doorbell failure %@&quot;, error);
+            }];
+        } failure:^(NSError *error) {
+                        
+        }];
+    } failure:^(NSError *error) {
+    
+    }];
+</code></pre></div>
+
+<h2 id="toc_87">9.15 Get parameter information</h2>
+
+<div><pre><code class="language-none">【Description】
+    Obtain all the parameter information of the device, and the function parameters set for the device can be obtained through this interface.
+
+【Function Call】
+    /**
+    Get all parameters
+
+    @param success Successful callback, return value: device parameter information
+    @param failure failure callback
+    */
+    - (void)getParamsSuccesss:(MeariDeviceSucess_Param)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    [self.camera getParamsSuccesss:^(WYCameraParams *params) {
+
+    } failure:^(NSString *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_88">9.16 Sleep Mode</h2>
+
+<div><pre><code class="language-none">【Description】
+    Set different modes to control the device lens,
+    MeariDeviceSleepmodeLensOn : Lens on
+    MeariDeviceSleepmodeLensOff : The lens is permanently off
+    MeariDeviceSleepmodeLensOffByTime : The lens is turned off by time period
+    MeariDeviceSleepmodeLensOffByGeographic : The lens is closed according to geographical location
+
+【Function Call】
+    /**
+    Set sleep mode
+
+    @param type sleep mode
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)setSleepmodeType:(MeariDeviceSleepmode)type successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    Set the sleep period
+
+    @param open Whether to enable sleep mode
+    @param times Sleep time period
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)setSleepmodeTime:(BOOL)open times:(NSArray &lt;MeariDeviceParamSleepTime *&gt;*)times successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    Set geofence
+    
+    @param ssid wifi SSID
+    @param bssid wifi BSSID
+    @param deviceID device ID
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)settingGeographyWithSSID:(NSString *)ssid BSSID:(NSString *)bssid deviceID:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    // Set sleep mode
+    [self.camera setSleepmodeType:model.type successs:^{
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    // Set the sleep time period
+    [self.camera setSleepmodeTime:open times:timesArr successs:^{
+
+    }failure:^(NSError *error) {
+
+    }];
+    
+    // Set the WiFi information
+    [[MeariUser sharedInstance] settingGeographyWithSSID:(NSString *)ssid BSSID:(NSString *)bssid deviceID:(NSInteger)deviceID success:^(NSString *str){
+    
+    } failure:^(NSError *error){
+    
+    }];
+    </code></pre></div>
+
+<h2 id="toc_89">9.17 Temperature and Humidity</h2>
+
+<div><pre><code class="language-none">【Description】
+    Get all parameter information of the device
+
+【Function Call】
+
+    /**
+    Get temperature and humidity
+
+    @param success Successful callback, return value: temperature and humidity
+    @param failure failure callback
+    */
+    - (void)getTemperatureHumiditySuccesss:(MeariDeviceSucess_TRH)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Set sleep mode
+    [self.camera getTemperatureHumiditySuccesss:^(CGFloat temperature, CGFloat humidty) {
+
+    } failure:^(NSError *error) {
+        If (error.code == MeariDeviceCodeNoTemperatureAndHumiditySensor) {
+        // No temperature and humidity sensor
+        }else {
+
+        }
+    }];</code></pre></div>
+
+<h2 id="toc_90">9.18 Music</h2>
+
+<div><pre><code class="language-none">【Description】
+    Get the music status of the device, control the device to play music, you need a memory card to play
+
+【Function Call】
+
+    /**
+    play music
+
+    @param musicID music ID
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)playMusic:(NSString *)musicID successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Pause music
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)pauseMusicSuccesss:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    Keep playing music
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)resumeMusicSuccesss:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Play the next song
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)playNextMusicSuccesss:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Play the previous one
+
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)playPreviousMusicSuccesss:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Get music status: including play and download status
+
+    @param success Successful callback, return value: json dictionary
+    @param failure failure callback
+    */
+    - (void)getMusicStateSuccesss:(MeariDeviceSucess_MusicStateAll)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Start playing music
+    [self.camera playMusic:musicID successs:^{
+    } failure:^(NSError *error) {
+
+    }];
+
+    // Pause to play music
+    [self.camera pauseMusicSuccesss:^{
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    //Continue to play music
+    [self.camera resumeMusicSuccesss:^{
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    //Play the next music
+    [self.camera playNextMusicSuccesss:^{
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    //Play the last music
+    [self.camera playPreviousMusicSuccesss:^{
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    // Get the playing status of all music
+    [self.camera getMusicStateSuccesss:^(NSDictionary *allMusicState) {
+
+    } failure:^(NSError *error) {
+
+    }];
+</code></pre></div>
+
+<h2 id="toc_91">9.19 Device Volume</h2>
+
+<div><pre><code class="language-none">【Description】
+    Device output volume acquisition and setting
+
+【Function Call】
+
+    /**
+    Get device output volume
+
+    @param success Successful callback, return value: device output volume, 0-100
+    @param failure failure callback
+    */
+    - (void)getOutputVolumeSuccesss:(MeariDeviceSucess_Volume)success failure:(MeariDeviceFailure)failure;
+
+
+    /**
+    Set the device output volume
+
+    @param volume volume, 0-100
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)setOutputVolume:(NSInteger)volume successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Get the device output volume
+    [self.camera getOutputVolumeSuccesss:^(CGFloat volume) {
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    // Set the device output volume
+    [self.camera setOutputVolume:volume successs:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_92">9.20Doorbell volume</h2>
+
+<h3 id="toc_93">(1) Visual doorbell</h3>
+
+<div><pre><code class="language-none">【Description】
+    Doorbell output volume acquisition and setting
+    
+【Be Applicable】
+    subType:
+      MeariDeviceSubTypeIpcBell = 3,
+
+【Function Call】
+    /**
+    Set the doorbell output volume
+
+    @param volume
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)setDoorBellVolume:(NSInteger)volume success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Get the doorbell output volume
+    [self.camera setDoorBellVolume:roundf(slider.value) success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h3 id="toc_94">(2) Voice doorbell</h3>
+
+<div><pre><code class="language-none">【Description】
+    Get and set the doorbell output volume. Note that this setting does not take effect immediately. It needs to be activated once the device is activated.
+    
+【Be Applicable】
+    subType:
+    MeariDeviceSubTypeIpcVoiceBell = 5,
+
+【Function Call】
+    /**
+    Set the voice doorbell sound
+    
+    @param volume 0~100
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)setVoiceBellVolume:(NSInteger)volume success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Set the voice doorbell sound
+    [self.device setVoiceBellVolume:50 success:^{
+        NSLog(@&quot;set voice bell volume success-%ld&quot;,weakSelf.device.param.voiceBell.ringSpeakerVolume);
+    } failure:^(NSError *error) {
+        NSLog(@&quot;set voice bell volume failure&quot;);
+    }];</code></pre></div>
+
+<h2 id="toc_95">9.21 Bell settings</h2>
+
+<h3 id="toc_96">(1) Visual doorbell</h3>
+
+<div><pre><code class="language-none">【Description】
+    Doorbell output volume acquisition and setting
+    
+【Be applicable】
+subType:
+  MeariDeviceSubTypeIpcBell = 3,
+
+【Function Call】
+    /**
+Set the wireless bell
+
+@param volumeType Bell sound level
+@param selectedSong Selected ringtone
+@param repeatTimes number of repetitions
+@param success Successful callback
+@param failure failure callback
+*/
+- (void)setDoorBellJingleBellVolumeType:(MeariDeviceLevel)volumeType selectedSong:(NSString *)selectedSong repeatTimes:(NSInteger)repeatTimes success:(MeariDeviceSucess_ID)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Set the wireless bell
+    [self.camera setDoorBellJingleBellVolumeType:_jingleBellVolumeLevel selectedSong:self.selectedSong repeatTimes:_repeatTimes success:^(id obj) {
+        [SVProgressHUD wy_showToast: WYLocalString(@&quot;success_set&quot;)];
+    } failure:^(NSError *error) {
+        [SVProgressHUD wy_showToast: WYLocalString(@&quot;fail_set&quot;)];
+    }];
+</code></pre></div>
+
+<h3 id="toc_97">(2) Voice doorbell</h3>
+
+<div><pre><code class="language-none">【Description】
+    Get and set the doorbell output volume. Note that this setting does not take effect immediately. It needs to be activated once the device is activated.
+    
+【Be applicable】
+subType:
+  MeariDeviceSubTypeIpcVoiceBell = 5,
+
+【Function Call】
+    /**
+Set the bell properties
+@param volumeLevel
+Mute = MeariDeviceLevelOff
+Low = MeariDeviceLevelLow
+Medium = MeariDeviceLevelMedium
+High=MeariDeviceLevelHigh
+@param durationLevel
+Short = MeariDeviceLevelLow
+Medium = MeariDeviceLevelMedium
+Long = MeariDeviceLevelHigh
+@param index 1~10
+@param success Successful callback
+@param failure failure callback
+*/
+- (void)setVoiceBellCharmVolume:(MeariDeviceLevel)volumeLevel songDuration:(MeariDeviceLevel)durationLevel songIndex:(NSInteger)index success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+【Code Example】
+    // Set the wireless bell
+    [self.device setVoiceBellCharmVolume: MeariDeviceLevelLow songDuration:MeariDeviceLevelLow songIndex:1 success:^{
+        NSLog(@&quot;set voice bell charm success-Volume-%ld-Duration-%ld-songIndex-%ld&quot;,weakSelf.device.param.voiceBell.jingleVolume,weakSelf.device.param.voiceBell.jingleDuration,weakSelf.device. param.voiceBell.jingleRing);
+    } failure:^(NSError *error) {
+        NSLog(@&quot;set voice bell charm success&quot;);
+    }];
+</code></pre></div>
+
+<h2 id="toc_98">9.22 Message Settings</h2>
+
+<div><pre><code class="language-none">【Description】
+    Set guest message parameters, note that this setting does not take effect immediately, you need to wait for the device to start once to take effect.
+    
+【Be applicable】
+subType:
+  MeariDeviceSubTypeIpcVoiceBell = 5,
+
+【Function Call】
+/**
+Set guest message
+
+@param enterTime Press the doorbell to enter the message time 10/20/30...60s
+@param durationTime Message length 10/20/30...60s
+@param success Successful callback
+@param failure failure callback
+*/
+- (void)setVoiceBellEnterMessageTime:(NSInteger)enterTime messageDurationTime:(NSInteger)durationTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+【Code Example】
+    // Set the wireless bell
+    [self.device setVoiceBellCharmVolume: MeariDeviceLevelLow songDuration:MeariDeviceLevelLow songIndex:1 success:^{
+        NSLog(@&quot;set voice bell charm success-Volume-%ld-Duration-%ld-songIndex-%ld&quot;,weakSelf.device.param.voiceBell.jingleVolume,weakSelf.device.param.voiceBell.jingleDuration,weakSelf.device. param.voiceBell.jingleRing);
+    } failure:^(NSError *error) {
+        NSLog(@&quot;set voice bell charm success&quot;);
+    }];
+</code></pre></div>
+
+<h2 id="toc_99">9.23 Human body detection alarm</h2>
+
+<div><pre><code class="language-none">【Description】
+    Acquisition and setting of doorbell PIR alarm: Get the call parameter interface
+
+【Function Call】
+    // Doorbell PIR alarm acquisition, see 7.15 Obtaining parameter information
+    /**
+    Get all parameters
+
+    @param success Successful callback, return value: device parameter information
+    @param failure failure callback
+    */
+    - (void)getParamsSuccesss:(MeariDeviceSucess_Param)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    Set the doorbell PIR (human body detection) alarm type
+
+    @param level alarm level
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)setDoorBellPIRLevel:(MeariDeviceLevel)level successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Get the doorbell PIR alarm information
+    [self.camera getParamsSuccesss:^(MeariDeviceParam *params) {
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    // Set the doorbell PIR (human body detection) alarm type
+    [self.camera setDoorBellPIRLevel:level successs:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_100">9.24 Doorbell low power consumption</h2>
+
+<div><pre><code class="language-none">【Description】
+    Doorbell low power acquisition and setting: Get the call parameter interface
+
+【Function Call】
+    //doorbell low power acquisition, see 7.15 for parameter information
+    /**
+    Get all parameters
+
+    @param success Successful callback, return value: device parameter information
+    @param failure failure callback
+    */
+    - (void)getParamsSuccesss:(MeariDeviceSucess_Param)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    Set the doorbell low power consumption
+
+    @param open Whether to turn on low power mode
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)setDoorBellLowPowerOpen:(BOOL)open success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Get the doorbell low power consumption
+    [self.camera getParamsSuccesss:^(MeariDeviceParam *params) {
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    // Set the doorbell low power to turn on or off
+    [self.camera setDoorBellLowPowerOpen:open success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_101">9.25 Doorbell battery lock</h2>
+
+<div><pre><code class="language-none">【Description】
+    Doorbell battery lock acquisition and setting: Get the call parameter interface
+
+【Function Call】
+    //doorbell battery lock acquisition, see 7.15 for parameter information
+    /**
+    Get all parameters
+
+    @param success Successful callback, return value: device parameter information
+    @param failure failure callback
+    */
+    - (void)getParamsSuccesss:(MeariDeviceSucess_Param)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    Set the doorbell battery lock
+
+    @param open Whether to open the battery lock
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)setDoorBellBatteryLockOpen:(BOOL)open success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+【Code Example】
+    // Get the doorbell battery lock
+    [self.camera getParamsSuccesss:^(MeariDeviceParam *params) {} failure:^(NSError *error) {
+
+    }];
+
+    // Set the doorbell low power to turn on or off
+    [self.camera setDoorBellBatteryLockOpen:open success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_102">9.26 Message</h2>
+
+<h3 id="toc_103">(1) Owner&#39;s Message</h3>
+
+<div><pre><code class="language-none">【Description】
+    The owner can set a message for the device, and the owner can play the recorded message on the mobile terminal control device.
+
+【Be applicable】
+subType:
+  MeariDeviceSubTypeIpcBell = 3,
+  
+【Function Call】
+
+    /**
+    Start message
+
+    @param path message file path
+    */
+    - (void)startRecordAudioToPath:(NSString *)path;
+
+    /**
+    Stop message
+
+    @param success Successful callback, return value: message file path
+    */
+    - (void)stopRecordAudioSuccess:(MeariDeviceSucess_RecordAutio)success;
+
+    /**
+    Start playing a message
+
+    @param filePath message file path
+    @param finished complete callback
+    */
+    - (void)startPlayRecordedAudioWithFile:(NSString *)filePath finished:(MeariDeviceSucess)finished;
+
+    /**
+    Stop playing the message
+    */
+    - (void)stopPlayRecordedAudio;
+
+
+【Code Example】
+    // Start a message
+    [self.camera startRecordAudioToPath:_filePath];
+
+    // Stop the message
+    [self.camera stopRecordAudioSuccess:^(NSString *filePath) {
+
+    }];
+
+    // Start playing the message
+    [self.camera startPlayRecordedAudioWithFile:_filePath finished:^{
+
+    }];
+
+    // Stop playing the message
+    [self.camera stopPlayRecordedAudio];
+</code></pre></div>
+
+<h3 id="toc_104">(2) Guestbook</h3>
+
+<div><pre><code class="language-none">【Description】
+    After the guest rings the door, no device responds, the device will enter the message mode, the guest can leave a message on the device, and the owner can view the guest message through the mobile app.
+
+【Be applicable】
+subType:
+MeariDeviceSubTypeIpcVoiceBell = 5,
+  
+【Function Call】
+1. Get visitor information
+/**
+Get the device&#39;s visitor event
+Note: including answering, hanging up, message information
+
+@param deviceID device ID
+@param pageNum Pages 1~
+@param success Successful callback
+@param failure failure callback
+*/
+- (void)getVisitorMessageListForDevice:(NSInteger)deviceID pageNum:(NSInteger)pageNum success:(MeariSuccess_MsgVoiceDeviceList)success failure:(MeariFailure)failure;
+
+2, get voice data
+/**
+Get voice data
+
+@param remoteUrl Audio Network Address
+@param sourceData successfully callback audio data
+@param failure failure callback
+*/
+- (void)getVoiceMessageAudioData:(NSString *)remoteUrl deviceID:(NSInteger)deviceID success:(MeariSuccess_DeviceVoiceData)sourceData failure:(MeariFailure)failure;
+
+3, play voice data
+/**
+Start playing guest message
+
+@param filePath local voice file path
+@param finished complete callback
+*/
+- (void)startPlayVoiceMessageAudioWithFile:(NSString *)filePath finished:(MeariDeviceSucess)finished;
+
+4, stop playing voice data
+/**
+Stop playing guest messages
+*/
+- (void)stopPlayVoiceMessageAudio;
+
+5, mark the message has been read
+/**
+Mark the message as read
+
+@param messageID message ID
+@param success Successful callback
+@param failure failure callback
+*/
+- (void)markReadVoiceMessage:(NSInteger)messageID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+6, delete a single message (answer, hang up, message information)
+/**
+Delete a single message for a device
+
+@param messageID message ID
+@param success Successful callback
+@param failure failure callback
+*/
+- (void)deleteVoiceMessage:(NSInteger)messageID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+7, delete all messages (answer, hang up, message information)
+/**
+Delete all messages under a device
+
+@param deviceID device ID
+@param success Successful callback
+@param failure failure callback
+*/
+- (void)deleteAllVoiceMessage:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+    
+【Code Example】
+   Affiliation: MeariSDK: WYVoiceDoorbellAlarmMsgDetailVC.h
+</code></pre></div>
+
+<h2 id="toc_105">9.27 Device playback message</h2>
+
+<div><pre><code class="language-none">【Description】
+    Play message
+
+【Function Call】
+
+    /**
+    Play message
+
+    @param success Successful callback
+    @param failure Successful callback
+    */
+    - (void)playMessageSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+【Code Example】
+
+    // Control device to play a message
+    [self.camera playMessageSuccess:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_106">9.28 Lighting camera settings</h2>
+
+<h3 id="toc_107">(1) Switch light</h3>
+
+<div><pre><code class="language-none">【Description】
+    Control light switch
+    
+【Be applicable】
+subType:
+    MeariDeviceSubTypeIpcFloodlight = 6,
+
+【Function Call】
+    /**
+Setting the light switch
+
+@param on light switch
+@param success Successful callback
+@param failure failure callback
+*/
+- (void)setFlightCameraLightOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+【Code Example】
+// Set the light switch
+     [self.camera setFlightCameraLightOn: isOn success:^{
+     
+     } failure:^(NSError *error) {
+
+     }];</code></pre></div>
+
+<h3 id="toc_108">(2) Alarm switch</h3>
+
+<div><pre><code class="language-none">【Description】
+    Control the alarm switch through the device to achieve the warning function
+    
+【Be applicable】
+subType:
+    MeariDeviceSubTypeIpcFloodlight = 6,
+
+【Function Call】
+
+    
+/**
+Set the alarm switch
+
+@param on alarm switch
+@param success Successful callback
+@param failure failure callback
+*/
+- (void)setFlightCameraSiren:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+【Code Example】
+// Set the alarm switch
+    [weakSelf.camera setFlightCameraSiren:NO success:^{
+
+    } failure:^(NSError *error) {
+  
+    }];
+</code></pre></div>
+
+<h3 id="toc_109">(3) Turn on the lights by time period</h3>
+
+<div><pre><code class="language-none">【Description】
+Set a time period for the device. When the device is in the set time period, the device will turn on the light, and when the time is off, the control light will be turned off.
+    
+【Be applicable】
+subType:
+    MeariDeviceSubTypeIpcFloodlight = 6,
+
+【Function Call】
+
+    /**
+Set up the lighting plan
+
+@param on Is it enabled?
+@param fromDateStr start time
+@param toDateStr End time
+@param success Successful callback
+@param failure failure callback
+*/
+- (void)setFlightCameraScheduleOn:(BOOL)on fromDate:(NSString *)fromDateStr toDate:(NSString *)toDateStr success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+【Code Example】
+
+    // Set the lighting program
+     [self.camera setFlightCameraScheduleOn: self.lightSwitch.isOn fromDate:_timeArray[0] toDate:_timeArray[1] success:^{
+
+    } failure:^(NSError *error) {
+ 
+    }];</code></pre></div>
+
+<h3 id="toc_110">(4) Press the alarm event switch light</h3>
+
+<div><pre><code class="language-none">【Description】
+    After turning on the mobile alarm, the device monitors the movement of the human body and turns the light on. It will go out after a period of time.
+    
+【Be applicable】
+subType:
+    MeariDeviceSubTypeIpcFloodlight = 6,
+
+【Function Call】
+
+    /**
+Set up the movement monitoring of the luminaire
+
+@param on Is it enabled?
+@param level The lighting time for different levels MeariDeviceLevelLow : 20s , MeariDeviceLevelMedium : 40s, MeariDeviceLevelHigh: 60s
+@parAm success successful callback
+@param failure failure callback
+*/
+- (void)setFlightCameraMotionOn:(BOOL)on durationLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+
+
+【Code Example】
+
+    NSInteger durationTime = [duration integerValue];
+    MeariDeviceLevel level = MeariDeviceLevelLow;
+    If (durationTime == 20) {
+        Level = MeariDeviceLevelLow;
+    }else if (durationTime == 40) {
+        Level = MeariDeviceLevelMedium;
+    }else if (durationTime == 60){
+       Level = MeariDeviceLevelHigh;
+    }
+    [self.camera setFlightCameraMotionOn: isOn durationLevel:level success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h1 id="toc_111">10.Shared device</h1>
+
+<h2 id="toc_112">10.1 Friend Management</h2>
+
+<h3 id="toc_113">(1) Add a friend</h3>
+
+<div><pre><code class="language-none">【Description】
+    Request to add a friend
+
+【Function Call】
+    // Request to add friends
+    @param userAccount buddy account
+    @param success Successful callback
+    @param failure failure callback
+    - (void)addFriend:(NSString *)userAccount success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] addFriend:self.searchView.text success:^{
+
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h3 id="toc_114">(2) Delete a friend</h3>
+
+<div><pre><code class="language-none">【Description】
+    delete friend
+
+【Function Call】
+    //delete friend
+    @param friendIDs Multiple friend IDs
+    @param success Successful callback
+    @param failure failure callback
+    - (void)deleteFriends:(NSArray &lt;NSNumber *&gt; *)friendIDs success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] deleteFriends:userIDs success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h3 id="toc_115">(3) Modify friend nickname</h3>
+
+<div><pre><code class="language-none">【Description】
+    Modify friend nickname
+
+【Function Call】
+    // Modify the friend nickname
+    @param friendID buddy ID
+    @param nickname Friend Nickname
+    @param success Successful callback
+    @param failure failure callback
+    - (void)renameFriend:(NSInteger)friendID nickname:(NSString *)nickname success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] renameFriend:self.model.info.userID nickname:self.tf.text success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h3 id="toc_116">(4) Get friends list</h3>
+
+<div><pre><code class="language-none">【Description】
+    Get a list of friends
+    Affiliation:MeariFriendInfo
+
+【Function Call】
+    // Get a list of friends
+    @param success Successful callback: return to the buddy list
+    @param failure failure callback
+    - (void)getFriendList:(MeariSuccess_FriendList)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] getFriendList:^(NSArray&lt;MeariFriendInfo *&gt; *friends) {
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_117">10.2 Adding a share</h2>
+
+<h3 id="toc_118">(1) Sharing a single device</h3>
+
+<div><pre><code class="language-none">【Description】
+    Share a single device to a given user
+
+【Function Call】
+    //Active sharing device
+    @param type device type
+    @param deviceID device ID
+    @param friendID buddy ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)shareDeviceWithDeviceType:(MeariDeviceType)type deviceID:(NSInteger)deviceID toFriend:(NSInteger)friendID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] shareDeviceWithDeviceType:MeariDeviceTypeIpc deviceID:self.deviceID toFriend:model.info.userID success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h3 id="toc_119">(2) Cancel individual device sharing</h3>
+
+<div><pre><code class="language-none">【Description】
+    Cancel individual device sharing
+
+【Function Call】
+    //Cancel individual device sharing
+    @param type device type
+    @param deviceID device ID
+    @param friendID buddy ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)cancelShareDeviceWithDeviceType:(MeariDeviceType)type deviceID:(NSInteger)deviceID toFriend:(NSInteger)friendID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] cancelShareDeviceWithDeviceType:MeariDeviceTypeIpc deviceID:self.deviceID toFriend:model.info.userID success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h3 id="toc_120">(3) Request to share a device</h3>
+
+<div><pre><code class="language-none">【Description】
+    Request to share a device
+
+【Function Call】
+    // Request to share a device
+    @param type device type
+    @param sn device sn
+    @param success Successful callback
+    @param failure failure callback
+    - (void)requestShareDeviceWithDeviceType:(MeariDeviceType)type sn:(NSString *)sn success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] requestShareDeviceWithDeviceType:MeariDeviceTypeIpc sn:device.info.sn success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_121">10.3 Query sharing</h2>
+
+<h3 id="toc_122">(1) Query the list of friends that the device has been shared with.</h3>
+
+<div><pre><code class="language-none">【Description】
+    Query the list of friends that a single device is shared with
+
+【Function Call】
+    // Query the list of friends shared by a single device
+    @param type device type
+    @param deviceID device ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)getFriendListForDeviceWithDeviceType:(MeariDeviceType)type deviceID:(NSInteger)deviceID success:(MeariSuccess_FriendListForDevice)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] getFriendListForDeviceWithDeviceType:MeariDeviceTypeIpc deviceID:self.deviceID success:^(NSArray&lt;MeariFriendInfo *&gt; *friends) {
+    
+    } failure:^(NSError *error) {
+    
+    }];</code></pre></div>
+
+<h3 id="toc_123">(2) Query a list of shared devices of a friend</h3>
+
+<div><pre><code class="language-none">【Description】
+Query if a friend has a device that I have shared
+
+【Function Call】
+    // Query a friend&#39;s list of shared devices
+    @param friendID buddy ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)getDeviceListForFriend:(NSInteger)friendID success:(MeariSuccess_DeviceListForFriend)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] getDeviceListForFriend:self.model.info.userID success:^(NSArray&lt;MeariDevice *&gt; *devices) {
+
+    } failure:^(NSError *error) {
+
+    }];
+</code></pre></div>
+
+<h1 id="toc_124">11.Message Center</h1>
+
+<div><pre><code class="language-none">Affiliation:MeariMessageInfo</code></pre></div>
+
+<div><pre><code class="language-none">Note: The alarm message of the device will be deleted after the device owner pulls it.In addition to the message, it needs to be saved locally. The shared person pulls the alarm message of the device, and the server does not delete it. Here, pay attention to the difference between the owner and the shared person.</code></pre></div>
+
+<h2 id="toc_125">11.1 Get all devices have messages</h2>
+
+<div><pre><code class="language-none">【Description】
+    Get all devices have messages
+    Affiliation:MeariMessageInfoAlarm
+
+【Function Call】
+    // Get all devices have a message
+    @param success Successful callback
+    @param failure failure callback
+    - (void)getAlarmMessageList:(MeariSuccess_MsgAlarmList)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] getAlarmMessageList:^(NSArray&lt;MeariMessageInfoAlarm *&gt; *msgs) {
+
+    } failure:^(NSError *error) {
+
+    }];
+ 【Precautions】
+    If the message is pulled by the owner, the server will not save the message, and the shared friends will not see the message.</code></pre></div>
+
+<h2 id="toc_126">11.2 Getting system messages</h2>
+
+<div><pre><code class="language-none">【Description】
+    Get system messages
+    Affiliation:MeariMessageInfoSystem
+
+【Function Call】
+    // Get system messages
+    @param success Successful callback
+    @param failure failure callback
+    - (void)getSystemMessageList:(MeariSuccess_MsgSystemList)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] getSystemMessageList:^(NSArray&lt;MeariMessageInfoSystem *&gt; *msgs) {
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_127">11.3 Obtaining a device alarm message</h2>
+
+<div><pre><code class="language-none">【Description】
+    Get a device alarm message
+    Affiliation:MeariMessageInfoAlarmDevice
+
+【Function Call】
+    // Get a device alarm message
+    @param deviceID device ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)getAlarmMessageListForDevice:(NSInteger)deviceID success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] getAlarmMessageListForDevice:_deviceID success:^(NSArray&lt;MeariMessageInfoAlarmDevice *&gt; *msgs, MeariDevice *device) {
+
+    } failure:^(NSError *error) {
+
+    }];
+ 【Precautions】
+    If the message is pulled by the owner, the server will not save the message, and the shared friends will not see the message.</code></pre></div>
+
+<h2 id="toc_128">11.4 Batch delete system messages</h2>
+
+<div><pre><code class="language-none">【Description】
+    Batch delete system messages
+
+【Function Call】
+    // Batch delete system messages
+    @param msgIDs Multiple message IDs
+    @param success Successful callback
+    @param failure failure callback
+    - (void)deleteSystemMessages:(NSArray &lt;NSNumber *&gt;*)msgIDs success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] deleteSystemMessages:arr success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_129">11.5 Deleting multiple device alarm messages in batches</h2>
+
+<div><pre><code class="language-none">【Description】
+    Delete multiple device alarm messages in bulk
+
+【Function Call】
+    // Batch delete multiple device alarm messages
+    @param deviceIDs Multiple device IDs
+    @param success Successful callback
+    @param failure failure callback
+    - (void)deleteAlarmMessages:(NSArray &lt;NSNumber *&gt;*)deviceIDs success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] deleteAlarmMessages:arr success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_130">11.6 Marking a single device message has been read</h2>
+
+<div><pre><code class="language-none">【Description】
+    Mark a single device message all read
+
+【Function Call】
+    // Mark a single device message has been read
+    @param deviceID device ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)markDeviceAlarmMessage:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    [[MeariUser sharedInstance] markDeviceAlarmMessage:_deviceID success:^{
+
+    } failure:^(NSError *error) {
+
+    }];</code></pre></div>
+
+<h2 id="toc_131">11.7 Friend Message Processing</h2>
+
+<div><pre><code class="language-none">【Description】
+    Friend message processing - consent | rejection
+
+【Function Call】
+    //Agree to add a friend
+    @param friendID buddy ID
+    @param msgID message ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)agreeAddFriend:(NSInteger)friendID msgID:(NSInteger)msgID success:(MeariSuccess)success failure:(MeariFailure)failure;
+    
+    // Refuse to add friends
+    @param friendID buddy ID
+    @param msgID message ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)refuseAddFriend:(NSInteger)friendID msgID:(NSInteger)msgID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    //Agree to add a friend
+    [[MeariUser sharedInstance] agreeAddFriend:model.info.userID.integerValue msgID:model.info.msgID.integerValue success:^{
+
+    } failure:^(NSError *error) {
+
+    }];
+    
+    // Refuse to add friends
+    [[MeariUser sharedInstance] refuseAddFriend:model.info.userID.integerValue msgID:model.info.msgID.integerValue success:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];
+【Precautions】
+    If the message is processed, you need to manually delete the message.</code></pre></div>
+
+<h2 id="toc_132">11.8 Device Message Processing</h2>
+
+<div><pre><code class="language-none">【Description】
+    Device Message Processing - Agree | Reject
+
+【Function Call】
+    //Agree to share the device
+    @param deviceID device ID
+    @param friendID buddy ID
+    @param msgID message ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)agreeShareDevice:(NSInteger)deviceID toFriend:(NSInteger)friendID msgID:(NSInteger)msgID success:(MeariSuccess)success failure:(MeariFailure)failure;
+    
+    //Reject sharing device
+    @param deviceID device ID
+    @param friendID buddy ID
+    @param msgID message ID
+    @param success Successful callback
+    @param failure failure callback
+    - (void)refuseShareDevice:(NSInteger)deviceID toFriend:(NSInteger)friendID msgID:(NSInteger)msgID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code Example】
+    //Agree to share the device
+    [[MeariUser sharedInstance] agreeShareDevice:model.info.deviceID.integerValue toFriend:model.info.userID.integerValue msgID:model.info.msgID.integerValue success:^{
+
+    } failure:^(NSError *error) {
+
+    }];
+    
+    //Reject sharing device
+    [[MeariUser sharedInstance] refuseShareDevice:model.info.deviceID.integerValue toFriend:model.info.userID.integerValue msgID:model.info.msgID.integerValue success:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];
+【Precautions】
+    If the message is processed, you need to manually delete the message.</code></pre></div>
+
+
+
+
+</body>
+
+</html>

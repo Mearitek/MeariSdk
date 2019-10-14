@@ -1,0 +1,24 @@
+//
+//  PrefixHeader.pch
+//  Meari
+//
+//  Created by 李兵 on 15/12/23.
+//  Copyright © 2015年 PPStrong. All rights reserved.
+//
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#if __OBJC__ || __OBJC2__
+
+#import "WYHeader.h"
+
+#endif
+
+
+
+
+
+
+#endif /* PrefixHeader_pch */
+
+

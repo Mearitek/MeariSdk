@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="369" id="KGk-i7-Jjw" customClass="WYDoorbellSettingJingleBellPairCell">
+            <rect key="frame" x="0.0" y="0.0" width="331" height="369"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="331" height="368.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_doorbell_jingleBell" translatesAutoresizingMaskIntoConstraints="NO" id="fu0-Kz-NE2">
+                        <rect key="frame" x="75.5" y="107" width="180" height="108"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="108" id="4GD-Ij-caV"/>
+                            <constraint firstAttribute="width" constant="180" id="DmT-dk-0Uc"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cbg-j1-SMe">
+                        <rect key="frame" x="56" y="263" width="219" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Cbg-j1-SMe" firstAttribute="top" secondItem="fu0-Kz-NE2" secondAttribute="bottom" constant="48" id="5HX-mq-TMD"/>
+                    <constraint firstItem="fu0-Kz-NE2" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="d0m-vt-R43"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Cbg-j1-SMe" secondAttribute="trailing" constant="40" id="enZ-m4-wDZ"/>
+                    <constraint firstItem="Cbg-j1-SMe" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="40" id="q7s-7c-0t6"/>
+                    <constraint firstItem="fu0-Kz-NE2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="96" id="sc3-bQ-cDE"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="jingleBellImgTopConstraint" destination="sc3-bQ-cDE" id="hgK-vm-YCR"/>
+                <outlet property="jingleBellTapLabel" destination="Cbg-j1-SMe" id="QjI-bi-jWL"/>
+            </connections>
+            <point key="canvasLocation" x="-13.5" y="103.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="img_doorbell_jingleBell" width="180" height="108"/>
+    </resources>
+</document>
