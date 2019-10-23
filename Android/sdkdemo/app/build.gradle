@@ -56,5 +56,6 @@ dependencies {
     implementation 'com.aliyun.dpa:oss-android-sdk:2.8.4'
     implementation 'com.alibaba:fastjson:1.2.57'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'com.google.zxing:core:3.3.3'
 //    implementation project(':library')
 }
