@@ -3,11 +3,11 @@
 
 Version number | Development team | Update date | Notes
 :-:|:-:|:-:|:-:
-2.0.0 | Towers Perrin Technical Team | 2019.09.20 | Optimization
+2.0.0 | Meari Technical Team | 2019.09.20 | Optimization
 
 # 1. Function Overview
 
-The Towers Technology APP SDK provides interface packaging with hardware devices and Towers Perrin, and accelerates the application development process, including the following functions:
+The Meari APP SDK provides interface packaging with hardware devices and Meari Cloud, and accelerates the application development process, including the following functions:
 
 - Hardware device related (with network, control, status reporting, firmware upgrade, preview playback, etc.)
 - Account system (mobile phone number, email registration, login, password reset, etc.)
@@ -22,7 +22,7 @@ The Towers Technology APP SDK provides interface packaging with hardware devices
 # 2. Integration preparation
 ## Create App ID and App Secert
 ```
-Towers Perrin Technology Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
+Meari Technical Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
 <meta-data
     Android:name="MEARI_APPKEY"
     Android:value="your MEARI_APPKEY" />
@@ -247,7 +247,7 @@ Public class MeariSmartApp extends Application {
 ```
 # 4. User Management (MeariUser Tools)
 ```
-Towers Perrin provides mobile phone/email password login, uid login, password reset, etc.
+Meari Technology provides mobile phone/email password login, uid login, password reset, etc.
 After registration or login is successful, use the return information to connect to the mqtt service, initialize the aurora and other operations.
 (Hint: Object tag parameter in the function, you can pass this, the following is true)
 ```
@@ -531,7 +531,7 @@ MeariUser.getInstance().renameNickname(name, new IResultCallback() {
 
 # 5. Equipment distribution network (PPSCameraPlayer tool class)
 ```
-Towers Perrin's hardware modules support three distribution modes: Quick Connect mode (TLink, EZ mode for short), Hotspot mode (AP mode), and QR code distribution mode.
+Meari's hardware modules support three distribution modes: Quick Connect mode (TLink, EZ mode for short), Hotspot mode (AP mode), and QR code distribution mode.
 The QR code and Quick Connect mode are relatively easy to operate. It is recommended to use the hotspot mode as an alternative after the distribution network fails. Among them, the success rate of the two-dimensional code distribution network is high.
 ```
 
@@ -761,7 +761,7 @@ NVRInfo extends BaseDeviceInfo (NVR information class)
 ## 6.2 Device Information Acquisition
 ```
 【description】
-Towers Perrin provides a rich interface for developers to achieve device information acquisition and management capabilities (removal, etc.). Device-related return data is notified to the recipient by means of asynchronous messages.
+Meari provides a rich interface for developers to achieve device information acquisition and management capabilities (removal, etc.). Device-related return data is notified to the recipient by means of asynchronous messages.
 We used the EventBus solution to implement message notification. Therefore, the notification object needs to be registered and destroyed on each device operation page. Please refer to the demo implementation for details.
 
 [function call]
@@ -2561,13 +2561,13 @@ MeariUser.getInstance().startPTZ(cameraInfo.getSnNum(), -80, 0, 0, this, new ISt
 ---
 Version number | Development team | Update date | Notes
 :-:|:-:|:-:|:-:
-2.0.0 | Towers Perrin Technical Team | 2019.09.20 | Optimization
+2.0.0 | Meari Technical Team | 2019.09.20 | Optimization
 
 </center>
 
 # 1. Function Overview
 
-The Towers Technology APP SDK provides interface packaging with hardware devices and Towers Perrin, and accelerates the application development process, including the following functions:
+The Meari APP SDK provides interface packaging with hardware devices and Meari Technology, and accelerates the application development process, including the following functions:
 
 - Hardware device related (with network, control, status reporting, firmware upgrade, preview playback, etc.)
 - Account system (mobile phone number, email registration, login, password reset, etc.)
@@ -2582,7 +2582,7 @@ The Towers Technology APP SDK provides interface packaging with hardware devices
 # 2. Integration preparation
 ## Create App ID and App Secert
 ```
-Towers Perrin Technology Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
+Meari Technology Technology Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
 <meta-data
     Android:name="MEARI_APPKEY"
     Android:value="your MEARI_APPKEY" />
@@ -2856,7 +2856,7 @@ Public class MeariSmartApp extends Application {
 ```
 # 4. User Management (MeariUser Tools)
 ```
-Towers Perrin provides mobile phone/email password login, uid login, password reset, etc.
+Meari provides mobile phone/email password login, uid login, password reset, etc.
 After registration or login is successful, use the return information to connect to the mqtt service, initialize the aurora and other operations.
 (Hint: Object tag parameter in the function, you can pass this, the following is true)
 ```
@@ -3140,7 +3140,7 @@ MeariUser.getInstance().renameNickname(name, new IResultCallback() {
 
 # 5. Equipment distribution network (PPSCameraPlayer tool class)
 ```
-Towers Perrin's hardware modules support three distribution modes: Quick Connect mode (TLink, EZ mode for short), Hotspot mode (AP mode), and QR code distribution mode.
+Meari's hardware modules support three distribution modes: Quick Connect mode (TLink, EZ mode for short), Hotspot mode (AP mode), and QR code distribution mode.
 The QR code and Quick Connect mode are relatively easy to operate. It is recommended to use the hotspot mode as an alternative after the distribution network fails. Among them, the success rate of the two-dimensional code distribution network is high.
 ```
 
@@ -3370,7 +3370,7 @@ NVRInfo extends BaseDeviceInfo (NVR information class)
 ## 6.2 Device Information Acquisition
 ```
 【description】
-Towers Perrin provides a rich interface for developers to achieve device information acquisition and management capabilities (removal, etc.). Device-related return data is notified to the recipient by means of asynchronous messages.
+Meari provides a rich interface for developers to achieve device information acquisition and management capabilities (removal, etc.). Device-related return data is notified to the recipient by means of asynchronous messages.
 We used the EventBus solution to implement message notification. Therefore, the notification object needs to be registered and destroyed on each device operation page. Please refer to the demo implementation for details.
 
 [function call]
