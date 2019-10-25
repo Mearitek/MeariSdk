@@ -314,7 +314,462 @@ sup {
 
 <h1><center> Directory </center></h1>
 
-<p>[TOC]</p>
+<ul class="toc">
+<li>
+<a href="#toc_0">1. Functional Overview</a>
+</li>
+<li>
+<a href="#toc_1">2. Integration preparation</a>
+</li>
+<li>
+<a href="#toc_2">3. Integrated SDK</a>
+<ul>
+<li>
+<a href="#toc_3">3.1 Integration Preparation</a>
+<ul>
+<li>
+<a href="#toc_4">(1) Introducing the sdk package</a>
+</li>
+<li>
+<a href="#toc_5">(2) Environment configuration</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_6">3.2 Integrated SDK function</a>
+<ul>
+<li>
+<a href="#toc_7">(1) Initialize sdk configuration in Application</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_8">4. User Management</a>
+<ul>
+<li>
+<a href="#toc_9">4.1 User uid login system</a>
+<ul>
+<li>
+<a href="#toc_10">(1) Redirect</a>
+</li>
+<li>
+<a href="#toc_11">(2) User uid login</a>
+</li>
+<li>
+<a href="#toc_12">(3) User logout</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_13">4.2 General User System Management</a>
+<ul>
+<li>
+<a href="#toc_14">(1) Redirect</a>
+</li>
+<li>
+<a href="#toc_15">(2) Register an account</a>
+</li>
+<li>
+<a href="#toc_16">(3) Account login</a>
+</li>
+<li>
+<a href="#toc_17">(4) Retrieve password</a>
+</li>
+<li>
+<a href="#toc_18">(5) Change password</a>
+</li>
+<li>
+<a href="#toc_19">(6) Registration message push</a>
+</li>
+<li>
+<a href="#toc_20">(7) User logout</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_21">4.3 User upload avatar</a>
+</li>
+<li>
+<a href="#toc_22">4.4 Modify? Nickname</a>
+</li>
+<li>
+<a href="#toc_23">4.5 Data Model</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_24">5.Device message notification</a>
+</li>
+<li>
+<a href="#toc_25">6.Equipment distribution network</a>
+<ul>
+<li>
+<a href="#toc_26">6.1 smartwifi distribution network</a>
+<ul>
+<li>
+<a href="#toc_27">(1) Get Token</a>
+</li>
+<li>
+<a href="#toc_28">(2) Start SmartWifi distribution network</a>
+</li>
+<li>
+<a href="#toc_29">(3) Stop SmartWifi distribution network</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_30">6.2 Hotspot mode (AP distribution network)</a>
+<ul>
+<li>
+<a href="#toc_31">(1) Get Token</a>
+</li>
+<li>
+<a href="#toc_32">(2) AP distribution network</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_33">6.3 QR code distribution network</a>
+<ul>
+<li>
+<a href="#toc_34">(1) Get Token</a>
+</li>
+<li>
+<a href="#toc_35">(2) QR code distribution network</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_36">6.4 Searching for devices</a>
+<ul>
+<li>
+<a href="#toc_37">(1) smartwifi distribution network and ap distribution network search equipment</a>
+</li>
+<li>
+<a href="#toc_38">(2) QR code matching network search device</a>
+</li>
+<li>
+<a href="#toc_39">(3) Equipment? Add</a>
+<ul>
+<li>
+<a href="#toc_40">&lt;1&gt; Adding a camera</a>
+</li>
+<li>
+<a href="#toc_41">&lt;2&gt; Adding network storage</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_42">(4) Stop searching</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_43">6.5 Autobind Device</a>
+<ul>
+<li>
+<a href="#toc_44">(1) Get Token</a>
+</li>
+<li>
+<a href="#toc_45">(2) Start Config</a>
+</li>
+<li>
+<a href="#toc_46">(3) Config Complete</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_47">7 NVR Binding Device</a>
+<ul>
+<li>
+<a href="#toc_48">7.1 Searching for devices</a>
+</li>
+<li>
+<a href="#toc_49">7.2 Binding device</a>
+</li>
+<li>
+<a href="#toc_50">7.3 End binding device</a>
+</li>
+<li>
+<a href="#toc_51">7.4 Obtaining NVR-bound devices</a>
+</li>
+<li>
+<a href="#toc_52">7.5 Unbinding the device from the NVR</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_53">8. Device information acquisition</a>
+<ul>
+<li>
+<a href="#toc_54">8.1 Getting Device Columns</a>
+</li>
+<li>
+<a href="#toc_55">8.2 Device Information</a>
+</li>
+<li>
+<a href="#toc_56">8.3 Deleting a device</a>
+</li>
+<li>
+<a href="#toc_57">8.4 Device nickname modification</a>
+</li>
+<li>
+<a href="#toc_58">8.5 Single device one day alarm time point acquisition</a>
+</li>
+<li>
+<a href="#toc_59">8.6 Check if the device has a new version</a>
+</li>
+<li>
+<a href="#toc_60">8.7 Querying Device Online Status</a>
+</li>
+<li>
+<a href="#toc_61">8.8 Querying the music list</a>
+</li>
+<li>
+<a href="#toc_62">8.9 Generate distribution network QR code</a>
+</li>
+<li>
+<a href="#toc_63">8.10 Remote wake-up doorbell</a>
+</li>
+<li>
+<a href="#toc_64">8.11 Uploading the doorbell message</a>
+</li>
+<li>
+<a href="#toc_65">8.12 Download the doorbell message</a>
+</li>
+<li>
+<a href="#toc_66">8.13 Deleting the doorbell message</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_67">9.Device Control</a>
+<ul>
+<li>
+<a href="#toc_68">9.1 Connecting devices</a>
+</li>
+<li>
+<a href="#toc_69">9.2 Disconnecting the device</a>
+</li>
+<li>
+<a href="#toc_70">9.3 Get the bit rate</a>
+</li>
+<li>
+<a href="#toc_71">9.4 Preview</a>
+</li>
+<li>
+<a href="#toc_72">9.5 Playback</a>
+</li>
+<li>
+<a href="#toc_73">9.6 Silent</a>
+</li>
+<li>
+<a href="#toc_74">9.7 Voice Intercom</a>
+<ul>
+<li>
+<a href="#toc_75">(1) One-way intercom</a>
+</li>
+<li>
+<a href="#toc_76">(2) Two-way intercom</a>
+</li>
+<li>
+<a href="#toc_77">(3) Voice doorbell intercom</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_78">9.8 Screenshot</a>
+</li>
+<li>
+<a href="#toc_79">9.9 Video</a>
+</li>
+<li>
+<a href="#toc_80">9.10 PTZ control</a>
+</li>
+<li>
+<a href="#toc_81">9.11 Mirroring</a>
+</li>
+<li>
+<a href="#toc_82">9.12 Motion Detection Alarm</a>
+</li>
+<li>
+<a href="#toc_83">9.13 Storage (SD card)</a>
+</li>
+<li>
+<a href="#toc_84">9.14 Firmware Upgrade</a>
+<ul>
+<li>
+<a href="#toc_85">(1) Online upgrade</a>
+</li>
+<li>
+<a href="#toc_86">(2) Plan to upgrade</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_87">9.15 Get parameter information</a>
+</li>
+<li>
+<a href="#toc_88">9.16 Sleep Mode</a>
+</li>
+<li>
+<a href="#toc_89">9.17 Temperature and Humidity</a>
+</li>
+<li>
+<a href="#toc_90">9.18 Music</a>
+</li>
+<li>
+<a href="#toc_91">9.19 Device Volume</a>
+</li>
+<li>
+<a href="#toc_92">9.20Doorbell volume</a>
+<ul>
+<li>
+<a href="#toc_93">(1) Visual doorbell</a>
+</li>
+<li>
+<a href="#toc_94">(2) Voice doorbell</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_95">9.21 Bell settings</a>
+<ul>
+<li>
+<a href="#toc_96">(1) Visual doorbell</a>
+</li>
+<li>
+<a href="#toc_97">(2) Voice doorbell</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_98">9.22 Message Settings</a>
+</li>
+<li>
+<a href="#toc_99">9.23 Human body detection alarm</a>
+</li>
+<li>
+<a href="#toc_100">9.24 Doorbell low power consumption</a>
+</li>
+<li>
+<a href="#toc_101">9.25 Doorbell battery lock</a>
+</li>
+<li>
+<a href="#toc_102">9.26 Message</a>
+<ul>
+<li>
+<a href="#toc_103">(1) Owner&#39;s Message</a>
+</li>
+<li>
+<a href="#toc_104">(2) Guestbook</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_105">9.27 Device playback message</a>
+</li>
+<li>
+<a href="#toc_106">9.28 Lighting camera settings</a>
+<ul>
+<li>
+<a href="#toc_107">(1) Switch light</a>
+</li>
+<li>
+<a href="#toc_108">(2) Alarm switch</a>
+</li>
+<li>
+<a href="#toc_109">(3) Turn on the lights by time period</a>
+</li>
+<li>
+<a href="#toc_110">(4) Press the alarm event switch light</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_111">10.Shared device</a>
+<ul>
+<li>
+<a href="#toc_112">10.1 Friend Management</a>
+<ul>
+<li>
+<a href="#toc_113">(1) Add a friend</a>
+</li>
+<li>
+<a href="#toc_114">(2) Delete a friend</a>
+</li>
+<li>
+<a href="#toc_115">(3) Modify friend nickname</a>
+</li>
+<li>
+<a href="#toc_116">(4) Get friends list</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_117">10.2 Adding a share</a>
+<ul>
+<li>
+<a href="#toc_118">(1) Sharing a single device</a>
+</li>
+<li>
+<a href="#toc_119">(2) Cancel individual device sharing</a>
+</li>
+<li>
+<a href="#toc_120">(3) Request to share a device</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_121">10.3 Query sharing</a>
+<ul>
+<li>
+<a href="#toc_122">(1) Query the list of friends that the device has been shared with.</a>
+</li>
+<li>
+<a href="#toc_123">(2) Query a list of shared devices of a friend</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_124">11.Message Center</a>
+<ul>
+<li>
+<a href="#toc_125">11.1 Get all devices have messages</a>
+</li>
+<li>
+<a href="#toc_126">11.2 Getting system messages</a>
+</li>
+<li>
+<a href="#toc_127">11.3 Obtaining a device alarm message</a>
+</li>
+<li>
+<a href="#toc_128">11.4 Batch delete system messages</a>
+</li>
+<li>
+<a href="#toc_129">11.5 Deleting multiple device alarm messages in batches</a>
+</li>
+<li>
+<a href="#toc_130">11.6 Marking a single device message has been read</a>
+</li>
+<li>
+<a href="#toc_131">11.7 Friend Message Processing</a>
+</li>
+<li>
+<a href="#toc_132">11.8 Device Message Processing</a>
+</li>
+</ul>
+</li>
+</ul>
+
 
 <p><center></p>
 
