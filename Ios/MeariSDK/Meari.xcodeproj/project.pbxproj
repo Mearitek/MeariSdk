@@ -34,9 +34,10 @@
 		9C45B3EE2178AD03000BAA3F /* WYParamTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C45B3ED2178AD03000BAA3F /* WYParamTransfer.m */; };
 		9C49E3F71F2AE45500074B6D /* gif_auditionMessage.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9C49E3F61F2AE45500074B6D /* gif_auditionMessage.gif */; };
 		9C49E3FB1F2B0E2B00074B6D /* gif_addDoorBell.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9C49E3FA1F2B0E2B00074B6D /* gif_addDoorBell.gif */; };
-		9C5FCC37216F37D2000E6264 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C5FCC36216F37D2000E6264 /* libc++.tbd */; };
-		9C6A407321E7A40700B613E0 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D63294E61F7D1731004FB7D6 /* libresolv.tbd */; };
 		9C99062E217D7ECE00A57073 /* libPods-Meari.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C99062D217D7ECE00A57073 /* libPods-Meari.a */; };
+		9CA0724A236298DB00514F6C /* MeariKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA07249236298DB00514F6C /* MeariKit.framework */; };
+		9CA0724B236298DF00514F6C /* MeariKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA07249236298DB00514F6C /* MeariKit.framework */; };
+		9CA0724C236298DF00514F6C /* MeariKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA07249236298DB00514F6C /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9CA1C1B81FCD8E39003E6DB2 /* gif_fullDuplex_voice.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9CA1C1B71FCD8E39003E6DB2 /* gif_fullDuplex_voice.gif */; };
 		9CC2CEDF1F4C2AAE0031DCC2 /* gif_doorbell_sound.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9CC2CEDE1F4C2AAE0031DCC2 /* gif_doorbell_sound.gif */; };
 		CD86037F215A091C00719A34 /* WYDoorbellSettingJingleBellPairingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = CD86037E215A091C00719A34 /* WYDoorbellSettingJingleBellPairingVC.m */; };
@@ -77,8 +78,6 @@
 		CDC038F2223BD1BC0022A9DB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D64F59A51C86ECD300FD4066 /* Security.framework */; };
 		CDC038F3223BD1BE0022A9DB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D64F59A71C86ECE800FD4066 /* SystemConfiguration.framework */; };
 		CDC038F4223BD1C10022A9DB /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17879A6B1C2A41B900CDCC7D /* VideoToolbox.framework */; };
-		CDCE1F812352CFA100DBAEFD /* MeariKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDCE1F7C2352CF6E00DBAEFD /* MeariKit.framework */; };
-		CDCE1F822352CFA100DBAEFD /* MeariKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CDCE1F7C2352CF6E00DBAEFD /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D60360181FE3BB0C0034E70F /* gif_camera_qrcode.gif in Resources */ = {isa = PBXBuildFile; fileRef = D60360171FE3BB0C0034E70F /* gif_camera_qrcode.gif */; };
 		D609B4261D48B07D000ADDEE /* NSTimer+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = D609B4251D48B07D000ADDEE /* NSTimer+Extension.m */; };
 		D60A68131F7298B100505A63 /* WYMeLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D60A67EA1F7298B100505A63 /* WYMeLoginVC.m */; };
@@ -228,7 +227,6 @@
 		D63CFF5A1E67C7CC005C5CC9 /* WYCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D63CFF561E67C7CC005C5CC9 /* WYCalendarCell.m */; };
 		D63CFFA81E680ABE005C5CC9 /* UIImageView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = D63CFFA71E680ABE005C5CC9 /* UIImageView+Extension.m */; };
 		D63DBDF21E2EF85C00D8C533 /* WYAlertView+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = D63DBDF11E2EF85C00D8C533 /* WYAlertView+Add.m */; };
-		D64948C61FF2353C00657BEE /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 17879A671C2A419E00CDCC7D /* libz.1.2.5.tbd */; };
 		D64BA6591F6AA75900D6F644 /* WYFriendListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D64BA6491F6AA75900D6F644 /* WYFriendListVC.m */; };
 		D64BA65C1F6AA75900D6F644 /* WYFriendListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D64BA64C1F6AA75900D6F644 /* WYFriendListModel.m */; };
 		D64BA65F1F6AA75900D6F644 /* WYFriendListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D64BA64F1F6AA75900D6F644 /* WYFriendListCell.m */; };
@@ -396,13 +394,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		CDCE1F832352CFA300DBAEFD /* Embed Frameworks */ = {
+		9CA07243236297C600514F6C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CDCE1F822352CFA100DBAEFD /* MeariKit.framework in Embed Frameworks */,
+				9CA0724C236298DF00514F6C /* MeariKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -457,6 +455,7 @@
 		9C5FCC36216F37D2000E6264 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		9C6023BE2187250100F00A81 /* coreData 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "coreData 5.xcdatamodel"; sourceTree = "<group>"; };
 		9C99062D217D7ECE00A57073 /* libPods-Meari.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-Meari.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CA07249236298DB00514F6C /* MeariKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MeariKit.framework; sourceTree = "<group>"; };
 		9CA1C1B71FCD8E39003E6DB2 /* gif_fullDuplex_voice.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gif_fullDuplex_voice.gif; sourceTree = "<group>"; };
 		9CA1C1C91FCEA8DA003E6DB2 /* coreData 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "coreData 3.xcdatamodel"; sourceTree = "<group>"; };
 		9CC2CEDE1F4C2AAE0031DCC2 /* gif_doorbell_sound.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gif_doorbell_sound.gif; sourceTree = "<group>"; };
@@ -469,7 +468,6 @@
 		CD860382215A097F00719A34 /* WYDoorbellSettingJingleBellPairFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYDoorbellSettingJingleBellPairFooterView.h; sourceTree = "<group>"; };
 		CD860383215A097F00719A34 /* WYDoorbellSettingJingleBellPairCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYDoorbellSettingJingleBellPairCell.h; sourceTree = "<group>"; };
 		CD860384215A097F00719A34 /* WYDoorbellSettingJingleBellPairCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYDoorbellSettingJingleBellPairCell.m; sourceTree = "<group>"; };
-		CDCE1F7C2352CF6E00DBAEFD /* MeariKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MeariKit.framework; sourceTree = "<group>"; };
 		D60360171FE3BB0C0034E70F /* gif_camera_qrcode.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gif_camera_qrcode.gif; sourceTree = "<group>"; };
 		D609B4241D48B07D000ADDEE /* NSTimer+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Extension.h"; sourceTree = "<group>"; };
 		D609B4251D48B07D000ADDEE /* NSTimer+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Extension.m"; sourceTree = "<group>"; };
@@ -1017,14 +1015,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C6A407321E7A40700B613E0 /* libresolv.tbd in Frameworks */,
 				9C99062E217D7ECE00A57073 /* libPods-Meari.a in Frameworks */,
-				9C5FCC37216F37D2000E6264 /* libc++.tbd in Frameworks */,
-				D64948C61FF2353C00657BEE /* libz.1.2.5.tbd in Frameworks */,
 				D64F59901C86EC4500FD4066 /* CoreTelephony.framework in Frameworks */,
 				D65B24A51ECE00E0006CB827 /* CoreMotion.framework in Frameworks */,
 				D6D7A0C41D24DCF500BA142A /* AssetsLibrary.framework in Frameworks */,
 				D64F598C1C86EC2700FD4066 /* CoreGraphics.framework in Frameworks */,
+				9CA0724B236298DF00514F6C /* MeariKit.framework in Frameworks */,
 				D64F59A21C86ECA600FD4066 /* MobileCoreServices.framework in Frameworks */,
 				17879A6C1C2A41B900CDCC7D /* VideoToolbox.framework in Frameworks */,
 				D64F59A81C86ECE800FD4066 /* SystemConfiguration.framework in Frameworks */,
@@ -1041,6 +1037,7 @@
 				D64F59921C86EC5200FD4066 /* CoreVideo.framework in Frameworks */,
 				178978C21C424EA0003C507D /* CoreText.framework in Frameworks */,
 				17879A7A1C2A428C00CDCC7D /* CoreMedia.framework in Frameworks */,
+				9CA0724A236298DB00514F6C /* MeariKit.framework in Frameworks */,
 				D64F598E1C86EC3000FD4066 /* CoreImage.framework in Frameworks */,
 				D64F598A1C86EC1D00FD4066 /* CoreFoundation.framework in Frameworks */,
 				D64F59881C86EC1600FD4066 /* CoreData.framework in Frameworks */,
@@ -1049,7 +1046,6 @@
 				D64F59861C86EBFA00FD4066 /* CFNetwork.framework in Frameworks */,
 				17879A761C2A424400CDCC7D /* AVKit.framework in Frameworks */,
 				17879A741C2A423D00CDCC7D /* AVFoundation.framework in Frameworks */,
-				CDCE1F812352CFA100DBAEFD /* MeariKit.framework in Frameworks */,
 				D64F59841C86EBE400FD4066 /* AudioToolbox.framework in Frameworks */,
 				D64F59821C86EBDB00FD4066 /* Accelerate.framework in Frameworks */,
 				17879A661C2A419700CDCC7D /* GLKit.framework in Frameworks */,
@@ -1399,7 +1395,7 @@
 		D60F9E351FFB718C007E3B40 /* MeariKit */ = {
 			isa = PBXGroup;
 			children = (
-				CDCE1F7C2352CF6E00DBAEFD /* MeariKit.framework */,
+				9CA07249236298DB00514F6C /* MeariKit.framework */,
 			);
 			path = MeariKit;
 			sourceTree = SOURCE_ROOT;
@@ -2811,7 +2807,7 @@
 				178798061C2A3D9A00CDCC7D /* Sources */,
 				178798071C2A3D9A00CDCC7D /* Frameworks */,
 				178798081C2A3D9A00CDCC7D /* Resources */,
-				CDCE1F832352CFA300DBAEFD /* Embed Frameworks */,
+				9CA07243236297C600514F6C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
