@@ -4,10 +4,51 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "PPSVideoDrawable.h"
-#import "PPSGLView.h"
+
+/**
+ *@struct MRDEV_MEDIA_HEADER
+ *@brief Device network parameters structure
+ */
+typedef struct
+{
+    unsigned int   magic; /**<Media header: 0x56565099*/
+    unsigned int   videoid; /**<Video Source No*/
+    unsigned int   streamid; /**<Stream type: 0: The main stream 1: Sub-stream*/
+    unsigned int media_format; /**<Media encoding format 0x01=H264 0x02=mpeg4 0x03=mjpeg 0x04=hevc 0x81=aac 0x82=g711u 0x83=g711a 0x84=g726_16 0x85=G726_32*/
+    unsigned char frame_type; /**<0xF0- video frame type main frame 0xF1 = video fill the frame 0xF2 = pps 0xF3 = sps 0xFA = audio frame*/
+    /**
+     *@union PPSDEV_MEDIA_HEADER
+     *@brief Device network parameters structure
+     */
+    union{
+        /**
+         *@struct video
+         *@brief Video parameter structure (If the media type is 0xf0 required when such data)
+         */
+        struct{
+            unsigned char frame_rate; /**<Frame rate*/
+            unsigned char width; /**<Video width (a multiple of 8)*/
+            unsigned char height; /**<Video High (a multiple of 8)*/
+        }video;
+        /**
+         *@struct audio
+         *@brief Audio parameters structure (If the media type is 0xfa required when such data)
+         */
+        struct{
+            unsigned char sample_rate; /**<Sampling Rate 0=8000 1=12000 2=11025 3=16000 4=22050 5=24000 6=32000 7=44100 8=48000*/
+            unsigned char bit_rate; /**<Audio of bits*/
+            unsigned char channels; /**<Number of channels*/
+        }audio;
+    };
+    
+    unsigned int timestamp; /**<Timestamp, millisecond*/
+    unsigned int datetime; /**<Utc time the frame data, second grade*/
+    unsigned int size; /**<The length of the frame data*/
+}PPS_DEV_MEDIA_HEADER,*PPS_DEV_MEDIA_HEADER_PTR;
+
 typedef void (^PPSuccessHandler)();
 typedef void (^PPSInterruptedHandler)();
+typedef void (^PPSDevStreamDataCallback)(u_int8_t* buffer,int type,PPS_DEV_MEDIA_HEADER_PTR header,int bufferSize);
 typedef void (^PPSuccessDict)(NSDictionary *dict);
 typedef void (^PPSuccessString)(NSString *result);
 typedef void (^PPSuccessList)(NSArray *list);
@@ -17,6 +58,7 @@ typedef void (^PPSuccessInt)(int result);
 
 typedef void (^PPFailureHandler)();
 typedef void (^PPFailureError)(NSString *error);
+
 
 /**
  *  GETPPSCMD
@@ -401,7 +443,6 @@ __unused static NSString* PPSPLAY_CREATE_MSG(NSString* msg,int msgcode){
 -(void)disconnectIPC:(PPSuccessHandler)success failure:(PPFailureError)error;
 
 #pragma mark 2.preview
--(void)__deprecated startPreview:(PPSVideoDrawable*)videoUIView streamid:(BOOL)HD success:(PPSuccessHandler)success failure:(PPFailureError)error streamclose:(PPFailureError)streamclose;
 /**
  *@brief first you must connect IPC
  *@param[out] success  when success,then call it
@@ -409,13 +450,11 @@ __unused static NSString* PPSPLAY_CREATE_MSG(NSString* msg,int msgcode){
  */
 -(void)__deprecated stopPreview:(PPSuccessHandler)success failure:(PPFailureError)error;
 
--(void)__deprecated changePreview:(PPSVideoDrawable*)videoUIView  streamid:(BOOL)HD success:(PPSuccessHandler)success failure:(PPFailureError)error;
-
--(void)startPreview2:(PPSGLView*)glLayer streamid:(VIDEOSTREAM)stream success:(PPSuccessHandler)success failure:(PPFailureError)error streamclose:(PPFailureError)streamclose;
+-(void)startPreviewStreamid:(VIDEOSTREAM)stream success:(PPSuccessHandler)success receiveStreamData:(PPSDevStreamDataCallback)streamCallback failure:(PPFailureError)error streamclose:(PPFailureError)streamclose;
 
 -(void)stopPreview2:(PPSuccessHandler)success failure:(PPFailureError)error;
 
--(void)changePreview2:(PPSGLView*)glLayer  streamid:(VIDEOSTREAM)stream success:(PPSuccessHandler)success failure:(PPFailureError)error;
+-(void)changePreviewStreamid:(VIDEOSTREAM)stream success:(PPSuccessHandler)success receiveStreamData:(PPSDevStreamDataCallback)streamCallback failure:(PPFailureError)error;
 
 #pragma mark 3.playback
 /**
@@ -436,15 +475,13 @@ __unused static NSString* PPSPLAY_CREATE_MSG(NSString* msg,int msgcode){
 
 /**
  *@brief start playback sd card
- *@param[in]  videoUIView -- videoUIView
+ *@param[in]  glLayer -- videoUIView
  *@param[in]  starttime -- 20150312120000
  *@param[in]  videoid -- streamid of device
  *@param[out] success  when success,then call it
  *@param[out] error  when failed,then call it
  */
--(void)__deprecated startPlaybackSd:(PPSVideoDrawable*)videoUIView starttime:(NSString*)starttime videoid:(NSInteger)videoid success:(PPSuccessHandler)success failure:(PPFailureError)error;
-
--(void)startPlaybackSd2:(PPSGLView*)glLayer starttime:(NSString*)starttime videoid:(NSInteger)videoid success:(PPSuccessHandler)success failure:(PPFailureError)error;
+-(void)startPlaybackSdStarttime:(NSString*)starttime videoid:(NSInteger)videoid success:(PPSuccessHandler)success receiveStreamData:(PPSDevStreamDataCallback)streamCallback failure:(PPFailureError)error;
 
 /**
  *@brief send playback sd card cmd(seek,pause,resume)
@@ -493,14 +530,22 @@ __unused static NSString* PPSPLAY_CREATE_MSG(NSString* msg,int msgcode){
  *@param[out] success  when success,then call it
  *@param[out] error  when failed,then call it
  */
--(void)startvoicetalk:(BOOL)isvoicebell success:(PPSuccessHandler)success failure:(PPFailureError)error;
+-(void)startvoicetalk:(BOOL)isvoicebell default:(BOOL)isDefault success:(PPSuccessHandler)success failure:(PPFailureError)error;
+
+
+/**
+ *@brief user should manual send voice data when don't use default voice talk
+ *@param[in] data pcm data
+ *@param[in] len  pcm length
+ */
+- (void)sendVoiceData:(uint8_t*)data length:(size_t)len;
 
 /**
  *@brief disable voice talk
  *@param[out] success  when success,then call it
  *@param[out] error  when failed,then call it
  */
--(void)stopvoicetalk:(PPSuccessHandler)success failure:(PPFailureError)error;
+-(void)stopvoicetalkDefault:(BOOL)isDefault success:(PPSuccessHandler)success failure:(PPFailureError)error;
 
 -(GLfloat)getvoiceAveragePower;
 

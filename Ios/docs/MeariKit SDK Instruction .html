@@ -787,10 +787,10 @@ sup {
 
 <tbody>
 <tr>
-<td>2.0.0</td>
+<td>2.0.1</td>
 <td>Towers Perrin Technical Team</td>
-<td>2019.05.09</td>
-<td></td>
+<td>2019.11.05</td>
+<td>no decoder</td>
 </tr>
 </tbody>
 </table>
@@ -2103,19 +2103,38 @@ Upload doorbell message
 <h2 id="toc_71">9.4 Preview</h2>
 
 <div><pre><code class="language-none">【Description】
-    Real-time streaming playback of the camera, support HD/SD switching
+    self.camera.supportVideoStreams
 
-【Function Call】
-    /**
-    Start previewing the device
+[Function Call]
+     /**
+    Get the stream type supported by the current device
+MeariDeviceVideoStream_HD = 0,
+     MeariDeviceVideoStream_360,
+     MeariDeviceVideoStream_240,
+     MeariDeviceVideoStream_480,
+     MeariDeviceVideoStream_720,
+     MeariDeviceVideoStream_1080,
+     MeariDeviceVideoStream_1080_1_5,
+     MeariDeviceVideoStream_1080_2_0,
+     MeariDeviceVideoStreamNone,
+@return is in sleep mode, the lens is off, return value: sleep mode
+     */ 
+     - (NSArray *)supportVideoStreams;</code></pre></div>
 
-    @param playView play view control
-    @param HD Whether to play HD
-    @param success Successful callback
-    @param failure failure callback
-    @param close is in sleep mode, the lens is off, return value: sleep mode
-    */
-    - (void)startPreviewWithView:(MeariPlayView *)playView streamid:(BOOL)HD success:(MeariDeviceSucess)success failure:(void(^)(BOOL isPlaying))failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
+<div><pre><code class="language-none">【Description】
+    The videoStream type of the incoming interface when previewing needs to be supported by one of the supportVideoStreams interfaces.
+
+[Function Call]
+     /**
+     Start previewing the device
+
+      @param videoStream video clarity
+     @param success Successful callback
+     @param streamCallback code stream callback
+     @param failure failure callback
+     @param close is in sleep mode, the lens is off, return value: sleep mode
+     */
+     - (void)startPreview2:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
 
 
     /**
@@ -2128,22 +2147,19 @@ Upload doorbell message
 
 
     /**
-    Switch HD SD
+    Switch video stream
+    @param videoStream video stream type
+    @param success Successful callback
+    @param streamCallback code stream callback
+    @param failure failure callback
+    */
+    - (void)switchPreview:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure;
 
-    @param playView play view
-    @param HD Whether to play HD
-    @param success Successful callback
-    @param failure failure callback
-    */
-    - (void)switchPreviewWithView:(MeariPlayView *)playView streamid:(BOOL)HD success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+[Code Example]
+     / / Start previewing the device
+    [self.camera startPreview2:MeariDeviceVideoStream_720 success:^{
 
-【Code Example】
-    // Create a MeariPlayView
-    MeariPlayView *playView = [[MeariPlayView alloc] initWithFrame:CGRectMake(0, 0,160, 90];
-
-    // Start previewing the device
-    [self.camera startPreviewWithView:playView streamid:YES success:^{
-
+    } receiveStreamData:^(u_int8_t *buffer,MeariDeviceStreamType type, MEARIDEV_MEDIA_HEADER_PTR header, int bufferSize) {
     } failure:^(BOOL isPlaying) {
 
     } close:^(MeariDeviceSleepmode sleepmodeType) {
@@ -2196,13 +2212,13 @@ Upload doorbell message
     /**
     Start playback of video: only one person can view playback video at the same time
 
-    @param playView play view
-    @param startTime Start time: format is 20171228102035
+    @param startTime Start time: format is 20171228102035
     @param success Successful callback
+    @param streamCallback code stream callback
     @param failure failure callback
-    @param otherPlaying others watching playback
-    */
-    - (void)startPlackbackWithView:(MeariPlayView *)playView startTime:(NSString *)startTime success:(MeariDeviceSucess)success failure:(void(^)(BOOL isPlaying))failure otherPlaying:(MeariDeviceSucess)otherPlaying;
+    @param otherPlaying Others are viewing the playback
+    */
+    - (void)startPlayback:(NSString *)startTime success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure;
 
 
     /**
@@ -2343,21 +2359,38 @@ Upload doorbell message
     - (CGFloat)getVoicetalkVolume;
 
     /**
-    Start voice intercom
+        Start voice intercom
 
-    @param success Successful callback
-    @param failure failure callback
-    */
-    - (void)startVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+        @param isDefault Whether to use the default mode, the default is to take the SDK intercom
+        @param success Successful callback
+        @param failure failure callback
+  */
+    - (void)startVoiceTalkDefault:(BOOL)isDefault success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
+    /**
+        Number of bits per channel of audio
+        mBitsPerChannel : 16;
+        Audio coding format
+        mFormatID : kAudioFormatLinearPCM;
+        Audio sample rate
+        mSampleRate : 8000.0;
+        Number of frames per channel of audio
+        mChannelsPerFrame : 1;
+ 
+      *@brief If you do not use the sdk default intercom mode, you need to manually send audio data.
+      *@param[in] data pcm data
+      *@param[in] len pcm length
+     */
+    - (void)sendVoiceData:(uint8_t*)data length:(size_t)len;
+    
+   /**
+     Stop voice intercom
+      @param isDefault Whether to use the default mode, the default is to take the SDK intercom
+     @param success Successful callback
+     @param failure failure callback
+     */ 
+     - (void)stopVoicetalkDefault:(BOOL)isDefault success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
-    /**
-    Stop voice intercom
-
-    @param success Successful callback
-    @param failure failure callback
-    */
-    - (void)stopVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 【Code Example】
 

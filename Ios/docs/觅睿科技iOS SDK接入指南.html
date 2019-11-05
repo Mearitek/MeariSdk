@@ -409,7 +409,7 @@ sup {
 <a href="#toc_26">6.1 smartwifi配网</a>
 <ul>
 <li>
-<a href="#toc_27">(1) 获取Token</a>
+<a href="#toc_27">(1) 获取Token <strong>修改</strong></a>
 </li>
 <li>
 <a href="#toc_28">(2) 开始SmartWifi配网</a>
@@ -775,8 +775,8 @@ sup {
 <tr>
 <td>2.0.1</td>
 <td>觅睿技术团队</td>
-<td>2019.06.25</td>
-<td>优化</td>
+<td>2019.11.04</td>
+<td>预览回放修改</td>
 </tr>
 </tbody>
 </table>
@@ -1000,6 +1000,8 @@ Meari SDK 支持全球服务，当选择不同的国家时需要重置访问地�
 
 <h3 id="toc_17">(4) 找回密码</h3>
 
+<div><pre><code class="language-none">- (void)resetPasswordWithAccount:(NSString *)userAccount password:(NSString *)password verificationCode:(NSString *)verificationCode success:(MeariSuccess)success failure:(MeariFailure)failure;</code></pre></div>
+
 <div><pre><code class="language-none">【描述】
     找回密码前需要先获取验证码
  
@@ -1189,7 +1191,7 @@ Meari SDK 支持全球服务，当选择不同的国家时需要重置访问地�
 
 <div><pre><code class="language-none">配网之前需要先获取Token，然后再调用配网接口</code></pre></div>
 
-<h3 id="toc_27">(1) 获取Token</h3>
+<h3 id="toc_27">(1) 获取Token <strong>修改</strong></h3>
 
 <div><pre><code class="language-none">【描述】
 smart wifi配网需要提供所连wifi的名称和密码
@@ -1204,7 +1206,7 @@ smart wifi配网需要提供所连wifi的名称和密码
     validTime: token有效时长，超过时长需要重新获取新的token
     @param failure 失败回调
     */
-    - (void)getTokenForType:(MeariDeviceTokenType)tokenType success:(MeariSuccess_Token)success failure:(MeariFailure)failure;
+    - (void)getToken:(MeariDeviceTokenType)tokenType success:(MeariSuccess_Token)success failure:(MeariFailure)failure;
 【代码范例】
     [[MeariUser sharedInstance] getTokenForType:MeariDeviceTokenTypeSmartWifi success:^(NSString *token, NSInteger validTime) {
         //Don&#39;t care about validTime, because this type of Token is long-lived
@@ -1396,7 +1398,7 @@ smart wifi配网需要提供所连wifi的名称和密码
     */
     + (void)startSearchWithQRcodeToken:(NSString *)token success:(MeariDeviceSucess_SearchDevice)success failure:(MeariDeviceFailure)failure;
 
-【方法二：】
+【方法二：】**去掉**
     
 【描述】
     设备配网成功蓝灯常亮后，才能搜索到设备，用于展示给用户进行添加操作
@@ -2014,19 +2016,38 @@ smart wifi配网需要提供所连wifi的名称和密码
 <h2 id="toc_67">9.4 预览</h2>
 
 <div><pre><code class="language-none">【描述】
-    对摄像机取实时流播放，支持高清/标清切换
+    self.camera.supportVideoStreams
+
+【函数调用】
+    /**
+    获取当前设备支持的码流类型
+    MeariDeviceVideoStream_HD = 0,
+    MeariDeviceVideoStream_360,
+    MeariDeviceVideoStream_240,
+    MeariDeviceVideoStream_480,
+    MeariDeviceVideoStream_720,
+    MeariDeviceVideoStream_1080,
+    MeariDeviceVideoStream_1080_1_5,
+    MeariDeviceVideoStream_1080_2_0,
+    MeariDeviceVideoStreamNone,
+    @return 处于休眠模式，镜头关闭，返回值：休眠模式
+    */
+    - (NSArray *)supportVideoStreams;</code></pre></div>
+
+<div><pre><code class="language-none">【描述】
+    预览时传入接口的videoStream类型，需要使用supportVideoStreams接口支持的其中一种
 
 【函数调用】
     /**
     开始预览设备
 
-    @param playView 播放视图控件
-    @param HD 是否高清播放
+    @param videoStream 视频清晰度
     @param success 成功回调
+    @param streamCallback 码流回调
     @param failure 失败回调
     @param close 处于休眠模式，镜头关闭，返回值：休眠模式
     */
-    - (void)startPreviewWithView:(MeariPlayView *)playView streamid:(BOOL)HD success:(MeariDeviceSucess)success failure:(void(^)(BOOL isPlaying))failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
+    - (void)startPreview2:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
 
 
     /**
@@ -2041,20 +2062,19 @@ smart wifi配网需要提供所连wifi的名称和密码
     /**
     切换高清标清
 
-    @param playView 播放视图
-    @param HD 是否高清播放
+    @param videoStream 视频码流类型
     @param success 成功回调
+    @param streamCallback 码流回调
     @param failure 失败回调
     */
-    - (void)switchPreviewWithView:(MeariPlayView *)playView streamid:(BOOL)HD success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+    - (void)switchPreview:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure;
 
 【代码范例】
-    //创建一个MeariPlayView
-    MeariPlayView *playView = [[MeariPlayView alloc] initWithFrame:CGRectMake(0, 0,160, 90];
-
     //开始预览设备
-    [self.camera startPreviewWithView:playView streamid:YES success:^{
+    [self.camera startPreview2:MeariDeviceVideoStream_720 success:^{
 
+    } receiveStreamData:^(u_int8_t *buffer,MeariDeviceStreamType type, MEARIDEV_MEDIA_HEADER_PTR header, int bufferSize) {
+            
     } failure:^(BOOL isPlaying) {
 
     } close:^(MeariDeviceSleepmode sleepmodeType) {
@@ -2069,7 +2089,7 @@ smart wifi配网需要提供所连wifi的名称和密码
     }];
 
     //切换高清标清
-    [self.camera switchPreviewWithView:self.drawableView streamid:HD success:^{
+    [self.camera switchPreview:videoStream success:MeariDeviceVideoStream_360 success:^{
 
     } failure:^(NSString *error) {
 
@@ -2107,13 +2127,13 @@ smart wifi配网需要提供所连wifi的名称和密码
     /**
     开始回放录像：同一个设备同一时间只能一个人查看回放录像
 
-    @param playView 播放视图
     @param startTime 开始时间:格式为20171228102035
     @param success 成功回调
+    @param streamCallback 码流回调
     @param failure 失败回调
     @param otherPlaying 其他人在查看回放
     */
-    - (void)startPlackbackWithView:(MeariPlayView *)playView startTime:(NSString *)startTime success:(MeariDeviceSucess)success failure:(void(^)(BOOL isPlaying))failure otherPlaying:(MeariDeviceSucess)otherPlaying;
+    - (void)startPlayback:(NSString *)startTime success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure;
 
 
     /**
@@ -2132,7 +2152,7 @@ smart wifi配网需要提供所连wifi的名称和密码
     @param success 成功回调
     @param failure 失败回调
     */
-    - (void)seekPlackbackSDCardToTime:(NSString *)seekTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+    - (void)seekPlaybackSDCardToTime:(NSString *)seekTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 
     /**
@@ -2169,8 +2189,10 @@ smart wifi配网需要提供所连wifi的名称和密码
 
 
     //开始回放录像
-    [self.device startPlackbackWithView:playview startTime:starttime success:^{
+    [self.device startPlayback:starttime success:^{
 
+    } receiveStreamData:^(u_int8_t *buffer,MeariDeviceStreamType type, MEARIDEV_MEDIA_HEADER_PTR header, int bufferSize) {
+                   
     } failure:^(BOOL isPlaying) {
 
     } otherPlaying:^{
@@ -2185,7 +2207,7 @@ smart wifi配网需要提供所连wifi的名称和密码
     }];
 
     //seek回放
-    [self.device seekPlackbackSDCardToTime:self.currentComponents.timeStringWithNoSprit success:^{
+    [self.device seekPlaybackSDCardToTime:self.currentComponents.timeStringWithNoSprit success:^{
 
     } failure:^(NSString *error) {
 
@@ -2256,19 +2278,36 @@ smart wifi配网需要提供所连wifi的名称和密码
     /**
     开始语音对讲
 
+    @param isDefault 是否使用默认方式，默认走SDK对讲
     @param success 成功回调
     @param failure 失败回调
     */
-    - (void)startVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+    - (void)startVoiceTalkDefault:(BOOL)isDefault success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 
     /**
-    停止语音对讲
+     音频每个声道的位数
+     mBitsPerChannel : 16;
+     音频编码格式
+     mFormatID : kAudioFormatLinearPCM;
+     音频采样率
+     mSampleRate : 8000.0;
+     音频每个声道的帧数
+     mChannelsPerFrame : 1;
+     
+     *@brief 如果不使用sdk默认对讲方式，需要手动发送音频数据
+     *@param[in] data pcm 数据
+     *@param[in] len  pcm 长度
+     */
+    - (void)sendVoiceData:(uint8_t*)data length:(size_t)len;
 
+    /**
+    停止语音对讲
+     @param isDefault 是否使用默认方式，默认走SDK对讲
     @param success 成功回调
     @param failure 失败回调
     */
-    - (void)stopVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+    - (void)stopVoicetalkDefault:(BOOL)isDefault success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 【代码范例】
 

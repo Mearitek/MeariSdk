@@ -77,7 +77,7 @@
 /** Whether to support upgrade device */
 @property (nonatomic, assign, readonly) BOOL supportOTA;
 /** Whether to support set body detection sensitivity */
-@property (nonatomic, assign, readonly) BOOL supportPirSensitivity;
+@property (nonatomic, assign, readonly) MeariDevicePirSensitivity supportPirSensitivity;
 /** Whether to support setting sleep mode */
 @property (nonatomic, assign, readonly) BOOL supportSleepMode;
 /** Is it a low power device */

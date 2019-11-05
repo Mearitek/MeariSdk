@@ -387,12 +387,14 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     [self.videoView showLoading];
     if(!self.camera.sdkLogined) return;
     WY_WeakSelf
-    [self.camera startPreviewWithView:self.videoView.drawableView streamid:YES success:^{
+    [self.camera startPreview2:MeariDeviceVideoStream_720 success:^{
         weakSelf.receiveView.showSpeakAnimation = YES;
         [weakSelf.videoView hideLoading];
         [weakSelf receiveView:nil didClickSpeakBtn:nil];
         [weakSelf.camera setVoiceTalkType:MeariVoiceTalkTypeFullDuplex];
         [weakSelf.camera setMute:NO];
+    } receiveStreamData:^(u_int8_t *buffer,MeariDeviceStreamType type, MEARIDEV_MEDIA_HEADER_PTR header, int bufferSize) {
+        
     } failure:^(NSError *error) {
         if (error.code == MeariDeviceCodePreviewIsPlaying) {
             [weakSelf.videoView hideLoading];
@@ -421,7 +423,7 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
         _pauseInput = YES;
         [self.camera pauseVoicetalkSuccess:nil failure:nil];
     } else {
-        [self.camera stopVoicetalkSuccess:^{
+        [self.camera stopVoicetalkDefault:YES  success:^{
             if (weakSelf.camera.sdkLogined) {
                 [weakSelf.videoView hideLoading];
             }
@@ -497,7 +499,7 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
             weakSelf.receiveView.showSpeakAnimation = YES;
             [self.camera resumeVoicetalkSuccess:nil failure:nil];
         } else {
-            [self.camera startVoiceTalkSuccess: ^{
+            [self.camera startVoiceTalkDefault:YES success: ^{
                 weakSelf.receiveView.logined = YES;
                 if (weakSelf.camera.sdkLogined) {
                     [weakSelf.videoView hideLoading];

@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface MeariDeviceFirmwareInfo : MeariBaseModel
-@property (nonatomic, copy) NSString *upgradeUrl;           //url for update
-@property (nonatomic, copy) NSString *latestVersion;        //latest version
-@property (nonatomic, copy) NSString *upgradeDescription;   //latest version description
-@property (nonatomic, assign) BOOL needUpgrade;             //whether need force upgrade or not
-@property (nonatomic, assign) BOOL forceUpgrade;            //whether to force Upgrade
+@property (nonatomic, copy) NSString *upgradeUrl;           //设备升级地址
+@property (nonatomic, copy) NSString *latestVersion;        //设备最新版本
+@property (nonatomic, copy) NSString *upgradeDescription;   //设备升级描述
+@property (nonatomic, assign) BOOL needUpgrade;             //是否需要升级
+@property (nonatomic, assign) BOOL forceUpgrade;            //是否需要强制升级
 @end

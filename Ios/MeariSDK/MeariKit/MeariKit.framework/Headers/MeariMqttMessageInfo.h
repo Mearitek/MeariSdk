@@ -9,22 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "MeariDeviceInfo.h"
 /**
- Message Type
- 
-  - MeariMqttCodeTypeDeviceOnline: The device is online
-  - MeariMqttCodeTypeDeviceOffline: Device offline
- - MeariMqttCodeTypeCancelDeviceShare: Device cancel share
- - MeariMqttCodeTypeAcountTokenInvalid: User token invalid
- - MeariMqttCodeTypeVisitorCall: Visitor call
- - MeariMqttCodeTypeDeviceUnbundling: Device unbind
-  - MeariMqttCodeTypeCancelDeviceShare: Device is unshared
-  - MeariMqttCodeTypeAcountTokenInvalid: Login information is invalid
-  - MeariMqttCodeTypeVisitorCall: The device has visitors
-  - MeariMqttCodeTypeDeviceUnbundling: The device has been unbundled
- - MeariMqttCodeTypeDeviceShare: Receive the device share
- - MeariMqttCodeTypeDeviceUpgradeFormat: Firmware upgrade progress
- - MeariMqttCodeTypeSDCardFormat: Sd card formatting progress
- - MeariMqttCodeTypePropertyRefresh: Get a property status in real time
+ 消息类型
+
+ - MeariMqttCodeTypeDeviceOnline:                设备上线
+ - MeariMqttCodeTypeDeviceOffline:               设备离线
+ - MeariMqttCodeTypeCancelDeviceShare:           设备被取消分享
+ - MeariMqttCodeTypeAcountTokenInvalid:          登录信息失效
+ - MeariMqttCodeTypeVisitorCall:                 设备有访客
+ - MeariMqttCodeTypeDeviceUnbundling:            设备解绑
+ - MeariMqttCodeTypeDeviceAutobundleSuccess:     自动绑定成功
+ - MeariMqttCodeTypeDeviceAutobundleFailure:     自动绑定失败
+ - MeariMqttCodeTypeDeviceShare:                 收到别人的设备分享
+ - MeariMqttCodeTypeDeviceUpgradeFormat:         固件升级进度
+ - MeariMqttCodeTypeSDCardFormat:                sd卡格式化进度
+ - MeariMqttCodeTypePropertyRefresh:             实时获取某个属性状态 一发一答形式
  */
 typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
     MeariMqttCodeTypeDeviceOnline            = 101,
@@ -43,17 +41,17 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 };
 
 @interface MeariMqttMessageInfoDevice : MeariBaseModel
-@property (assign, nonatomic) BOOL online;   // Whether the device is online
-@property (assign, nonatomic) NSInteger deviceID; //device ID
-@property (nonatomic, assign) MeariDeviceType devType; //Large type
-@property (nonatomic, assign) MeariDeviceSubType devSubType; //Subtype
-@property (copy, nonatomic) NSString *deviceType; //Device type
-@property (copy, nonatomic) NSString *deviceName; //Device nickname
-@property (copy, nonatomic) NSString *msgID; //Message ID
-@property (copy, nonatomic) NSString *hostKey; //device token
-@property (copy, nonatomic) NSString *deviceUUID; //device uuid
-@property (copy, nonatomic) NSString *imgUrl; //Device icon
-@property (copy, nonatomic) NSString *bellVoice; //Device doorbell
+@property (assign, nonatomic) BOOL online;   //设备在线状态
+@property (assign, nonatomic) NSInteger deviceID;   //设备ID
+@property (nonatomic, assign) MeariDeviceType devType;
+@property (nonatomic, assign) MeariDeviceSubType devSubType;
+@property (copy, nonatomic) NSString *deviceType;   //设备类型
+@property (copy, nonatomic) NSString *deviceName;   //设备昵称
+@property (copy, nonatomic) NSString *msgID;        //消息ID
+@property (copy, nonatomic) NSString *hostKey;      //设备token
+@property (copy, nonatomic) NSString *deviceUUID;   //设备uuid
+@property (copy, nonatomic) NSString *imgUrl;       //设备图标
+@property (copy, nonatomic) NSString *bellVoice;    //设备门铃
 @property (copy, nonatomic) NSString *p2pInit;
 @property (copy, nonatomic) NSString *deviceP2P;
 @property (nonatomic, assign) MeariDeviceAddStatus  addStatus;
@@ -67,33 +65,34 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @end
 
 @interface MeariEventInfo : MeariBaseModel
-@property (nonatomic, assign) NSInteger sdTotalPercent;           // Format percentage
-@property (nonatomic, assign) NSInteger upgradeTotalPercent;      // Upgrade firmware percentage
-@property (nonatomic, assign) NSInteger upgradeDownloadPercent;   // Upgrade package download percentage
-@property (nonatomic, assign) NSInteger upgradeUploadPercent;     // Upgrade package upload percentage
-@property (nonatomic, assign) NSInteger wifiStrength;             // Wi-Fi signal strength
-@property (nonatomic, assign) NSInteger temperature;
-@property (nonatomic, assign) NSInteger humidity;
-@property (nonatomic, strong) MeariDeviceParamStorage *sdcard;
-@property (nonatomic, assign) BOOL      floodCameraStatus;
+@property (nonatomic, assign) NSInteger sdTotalPercent;           // 格式化百分比
+@property (nonatomic, assign) NSInteger upgradeTotalPercent;      // 升级固件百分比
+@property (nonatomic, assign) NSInteger upgradeDownloadPercent;   // 升级包下载百分比
+@property (nonatomic, assign) NSInteger upgradeUploadPercent;     // 升级包上传百分比
+@property (nonatomic, assign) NSInteger wifiStrength;             // Wi-Fi信号强度
+@property (nonatomic, assign) NSInteger temperature;              // 温度
+@property (nonatomic, assign) NSInteger humidity;                 // 湿度
+@property (nonatomic, strong) MeariDeviceParamStorage *sdcard;    // sd卡
+@property (nonatomic, assign) BOOL      floodCameraStatus;        // 灯具摄像机开关状态
 
-@property (nonatomic, assign) BOOL hasWifiStrength;
-@property (nonatomic, assign) BOOL hasTempAndHumidity;
-@property (nonatomic, assign) BOOL hasFloodCameraStatus;
-@property (nonatomic, assign) BOOL hasChangeSd;
+// 扩展
+@property (nonatomic, assign) BOOL hasWifiStrength;             // 是否存在Wi-Fi信号强度
+@property (nonatomic, assign) BOOL hasTempAndHumidity;          // 是否存在温度
+@property (nonatomic, assign) BOOL hasFloodCameraStatus;        // 是否存在灯具摄像机开关状态
+@property (nonatomic, assign) BOOL hasChangeSd;                 // 是否sd卡状态改变
 
 
-- (instancetype)initWithDic:(NSDictionary *)dic;
+- (instancetype)initWithDic:(NSDictionary *)dic; // 初始化
 
 @end
 
 @interface MeariMqttMessageInfo : MeariBaseModel
-@property (assign, nonatomic) double t; //timestamp
+@property (assign, nonatomic) double t;              //时间戳
 @property (strong, nonatomic) MeariMqttMessageInfoDevice *data;
-@property (assign, nonatomic) NSInteger msgid; //Message ID
-@property (nonatomic, assign) MeariMqttCodeType type; //Message type
+@property (assign, nonatomic) NSInteger msgid;          //消息ID
+@property (nonatomic, assign) MeariMqttCodeType type;   //消息类型
 @property (nonatomic, copy) NSString *requestID;
-@property (nonatomic, copy) MeariEventInfo *eventInfo;
+@property (nonatomic, copy) MeariEventInfo *eventInfo; //服务事件上报
 
 @end
 

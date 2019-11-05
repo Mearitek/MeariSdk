@@ -15,160 +15,159 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark --- Network
 
 /**
- Get the list of iot properties
+ 获取iot属性列表
 
- @param sn device sn
- @param success success
- @param failure failure
+ @param sn 设备sn
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)getIotModelWithSn:(NSString *)sn success:(MeariDeviceSucess_Param)success failure:(MeariDeviceFailure)failure;
 
-/**
- Set Screen flip
+#pragma mark --- 画面翻转
 
- @param open true or false
- @param success success
- @param failure failure
+/**
+ 画面翻转
+
+ @param open 是否开启
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetRotateOpen:(BOOL)open success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 #pragma mark --- LED
 
 /**
- Set the LED
+ 设置LED
 
- @param on true or false
- @param success success
- @param failure failure
+ @param on 是否开启
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetLEDOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Get LED Status
+ 获取LED
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotGetLEDSuccess:(MeariDeviceSucess_LED)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark --- Playback
+#pragma mark --- 回放设置
 
 /**
- Set playback level
+ 回放设置
 
- @param level  MeariDeviceLevelOff: open all-day-record
- MeariDeviceLevelLow: 1*60s
- MeariDeviceLevelMedium: 2*60s
- MeariDeviceLevelHigh: 3*60s
- @param success success
- @param failure failure
+ @param level sd卡存储等级
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetPlaybackRecordVideoLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Get SDCard info
+ sd卡信息
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotGetStorageInfoSuccess:(MeariDeviceSucess_Storage)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark --- Alarm
+#pragma mark --- 报警
 
 /**
- Set Alarm
+ 报警
 
- @param level alarm level
- @param success success
- @param failure failure
+ @param level 报警级别
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetAlarmLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess_ID)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set the PeopleDetect
+ 人体检测
 
- @param enable true or false
- @param bnddrawEnable true or false
- @param success success
- @param failure failure
+ @param enable 是否开启
+ @param bnddrawEnable 画框是否开启
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetPeopleDetectEnable:(BOOL)enable bnddrawEnable:(BOOL)bnddrawEnable success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set Cry Detect
+ 哭声检测
 
- @param enable true or false
- @param success success
- @param failure failure
+ @param enable 是否开启
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetCryDetectEnable:(BOOL)enable success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set People Track
+ 人形追踪
 
- @param enable true or false
- @param success success
- @param failure failure
+ @param enable 是否开启
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetPeopleTrackEnable:(BOOL)enable success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-#pragma mark -- Noise Detection
+#pragma mark -- 噪声监测
 
 /**
- Set DB Detection
+ 噪声监测
 
- @param level alarm level
- @param success success
- @param failure failure
+ @param level 等级
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetDBDetectionLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark --- DayNight
+#pragma mark --- 日夜模式
 
 /**
- Set DayNight mode
+ 日夜模式
 
- @param type day , night ,auto
- @param success success
- @param failure failure
+ @param type 日夜模式类型
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetDayNightMode:(MeariDeviceDayNightType)type success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark --- Sleep Mode
+#pragma mark --- 休眠模式
 
 /**
- Set sleep mode
+ 休眠模式
 
- @param type mode type
- @param success success
- @param failure failure
+ @param type 休眠模式类型
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetSleepmodeType:(MeariDeviceSleepmode)type success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set sleep times
+ 休眠时间设置
 
- @param open true or false
- @param times times Arrary (NSArray<MeariDeviceParamSleepTime *> *)
- @param success success
- @param failure failure
+ @param open 是否开启
+ @param times 时间数组 (NSArray<MeariDeviceParamSleepTime *> *)
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetSleepmodeTime:(BOOL)open times:(NSArray<MeariDeviceParamSleepTime *> *)times success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark --- Device firmware version
+#pragma mark --- 固件版本
 
 /**
- Get Version
+ 固件版本
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotGetVersionSuccess:(MeariDeviceSucess_Version)success failure:(MeariDeviceFailure)failure;
 
 /**
- Get upgrade status
+ 固件升级状态
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotGetOtaUpgradeStatus:(MeariDeviceSucess_UpgradeMode)success failure:(MeariDeviceFailure)failure;
 
@@ -176,124 +175,124 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Onvif
 
- @param enable true or false
- @param pwd password
- @param success success
- @param failure failure
+ @param enable 是否开启
+ @param pwd 密码
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSetOnvifEnable:(BOOL)enable password:(NSString *)pwd success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark -- Open CloudStorage
+#pragma mark -- 云存储开通
 /**
- Set CloudStorage
+ 云存储开通
 
- @param open true or false
- @param success success
- @param failure failure
+ @param open 是否开通
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)setIotCloudStorageOpen:(BOOL)open success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark --- H264-H265
+#pragma mark --- 码流H264-H265
 
 /**
- Switch H264-H265
+ 码流H264-H265切换
 
- @param isH265 true or false
- @param success success
- @param failure failure
+ @param isH265 是不是H265码流
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSwitchVideoEncoding:(BOOL)isH265 success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark --- Device Service
+#pragma mark --- 服务
 
 /**
- Reboot device
+ 重启设备
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotResetDevice:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Reset device
+ 复位设备
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotRebootDevice:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Synchronised time
+ 同步时间
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotSyncTimeDevice:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Ota upgrade with url
+ ota升级
 
- @param url upgrade url
- @param currentVersion version
- @param success success
- @param failure failure
+ @param url 地址
+ @param currentVersion 版本
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotOtaUpgradeWithUrl:(NSString *)url currentVersion:(NSString *)currentVersion success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Get a list of surrounding wifi
+ 获取WIFI列表
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotGetWiFiListDevice:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Switch WIFI
+ 切换WIFI
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotChangeWifi:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- SD card formatting
+ SD卡格式化
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotFormatSDCard:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- PTZ Control (Control device rotation)
+ PTZ控制
 
- @param direction ↑ ↓ ← →
- @param success success
- @param failure failure
+ @param direction 方向
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotStartMoveToDirection:(MeariMoveDirection)direction success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- PTZ Stop
+ PTZ停止
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotStopMoveSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Get Wi-Fi signal strength in real time(by mqtt)
+ 实时获取Wi-Fi信号强度(mqtt获取)
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotRefreshWifiStrengthSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Refresh sd card status (by mqtt)
+ 刷新sd卡状态(mqtt获取)
 
- @param success success
- @param failure failure
+ @param success 成功回调
+ @param failure 失败回调
  */
 - (void)iotRefreshSDCardSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 

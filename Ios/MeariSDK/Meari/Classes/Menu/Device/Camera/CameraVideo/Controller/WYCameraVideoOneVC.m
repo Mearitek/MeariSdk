@@ -1291,7 +1291,9 @@
     WY_WeakSelf
     if (WYCanPlayHD) {
         NSLog(@"Drawing on %p",self.drawableView);
-        [self.camera startPreviewWithView:self.drawableView streamid:YES success:^{
+        NSArray *arr = self.camera.supportVideoStreams;
+        NSLog(@"support video stream %@",arr);
+        [self.camera startPreview2:MeariDeviceVideoStream_720 success:^{
             [weakSelf setSDKParams];
             if (WYCanPlayHD && !_visitorCalling) {
                 weakSelf.videoView.videoType = WYVideoTypePreviewHD;
@@ -1299,6 +1301,8 @@
             }else {
                 [weakSelf stopPreviewHDSuccess:nil];
             }
+        } receiveStreamData:^(u_int8_t *buffer,MeariDeviceStreamType type, MEARIDEV_MEDIA_HEADER_PTR header, int bufferSize) {
+            NSLog(@"receiveStreamData type:%d width:%d height:%d bufferSize:%d",type,header->video.width << 3,header->video.height << 3,bufferSize);
         } failure:^(NSError *error) {
             if (WYCanPlayHD) {
                 if (error.code == MeariDeviceCodePreviewIsPlaying) {
@@ -1320,7 +1324,9 @@
     WY_WeakSelf
     
     if (WYCanPlaySD) {
-        [self.camera startPreviewWithView:self.drawableView streamid:NO success:^{
+        NSArray *arr = self.camera.supportVideoStreams;
+        NSLog(@"support video stream %@",arr);
+        [self.camera startPreview2:MeariDeviceVideoStream_360 success:^{
             [weakSelf setSDKParams];
             if (WYCanPlaySD && !_visitorCalling) {
                 weakSelf.videoView.videoType = WYVideoTypePreviewSD;
@@ -1328,6 +1334,8 @@
             }else {
                 [weakSelf stopPreviewSDSuccess:nil];
             }
+        } receiveStreamData:^(u_int8_t *buffer,MeariDeviceStreamType type, MEARIDEV_MEDIA_HEADER_PTR header, int bufferSize) {
+            NSLog(@"receiveStreamData %d %@ %d",type,header,bufferSize);
         } failure:^(NSError *error) {
             if (WYCanPlaySD) {
                 if (error.code == MeariDeviceCodePreviewIsPlaying) {
@@ -1411,7 +1419,7 @@
                 } failure:^(NSError *error) {
                     
                 }];
-                [weakSelf.camera startPlackbackWithView:weakSelf.drawableView startTime:weakSelf.currentComponents.timeStringWithNoSprit success:^{
+                [weakSelf.camera startPlayback:weakSelf.currentComponents.timeStringWithNoSprit success:^{
                     [weakSelf setSDKParams];
                     if (WYCanPlaySDCard) {
                         [weakSelf.videoView hideLoading];
@@ -1421,6 +1429,8 @@
                         [weakSelf stopPlaybackSDCardSuccess:nil];
                     }
                     
+                } receiveStreamData:^(u_int8_t *buffer,MeariDeviceStreamType type, MEARIDEV_MEDIA_HEADER_PTR header, int bufferSize) {
+                    NSLog(@"receiveStreamData %d  %d",type,bufferSize);
                 } failure:^(NSError *error) {
                     if (WYCanPlaySDCard) {
                         if (error.code == MeariDeviceCodePlaybackIsPlaying) {
@@ -1468,7 +1478,7 @@
                 }
                 weakSelf.timeBar.progress = weakSelf.currentComponents.secondsInday/WYSecs_PerDay;
                 
-                [weakSelf.nvr startPlackbackWithView:weakSelf.drawableView startTime:weakSelf.currentComponents.timeStringWithNoSprit success:^{
+                [weakSelf.nvr startPlayback:weakSelf.currentComponents.timeStringWithNoSprit success:^{
                     [weakSelf setSDKParams];
                     if (WYCanPlayNVR) {
                         [weakSelf.videoView hideLoading];
@@ -1478,6 +1488,8 @@
                         [weakSelf stopPlaybackNVRSuccess:nil];
                     }
                     
+                } receiveStreamData:^(u_int8_t *buffer,MeariDeviceStreamType type, MEARIDEV_MEDIA_HEADER_PTR header, int bufferSize) {
+                    NSLog(@"receiveStreamData %d %d",type,bufferSize);
                 } failure:^(NSError *error) {
                     if (WYCanPlayNVR) {
                         if (error.code == MeariDeviceCodePlaybackIsPlaying) {
@@ -1508,12 +1520,14 @@
     WY_WeakSelf
     MeariDeviceVideoStream videoStream = HD ? MeariDeviceVideoStream_HD : MeariDeviceVideoStream_360;
     if (self.camera.sdkLogined) {
-        [self.camera switchPreviewWithView:self.drawableView videoStream:videoStream success:^{
+        [self.camera switchPreview:videoStream success:^{
             if (HD ? WYCanPlayHD : WYCanPlaySD) {
                 weakSelf.videoView.videoType = HD? WYVideoTypePreviewHD:WYVideoTypePreviewSD;
                 [weakSelf fireTimers];
                 [weakSelf.videoView hideLoading];
             }
+        } receiveStreamData:^(u_int8_t *buffer,MeariDeviceStreamType type, MEARIDEV_MEDIA_HEADER_PTR header, int bufferSize) {
+            NSLog(@"receiveStreamData %d %d",type,bufferSize);
         } failure:^(NSError *error) {
             if (HD ? WYCanPlayHD : WYCanPlaySD) {
                 [weakSelf.videoView showLoadingFailed];
@@ -1549,7 +1563,7 @@
 - (void)seekPlaybackSDCard {
     WY_WeakSelf
     if ([self.camera sdkPlayRecord]) {
-        [self.camera seekPlackbackSDCardToTime:self.currentComponents.timeStringWithNoSprit success:^{
+        [self.camera seekPlaybackSDCardToTime:self.currentComponents.timeStringWithNoSprit success:^{
             if (WYCanPlaySDCard) {
                 _paused = NO;
                 [weakSelf.videoView hideLoading];
@@ -1572,7 +1586,7 @@
 - (void)seekPlaybackNVR {
     WY_WeakSelf
     if ([self.nvr sdkPlayRecord]) {
-        [self.nvr seekPlackbackSDCardToTime:self.currentComponents.timeStringWithNoSprit success:^{
+        [self.nvr seekPlaybackSDCardToTime:self.currentComponents.timeStringWithNoSprit success:^{
             if (WYCanPlayNVR) {
                 _paused = NO;
                 [weakSelf.videoView hideLoading];
@@ -1687,7 +1701,7 @@
         [self showVoiceSpeaking:YES];
     }
     WY_WeakSelf
-    [self.camera startVoiceTalkSuccess:^{
+    [self.camera startVoiceTalkDefault:YES success:^{
         if (weakSelf.voiceDown) {
             if (weakSelf.camera.supportFullDuplex) {
                 [weakSelf.toolView.previewView.fullDuplexVoiceView startVoiceTalking];
@@ -1714,7 +1728,7 @@
     } else {
         [self showVoiceSpeaking:NO];
     }
-    [self.camera stopVoicetalkSuccess:nil failure:nil];
+    [self.camera stopVoicetalkDefault:YES success:nil failure:nil];
 }
 - (void)showVoiceSpeaking:(BOOL)show {
     show ? [WYCameraVoiceHUD show:YES] : [WYCameraVoiceHUD hide:NO];

@@ -42,7 +42,7 @@ typedef void(^MeariDeviceSucess_Volume)(CGFloat volume);
 typedef void(^MeariDeviceSucess_RecordAutio)(NSString *filePath);
 typedef void(^MeariDeviceSucess_NetInfo)(MeariDeviceParamNetwork *info);
 typedef void(^MeariDeviceSucess_PlayBackLevel)(MeariDeviceLevel level);
-
+typedef void (^MeariDeviceStreamDataCallback)(u_int8_t* buffer,MeariDeviceStreamType type,MEARIDEV_MEDIA_HEADER_PTR header,int bufferSize);
 
 /**
  search mode for searching device
@@ -233,21 +233,23 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
  
  @param HD whether is HD or SD
  @param success
+ @param streamCallback code stream callback
  @param failure return error
  @param close return sleepmode, see MeariDeviceSleepmode, device is in sleep
  */
-- (void)startPreviewWithView:(MeariPlayView *)playView streamid:(BOOL)HD success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
+- (void)startPreview:(BOOL)HD success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
 
 /**
  Start preview
  
- @param playView  play view
+ @param videoStream video stream type
  @param videoStream Video quality
  @param success
+ @param streamCallback code stream callback
  @param failure return error
  @param close In sleep mode, the lens is off, return value: sleep mode
  */
-- (void)startPreviewWithView:(MeariPlayView *)playView videoStream: (MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
+- (void)startPreview2:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
 
 /**
  Stop preview
@@ -262,11 +264,12 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
  Switch preview charity
  
  @param playView play view
- @param videoStream stream
+ @param videoStream video stream type
  @param success
+ @param streamCallback code stream callback
  @param failure return error
  */
-- (void)switchPreviewWithView:(MeariPlayView *)playView videoStream:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)switchPreview:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure;
 
 #pragma mark -- Playback
 
@@ -296,12 +299,12 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
 /**
  Start playback: one person only allowed at same time
  
- @param playView play view
  @param startTime start time：--20171228102035
  @param success
+ @param streamCallback 码流回调
  @param failure return error
  */
-- (void)startPlackbackWithView:(MeariPlayView *)playView startTime:(NSString *)startTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)startPlayback:(NSString *)startTime success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure;
 
 
 
@@ -321,7 +324,7 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
  @param success
  @param failure return error
  */
-- (void)seekPlackbackSDCardToTime:(NSString *)seekTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)seekPlaybackSDCardToTime:(NSString *)seekTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
@@ -406,8 +409,23 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
  @param success
  @param failure return error
  */
-- (void)startVoiceTalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)startVoiceTalkDefault:(BOOL)isDefault success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
+/**
+  Number of bits per channel of audio
+  mBitsPerChannel : 16;
+  Audio coding format
+  mFormatID : kAudioFormatLinearPCM;
+  Audio sample rate
+  mSampleRate : 8000.0;
+  Number of frames per channel of audio
+  mChannelsPerFrame : 1;
+  
+  *@brief If you do not use the sdk default intercom mode, you need to manually send audio data.
+  *@param[in] data pcm data
+  *@param[in] len pcm length
+ */
+- (void)sendVoiceData:(uint8_t*)data length:(size_t)len;
 
 /**
  Stop voice talk
@@ -415,7 +433,7 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
  @param success
  @param failure return error
  */
-- (void)stopVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)stopVoicetalkDefault:(BOOL)isDefault success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 
 /**

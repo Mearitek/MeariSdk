@@ -210,4 +210,58 @@ typedef NS_ENUM(NSInteger, MeariNetworkReachabilityStatus) {
     MeariNetworkReachabilityStatusReachableViaWiFi = 2,
 };
 
+/**
+ *@struct MEARIDEV_MEDIA_HEADER
+ *@brief Device network parameters structure
+ */
+typedef struct
+{
+    unsigned int   magic; /**<Media header: 0x56565099*/
+    unsigned int   videoid; /**<Video Source No*/
+    unsigned int   streamid; /**<Stream type: 0: The main stream 1: Sub-stream*/
+    unsigned int media_format; /**<Media encoding format 0x01=H264 0x02=mpeg4 0x03=mjpeg 0x04=hevc 0x81=aac 0x82=g711u 0x83=g711a 0x84=g726_16 0x85=G726_32*/
+    unsigned char frame_type; /**<0xF0- video frame type main frame 0xF1 = video fill the frame 0xF2 = pps 0xF3 = sps 0xFA = audio frame*/
+    /**
+     *@union PPSDEV_MEDIA_HEADER
+     *@brief Device network parameters structure
+     */
+    union{
+        /**
+         *@struct video
+         *@brief Video parameter structure (If the media type is 0xf0 required when such data)
+         */
+        struct{
+            unsigned char frame_rate; /**<Frame rate*/
+            unsigned char width; /**<Video width (a multiple of 8)*/
+            unsigned char height; /**<Video High (a multiple of 8)*/
+        }video;
+        /**
+         *@struct audio
+         *@brief Audio parameters structure (If the media type is 0xfa required when such data)
+         */
+        struct{
+            unsigned char sample_rate; /**<Sampling Rate 0=8000 1=12000 2=11025 3=16000 4=22050 5=24000 6=32000 7=44100 8=48000*/
+            unsigned char bit_rate; /**<Audio of bits*/
+            unsigned char channels; /**<Number of channels*/
+        }audio;
+    };
+    
+    unsigned int timestamp; /**<Timestamp, millisecond*/
+    unsigned int datetime; /**<Utc time the frame data, second grade*/
+    unsigned int size; /**<The length of the frame data*/
+}MEARIDEV_MEDIA_HEADER,*MEARIDEV_MEDIA_HEADER_PTR;
+
+typedef NS_ENUM(NSInteger, MeariDeviceStreamType) {
+    MeariDeviceStreamData = 0, /**<Media head type*/
+    MeariDeviceStreamVideo =  1,  /**<Video data type*/
+    MeariDeviceStreamAudio =  2,  /**<Audio data types*/
+    MeariDeviceStreamClose =  3,  /**<Close callback type*/
+    MeariDeviceStreamSeek  =  4,  /**<when you seek play,it will be called*/
+    MeariDeviceStreamPause =  5,  /**<when you pause play,it will be called*/
+    MeariDeviceStreamInTimeSleep =  6,  /**<when device are in time sleep mode,send me*/
+    MeariDeviceStreamInGEOSleep =  7,  /**<when device are in geo sleep mode,send me*/
+    MeariDeviceStreamInSleep =  8,  /**<when device are in sleep mode,send me*/
+    MeariDeviceStreamLeaveSleep =  9,
+    MeariDeviceStreamPlayMode =  10
+};
 #endif /* MeariEnum_h */

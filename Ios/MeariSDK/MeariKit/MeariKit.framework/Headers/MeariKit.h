@@ -41,9 +41,5 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 #import <MeariKit/MeariPlayView.h>
 
 #import <MeariKit/ppsplayer.h>
-#import <MeariKit/PPSGLView.h>
-#import <MeariKit/MeariCloudPlayer.h>
-#import <MeariKit/IJKMediaPlayback.h>
-#import <MeariKit/PPSVideoDrawable.h>
 
 #import <MeariKit/MeariDeviceActivator.h>

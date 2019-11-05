@@ -41,7 +41,7 @@ typedef void(^MeariDeviceSucess_Volume)(CGFloat volume);
 typedef void(^MeariDeviceSucess_RecordAutio)(NSString *filePath);
 typedef void(^MeariDeviceSucess_NetInfo)(MeariDeviceParamNetwork *info);
 typedef void(^MeariDeviceSucess_PlayBackLevel)(MeariDeviceLevel level);
-
+typedef void (^MeariDeviceStreamDataCallback)(u_int8_t* buffer,MeariDeviceStreamType type,MEARIDEV_MEDIA_HEADER_PTR header,int bufferSize);
 
 /**
  search mode for searching device
@@ -219,24 +219,24 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
 /**
  开始预览设备
 
- @param playView 播放视图控件
  @param HD 是否高清播放
  @param success 成功回调
+ @param streamCallback 码流回调
  @param failure 失败回调
  @param close 处于休眠模式，镜头关闭，返回值：休眠模式
  */
-- (void)startPreviewWithView:(MeariPlayView *)playView streamid:(BOOL)HD success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
+- (void)startPreview:(BOOL)HD success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
 
 /**
  开始预览设备
  
- @param playView 播放视图控件
- @param videoStream 视频质量
+ @param videoStream 视频码流类型
  @param success 成功回调
+ @param streamCallback 码流回调
  @param failure 失败回调
  @param close 处于休眠模式，镜头关闭，返回值：休眠模式
  */
-- (void)startPreviewWithView:(MeariPlayView *)playView videoStream: (MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
+- (void)startPreview2:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
 
 /**
  停止预览设备
@@ -250,12 +250,12 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
 /**
  切换高清标清
 
- @param playView 播放视图
- @param HD 是否高清播放
+ @param videoStream 视频码流类型
  @param success 成功回调
+ @param streamCallback 码流回调
  @param failure 失败回调
  */
-- (void)switchPreviewWithView:(MeariPlayView *)playView videoStream:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)switchPreview:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure;
 
 #pragma mark -- 回放
 
@@ -285,12 +285,12 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
 /**
  开始回放录像：同一个设备同一时间只能一个人查看回放录像
 
- @param playView 播放视图
  @param startTime 开始时间：格式为20171228102035
  @param success 成功回调
+ @param streamCallback 码流回调
  @param failure 失败回调
  */
-- (void)startPlackbackWithView:(MeariPlayView *)playView startTime:(NSString *)startTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)startPlayback:(NSString *)startTime success:(MeariDeviceSucess)success receiveStreamData:(MeariDeviceStreamDataCallback)streamCallback failure:(MeariDeviceFailure)failure;
 
 
 
@@ -310,7 +310,7 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
  @param success 成功回调
  @param failure 失败回调
  */
-- (void)seekPlackbackSDCardToTime:(NSString *)seekTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)seekPlaybackSDCardToTime:(NSString *)seekTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
@@ -393,11 +393,28 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
 /**
  开始语音对讲
 
+ @param isDefault 是否使用默认方式，默认走SDK对讲
  @param success 成功回调
  @param failure 失败回调
  */
-- (void)startVoiceTalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)startVoiceTalkDefault:(BOOL)isDefault success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
+/**
+ 
+ 音频每个声道的位数
+ mBitsPerChannel : 16;
+ 音频编码格式
+ mFormatID : kAudioFormatLinearPCM;
+ 音频采样率
+ mSampleRate : 8000.0;
+ 音频每个声道的帧数
+ mChannelsPerFrame : 1;
+ 
+ *@brief 如果不使用sdk默认对讲方式，需要手动发送音频数据
+ *@param[in] data pcm 数据
+ *@param[in] len  pcm 长度
+ */
+- (void)sendVoiceData:(uint8_t*)data length:(size_t)len;
 
 /**
  停止语音对讲
@@ -405,7 +422,7 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
  @param success 成功回调
  @param failure 失败回调
  */
-- (void)stopVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)stopVoicetalkDefault:(BOOL)isDefault success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
 
 /**

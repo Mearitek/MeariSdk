@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PPSGLView.h"
 
 @interface MeariPlayView : UIView
 
-@property (nonatomic, strong, readonly)PPSGLView *videoView;
+@property (nonatomic, strong, readonly)UIView *videoView;
 
 @end

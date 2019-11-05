@@ -8,11 +8,9 @@
 
 #import <Foundation/Foundation.h>
 typedef NS_ENUM(NSInteger, MeariDeviceType) {
-    MeariDeviceTypeNVR = 0, // nvr type
-    MeariDeviceTypeIpc = 1, // normal type ipc
+    MeariDeviceTypeNVR = 0,
+    MeariDeviceTypeIpc = 1,
 };
-
-// all SubType
 typedef NS_ENUM(NSInteger, MeariDeviceSubType) {
     MeariDeviceSubTypeNVR = 0,
     MeariDeviceSubTypeIpcCommon = 1,
@@ -24,195 +22,196 @@ typedef NS_ENUM(NSInteger, MeariDeviceSubType) {
 };
 
 typedef NS_ENUM(NSInteger, MeariDeviceAddStatus) {
-    MeariDeviceAddStatusSelf = 1, // Your device
-    MeariDeviceAddStatusUnShare, // Not shared
-    MeariDeviceAddStatusNone,    // Not added
-    MeariDeviceAddStatusShared, // Already shared
-    MeariDeviceAddStatusSharing, // Sharing
-    MeariDeviceAddStatusFailure // device abnormal
+    MeariDeviceAddStatusSelf = 1,
+    MeariDeviceAddStatusUnShare,
+    MeariDeviceAddStatusNone,
+    MeariDeviceAddStatusShared,
+    MeariDeviceAddStatusSharing,
+    MeariDeviceAddStatusFailure
 };
 typedef NS_ENUM(NSInteger, MeariDeviceLimitLevel) {
-    MeariDeviceLimitLevelNone, // normal
-    MeariDeviceLimitLevelForbidden, // Forbidden
+    MeariDeviceLimitLevelNone,
+    MeariDeviceLimitLevelForbidden,
 };
-typedef NS_ENUM(NSInteger, MeariDeviceVoiceTalkType) {//Voice intercom type
-    MeariDeviceVoiceTalkTypeNone         = 0,    //No speakers and microphone
-    MeariDeviceVoiceTalkTypeSpeekerOnly  = 1,    //Speaker only
-    MeariDeviceVoiceTalkTypeMicOnly      = 2,    //Only Mike
-    MeariDeviceVoiceTalkTypeHalfDuplex   = 3,    //Half duplex
-    MeariDeviceVoiceTalkTypeFullDuplex   = 4,    //Full duplex
+typedef NS_ENUM(NSInteger, MeariDeviceVoiceTalkType) {//设备语音对讲类型
+    MeariDeviceVoiceTalkTypeNone         = 0,    //没有扬声器和麦克
+    MeariDeviceVoiceTalkTypeSpeekerOnly  = 1,    //仅有扬声器
+    MeariDeviceVoiceTalkTypeMicOnly      = 2,    //仅有麦克
+    MeariDeviceVoiceTalkTypeHalfDuplex   = 3,    //半双工
+    MeariDeviceVoiceTalkTypeFullDuplex   = 4,    //全双工
 };
 typedef NS_ENUM(NSInteger, MeariDeviceCapabilityVSTType) {
-    MeariDeviceCapabilityVSTTypeNormal       = 0,    //HD/SD
-    MeariDeviceCapabilityVSTTypeOnlyHD       = 1     //HD
+    MeariDeviceCapabilityVSTTypeNormal       = 0,    //h_264高清/标清
+    MeariDeviceCapabilityVSTTypeOnlyHD       = 1     //h_264高清
 };
 typedef NS_ENUM (NSUInteger, MeariDeviceSupportBellType) {
-    MeariDeviceSupportBellTypeWireless, //Wireless bell is supported by default
-    MeariDeviceSupportBellTypeMachinery = 0b1, //mechanical bell
-    MeariDeviceSupportBellTypeWirelessBell = 0b10, //Wireless Bell
-    MeariDeviceSupportBellTypeWirelessEnable = 0b10000000, //Wireless enable
+    MeariDeviceSupportBellTypeWireless,       //默认支持无线铃铛
+    MeariDeviceSupportBellTypeMachinery = 0b1,//机械铃铛
+    MeariDeviceSupportBellTypeWirelessBell = 0b10,//无线铃铛
+    MeariDeviceSupportBellTypeWirelessEnable = 0b10000000,//无线使能
 };
-
 typedef NS_ENUM (NSUInteger, MeariDeviceLocalServerType) {
-    MeariDeviceLocalServerTypeChangePSW = 0b1, //Support password modification
-    MeariDeviceLocalServerTypeOnvif = 0b10, //Support Onvif
+    MeariDeviceLocalServerTypeChangePSW = 0b1,    //支持密码修改
+    MeariDeviceLocalServerTypeOnvif     = 0b10,   //支持Onvif
 };
 typedef NS_OPTIONS(NSUInteger, MeariDevicePeopleDetect) {
-    MeariDevicePeopleDetectEnable = 0b1, // Support People Detect
-    MeariDevicePeopleDetectBnddraw = 0b10, // Support People Detect Bnddraw
+    MeariDevicePeopleDetectEnable = 0b1, // 人形检测开关设置
+    MeariDevicePeopleDetectBnddraw = 0b10, // 画框开关设置
 };
 typedef NS_ENUM (NSUInteger, MeariDeviceDayNightType) {
-    MeariDeviceDayNightTypeAuto, // auto mode
-    MeariDeviceDayNightTypeDay, // day mode
-    MeariDeviceDayNightTypeNight // night mode
+    MeariDeviceDayNightTypeAuto,
+    MeariDeviceDayNightTypeDay,
+    MeariDeviceDayNightTypeNight
 };
 typedef NS_ENUM(NSInteger, MeariDeviceTokenType) {
-    MeariDeviceTokenTypeSmartWifi, // use SmartWifi Configure the network
-    MeariDeviceTokenTypeAP, // use ap Configure the network
-    MeariDeviceTokenTypeQRCode // use QRCode  Configure the network
+    MeariDeviceTokenTypeSmartWifi,
+    MeariDeviceTokenTypeAP,
+    MeariDeviceTokenTypeQRCode
 };
 
 typedef NS_ENUM (NSInteger, MeariDeviceCloudState) {
-    MeariDeviceCloudStateCloseCanTry = 0,      //Not open but can trial
-    MeariDeviceCloudStateCloseNotTry,          //Not open and cant trial
-    MeariDeviceCloudStateOpenNotOverDue,       //open
-    MeariDeviceCloudStateOpenOverDue           //expired
+    MeariDeviceCloudStateCloseCanTry = 0,      //未开通可试用
+    MeariDeviceCloudStateCloseNotTry,          //未开通不可试用
+    MeariDeviceCloudStateOpenNotOverDue,       //已开通
+    MeariDeviceCloudStateOpenOverDue           //已过期
 };
 
 typedef NS_ENUM (NSInteger, MeariDevicePirSensitivity) {
-    MeariDevicePirSensitivityNone = 0, // not support
-    MeariDevicePirSensitivityAll = 1, // Support all
-    MeariDevicePirSensitivityOnlySwitch = 2,//Support enable
-    MeariDevicePirSensitivitySwitchAndHighLow= 4,//Support enable And high,low level
+    MeariDevicePirSensitivityNone = 0, // 不支持
+    MeariDevicePirSensitivityAll = 1, // 支持PIR使能开关+设置选项(高中低)
+    MeariDevicePirSensitivityOnlySwitch = 2,//只支持PIR的使能开关
+    MeariDevicePirSensitivitySwitchAndHighLow= 4,//支持PIR使能开关+设置选项(高低)
 };
 
 @interface MeariDeviceInfoCapabilityFunc : MeariBaseModel
-@property (nonatomic, assign) MeariDeviceVoiceTalkType vtk; //Voice intercom type
-@property (nonatomic, assign) NSInteger fcr;               //Face recognition
-@property (nonatomic, assign) NSInteger dcb;               //Decibel alarm
-@property (nonatomic, assign) NSInteger md;                //Motion Detection
-@property (nonatomic, assign) NSInteger ptz;               //PTZ
-@property (nonatomic, assign) NSInteger tmpr;              //Temperature Sensor
-@property (nonatomic, assign) NSInteger hmd;               //Humidity Sensor
-@property (nonatomic, assign) NSInteger pir;               //Body detection
-@property (nonatomic, assign) NSInteger cst;               //Cloud storage
-/** Signal strength*/
+/** 语音对讲类型 */
+@property (nonatomic, assign) MeariDeviceVoiceTalkType vtk;
+/** 人脸识别 */
+@property (nonatomic, assign) NSInteger fcr;
+/** 分贝报警 */
+@property (nonatomic, assign) NSInteger dcb;
+/** 移动侦测 */
+@property (nonatomic, assign) NSInteger md;
+/** 云台 */
+@property (nonatomic, assign) NSInteger ptz;
+/** 温度传感器 */
+@property (nonatomic, assign) NSInteger tmpr;
+/** 湿度传感器 */
+@property (nonatomic, assign) NSInteger hmd;
+/** 人体侦测 */
+@property (nonatomic, assign) NSInteger pir;
+/** 云存储 */
+@property (nonatomic, assign) NSInteger cst;
+/** 信号强度*/
 @property (nonatomic, assign) NSInteger nst;
-/** Playback recording settings*/
+/** 回放录像设置*/
 @property (nonatomic, assign) NSInteger evs;
-/** Battery lock*/
+/** 电池锁*/
 @property (nonatomic, assign) NSInteger btl;
-/** Cloud Storage Switch*/
+/** 云存储开关*/
 @property (nonatomic, assign) NSInteger cse;
-/** Day and night mode*/
+/** 白天黑夜模式*/
 @property (nonatomic, assign) NSInteger dnm;
-/** Second generation cloud storage*/
+/** 二代云存储*/
 @property (nonatomic, assign) NSInteger cs2;
-/** High standard definition*/
+/** 高标清*/
 @property (nonatomic, assign) MeariDeviceCapabilityVSTType vst;
-/** Multi-rate setting*/
+/** 多码率设置*/
 @property (nonatomic, assign) NSInteger bps;
-/** led light*/
+/** led灯*/
 @property (nonatomic, assign) NSInteger led;
-/** onvif function*/
+/** onvif功能*/
 @property (nonatomic, assign) NSInteger svc;
-/** Support bell type*/
+/** 支持铃铛类型*/
 @property (nonatomic, assign) NSInteger rng;
-/** Lamp camera function */
+/** 灯具摄像头功能 */
 @property (nonatomic, assign) NSInteger flt;
-/** Power Management*/
+/** 功耗管理*/
 @property (nonatomic, assign) NSInteger pwm;
-/** sd card*/
+/** sd卡*/
 @property (nonatomic, assign) NSInteger sd;
-/** version upgrade*/
+/** 版本升级*/
 @property (nonatomic, assign) NSInteger ota;
-/** Host Message*/
+/** 主人留言*/
 @property (nonatomic, assign) NSInteger hms;
-/** flip */
+/** 翻转*/
 @property (nonatomic, assign) NSInteger flp;
-/** Shadow Agreement*/
+/** 影子协议*/
 @property (nonatomic, assign) NSInteger shd;
-/** Door lock*/
+/** 门锁*/
 @property (nonatomic, assign) NSInteger dlk;
-/** relay */
+/** 继电器*/
 @property (nonatomic, assign) NSInteger rel;
-/** Open the door*/
+/** 开门*/
 @property (nonatomic, assign) NSInteger dor;
-/** Turn on the light*/
+/** 开灯*/
 @property (nonatomic, assign) NSInteger lgt;
-/** Sleep mode*/
+/** 休眠模式*/
 @property (nonatomic, assign) NSInteger slp;
-/** Switch the main stream */
+/** 切换主码流*/
 @property (nonatomic, assign) NSInteger vec;
-/** Cry Detect*/
+/** 哭声检测*/
 @property (nonatomic, assign) NSInteger bcd;
-/** People Track*/
+/** 人体跟踪*/
 @property (nonatomic, assign) NSInteger ptr;
-/** People Detect*/
+/** 人形检测*/
 @property (nonatomic, assign) NSInteger pdt;
 @end
 
 
 @interface MeariDeviceInfoCapability: MeariBaseModel
-@property (nonatomic, assign) NSInteger ver;               //Protocol version number
-@property (nonatomic, copy) NSString *cat;                 //device type
-@property (nonatomic, strong) MeariDeviceInfoCapabilityFunc *caps;//Supported features
+/** 协议版本号 */
+@property (nonatomic, assign) NSInteger ver;
+/** 设备类型 */
+@property (nonatomic, copy) NSString *cat;
+/** 支持的功能 */
+@property (nonatomic, strong) MeariDeviceInfoCapabilityFunc *caps;
 @end
 
 #import "MeariDeviceParam.h"
 @interface MeariDeviceInfo : MeariBaseModel
+/** 设备类型总类 */
 @property (nonatomic, assign) MeariDeviceType type;
-/** device all type */
+/** 设备类型子类 */
 @property (nonatomic, assign) MeariDeviceSubType subType;
-/** device add status */
+/** 设备添加状态 */
 @property (nonatomic, assign) MeariDeviceAddStatus addStatus;
-/** Device auto-bind */
+/** 设备自动绑定 */
 @property (nonatomic, assign) BOOL autobind;
 
+/** 设备被添加过 */
 @property (nonatomic, assign) BOOL hasAdd;
 
 @property (nonatomic, assign) MeariDeviceLimitLevel limitLevel;
-/** cloud storage State  */
 @property (nonatomic, assign) MeariDeviceCloudState cloudState;
-/** device capability */
 @property (nonatomic, strong) MeariDeviceInfoCapability *capability;
 @property (nonatomic, assign) MeariDeviceSleepmode sleepmode;
-/** device ID */
+/** 设备编号 */
 @property (nonatomic, assign) NSInteger ID;
-/** userID */
 @property (nonatomic, assign) NSInteger userID;
-/** tp */
 @property (nonatomic, copy) NSString *tp;
-/** device uuid */
 @property (nonatomic, copy) NSString *uuid;
-/** device sn */
 @property (nonatomic, copy) NSString *sn;
-/** p2p number */
+/**  p2p信息 */
 @property (nonatomic, copy) NSString *p2p;
-/** p2pInit */
 @property (nonatomic, copy) NSString *p2pInit;
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, copy) NSString *connectName;
-/** device nickname */
+/** 设备昵称 */
 @property (nonatomic, copy) NSString *nickname;
-/** device logo */
 @property (nonatomic, copy) NSString *iconUrl;
-/** gray icon */
 @property (nonatomic, copy) NSString *grayIconUrl;
-/** host message url */
+/** 主人留言音频路径 */
 @property (nonatomic, copy) NSString *bellVoice;
-/** modelName */
 @property (nonatomic, copy) NSString *modelName;
-/** nvr's key,user to connect nvr */
+/** 设备绑定的nvr设备信息 */
 @property (nonatomic, assign) NSInteger nvrPort;
-/** nvr's ID */
 @property (nonatomic, assign) NSInteger nvrID;
 @property (nonatomic, copy) NSString *nvrKey;
 @property (nonatomic, copy) NSString *nvrUUID;
 @property (nonatomic, copy) NSString *nvrSn;
-
+/** 其他 */
 @property (nonatomic, copy) NSString *capabilityStr;
-/** current device userAccount*/
 @property (nonatomic, copy) NSString *userAccount;
 @property (nonatomic, copy) NSString *produceAuth;
 @property (nonatomic, copy) NSString *platform;
@@ -220,24 +219,27 @@ typedef NS_ENUM (NSInteger, MeariDevicePirSensitivity) {
 @property (nonatomic, copy) NSString *mac;
 @property (nonatomic, copy) NSString *wifiSsid;
 @property (nonatomic, copy) NSString *wifiBssid;
-/** whether to close device push */
 @property (nonatomic, assign) NSInteger closePush;
 @property (nonatomic, assign) NSInteger protocolVersion;
 @property (nonatomic, assign) BOOL iotDevice;
+
+/** 地区 */
 @property (nonatomic, strong) NSString *region;
+
 
 @property (nonatomic, copy) NSString *latitude;
 @property (nonatomic, copy) NSString *longitude;
 @property (nonatomic, copy) NSString *radius;
-/** Whether device is shared by friends */
+
+/** 是否来自好友分享 */
 @property (nonatomic, assign) BOOL shared;
-/** Whether there is a message from device  */
+/** 是否有报警消息 */
 @property (nonatomic, assign) BOOL hasMsg;
-/** Whether device is online *//** tp */
+/** 是否在线 */
 @property (nonatomic, assign) BOOL online;
-/** whether device need update */
+/** 是否需要升级 */
 @property (nonatomic, assign) BOOL needUpdate;
-/** whether device need force Update */
+/** 是否需要强制升级 */
 @property (nonatomic, assign) BOOL needForceUpdate;
 
 @end
