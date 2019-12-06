@@ -33,6 +33,19 @@
     [WYPushManager dealPushInfo:userInfo userClicked:application.applicationState != UIApplicationStateActive];
 }
 
-
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    //MeariKit will mute when the iphone in mute status. Use this code the iphone's mute status not effect MeariKit play sound.
+    AVAudioSessionRouteDescription *currentRount = [AVAudioSession sharedInstance].currentRoute;
+    for (AVAudioSessionPortDescription* outputPortDesc in [currentRount outputs]) {
+        if([outputPortDesc.portType isEqualToString:AVAudioSessionPortBluetoothA2DP] || [outputPortDesc.portType isEqualToString:AVAudioSessionPortHeadphones]){
+            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        } else {
+            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        }
+    }
+    if ([AVAudioSession sharedInstance].category == AVAudioSessionCategorySoloAmbient) {
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+    }
+}
 
 @end
