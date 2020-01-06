@@ -11,9 +11,8 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
-import android.support.multidex.MultiDex;
+import androidx.multidex.MultiDex;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -54,7 +53,6 @@ public class MeariSmartApp extends Application implements Application.ActivityLi
     }
 
     private void initSdk() {
-//        MeariSdk.init(this,8,new MeariMessage(),false );
         MeariSdk.init(this, new MeariMessage(),false);
 //        MeariSdk.getInstance().setPrivateCloudUrl("https://pre-apis-cn-hangzhou.meari.com.cn");
         MeariSdk.getInstance().setDebug(true);

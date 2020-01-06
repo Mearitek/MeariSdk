@@ -2,7 +2,7 @@ package com.meari.test.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.meari.test.R;

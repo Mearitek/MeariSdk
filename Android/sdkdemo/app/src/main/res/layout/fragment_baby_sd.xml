@@ -284,13 +284,13 @@
                         android:src="@drawable/btn_calendar_next"
                         android:visibility="gone" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/time_event_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toLeftOf="@id/calendarRight"
                         android:layout_toRightOf="@id/calendarLeft"
-                        android:foregroundGravity="center"></android.support.v7.widget.RecyclerView>
+                        android:foregroundGravity="center"></androidx.recyclerview.widget.RecyclerView>
 
 
                 </RelativeLayout>

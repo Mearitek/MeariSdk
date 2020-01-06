@@ -6,7 +6,7 @@ import android.content.IntentFilter;
 import android.net.wifi.WifiInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.widget.TextView;
 
 import com.meari.sdk.bean.NVRInfo;

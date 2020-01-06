@@ -73,7 +73,7 @@
 
     <RelativeLayout
         android:id="@+id/action_bar_rl"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@id/title">
@@ -85,7 +85,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp16"
             android:gravity="right"
-            android:singleLine="true"
+           android:singleLine="true"
             android:text="@string/save"
             android:textColor="@color/font_dark"
             android:textSize="@dimen/sp16" />

@@ -1,8 +1,8 @@
 package com.meari.test;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.meari.sdk.bean.NVRInfo;
 import com.meari.test.utils.BaseActivity;

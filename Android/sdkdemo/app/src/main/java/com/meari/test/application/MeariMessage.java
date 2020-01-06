@@ -10,8 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.meari.sdk.callback.IMessageCallback;
 import com.meari.sdk.common.ProtocalConstants;

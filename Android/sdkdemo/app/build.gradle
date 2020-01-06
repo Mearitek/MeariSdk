@@ -7,7 +7,7 @@ android {
         targetSdkVersion 28
         versionCode 4
         versionName "2.0.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
     buildTypes {
@@ -36,26 +36,26 @@ repositories {
 }
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.facebook.fresco:fresco:0.14.1'
     testImplementation 'junit:junit:4.12'
-    implementation('com.jakewharton:butterknife:8.8.1') {
-        exclude group: 'com.android.support'
-    }
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.jakewharton:butterknife:10.2.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'com.facebook.fresco:animated-gif:1.0'
-    implementation 'com.android.support:support-annotations:27.0.2'
-    //=====依赖库 必要 ====//
-    implementation 'com.squareup.okhttp3:okhttp:3.7.0'
-    implementation 'com.squareup.okio:okio:1.9.0'
+    implementation 'androidx.annotation:annotation:1.0.0'
+
     //    implementation(name: 'mearisdk_1.1.2', ext: 'aar')
     implementation(name: 'takephoto', ext: 'aar')
-    implementation(name: 'mearisdk-2.0.0', ext: 'aar')
     implementation 'com.aliyun.dpa:oss-android-sdk:2.8.4'
-    implementation 'com.alibaba:fastjson:1.2.57'
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
-    implementation 'com.google.zxing:core:3.3.3'
 //    implementation project(':library')
+//    implementation project(':mearisdk')
+    //=====依赖库 必要 ====//
+    implementation(name: 'mearisdk-1.0.0', ext: 'aar')
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.squareup.okio:okio:1.14.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'com.alibaba:fastjson:1.2.57'
+    implementation 'com.google.zxing:core:3.3.3'
 }

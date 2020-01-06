@@ -57,11 +57,13 @@ android {
     }
 }
 dependencies {
-    compile(name: 'mearisdk-1.0.0', ext: 'aar')
+    implementation(name: 'mearisdk-1.0.0', ext: 'aar')
     //=====依赖库 必要 ====//
-    compile 'com.squareup.okhttp3:okhttp:3.7.0'
-    compile 'com.squareup.okio:okio:1.9.0'
-    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.squareup.okio:okio:1.14.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'com.alibaba:fastjson:1.2.57'
+    implementation 'com.google.zxing:core:3.3.3'
 }
 ```
 

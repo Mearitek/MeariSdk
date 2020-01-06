@@ -8,7 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -24,9 +24,7 @@ import com.meari.sdk.callback.IStringResultCallback;
 import com.meari.sdk.common.IotConstants;
 import com.meari.sdk.json.BaseJSONObject;
 import com.meari.sdk.preferences.ProtocalConstants;
-import com.meari.test.common.StringConstants;
 import com.meari.test.utils.BaseActivity;
-import com.meari.test.utils.CommonUtils;
 import com.meari.test.widget.SwitchButton;
 import com.ppstrong.ppsplayer.CameraPlayer;
 

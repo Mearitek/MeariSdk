@@ -6,8 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.meari.sdk.MeariSmartSdk;
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.bean.CameraInfo;
 import com.meari.sdk.callback.IAddDeviceCallback;
@@ -42,7 +41,6 @@ import com.meari.test.utils.NetUtil;
 import com.meari.test.widget.RoundProgressBar;
 import com.ppstrong.ppsplayer.BaseDeviceInfo;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
