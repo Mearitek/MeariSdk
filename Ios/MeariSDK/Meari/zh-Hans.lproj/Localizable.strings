@@ -10,6 +10,8 @@
 "ALARM MESSAGES" = "报警消息";
 "Add Camera" = "添加摄像头";
 "Add Device" = "添加设备";
+"des_message_answered" = "Answered call";
+"des_message_missed" = "missed call";
 "Add NVR" = "添加NVR";
 "Agree" = "同意";
 "AgreeAddFriend" = "已同意添加好友";

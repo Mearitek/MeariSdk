@@ -11,6 +11,13 @@
 
 static char *kwy_observeredKeypaths = "kwy_observeredKeypaths";
 @implementation UIViewController (Extension)
+- (void)setCamera:(MeariDevice *)camera {
+    objc_setAssociatedObject(self, @selector(camera), camera, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+- (MeariDevice *)camera {
+    return objc_getAssociatedObject(self, @selector(camera));
+}
+
 /**
  KVO
  */
@@ -89,6 +96,8 @@ static char *kwy_observeredKeypaths = "kwy_observeredKeypaths";
 #import "WYCameraSettingShareVC.h"
 #import "WYCameraSettingNVRVC.h"
 #import "WYCameraSettingVC.h"
+#import "WYCameraSettingSleepOverTimeVC.h"
+#import "WYCameraSettingMessageBoardVC.h"
 /** Bell **/
 #import "WYDoorBellSettingBellVolumeVC.h"
 #import "WYDoorBellSettingHostMessageVC.h"
@@ -153,6 +162,8 @@ static NSDictionary *wy_vcs = nil;
        @(WYVCTypeCameraSettingShare)             : WY_ClassName(WYCameraSettingShareVC),
        @(WYVCTypeCameraSettingNVR)               : WY_ClassName(WYCameraSettingNVRVC),
        @(WYVCTypeCameraSetting)                  : WY_ClassName(WYCameraSettingVC),
+       @(WYVCTypeCameraSettingSleepOverTime) : WY_ClassName(WYCameraSettingSleepOverTimeVC),
+       @(WYVCTypeCameraSettingMessageBoard):WY_ClassName(WYCameraSettingMessageBoardVC),
        @(WYVCTypeNVRInstall)                     : WY_ClassName(WYNVRInstallVC),
        @(WYVCTypeNVRSearch)                      : WY_ClassName(WYNVRSearchVC),
        @(WYVCTypeNVRSetting)                     : WY_ClassName(WYNVRSettingVC),

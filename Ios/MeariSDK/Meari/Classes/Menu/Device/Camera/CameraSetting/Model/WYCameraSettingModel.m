@@ -34,6 +34,27 @@
                                                type:WYSettingCellTypeOwner
                                           textColor:WY_FontColor_Black];
 }
++ (instancetype)clearAllVistorMsgModel {
+    return [WYCameraSettingModel modelWithImageName:@"nav_delete_highlighted"
+                                               text:WYLocalString(@"setting_clear_record")
+                                       detailedText:nil
+                                               type:WYSettingCellTypeClearRecords
+                                          textColor:WY_FontColor_Black];
+}
++ (instancetype)sleepOverTimeModel {
+    return [WYCameraSettingModel modelWithImageName:@""
+                                               text:WYLocalString(@"Sleep Over Time")
+                                       detailedText:nil
+                                               type:WYSettingCellTypeSleepOverTime
+                                          textColor:WY_FontColor_Black];
+}
++ (instancetype)messageBoardModel {
+    return [WYCameraSettingModel modelWithImageName:@"img_doorbell_host_message"
+                                               text:WYLocalString(@"device_setting_message_board")
+                                       detailedText:nil
+                                               type:WYSettingCellTypeMessageBoard
+                                          textColor:WY_FontColor_Black];
+}
 + (instancetype)snModel {
     return [WYCameraSettingModel modelWithImageName:nil
                                                text:WYLocalString(@"SN")

@@ -27,5 +27,7 @@
 + (NSString *)wy_videoFileWithSN:(NSString *)sn;//录像
 + (NSString *)wy_photoFileWithSN:(NSString *)sn;//截图
 
++ (void)renameFileOriginPath:(NSString *)originPath newFilePath:(NSString *)path;
+
 
 @end

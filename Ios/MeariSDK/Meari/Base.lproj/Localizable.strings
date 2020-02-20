@@ -141,6 +141,10 @@
 "READ ALL" = "READ ALL";
 "READY TO GO" = "READY TO GO";
 "REC" = "REC";
+"des_message_answered" = "Answered call";
+"des_message_missed" = "missed call";
+"alert_delete_all_voice_record" = "Are you sure you want to delete all visitor records?";
+"setting_clear_record" = "Clear visitor record";
 "REMOVE CAMERA" = "REMOVE CAMERA";
 "RETURN LIST" = "RETURN LIST";
 "ReceiveAlarmPush" = "Receive alarm message";

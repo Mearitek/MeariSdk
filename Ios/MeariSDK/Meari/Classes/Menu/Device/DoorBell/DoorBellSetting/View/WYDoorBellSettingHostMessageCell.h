@@ -7,9 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+@class WYDoorBellSettingHostMessageCell;
+@protocol WYDoorBellSettingHostMessageCellDelegate <NSObject>
+
+//- (void)hostMessageCell:(WYDoorBellSettingHostMessageCell *)cell play:(UIButton *)playBtn;
+
+- (void)hostMessageCell:(WYDoorBellSettingHostMessageCell *)cell delete:(UIButton *)playBtn;
+@end
 
 @interface WYDoorBellSettingHostMessageCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UIButton *deleteBtn;
+@property (weak, nonatomic) IBOutlet UIImageView *playIcon;
+@property (nonatomic, assign) BOOL play;
+
+@property (nonatomic, weak) id <WYDoorBellSettingHostMessageCellDelegate>delegate;
 
 @end

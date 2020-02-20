@@ -8,26 +8,28 @@
 
 #import "WYDoorBellSettingHostMessageAudioView.h"
 
-@interface WYDoorBellSettingHostMessageAudioView ()
-{
+@interface WYDoorBellSettingHostMessageAudioView () {
     NSInteger recordTime;
+    CGFloat _pressTime;
     CGFloat recordLimitTime;
     BOOL hasAudio;
     BOOL _isPlaying;
 }
 @property (nonatomic, strong) WYProgressCircleView *progressCircleView;
 @property (nonatomic, strong) NSTimer *recordTimer;
+@property (nonatomic, strong) NSTimer *pressTimer;
 @property (nonatomic,   weak) UIButton *audioBtn;
 @property (nonatomic,   weak) UIButton *cancelBtn;
 @property (nonatomic,   weak) UIButton *checkBtn;
-@property (nonatomic,   weak) UILabel  *desLabel;
+@property (nonatomic,   weak) UILabel *desLabel;
+@property (nonatomic,   weak) UILabel *timeLabel;
+@property (nonatomic,   assign) BOOL hasCallback;
 
 @end
 
 @implementation WYDoorBellSettingHostMessageAudioView
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         [self setInit];
@@ -37,35 +39,43 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self.desLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self);
+        make.top.equalTo(self.audioBtn.mas_bottom).equalTo(@10);
         make.leading.equalTo(self).offset(30);
         make.trailing.equalTo(self).offset(-30);
     }];
-    [self.cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self);
-        make.left.equalTo(@(WY_ScreenWidth/8.0));
-        make.size.mas_equalTo(CGSizeMake(50, 50));
+    //    [self.cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.centerY.equalTo(self);
+    //        make.leading.equalTo(@(WY_ScreenWidth / 8.0));
+    //        make.size.mas_equalTo(CGSizeMake(50, 50));
+    //    }];
+    
+    [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.audioBtn.mas_top).equalTo(@-20);
+        make.centerX.equalTo(self);
     }];
     
     [self.progressCircleView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
         make.centerY.equalTo(self).offset(5);
-        make.size.mas_equalTo(CGSizeMake(135, 135));
+        make.size.mas_equalTo(CGSizeMake(100, 100));
     }];
     [self.audioBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.progressCircleView);
         make.size.mas_equalTo(CGSizeMake(85, 85));
     }];
-    [self.checkBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.trailing.equalTo(self).with.offset(-WY_ScreenWidth/8.0);
-        make.centerY.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(50, 50));
-    }];
+    //    [self.checkBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.trailing.equalTo(self).with.offset(-WY_ScreenWidth / 8.0);
+    //        make.centerY.equalTo(self);
+    //        make.size.mas_equalTo(CGSizeMake(50, 50));
+    //    }];
     [self.audioBtn.superview layoutIfNeeded];
-    self.audioBtn.layer.cornerRadius =  self.audioBtn.height/2;
+    self.audioBtn.layer.cornerRadius =  self.audioBtn.height / 2;
 }
 - (void)setInit {
-    recordLimitTime = 30.0;
+    recordLimitTime = 10.0;
+}
+- (void)setRecordLimitTime:(float)time{
+    recordLimitTime = time;
 }
 - (void)setEnableRecord:(BOOL)enableRecord {
     _enableRecord = enableRecord;
@@ -73,34 +83,76 @@
 }
 - (void)startRecord {
     if (hasAudio) return;
+    _hasCallback = NO;
+    self.timeLabel.text = @"0:00";
     if ([self.delegate respondsToSelector:@selector(HostMessageAudioView:startRecordButton:)]) {
         [self.delegate HostMessageAudioView:self startRecordButton:self.audioBtn];
     }
     if (!self.microphoneAuth) return;
     hasAudio = YES;
-    [self.audioBtn showZoomAnimation];
+    self.timeLabel.hidden = NO;
+    //    [self.audioBtn showZoomAnimation];
     self.progressCircleView.hidden = NO;
     [self recordTimer];
 }
+#pragma mark - TimerAction
 - (void)timerToRecord:(id)sender {
     recordTime++;
     self.progressCircleView.progress = (recordTime/10.0)/recordLimitTime;
-    if (recordTime/10.0 >= recordLimitTime) {
-        [self stopRecord];
+    
+    self.timeLabel.text = [NSString stringWithFormat:@"0:%02ld", (long int)ceilf(recordTime / 10.0)];
+    if (recordTime/10.0 >= recordLimitTime-1) {
+        if (!_hasCallback) {
+            [self stopRecordBeforeOneSecond];
+        }
+    }
+    if (recordTime / 10.0 >= recordLimitTime) {
+        [self stopRecordAfterOneSecond];
+    }
+}
+- (void)timerToPress:(id)sender {
+    _pressTime += 0.1;
+    if (_pressTime >= 0.8) {
+        [self startRecord];
     }
 }
 - (void)stopRecord {
     if ([self.delegate respondsToSelector:@selector(HostMessageAudioView:stopRecordButton:)]) {
-        [self.delegate HostMessageAudioView:self stopRecordButton:self.audioBtn];
+        if (!_hasCallback) {
+            [self.delegate HostMessageAudioView:self stopRecordButton:self.audioBtn];
+        }
     }
-    [self.audioBtn hideZoomAnimation];
+    self.timeLabel.hidden = YES;
+    //    [self.audioBtn hideZoomAnimation];
     self.cancelBtn.hidden = self.checkBtn.hidden = NO;
-    self.audioBtn.wy_normalImage = [UIImage imageNamed:@"btn_doorbell_hostMessage_play"];
+    //    self.audioBtn.wy_normalImage = [UIImage imageNamed:@"btn_doorbell_hostMessage_play"];
     recordTime = 0;
     self.progressCircleView.progress = 0;
     self.progressCircleView.hidden = YES;
     [self.recordTimer invalidate];
     _recordTimer = nil;
+    hasAudio = NO;
+}
+//为了 限制录音文件大小绝对小于30秒
+- (void)stopRecordBeforeOneSecond {
+    [_pressTimer invalidate];
+    _pressTimer = nil;
+    if ([self.delegate respondsToSelector:@selector(HostMessageAudioView:stopRecordButton:)]) {
+        _hasCallback = YES;
+        [self.delegate HostMessageAudioView:self stopRecordButton:self.audioBtn];
+    }
+}
+- (void)stopRecordAfterOneSecond {
+    self.timeLabel.hidden = YES;
+    //    [self.audioBtn hideZoomAnimation];
+    self.cancelBtn.hidden = self.checkBtn.hidden = NO;
+    //    self.audioBtn.wy_normalImage = [UIImage imageNamed:@"btn_doorbell_hostMessage_play"];
+    recordTime = 0;
+    self.progressCircleView.progress = 0;
+    self.progressCircleView.hidden = YES;
+    [self.recordTimer invalidate];
+    _recordTimer = nil;
+    hasAudio = NO;
 }
 - (void)playAudioAction:(UIButton *)sender {
     if (self.progressCircleView.isHidden && hasAudio && !_isPlaying) {
@@ -111,15 +163,43 @@
         [self.audioBtn showRippleAnimation];
     }
 }
-
-
 #pragma mark - Action
 - (void)audioBtnAction:(UIGestureRecognizer *)gesture {
-    if (gesture.state == UIGestureRecognizerStateBegan ) {
+    if (gesture.state == UIGestureRecognizerStateBegan) {
         [self startRecord];
-    } else if(gesture.state == UIGestureRecognizerStateEnded && self.microphoneAuth) {
+    } else if (gesture.state == UIGestureRecognizerStateEnded && self.microphoneAuth) {
         [self stopRecord];
     }
+}
+- (void)offsetButtonTouchBegin:(id)sender {
+    WY_WeakSelf
+    BOOL exit = NO;
+    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
+    if (status == AVAuthorizationStatusNotDetermined ) {
+        exit = YES;
+    }
+    [WYAuthorityManager checkAuthorityOfMicrophoneWithAlert:^{
+        if (!hasAudio && !exit) {
+            //            WYLog(@"开始计时");
+            [weakSelf pressTimer];
+        }
+    }];
+}
+- (void)offsetButtonTouchEnd:(id)sender {
+    if (_pressTime <= 0.5 && hasAudio) {
+        //        if (self.progressCircleView.isHidden && hasAudio && !_isPlaying) {
+        //            if ([self.delegate respondsToSelector:@selector(HostMessageAudioView:didTapPlayButton:)]) {
+        //                _isPlaying = YES;
+        //                [self.delegate HostMessageAudioView:self didTapPlayButton:sender];
+        //            }
+        //            [self.audioBtn showRippleAnimation];
+        //        }
+    } else if (_pressTime > 0.8) {
+        [self stopRecord];
+    }
+    _pressTime = 0;
+    [_pressTimer invalidate];
+    _pressTimer = nil;
 }
 - (void)cancelAction:(UIButton *)sender {
     if ([self.delegate respondsToSelector:@selector(HostMessageAudioView:didTapCancelButton:)]) {
@@ -140,6 +220,7 @@
 //结束试听
 - (void)cancelAudition {
     hasAudio = NO;
+    _isPlaying = NO;
     [self.audioBtn hideRippleAnimation];
     self.audioBtn.wy_normalImage = [UIImage imageNamed:@"btn_doorbell_hostMessage_input"];
     self.cancelBtn.hidden = self.checkBtn.hidden = YES;
@@ -151,8 +232,11 @@
         _audioBtn = btn;
         btn.wy_normalImage = [UIImage imageNamed:@"btn_doorbell_hostMessage_input"];
         btn.wy_disabledImage = [UIImage imageNamed:@"btn_doorbell_hostMessage_input_disabled"];
-        [btn addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(audioBtnAction:)]];
-        [btn addTarget:self action:@selector(playAudioAction:) forControlEvents:UIControlEventTouchUpInside];
+        //        [btn addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(audioBtnAction:)]];
+        //        [btn addTarget:self action:@selector(playAudioAction:) forControlEvents:UIControlEventTouchUpInside];
+        [btn addTarget:self action:@selector(offsetButtonTouchEnd:)forControlEvents:UIControlEventTouchUpInside];
+        [btn addTarget:self action:@selector(offsetButtonTouchBegin:)forControlEvents:UIControlEventTouchDown];
+        [btn addTarget:self action:@selector(offsetButtonTouchEnd:)forControlEvents:UIControlEventTouchUpOutside];
         [self addSubview:btn];
     }
     return _audioBtn;
@@ -199,11 +283,18 @@
     }
     return _recordTimer;
 }
+- (NSTimer *)pressTimer {
+    if (!_pressTimer) {
+        _pressTimer = [NSTimer timerInLoopWithInterval:.1f target:self selector:@selector(timerToPress:)];
+    }
+    return _pressTimer;
+}
 - (UILabel *)desLabel {
     if (!_desLabel) {
         UILabel *label = [UILabel new];
         label.numberOfLines = 0;
         label.textAlignment = NSTextAlignmentCenter;
+        label.font = WYFontNormal(16);
         [label ajustedHeightWithWidth:WY_ScreenWidth - 60];
         label.text = WYLocalString(@"des_hostMessage");
         label.textColor = WY_FontColor_Gray;
@@ -212,4 +303,20 @@
     }
     return _desLabel;
 }
+- (UILabel *)timeLabel {
+    if (!_timeLabel) {
+        UILabel *label = [UILabel new];
+        label.numberOfLines = 0;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.text = @"0:00";
+        label.textColor = WY_FontColor_Black;
+        label.font = WYFontNormal(15);
+        _timeLabel = label;
+        label.hidden = YES;
+        [self addSubview:label];
+    }
+    return _timeLabel;
+}
+
+
 @end

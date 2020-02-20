@@ -36,6 +36,8 @@ typedef NS_ENUM(NSInteger, WYVCType) {
     WYVCTypeCameraSettingShare,
     WYVCTypeCameraSettingNVR,
     WYVCTypeCameraSetting,
+    WYVCTypeCameraSettingMessageBoard,
+    WYVCTypeCameraSettingSleepOverTime,
     /** NVR **/
     WYVCTypeNVRInstall,
     WYVCTypeNVRSearch,

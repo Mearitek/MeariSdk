@@ -40,6 +40,9 @@
     };
     [self startConnectSuccess:^{
         notificationConnectSuccess(YES, nil);
+    } abnormalDisconnect:^{
+        NSError *error = [[NSError alloc]initWithDomain:@"abnormal Disconnect" code:-1014 userInfo:nil];
+        notificationConnectSuccess(YES, nil);
     } failure:^(NSError *error) {
         notificationConnectSuccess(NO, @"打洞失败");
     }];

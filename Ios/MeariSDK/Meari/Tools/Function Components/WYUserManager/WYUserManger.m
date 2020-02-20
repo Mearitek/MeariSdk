@@ -79,6 +79,7 @@
     model.p2pInit = msg.data.p2pInit;
     model.deviceID = msg.data.deviceID;
     model.pushType = WYPushTypeVoiceCall;
+    model.subType = msg.data.devSubType;
     [WY_FaceTime showWithType:WYFaceTimeType_mqtt];
     WY_FaceTime.pushModel = model;
     WY_FaceTime.MQTTID = msg.msgid;

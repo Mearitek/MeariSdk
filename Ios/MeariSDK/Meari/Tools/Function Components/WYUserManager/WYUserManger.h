@@ -17,7 +17,7 @@
 @property (nonatomic, copy, readonly) NSString *avatar;
 @property (nonatomic, copy, readonly) NSString *nickname;
 
-
+@property (nonatomic, copy) NSString *configToken;
 @property (nonatomic, copy)NSString *previousUserAccount;
 @property (nonatomic, copy)NSString *pushAlias;
 

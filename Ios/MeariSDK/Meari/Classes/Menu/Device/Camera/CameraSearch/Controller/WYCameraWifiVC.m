@@ -58,7 +58,7 @@
     self.ssidTextField.textColor = WY_FontColor_Gray;
     self.ssidTextField.font = WYFont_Text_M_Normal;
     self.ssidTextField.delegate = self;
-    [self.ssidTextField setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
+//    [self.ssidTextField setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
     self.pwdTextField.placeholder = WYLocalString(@"wifi_pwd_placeholder");
     self.pwdTextField.textColor = WY_FontColor_Gray;
     self.pwdTextField.font = WYFont_Text_M_Normal;
@@ -68,7 +68,7 @@
     CGFloat pwdW = roundf([self.pwdLabel.text sizeWithAttributes:@{NSFontAttributeName:self.pwdLabel.font}].width+1);
     CGFloat ssidW = roundf([self.ssidLabel.text sizeWithAttributes:@{NSFontAttributeName:self.ssidLabel.font}].width+1);
     self.ssidW.constant = MAX(pwdW, ssidW);
-    [self.pwdTextField setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
+//    [self.pwdTextField setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
     
     self.line1.backgroundColor =
     self.line2.backgroundColor =

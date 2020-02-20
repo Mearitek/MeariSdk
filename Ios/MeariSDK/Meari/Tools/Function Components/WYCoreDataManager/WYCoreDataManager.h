@@ -63,6 +63,11 @@ WY_Singleton_Interface(CoreDataManager)
                            predicate:(NSPredicate *)predicate
                       sortDescriptor:(NSArray *)sortDescriptors
                           fetchLimit:(NSUInteger)fetchLimit;
+- (NSArray *)queryDataWithEntityName:(NSString *)entityName
+                           predicate:(NSPredicate *)predicate
+                      sortDescriptor:(NSArray *)sortDescriptors
+                          fetchLimit:(NSUInteger)fetchLimit
+                         fetchOffset:(NSInteger)fetchOffset;
 
 /**
  *  保存

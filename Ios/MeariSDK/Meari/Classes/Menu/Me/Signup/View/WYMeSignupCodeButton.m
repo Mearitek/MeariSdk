@@ -29,7 +29,7 @@
     if (!_tf) {
         _tf = [UITextField new];
         _tf.font = WYFont_Text_S_Normal;
-        [_tf setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
+//        [_tf setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
         _tf.clearButtonMode = UITextFieldViewModeNever;
         _tf.returnKeyType = UIReturnKeyNext;
         _tf.keyboardType = UIKeyboardTypeNumberPad;

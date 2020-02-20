@@ -17,6 +17,9 @@
     BOOL _fullScreen;
     NSInteger _hideTime;
     NSInteger _backgroundCount;
+    BOOL _wakeUpMemory;
+    BOOL _sdkLogined;
+    BOOL _sdkLoginFailed;
     BOOL _pauseInput;
 }
 
@@ -24,6 +27,7 @@
 @property (nonatomic,   weak) MeariPlayView *drawableView;
 @property (nonatomic,   weak) WYVisitorCallView *visitorCallView;
 @property (nonatomic,   weak) WYReceiveView *receiveView;
+@property (nonatomic, strong) UIImageView *ringIV;
 @property (nonatomic, strong) MeariDevice *camera;
 @property (nonatomic, strong) UIControl *overlayView;
 @property (nonatomic, assign) WYFaceTimeType faceTimeType;
@@ -32,6 +36,9 @@
 @property (nonatomic, strong) NSTimer *autoHideTimer;
 @property (nonatomic, strong) NSTimer *shakeTimer; ;
 @property (nonatomic, strong) NSTimer *backgroundTimer;
+@property (nonatomic, strong) NSTimer *heartbeat;
+@property (nonatomic, assign) BOOL  stopSpeak;
+@property (nonatomic, assign) BOOL  muteEnable;
 
 @end
 
@@ -67,11 +74,22 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     [self enabledBackgroundTimer:YES];
 }
 - (void)n_App_DidBecomeActive:(NSNotification *)sender {
-    [self.camera enableLoudSpeaker:YES];
+    if (self.pushModel.pushType == WYPushTypeVisitorCall) {
+        //给悠响声学补漏
+        [self.camera enableLoudSpeaker:YES];
+    }
     if (_receiveView.showSpeakAnimation) {
         _receiveView.showSpeakAnimation = YES;
     }
     [self enabledBackgroundTimer:NO];
+    
+    if (_wakeUpMemory) {
+        [self show];
+        [UIView animateWithDuration:0.2 animations:^{
+            self.alpha = 1;
+        }];
+        _wakeUpMemory = NO;
+    }
 }
 #pragma mark - Layout
 - (void)dealVisitorCall {
@@ -95,20 +113,25 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
         make.width.equalTo(@(WY_ScreenWidth));
         make.height.equalTo(self.videoView.mas_width).multipliedBy(9.0/16);
     }];
+    self.videoView.hidden = self.camera.info.subType == MeariDeviceSubTypeIpcVoiceBell;
     [self.receiveView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.videoView.mas_bottom);
         make.leading.trailing.bottom.equalTo(self);
     }];
+    
 }
 
 #pragma mark - 赋值
 - (void)showWithType:(WYFaceTimeType)type {
     self.faceTimeType = type;
+    [self initNotifaction];
     if (self.alpha) return;
     [WY_NotificationCenter wy_post_Device_VisitorCallShow];
     self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.9];
-    if (WY_Application.applicationState != UIApplicationStateActive) {
+    if (WY_Application.applicationState == UIApplicationStateInactive) {
         [WY_NotificationCenter addObserver:self selector:@selector(delayShowWindowAction) name:UIApplicationDidBecomeActiveNotification object:nil];
+    } else if (WY_Application.applicationState == UIApplicationStateBackground) {
+        _wakeUpMemory = YES;
     } else {
         [self show];
         [UIView animateWithDuration:0.5 animations:^{
@@ -121,29 +144,27 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     if (!self.alpha && self.faceTimeType == WYFaceTimeType_jpush) {
         _disableOperation = YES;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(8 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            _disableOperation = NO;
+            self->_disableOperation = NO;
         });
     }
 }
 - (void)setPushModel:(WYPushModel *)pushModel {
     if (self.faceTimeType == WYFaceTimeType_mqtt) {
         if (_disableOperation) return;
-        if ((!_answering && !self.camera.info.key.length) ||(!_answering && ![self.camera.info.key isEqualToString:pushModel.hostKey])) { //第一次播放
+        if ((!_answering && !self.camera.info.key.length) || (!_answering && ![self.camera.info.key isEqualToString:pushModel.hostKey]) || (_answering && ![self.camera.info.key isEqualToString:pushModel.hostKey] && self.faceTimeType == WYFaceTimeType_jpush)) { //第一次播放
+//            if (WY_IsMessageTimeout(pushModel.msgTime, 0.3) && pushModel.msgTime && !_answering) {
+//                [self dealVisitorCall];
+//                self.visitorCallView.visitorImg = pushModel.imgUrl;
+//                [self showExpiredTip];
+//                return;
+//            }
             [self setCameraWithPushModel:pushModel];
-            if (WY_IsMQTTTimeout(pushModel.msgTime, 0.3) && pushModel.msgTime) {
-                [WYAlertView showWithTitle:WYLocal_Tips message:WYLocalString(@"访客消息已过期") cancelButton:nil otherButton:WYLocal_OK alertAction:^(WYAlertView *alertView, NSInteger buttonIndex) {
-                    [self dismiss];
-                }];
-                return;
-            }
-            [self.camera wy_startConnectSuccess:nil failure:nil];
             if (self.clickAPPLaunch) {
                 _clickAPPLaunch = NO;
                 return;
             }
             [self playDoorbellSound];
-        }
-        else {
+        } else {
             if (self.clickAPPLaunch) {
                 _clickAPPLaunch = NO;
                 return;
@@ -151,35 +172,64 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
             [self playDoorbellSound];
         }
     } else {
-        if (!_answering ||(_answering && ![self.camera.info.key isEqualToString:pushModel.hostKey])) {
+        if (!_answering || (_answering && ![self.camera.info.key isEqualToString:pushModel.hostKey])) {
+            //            if (WY_IsMessageTimeout(pushModel.msgTime, 0.3) && pushModel.msgTime) return;
             [self setCameraWithPushModel:pushModel];
-            [self.camera startConnectSuccess:nil failure:nil];
         }
     }
 }
 - (void)setCameraWithPushModel:(WYPushModel *)pushModel {
-    if (self.camera.sdkLogined) {
-        [self.camera stopConnectSuccess:nil failure:nil];
+    if (_answering) {
+        [self enabledHeartbeatTimer:NO];
+        [self requestReleaseAnswerAuthorityWithCamera:self.camera success:nil failure:nil];
+        if (self.pushModel.pushType == WYPushTypeVisitorCall) {
+            [self.camera stopPreviewSuccess:nil failure:nil];
+            [self.camera stopConnectSuccess:nil failure:nil];
+        }
         self.camera = nil;
         [self dealVisitorCall];
     }
     self.camera = [[MeariDevice alloc] init];
-    self.camera.info = [MeariDeviceInfo new];
     self.resetHideTime = YES;
     [self setAutoHideTimerOpen:YES];
     _pushModel = pushModel;
-    self.camera.info.key = pushModel.hostKey;
-    self.camera.info.bellVoice = pushModel.bellVoice;
-    self.camera.info.nickname = pushModel.deviceName;
-    self.camera.info.connectName = pushModel.connectName;
-    self.camera.info.uuid = pushModel.deviceUUID;
-//    self.camera.info.typeID = pushModel.devTypeID;
-    self.camera.info.subType = pushModel.pushType == WYPushTypeVoiceCall ? MeariDeviceSubTypeIpcVoiceBell : MeariDeviceSubTypeIpcBell;
-    self.camera.info.p2p = pushModel.deviceP2P;
-    self.camera.info.p2pInit = pushModel.p2pInit;
+    MeariDeviceInfo *info = [[MeariDeviceInfo alloc]init];
+    info.p2p = pushModel.deviceP2P;
+    info.p2pInit = pushModel.p2pInit;
+    info.key = pushModel.hostKey;
+    info.bellVoice = pushModel.bellVoice;
+    info.nickname = pushModel.deviceName;
+    info.connectName = pushModel.connectName;
+    info.ID = pushModel.deviceID;
+    info.uuid = pushModel.deviceUUID;
+    info.type = pushModel.type;
+    info.subType = pushModel.subType;
+    self.camera.info = info;
     self.visitorCallView.camera = self.camera;
     self.visitorCallView.visitorImg = pushModel.imgUrl;
-    [self dealVisitorCall];
+    if (!self.camera.sdkLogined) {
+        [self dealVisitorCall];
+    } else {
+        self.visitorCallView.camera = self.camera;
+    }
+    //重置状态位
+    _sdkLogined = NO;
+    _sdkLoginFailed = NO;
+    self.videoView.hidden = self.camera.info.subType == MeariDeviceSubTypeIpcVoiceBell;
+    [self.camera wy_startConnectSuccess:nil failure:nil];
+    if (self.camera.info.subType == MeariDeviceSubTypeIpcVoiceBell) {
+        [self networkRequestVoiceBellParams];
+    }
+}
+- (void)networkRequestVoiceBellParams {
+//    NSString *shadowUrl = WY_URLIotHub(WYURL_iotHub_shadow_get,self.camera);
+//    [HttpTool HttpGET:shadowUrl shadowParams:[NSDictionary dictionary] success:^(NSDictionary * _Nonnull responseDic) {
+//        WYLogM(@"%@",responseDic);
+//        WYCameraIotHub *iothub = [WYCameraIotHub mj_objectWithKeyValues:responseDic[@"data"]];
+//        self.camera.iothub = iothub;
+//        self->_hideTime = iothub.iothub_waitMsgTime - (20-self->_hideTime);
+//    } failure:^(NSError * _Nonnull error) {
+//    }];
 }
 
 
@@ -190,8 +240,10 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     }
 }
 - (void)setAutoHideTimerOpen:(BOOL)open {
-    if (!_autoHideTimer && open) {
-        [self autoHideTimer];
+    if (open) {
+        if(!_autoHideTimer) {
+            [self autoHideTimer];
+        }
     } else {
         [self.autoHideTimer invalidate];
         _autoHideTimer = nil;
@@ -221,9 +273,21 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
         }
     }
 }
+- (void)enabledHeartbeatTimer:(BOOL)enabled {
+    if (enabled) {
+        if (!_heartbeat) {
+            [self heartbeat];
+        }
+    }else {
+        if (_heartbeat) {
+            [_heartbeat invalidate];
+            _heartbeat = nil;
+        }
+    }
+}
 - (void)setResetHideTime:(BOOL)resetHideTime {
     _resetHideTime = resetHideTime;
-    if (resetHideTime) {
+    if (resetHideTime&!self.camera.param.voiceBell) {
         _hideTime = 20;
     }
 }
@@ -231,7 +295,7 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     _clickAPPLaunch = clickAPPLaunch;
     if (clickAPPLaunch) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            _clickAPPLaunch = NO;
+            self->_clickAPPLaunch = NO;
         });
     }
 }
@@ -254,11 +318,20 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
         self.frame = self.overlayView.bounds;
         [self.overlayView addSubview:self];
     }
-    [self initNotifaction];
 }
 - (void)delayShowWindowAction {
     [self show];
     self.alpha = 1;
+//    if (WY_IsMessageTimeout(self.pushModel.msgTime, 0.3) && self.pushModel.msgTime && !_answering) {
+//        [self showExpiredTip];
+//    }
+}
+- (void)showExpiredTip {
+    [self enableShakeTimerOpen:NO];
+    [self setAutoHideTimerOpen:NO];
+    [WYAlertView showWithTitle:WYLocal_Tips message:WYLocalString(@"alert_visitorMessageExpired") cancelButton:nil otherButton:WYLocal_OK alertAction:^(WYAlertView *alertView, NSInteger buttonIndex) {
+        [self dismiss];
+    }];
 }
 - (void)playDoorbellSound {
     self.resetHideTime = YES;
@@ -294,30 +367,66 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     AudioServicesRemoveSystemSoundCompletion(self.soundID);
 }
 
+#pragma mark -- Network Request Action
+- (void)requestAnswerAuthorityWithCamera:(MeariDevice *)camera success:(WYBlock_Void)success failure:(WYBlock_Error)failure {
+    [[MeariUser sharedInstance] requestAnswerAuthorityWithDeviceID:camera.info.ID messageID:[_pushModel.msgID intValue] success:^(NSInteger msgEffectTime,double severTime){
+        //msgEffectTime
+//        self.effectTime = msgEffectTime;
+//        self.severTime = severTime;
+        [self enabledHeartbeatTimer:YES];
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        if (error.code == MeariUserCodeNetworkUnavailable) {
+            WY_HUD_SHOW_ERROR(error)
+        } else {
+            if (failure) {
+                failure(error);
+            }
+        }
+    }];
+    
+    
+}
+- (void)requestReleaseAnswerAuthorityWithCamera:(MeariDevice *)camera success:(WYBlock_Void)success failure:(WYBlock_Int)failure {
+    [[MeariUser sharedInstance] requestReleaseAnswerAuthorityWithID:camera.info.ID success:^{
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        if (error.code == MeariUserCodeNetworkUnavailable) {
+            WY_HUD_SHOW_ERROR(error)
+        }
+        if (failure) {
+            failure(error.code);
+        }
+    }];
+}
+- (void)sendHeartbeatWithCamera:(MeariDevice *)camera {
+    [[MeariUser sharedInstance] sendHeartBeatWithID:camera.info.ID success:^{
+    } failure:^(NSError *error) {
+    }];
+}
+
 #pragma mark -- NSNotification Action
 - (void)n_Device_ConnectCompleted:(NSNotification *)sender {
     WYObj_Device *device = sender.object;
-    if (!device || device.deviceID != self.camera.info.ID) return;
+    
+    if (!device || device.deviceID != self.camera.info.ID || ![device.camerap isEqualToString:[NSString stringWithFormat:@"%p", self.camera]]) return;
     if (device.connectSuccess) {
+        _sdkLogined = YES;
         if (self.pushModel.pushType == WYPushTypeVisitorCall) {
             [self startPreview];
-        } else if (self.pushModel.pushType == WYPushTypeVoiceCall){
+        } else if (self.pushModel.pushType == WYPushTypeVoiceCall) {
             [self startVoiceBellSpeak];
         }
-    } else if(_answering) {
+    } else if (_answering) {
+        //        if (self.pushModel.pushType == WYPushTypeVisitorCall) {
         [self.videoView showLoadingFailed];
-    }
-}
-- (void)startVoiceBellSpeak {
-    //接听后再处理
-    if (_answering) {
-        if (self.camera.sdkLogined) {
-            [self receiveView:nil didClickSpeakBtn:nil];
-            [self.camera setVoiceTalkType:MeariVoiceTalkTypeFullDuplex];
-            [self.camera setMute:NO];
-        } else {
-//            [self.receiveView readyTalking];
-        }
+        //        }
+    } else {
+        _sdkLoginFailed = YES;
     }
 }
 #pragma mark -- Control Action
@@ -327,7 +436,7 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     [self setAutoHideTimerOpen:NO];
     [self enableShakeTimerOpen:NO];
     [WYPushManager decrementBadgeNumber];
-    [self.visitorCallView removeFromSuperview];
+    [_visitorCallView removeFromSuperview];
     _visitorCallView = nil;
     [self setReceiveViewLayout];
     self.receiveView.camera = self.camera;
@@ -342,7 +451,7 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     WY_WeakSelf
     [self setAutoHideTimerOpen:NO];
     [self enableShakeTimerOpen:NO];
-    if (self.camera.info.bellVoice.length) {
+    if ([self.camera supportHostMessage]) {
         [WYAlertView showWithTitle:WYLocal_Tips message:WYLocalString(@"alert_playMessage") cancelButton:WYLocal_Cancel otherButton:WYLocal_OK alertAction:^(WYAlertView *alertView, NSInteger buttonIndex) {
             _answering = NO;
             if (buttonIndex) {
@@ -370,6 +479,7 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     _hideTime--;
     if(_hideTime >0) return;
     [self dismiss];
+    //    [self showExpiredTip];
 }
 - (void)shakeTimerAction:(NSTimer *)timer {
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);  //震动
@@ -377,45 +487,56 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
 - (void)timerToBackground:(id)sender {
     _backgroundCount++;
     if (_backgroundCount >= 20) {
-        [self stopPreview];
+        if (self.pushModel.pushType == WYPushTypeVisitorCall) {
+            [self stopPreview];
+        }
         [self enabledBackgroundTimer:NO];
     }
 }
+- (void)timerToHeartbeat:(id)sender {
+    [self sendHeartbeatWithCamera:self.camera];
+}
 #pragma mark - 操作设备
 - (void)startPreview {
-    if(!_answering) return;
+    if (!_answering) return;
+    if (_sdkLoginFailed) {
+        _sdkLoginFailed = NO;
+        [self.camera wy_startConnectSuccess:nil failure:nil];
+    }
     [self.videoView showLoading];
-    if(!self.camera.sdkLogined) return;
-    WY_WeakSelf
-    [self.camera startPreviewWithView:self.videoView.drawableView streamid:YES success:^{
-        weakSelf.receiveView.showSpeakAnimation = YES;
-        [weakSelf.videoView hideLoading];
-        [weakSelf receiveView:nil didClickSpeakBtn:nil];
-        [weakSelf.camera setVoiceTalkType:MeariVoiceTalkTypeFullDuplex];
-        [weakSelf.camera setMute:NO];
+    if (!self.camera.sdkLogined && !_sdkLogined) return;
+    [self.camera startPreviewWithView:self.videoView.drawableView videoStream:MeariDeviceVideoStream_360 success:^{
+        [self receiveView:nil didClickSpeakBtn:nil];
+        //        [self.camera setVoiceTalkType:MeariVoiceTalkTypeFullDuplex];
+//        [self.camera setMute:_muteEnable];
     } failure:^(NSError *error) {
-        if (error.code == MeariDeviceCodePreviewIsPlaying) {
-            [weakSelf.videoView hideLoading];
-        }else {
-            [weakSelf.videoView showLoadingFailed];
+        if (error.code == MeariDeviceCodePlaybackIsPlaying) {
+            [self.videoView hideLoading];
+        } else {
+            [self.videoView showLoadingFailed];
         }
     } close:^(MeariDeviceSleepmode sleepmodeType) {
-        [weakSelf.videoView showLoadingFailed];
+        [self.videoView showLoadingFailed];
     }];
 }
+
 - (void)stopPreview {
-    WY_WeakSelf
-    [self.camera stopPreviewSuccess:^{
-        [weakSelf.camera stopConnectSuccess:nil failure:nil];
-        weakSelf.camera = nil;
-        _receiveView.showSpeakAnimation = NO;
-    } failure:^(NSError *error) {
-        [weakSelf.camera stopConnectSuccess:nil failure:nil];
-        weakSelf.camera = nil;
-    }];
+    _receiveView.showSpeakAnimation = NO;
+    if (self.camera.sdkPlaying) {
+        [self.camera stopPreviewSuccess:^{
+            [self.camera stopConnectSuccess:nil failure:nil];
+            self.camera = nil;
+        } failure:^(NSError *error) {
+            [self.camera stopConnectSuccess:nil failure:nil];
+            self.camera = nil;
+        }];
+    } else {
+        [self.camera stopConnectSuccess:nil failure:nil];
+        self.camera = nil;
+    }
 }
 - (void)stopVoiceTalkingWithButton:(UIButton *)btn {
-    self.receiveView.showSpeakAnimation = NO;
+    _receiveView.showSpeakAnimation = NO;
     WY_WeakSelf
     if (self.camera.info.subType == MeariDeviceSubTypeIpcVoiceBell) {
         _pauseInput = YES;
@@ -425,9 +546,8 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
             if (weakSelf.camera.sdkLogined) {
                 [weakSelf.videoView hideLoading];
             }
-            [weakSelf.camera setVoiceTalkType:MeariVoiceTalkTypeOneWay];
+            [self.camera setVoiceTalkType:MeariVoiceTalkTypeOneWay];
         } failure:^(NSError *error) {
-            WY_HUD_SHOW_STATUS(WYLocalString(@"set faild"));
             if (weakSelf.camera.sdkLogined) {
                 [weakSelf.videoView hideLoading];
             }
@@ -435,11 +555,21 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
         }];
     }
 }
-
+- (void)startVoiceBellSpeak {
+    //接听后再处理
+    if (_answering) {
+        if (self.camera.sdkLogined) {
+            WY_HUD_DISMISS
+            [self receiveView: nil didClickSpeakBtn: nil];
+            [self.camera setVoiceTalkType:MeariVoiceTalkTypeFullDuplex];
+//            [self.camera setMute:_muteEnable];
+        } else {
+            [self.receiveView readyTalking];
+        }
+    }
+}
 - (void)dismiss {
-    [self setAutoHideTimerOpen:NO];
-    [self enableShakeTimerOpen:NO];
-    [self stopDoorbellSound];
+    WY_HUD_DISMISS
     if (_answering) {
         [self stopVoiceTalkingWithButton:nil];
     }
@@ -447,18 +577,29 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     [UIView animateWithDuration:0.5 animations:^{
         self.alpha = 0;
     } completion:^(BOOL finished) {
+        [self setAutoHideTimerOpen:NO];
+        [self enableShakeTimerOpen:NO];
+        [self enabledHeartbeatTimer:NO];
+        [self stopDoorbellSound];
         self.alpha = 0;
         [WY_NotificationCenter wy_post_Device_VisitorCallDismiss];
         [self dealVisitorCall];
         [self resetProperty];
+        for (UIView *view in self.subviews) {
+            if (view.tag == 111111) {
+                [view removeFromSuperview];
+            }
+        }
         [_overlayView removeFromSuperview];
         _overlayView = nil;
-        [self removeFromSuperview];
+        [WY_FaceTime removeFromSuperview];
         [WY_NotificationCenter removeObserver:self];
     }];
 }
 - (void)resetProperty {
     _answering = NO;
+    isPlaying = NO;
+    _pauseInput = NO;
     _clickAPPLaunch = NO;
     _disableOperation = NO;
     self.resetHideTime = YES;
@@ -466,11 +607,10 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
 #pragma mark - Delegate
 #pragma mark -- WYCameraVideoViewDelegate
 - (void)WYCameraVideoViewReplay:(WYCameraVideoView *)videoView {
-    if(self.camera.sdkLogined) {
+    if (self.camera.sdkLogined) {
         [self startPreview];
     } else {
-        WY_HUD_SHOW_STATUS(WYLocalString(@"门铃已休眠！"))
-        [self.videoView showLoadingFailed];
+        [self.camera wy_startConnectSuccess:nil failure:nil];
     }
 }
 #pragma mark -- WYReceiveViewDelegate
@@ -478,44 +618,64 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     [self setReceiveViewLayout];
 }
 - (void)receiveView:(WYReceiveView *)receiveView didClickHangUpBtn:(UIButton *)btn {
+//    self.receiveView.isDurationTimerValid = NO;
+    [self requestReleaseAnswerAuthorityWithCamera:self.camera success:nil failure:nil];
     [self dismiss];
 }
 - (void)receiveView:(WYReceiveView *)receiveView didClickMuteBtn:(UIButton *)btn {
     btn.selected = !btn.isSelected;
+//    self.muteEnable = btn.selected;
     [self.camera setMute:btn.selected];
 }
 - (void)receiveView:(WYReceiveView *)receiveView didClickSpeakBtn:(UIButton *)btn {
     btn.selected = !btn.isSelected;
-    [self.videoView showLoading];
+    if(btn) {
+        self.stopSpeak = btn.selected;
+    }
     WY_WeakSelf
-    if (btn.selected) {
+    if (btn.selected || self.stopSpeak) {
         [self stopVoiceTalkingWithButton:btn];
     } else {
-        [self.camera setVoiceTalkType:MeariVoiceTalkTypeFullDuplex];
-        [self.camera enableLoudSpeaker:YES];
-        if (self.camera.info.subType == MeariDeviceSubTypeIpcVoiceBell&&_pauseInput) {
-            weakSelf.receiveView.showSpeakAnimation = YES;
-            [self.camera resumeVoicetalkSuccess:nil failure:nil];
-        } else {
-            [self.camera startVoiceTalkSuccess: ^{
-                weakSelf.receiveView.logined = YES;
-                if (weakSelf.camera.sdkLogined) {
-                    [weakSelf.videoView hideLoading];
+        [WYAuthorityManager checkAuthorityOfMicrophone:^(BOOL granted) {
+            if (granted) {
+                [self.camera setVoiceTalkType:MeariVoiceTalkTypeFullDuplex];
+                //        [self.camera setLoudSpeakerOpen:YES];
+                [self.camera enableLoudSpeaker:YES];
+//                [weakSelf.receiveView readyTalking];
+                if (self.camera.info.subType == MeariDeviceSubTypeIpcVoiceBell && _pauseInput) {
+                    weakSelf.receiveView.showSpeakAnimation = YES;
+                    weakSelf.receiveView.logined = YES;
+                    [self.camera resumeVoicetalkSuccess:nil failure:nil];
+                } else {
+                    [self.camera startVoiceTalkSuccess:^{
+                        weakSelf.receiveView.logined = YES;
+                        if (weakSelf.camera.sdkLogined) {
+                            [weakSelf.videoView hideLoading];
+                        }
+                        weakSelf.receiveView.showSpeakAnimation = YES;
+                    } failure:^(NSError *error) {
+                        if (weakSelf.camera.sdkLogined) {
+                            weakSelf.receiveView.logined = YES;
+                            [weakSelf.videoView hideLoading];
+                        } else {
+                            [weakSelf.videoView showLoadingFailed];
+                        }
+//                        weakSelf.receiveView.speakBtn.selected = YES;
+                    }];
                 }
-                weakSelf.receiveView.showSpeakAnimation = YES;
-            } failure:^(NSError *error) {
+            } else {
+                [WYAlertView showNeedAuthorityOfMicrophone];
                 if (weakSelf.camera.sdkLogined) {
+                    weakSelf.receiveView.logined = YES;
                     [weakSelf.videoView hideLoading];
                 } else {
                     [weakSelf.videoView showLoadingFailed];
                 }
-                btn.selected = YES;
-            }];
-        }
+//                weakSelf.receiveView.speakBtn.selected = YES;
+            }
+        }];
     }
 }
-
-
 #pragma mark - lazyLoad
 - (UIControl *)overlayView {
     if(!_overlayView) {
@@ -529,11 +689,47 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
     if (!_visitorCallView) {
         WYVisitorCallView *view = [WYVisitorCallView new];
         self.visitorCallView = view;
+        WY_WeakSelf
+        __weak typeof(view)weakView = view;
         view.receiveCall = ^{
-            [self receiveCallAction];
+            WY_StrongSelf
+            [self setAutoHideTimerOpen: NO];
+            WY_HUD_SHOW_WAITING
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                WY_HUD_DISMISS
+                if (!strongSelf->_answering) {
+                    [[MeariUser sharedInstance] cancelAllRequest];
+                    
+                }
+            });
+            [self requestAnswerAuthorityWithCamera:weakSelf.camera success:^{
+                WY_HUD_DISMISS
+//                [weakView receiveSuccess];
+                [self receiveCallAction];
+            } failure:^(NSError *error) {
+                WY_HUD_DISMISS
+                if (error.code == MeariUserCodeDoorbellAnswering) {
+                    [WYAlertView showWithTitle:WYLocal_Tips message:WYLocalString(@"alert_visitor_other_answering") cancelButton:nil otherButton:WYLocal_OK alertAction:^(WYAlertView *alertView, NSInteger buttonIndex) {
+                        [weakSelf dismiss];
+                    }];
+                } else if (error.code == MeariUserCodeDeviceCancelShared) {
+                    [WYAlertView showWithTitle:nil message:WYLocalString(@"toast_cancel_share") cancelButton:nil otherButton:WYLocal_OK alertAction:^(WYAlertView *alertView, NSInteger buttonIndex) {
+                        [weakSelf dismiss];
+                    }];
+                } else {
+                    WY_HUD_SHOW_ERROR(error)
+                }
+            }];
         };
         view.refuseCall = ^{
-            [self refuseCallAction];
+            WY_HUD_SHOW_WAITING
+            [self requestReleaseAnswerAuthorityWithCamera: weakSelf.camera success:^{
+                WY_HUD_DISMISS
+                [self refuseCallAction];
+            } failure:^(MeariUserCode codeType) {
+                WY_HUD_DISMISS
+                [weakSelf dismiss];
+            }];
         };
         [self addSubview:view];
     }
@@ -576,6 +772,12 @@ void soundCompleteCallback(SystemSoundID soundID,void * clientData)
         _backgroundTimer = [NSTimer timerInLoopWithInterval:1 target:self selector:@selector(timerToBackground:)];
     }
     return _backgroundTimer;
+}
+- (NSTimer *)heartbeat {
+    if (!_heartbeat) {
+        _heartbeat = [NSTimer timerInLoopWithInterval:10.f target:self selector:@selector(timerToHeartbeat:)];
+    }
+    return _heartbeat;
 }
 
 - (void)dealloc {

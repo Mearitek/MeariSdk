@@ -28,7 +28,7 @@
         _textField = [UITextField new];
         _textField.clearButtonMode = UITextFieldViewModeNever;
         _textField.font = WYFont_Text_S_Normal;
-        [_textField setValue:WYFont_Text_XS_Normal forKeyPath:@"_placeholderLabel.font"];
+//        [_textField setValue:WYFont_Text_XS_Normal forKeyPath:@"_placeholderLabel.font"];
         [self addSubview:_textField];
     }
     return _textField;

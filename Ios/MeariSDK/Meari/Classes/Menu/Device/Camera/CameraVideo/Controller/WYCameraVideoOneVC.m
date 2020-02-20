@@ -1222,7 +1222,7 @@
             } failure:^(NSError *error) {
                 [task doFinish];
             }];
-        }];
+        }];  
         if (self.camera.param.sleep) {
             [self.toolView.previewView setSleepmodeParam:self.camera.param enabled:!weakSelf.camera.info.shared reset:NO];
         }
@@ -1743,7 +1743,7 @@
             
             [self.camera startRecordMP4ToPath:path isPreviewing:_isPreviewing success:^{
                  updateUI();
-            } recordInterrputed:^{
+            } abnormalDisconnect:^{
                 weakSelf.recording = NO;
                 [weakSelf.videoView stopRecordAnimation];
                 [weakSelf.toolBar setButton:WYCameraToolBarButtonTypeRecord selected:NO];
@@ -1755,7 +1755,7 @@
         case WYVideoTypePlaybackNVR: {
             [self.camera startRecordMP4ToPath:path isPreviewing:_isPreviewing success:^{
                 updateUI();
-            } recordInterrputed:^{
+            } abnormalDisconnect:^{
                 weakSelf.recording = NO;
                 [weakSelf.videoView stopRecordAnimation];
                 [weakSelf.toolBar setButton:WYCameraToolBarButtonTypeRecord selected:NO];

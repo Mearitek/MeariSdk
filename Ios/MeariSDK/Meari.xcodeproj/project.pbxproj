@@ -23,6 +23,14 @@
 		17879A7A1C2A428C00CDCC7D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17879A791C2A428C00CDCC7D /* CoreMedia.framework */; };
 		178978C21C424EA0003C507D /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 178978C11C424EA0003C507D /* CoreText.framework */; };
 		17D6E0891C530E3700166134 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D6E0881C530E3700166134 /* Photos.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		2807B8CC23C75C6300611A2D /* WYCameraSettingSleepOverTimeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2807B8CB23C75C6300611A2D /* WYCameraSettingSleepOverTimeVC.m */; };
+		28528BF323B3153400A3C6F0 /* WYHostMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 28528BF123B3153400A3C6F0 /* WYHostMessageModel.m */; };
+		28528C0123B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28528BFF23B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.xib */; };
+		28528C0223B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28528C0023B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.m */; };
+		285DC9E823C0335900946869 /* MeariKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28528BEA23B2FA4600A3C6F0 /* MeariKit.framework */; };
+		285DC9E923C0335900946869 /* MeariKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 28528BEA23B2FA4600A3C6F0 /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		28699F8423B35EE000EA2E30 /* WYVoiceCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28699F8323B35EE000EA2E30 /* WYVoiceCallView.m */; };
+		28699FA923B9935E00EA2E30 /* WYCameraSettingMessageBoardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 28699FA523B9935E00EA2E30 /* WYCameraSettingMessageBoardVC.m */; };
 		9C2E45C6217E00E100D31732 /* WYVoiceDoorbellAlarmMsgDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2E45C5217E00E100D31732 /* WYVoiceDoorbellAlarmMsgDetailVC.m */; };
 		9C2E45C9217E00FD00D31732 /* WYVoiceMsgModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2E45C8217E00FD00D31732 /* WYVoiceMsgModel.m */; };
 		9C2E45D1217E013B00D31732 /* WYVoiceDoorbellMsgVoiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2E45CA217E013A00D31732 /* WYVoiceDoorbellMsgVoiceCell.m */; };
@@ -35,9 +43,6 @@
 		9C49E3F71F2AE45500074B6D /* gif_auditionMessage.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9C49E3F61F2AE45500074B6D /* gif_auditionMessage.gif */; };
 		9C49E3FB1F2B0E2B00074B6D /* gif_addDoorBell.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9C49E3FA1F2B0E2B00074B6D /* gif_addDoorBell.gif */; };
 		9C99062E217D7ECE00A57073 /* libPods-Meari.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C99062D217D7ECE00A57073 /* libPods-Meari.a */; };
-		9CA0724A236298DB00514F6C /* MeariKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA07249236298DB00514F6C /* MeariKit.framework */; };
-		9CA0724B236298DF00514F6C /* MeariKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA07249236298DB00514F6C /* MeariKit.framework */; };
-		9CA0724C236298DF00514F6C /* MeariKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA07249236298DB00514F6C /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9CA1C1B81FCD8E39003E6DB2 /* gif_fullDuplex_voice.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9CA1C1B71FCD8E39003E6DB2 /* gif_fullDuplex_voice.gif */; };
 		9CC2CEDF1F4C2AAE0031DCC2 /* gif_doorbell_sound.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9CC2CEDE1F4C2AAE0031DCC2 /* gif_doorbell_sound.gif */; };
 		CD86037F215A091C00719A34 /* WYDoorbellSettingJingleBellPairingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = CD86037E215A091C00719A34 /* WYDoorbellSettingJingleBellPairingVC.m */; };
@@ -107,11 +112,9 @@
 		D60F9F2D1FFB862D007E3B40 /* WYDoorBellSettingPowerManagementVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D60F9E561FFB862C007E3B40 /* WYDoorBellSettingPowerManagementVC.m */; };
 		D60F9F2E1FFB862D007E3B40 /* WYDoorBellSettingHostMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = D60F9E581FFB862C007E3B40 /* WYDoorBellSettingHostMessageVC.m */; };
 		D60F9F2F1FFB862D007E3B40 /* WYDoorBellSettingPIRDetection.m in Sources */ = {isa = PBXBuildFile; fileRef = D60F9E5B1FFB862C007E3B40 /* WYDoorBellSettingPIRDetection.m */; };
-		D60F9F301FFB862D007E3B40 /* WYDoorBellSettingHostMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D60F9E5F1FFB862C007E3B40 /* WYDoorBellSettingHostMessageCell.xib */; };
 		D60F9F311FFB862D007E3B40 /* WYDoorSettingPIRDetectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D60F9E611FFB862C007E3B40 /* WYDoorSettingPIRDetectionCell.xib */; };
 		D60F9F321FFB862D007E3B40 /* WYDoorBellSettingSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = D60F9E621FFB862C007E3B40 /* WYDoorBellSettingSwitchView.m */; };
 		D60F9F331FFB862D007E3B40 /* WYDoorBellSettingJingleBellView.m in Sources */ = {isa = PBXBuildFile; fileRef = D60F9E651FFB862C007E3B40 /* WYDoorBellSettingJingleBellView.m */; };
-		D60F9F341FFB862D007E3B40 /* WYDoorBellSettingHostMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D60F9E661FFB862C007E3B40 /* WYDoorBellSettingHostMessageCell.m */; };
 		D60F9F351FFB862D007E3B40 /* WYDoorSettingPIRDetectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D60F9E671FFB862C007E3B40 /* WYDoorSettingPIRDetectionCell.m */; };
 		D60F9F361FFB862D007E3B40 /* WYDoorBellSettingHostMessageAudioView.m in Sources */ = {isa = PBXBuildFile; fileRef = D60F9E681FFB862C007E3B40 /* WYDoorBellSettingHostMessageAudioView.m */; };
 		D60F9F371FFB862D007E3B40 /* WYStallSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = D60F9E691FFB862C007E3B40 /* WYStallSlider.m */; };
@@ -391,6 +394,20 @@
 			remoteGlobalIDString = 178798091C2A3D9A00CDCC7D;
 			remoteInfo = PPStrongVideo;
 		};
+		28528BE923B2FA4600A3C6F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28528BE423B2FA4600A3C6F0 /* MeariKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D6035DB81FE3A7F80034E70F;
+			remoteInfo = MeariKit;
+		};
+		28528BEB23B2FA4600A3C6F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28528BE423B2FA4600A3C6F0 /* MeariKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D6F0F2691FF38F3C00BE3C11;
+			remoteInfo = MeariKitTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -400,7 +417,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9CA0724C236298DF00514F6C /* MeariKit.framework in Embed Frameworks */,
+				285DC9E923C0335900946869 /* MeariKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,6 +449,19 @@
 		17879A791C2A428C00CDCC7D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		178978C11C424EA0003C507D /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		17D6E0881C530E3700166134 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		2807B8CA23C75C6300611A2D /* WYCameraSettingSleepOverTimeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WYCameraSettingSleepOverTimeVC.h; sourceTree = "<group>"; };
+		2807B8CB23C75C6300611A2D /* WYCameraSettingSleepOverTimeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WYCameraSettingSleepOverTimeVC.m; sourceTree = "<group>"; };
+		28528BE423B2FA4600A3C6F0 /* MeariKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MeariKit.xcodeproj; path = ../../../meariKit/MeariKit.xcodeproj; sourceTree = "<group>"; };
+		28528BF123B3153400A3C6F0 /* WYHostMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYHostMessageModel.m; sourceTree = "<group>"; };
+		28528BF223B3153400A3C6F0 /* WYHostMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYHostMessageModel.h; sourceTree = "<group>"; };
+		28528BFE23B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYDoorBellSettingHostMessageCell.h; sourceTree = "<group>"; };
+		28528BFF23B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WYDoorBellSettingHostMessageCell.xib; sourceTree = "<group>"; };
+		28528C0023B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYDoorBellSettingHostMessageCell.m; sourceTree = "<group>"; };
+		28528C0423B356BD00A3C6F0 /* coreData 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "coreData 6.xcdatamodel"; sourceTree = "<group>"; };
+		28699F8023B35EDF00EA2E30 /* WYVoiceCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYVoiceCallView.h; sourceTree = "<group>"; };
+		28699F8323B35EE000EA2E30 /* WYVoiceCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYVoiceCallView.m; sourceTree = "<group>"; };
+		28699FA523B9935E00EA2E30 /* WYCameraSettingMessageBoardVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYCameraSettingMessageBoardVC.m; sourceTree = "<group>"; };
+		28699FA823B9935E00EA2E30 /* WYCameraSettingMessageBoardVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYCameraSettingMessageBoardVC.h; sourceTree = "<group>"; };
 		3EC4F5E5ACB44A08A4DD6459 /* Pods-Meari.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Meari.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Meari/Pods-Meari.debug.xcconfig"; sourceTree = "<group>"; };
 		9C2E45C4217E00E100D31732 /* WYVoiceDoorbellAlarmMsgDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYVoiceDoorbellAlarmMsgDetailVC.h; sourceTree = "<group>"; };
 		9C2E45C5217E00E100D31732 /* WYVoiceDoorbellAlarmMsgDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYVoiceDoorbellAlarmMsgDetailVC.m; sourceTree = "<group>"; };
@@ -455,7 +485,6 @@
 		9C5FCC36216F37D2000E6264 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		9C6023BE2187250100F00A81 /* coreData 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "coreData 5.xcdatamodel"; sourceTree = "<group>"; };
 		9C99062D217D7ECE00A57073 /* libPods-Meari.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-Meari.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CA07249236298DB00514F6C /* MeariKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MeariKit.framework; sourceTree = "<group>"; };
 		9CA1C1B71FCD8E39003E6DB2 /* gif_fullDuplex_voice.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gif_fullDuplex_voice.gif; sourceTree = "<group>"; };
 		9CA1C1C91FCEA8DA003E6DB2 /* coreData 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "coreData 3.xcdatamodel"; sourceTree = "<group>"; };
 		9CC2CEDE1F4C2AAE0031DCC2 /* gif_doorbell_sound.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gif_doorbell_sound.gif; sourceTree = "<group>"; };
@@ -523,16 +552,13 @@
 		D60F9E581FFB862C007E3B40 /* WYDoorBellSettingHostMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYDoorBellSettingHostMessageVC.m; sourceTree = "<group>"; };
 		D60F9E5A1FFB862C007E3B40 /* WYDoorBellSettingPIRDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYDoorBellSettingPIRDetection.h; sourceTree = "<group>"; };
 		D60F9E5B1FFB862C007E3B40 /* WYDoorBellSettingPIRDetection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYDoorBellSettingPIRDetection.m; sourceTree = "<group>"; };
-		D60F9E5D1FFB862C007E3B40 /* WYDoorBellSettingHostMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYDoorBellSettingHostMessageCell.h; sourceTree = "<group>"; };
 		D60F9E5E1FFB862C007E3B40 /* WYDoorBellSettingJingleBellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYDoorBellSettingJingleBellView.h; sourceTree = "<group>"; };
-		D60F9E5F1FFB862C007E3B40 /* WYDoorBellSettingHostMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WYDoorBellSettingHostMessageCell.xib; sourceTree = "<group>"; };
 		D60F9E601FFB862C007E3B40 /* WYDoorSettingPIRDetectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYDoorSettingPIRDetectionCell.h; sourceTree = "<group>"; };
 		D60F9E611FFB862C007E3B40 /* WYDoorSettingPIRDetectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WYDoorSettingPIRDetectionCell.xib; sourceTree = "<group>"; };
 		D60F9E621FFB862C007E3B40 /* WYDoorBellSettingSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYDoorBellSettingSwitchView.m; sourceTree = "<group>"; };
 		D60F9E631FFB862C007E3B40 /* WYStallSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYStallSlider.h; sourceTree = "<group>"; };
 		D60F9E641FFB862C007E3B40 /* WYDoorBellSettingHostMessageAudioView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYDoorBellSettingHostMessageAudioView.h; sourceTree = "<group>"; };
 		D60F9E651FFB862C007E3B40 /* WYDoorBellSettingJingleBellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYDoorBellSettingJingleBellView.m; sourceTree = "<group>"; };
-		D60F9E661FFB862C007E3B40 /* WYDoorBellSettingHostMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYDoorBellSettingHostMessageCell.m; sourceTree = "<group>"; };
 		D60F9E671FFB862C007E3B40 /* WYDoorSettingPIRDetectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYDoorSettingPIRDetectionCell.m; sourceTree = "<group>"; };
 		D60F9E681FFB862C007E3B40 /* WYDoorBellSettingHostMessageAudioView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYDoorBellSettingHostMessageAudioView.m; sourceTree = "<group>"; };
 		D60F9E691FFB862C007E3B40 /* WYStallSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYStallSlider.m; sourceTree = "<group>"; };
@@ -1020,7 +1046,6 @@
 				D65B24A51ECE00E0006CB827 /* CoreMotion.framework in Frameworks */,
 				D6D7A0C41D24DCF500BA142A /* AssetsLibrary.framework in Frameworks */,
 				D64F598C1C86EC2700FD4066 /* CoreGraphics.framework in Frameworks */,
-				9CA0724B236298DF00514F6C /* MeariKit.framework in Frameworks */,
 				D64F59A21C86ECA600FD4066 /* MobileCoreServices.framework in Frameworks */,
 				17879A6C1C2A41B900CDCC7D /* VideoToolbox.framework in Frameworks */,
 				D64F59A81C86ECE800FD4066 /* SystemConfiguration.framework in Frameworks */,
@@ -1037,8 +1062,8 @@
 				D64F59921C86EC5200FD4066 /* CoreVideo.framework in Frameworks */,
 				178978C21C424EA0003C507D /* CoreText.framework in Frameworks */,
 				17879A7A1C2A428C00CDCC7D /* CoreMedia.framework in Frameworks */,
-				9CA0724A236298DB00514F6C /* MeariKit.framework in Frameworks */,
 				D64F598E1C86EC3000FD4066 /* CoreImage.framework in Frameworks */,
+				285DC9E823C0335900946869 /* MeariKit.framework in Frameworks */,
 				D64F598A1C86EC1D00FD4066 /* CoreFoundation.framework in Frameworks */,
 				D64F59881C86EC1600FD4066 /* CoreData.framework in Frameworks */,
 				177905A71C352DA000F0E19D /* CoreAudioKit.framework in Frameworks */,
@@ -1156,6 +1181,7 @@
 		178798011C2A3D9A00CDCC7D = {
 			isa = PBXGroup;
 			children = (
+				28528BE423B2FA4600A3C6F0 /* MeariKit.xcodeproj */,
 				1787980C1C2A3D9A00CDCC7D /* Meari */,
 				178798261C2A3D9A00CDCC7D /* MeariTests */,
 				1787980B1C2A3D9A00CDCC7D /* Products */,
@@ -1216,6 +1242,15 @@
 				178798291C2A3D9A00CDCC7D /* Info.plist */,
 			);
 			path = MeariTests;
+			sourceTree = "<group>";
+		};
+		28528BE523B2FA4600A3C6F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				28528BEA23B2FA4600A3C6F0 /* MeariKit.framework */,
+				28528BEC23B2FA4600A3C6F0 /* MeariKitTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		9C3EBA911FCCF6F50049B772 /* Recovered References */ = {
@@ -1382,6 +1417,8 @@
 		D60F365D1FFB2B7D00C42EF8 /* WYFaceTime */ = {
 			isa = PBXGroup;
 			children = (
+				28699F8023B35EDF00EA2E30 /* WYVoiceCallView.h */,
+				28699F8323B35EE000EA2E30 /* WYVoiceCallView.m */,
 				D60F36601FFB2B8E00C42EF8 /* WYFaceTime.h */,
 				D60F36621FFB2B8E00C42EF8 /* WYFaceTime.m */,
 				D60F36611FFB2B8E00C42EF8 /* WYReceiveView.h */,
@@ -1395,7 +1432,6 @@
 		D60F9E351FFB718C007E3B40 /* MeariKit */ = {
 			isa = PBXGroup;
 			children = (
-				9CA07249236298DB00514F6C /* MeariKit.framework */,
 			);
 			path = MeariKit;
 			sourceTree = SOURCE_ROOT;
@@ -1453,6 +1489,8 @@
 		D60F9E591FFB862C007E3B40 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				28528BF223B3153400A3C6F0 /* WYHostMessageModel.h */,
+				28528BF123B3153400A3C6F0 /* WYHostMessageModel.m */,
 				D60F9E5A1FFB862C007E3B40 /* WYDoorBellSettingPIRDetection.h */,
 				D60F9E5B1FFB862C007E3B40 /* WYDoorBellSettingPIRDetection.m */,
 			);
@@ -1462,18 +1500,18 @@
 		D60F9E5C1FFB862C007E3B40 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D60F9E5D1FFB862C007E3B40 /* WYDoorBellSettingHostMessageCell.h */,
+				28528BFE23B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.h */,
+				28528C0023B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.m */,
+				28528BFF23B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.xib */,
 				D60F9E5E1FFB862C007E3B40 /* WYDoorBellSettingJingleBellView.h */,
-				D60F9E5F1FFB862C007E3B40 /* WYDoorBellSettingHostMessageCell.xib */,
 				D60F9E601FFB862C007E3B40 /* WYDoorSettingPIRDetectionCell.h */,
 				D60F9E611FFB862C007E3B40 /* WYDoorSettingPIRDetectionCell.xib */,
 				D60F9E621FFB862C007E3B40 /* WYDoorBellSettingSwitchView.m */,
 				D60F9E631FFB862C007E3B40 /* WYStallSlider.h */,
 				D60F9E641FFB862C007E3B40 /* WYDoorBellSettingHostMessageAudioView.h */,
-				D60F9E651FFB862C007E3B40 /* WYDoorBellSettingJingleBellView.m */,
-				D60F9E661FFB862C007E3B40 /* WYDoorBellSettingHostMessageCell.m */,
-				D60F9E671FFB862C007E3B40 /* WYDoorSettingPIRDetectionCell.m */,
 				D60F9E681FFB862C007E3B40 /* WYDoorBellSettingHostMessageAudioView.m */,
+				D60F9E651FFB862C007E3B40 /* WYDoorBellSettingJingleBellView.m */,
+				D60F9E671FFB862C007E3B40 /* WYDoorSettingPIRDetectionCell.m */,
 				D60F9E691FFB862C007E3B40 /* WYStallSlider.m */,
 				D60F9E6A1FFB862C007E3B40 /* WYDoorBellSettingSwitchView.h */,
 				CD860383215A097F00719A34 /* WYDoorbellSettingJingleBellPairCell.h */,
@@ -1607,6 +1645,8 @@
 		D60F9E991FFB862C007E3B40 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				28699FA823B9935E00EA2E30 /* WYCameraSettingMessageBoardVC.h */,
+				28699FA523B9935E00EA2E30 /* WYCameraSettingMessageBoardVC.m */,
 				D60F9E9A1FFB862C007E3B40 /* WYCameraSettingSleepmodeTimesVC.m */,
 				D60F9E9B1FFB862C007E3B40 /* WYCameraSettingSDCardVC.m */,
 				D60F9E9C1FFB862C007E3B40 /* WYCameraSettingShareVC.m */,
@@ -1623,6 +1663,8 @@
 				D60F9EA81FFB862C007E3B40 /* WYCameraSettingMotionVC.h */,
 				D60F9E9E1FFB862C007E3B40 /* WYCameraSettingVC.h */,
 				D60F9EA91FFB862C007E3B40 /* WYCameraSettingVC.m */,
+				2807B8CA23C75C6300611A2D /* WYCameraSettingSleepOverTimeVC.h */,
+				2807B8CB23C75C6300611A2D /* WYCameraSettingSleepOverTimeVC.m */,
 				D60F9EAA1FFB862C007E3B40 /* WYCameraSettingSleepmodeTimesAddVC.m */,
 				D60F9EAB1FFB862C007E3B40 /* WYCameraSettingSleepmodeVC.m */,
 			);
@@ -2887,6 +2929,12 @@
 			mainGroup = 178798011C2A3D9A00CDCC7D;
 			productRefGroup = 1787980B1C2A3D9A00CDCC7D /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 28528BE523B2FA4600A3C6F0 /* Products */;
+					ProjectRef = 28528BE423B2FA4600A3C6F0 /* MeariKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				178798091C2A3D9A00CDCC7D /* Meari */,
@@ -2894,6 +2942,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		28528BEA23B2FA4600A3C6F0 /* MeariKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MeariKit.framework;
+			remoteRef = 28528BE923B2FA4600A3C6F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		28528BEC23B2FA4600A3C6F0 /* MeariKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MeariKitTests.xctest;
+			remoteRef = 28528BEB23B2FA4600A3C6F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		178798081C2A3D9A00CDCC7D /* Resources */ = {
@@ -2921,7 +2986,6 @@
 				9C49E3F71F2AE45500074B6D /* gif_auditionMessage.gif in Resources */,
 				9C49E3FB1F2B0E2B00074B6D /* gif_addDoorBell.gif in Resources */,
 				D66C6D7D1DF5C91C00CCD8EF /* img_camera_timebar_bigruler06.png in Resources */,
-				D60F9F301FFB862D007E3B40 /* WYDoorBellSettingHostMessageCell.xib in Resources */,
 				D6E79A0C1CCF2FB800A1CC21 /* Assets.xcassets in Resources */,
 				D685ED951DD9A52500B7977D /* WYMenuCell.xib in Resources */,
 				D60F9F311FFB862D007E3B40 /* WYDoorSettingPIRDetectionCell.xib in Resources */,
@@ -2938,6 +3002,7 @@
 				D64BA6971F6BF23700D6F644 /* WYFriendShareCell2.xib in Resources */,
 				D66C6D7B1DF5C91C00CCD8EF /* img_camera_timebar_bigruler04.png in Resources */,
 				D66C6D811DF5C91C00CCD8EF /* img_camera_timebar_bigruler10.png in Resources */,
+				28528C0123B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.xib in Resources */,
 				D6F02CDF1D0F977E008CED61 /* WYMsgSystemCell.xib in Resources */,
 				D630A61F1E5D2FD700BB8665 /* gif_camera_wired.gif in Resources */,
 				D60F9F441FFB862D007E3B40 /* WYCameraWifiVC.xib in Resources */,
@@ -3052,6 +3117,7 @@
 				D6596AA81F18DE030044B894 /* WYNickTextField.m in Sources */,
 				D6596A8A1F18DE030044B894 /* WYCoreDataManager.m in Sources */,
 				D65448161DEB3DBD0087F191 /* main.m in Sources */,
+				28699FA923B9935E00EA2E30 /* WYCameraSettingMessageBoardVC.m in Sources */,
 				D60F9F421FFB862D007E3B40 /* WYCameraManuallyAddVC.m in Sources */,
 				D60F9F4B1FFB862D007E3B40 /* WYCameraSearchCell.m in Sources */,
 				D64F5A501C86F2DA00FD4066 /* UIButton+Extension.m in Sources */,
@@ -3091,8 +3157,10 @@
 				D6516A151DF00852009497D5 /* FXBlurView+Add.m in Sources */,
 				D60F9F771FFB862D007E3B40 /* WYBabyMonitorMusicVC.m in Sources */,
 				D60F9F451FFB862D007E3B40 /* WYCameraQRCodeMakerVC.m in Sources */,
+				2807B8CC23C75C6300611A2D /* WYCameraSettingSleepOverTimeVC.m in Sources */,
 				D60F9F671FFB862D007E3B40 /* WYCameraToolPreviewBabyView.m in Sources */,
 				D60F9F4D1FFB862D007E3B40 /* WYCameraSettingSDCardVC.m in Sources */,
+				28699F8423B35EE000EA2E30 /* WYVoiceCallView.m in Sources */,
 				D60F9F791FFB862D007E3B40 /* WYBabymonitorMusicStateModel.m in Sources */,
 				D6BA40A21DE4980100CC7879 /* WYMsgAlarmDetailNormalCell.m in Sources */,
 				D63DBDF21E2EF85C00D8C533 /* WYAlertView+Add.m in Sources */,
@@ -3174,7 +3242,7 @@
 				D60F9F7C1FFB862D007E3B40 /* WYNVRSettingShareVC.m in Sources */,
 				D64F5A541C86F2DA00FD4066 /* UIView+Extension.m in Sources */,
 				D6D960B01D0F99B2001D95BE /* WYMenuModel.m in Sources */,
-				D60F9F341FFB862D007E3B40 /* WYDoorBellSettingHostMessageCell.m in Sources */,
+				28528BF323B3153400A3C6F0 /* WYHostMessageModel.m in Sources */,
 				D6BA40921DE41E1F00CC7879 /* WYMsgAlarmCell.m in Sources */,
 				D60F9F351FFB862D007E3B40 /* WYDoorSettingPIRDetectionCell.m in Sources */,
 				D67C8CE11D66B18D00BF2294 /* UIColor+Extension.m in Sources */,
@@ -3197,6 +3265,7 @@
 				9C2E45D1217E013B00D31732 /* WYVoiceDoorbellMsgVoiceCell.m in Sources */,
 				D60F9F571FFB862D007E3B40 /* WYCameraSettingSleepmodeAddModel.m in Sources */,
 				D64BA6861F6BC76E00D6F644 /* WYFriendShareCell1.m in Sources */,
+				28528C0223B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.m in Sources */,
 				D6E4F4A01DDEB89E00063101 /* MJRefreshStateHeader+Add.m in Sources */,
 				D609B4261D48B07D000ADDEE /* NSTimer+Extension.m in Sources */,
 				D60F9F661FFB862D007E3B40 /* WYVideo.m in Sources */,
@@ -3811,13 +3880,14 @@
 		D6F431AA1ECED31100A0D947 /* coreData2.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				28528C0423B356BD00A3C6F0 /* coreData 6.xcdatamodel */,
 				9C6023BE2187250100F00A81 /* coreData 5.xcdatamodel */,
 				9C5D4272217EBC93005B1190 /* coreData 4.xcdatamodel */,
 				9CA1C1C91FCEA8DA003E6DB2 /* coreData 3.xcdatamodel */,
 				D6F431AB1ECED31100A0D947 /* coreData 2.xcdatamodel */,
 				D6F431AC1ECED31100A0D947 /* coreData.xcdatamodel */,
 			);
-			currentVersion = 9C6023BE2187250100F00A81 /* coreData 5.xcdatamodel */;
+			currentVersion = 28528C0423B356BD00A3C6F0 /* coreData 6.xcdatamodel */;
 			path = coreData2.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

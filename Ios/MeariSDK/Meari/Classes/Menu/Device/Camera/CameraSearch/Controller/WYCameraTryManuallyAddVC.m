@@ -155,40 +155,44 @@
 - (void)startAP {
     WY_WeakSelf
     CFTimeInterval st = CFAbsoluteTimeGetCurrent();
-    [MeariDevice startAPConfigureWifiSSID:self.wifi.ssid wifiPwd:self.wifi.password success:^{
-        CFTimeInterval t = CFAbsoluteTimeGetCurrent() - st < 1 ? 1 : 0;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(t * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [weakSelf.loadingView showSuccess];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                if (weakSelf.wy_pushFromVCType == WYVCTypeCameraSearch) {
-                    [weakSelf wy_popToVC:WYVCTypeCameraSearch];
-                }else {
-                    [weakSelf wy_pushToVC:WYVCTypeCameraSearch];
-                }
-            });
-        });
-    } failure:^(NSError *error) {
-        CFTimeInterval t = CFAbsoluteTimeGetCurrent() - st < 1 ? 1 : 0;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(t * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [weakSelf.loadingView showFailure];
-            [WYAlertView showAPFailureWithCancelAction:^{
-                [weakSelf.loadingView dismiss];
-                [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                    weakSelf.connectLabel.transform = CGAffineTransformMakeScale(0.1, 1);
-                    weakSelf.connectBtn.transform = CGAffineTransformIdentity;
-                } completion:^(BOOL finished) {
-                    if (finished) {
-                        weakSelf.connectLabel.hidden = YES;
-                        weakSelf.connectLabel.transform = CGAffineTransformMakeScale(1, 1);
+    [[MeariDeviceActivator sharedInstance] getTokenSuccess:^(NSString *token, NSInteger validTime, NSInteger delaySmart) {
+        WY_UserM.configToken = token;
+        [[MeariDeviceActivator sharedInstance] configApModeWith:self.wifi.ssid password:self.wifi.password token:WY_UserM.configToken success:^{
+            CFTimeInterval t = CFAbsoluteTimeGetCurrent() - st < 1 ? 1 : 0;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(t * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakSelf.loadingView showSuccess];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    if (weakSelf.wy_pushFromVCType == WYVCTypeCameraSearch) {
+                        [weakSelf wy_popToVC:WYVCTypeCameraSearch];
+                    }else {
+                        [weakSelf wy_pushToVC:WYVCTypeCameraSearch];
                     }
+                });
+            });
+        } failure:^(NSError *error) {
+            CFTimeInterval t = CFAbsoluteTimeGetCurrent() - st < 1 ? 1 : 0;
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(t * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakSelf.loadingView showFailure];
+                [WYAlertView showAPFailureWithCancelAction:^{
+                    [weakSelf.loadingView dismiss];
+                    [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                        weakSelf.connectLabel.transform = CGAffineTransformMakeScale(0.1, 1);
+                        weakSelf.connectBtn.transform = CGAffineTransformIdentity;
+                    } completion:^(BOOL finished) {
+                        if (finished) {
+                            weakSelf.connectLabel.hidden = YES;
+                            weakSelf.connectLabel.transform = CGAffineTransformMakeScale(1, 1);
+                        }
+                    }];
+                } otherAction:^{
+                    [weakSelf.loadingView showWithCircle];
+                    [weakSelf startAP];
                 }];
-            } otherAction:^{
-                [weakSelf.loadingView showWithCircle];
-                [weakSelf startAP];
-            }];
-        });
+            });
+        }];
+    } failure:^(NSError *error) {
+        [WY_UserM dealMeariUserError:error];
     }];
-    
 }
 - (void)prepareAP {
     self.connectLabel.alpha = 0.0f;

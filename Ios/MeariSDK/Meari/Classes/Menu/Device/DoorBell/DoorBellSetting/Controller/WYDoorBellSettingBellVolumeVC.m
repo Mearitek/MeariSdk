@@ -11,18 +11,19 @@
 @interface WYDoorBellSettingBellVolumeVC ()
 @property (nonatomic, strong) UILabel *volumeLabel;
 @property (nonatomic, strong) UISlider *volumeSlider;
-@property (nonatomic, strong) MeariDeviceParamBell *doorBell;
-@property (nonatomic, strong) MeariDevice *camera;
+@property (nonatomic, assign) BOOL isVoiceBell;
+
 @end
 
 @implementation WYDoorBellSettingBellVolumeVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _isVoiceBell = self.camera.info.subType == MeariDeviceSubTypeIpcVoiceBell;
     [self initSubview];
 }
 - (void)initSubview {
-    self.title = WYLocalString(@"TALKBACK VOLUME");
+    self.title = WYLocalString(@"Talkback Volume");
     self.tableView.scrollEnabled = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -35,24 +36,16 @@
     WY_HUD_SHOW_WAITING
     WY_WeakSelf
     [self.camera setDoorBellVolume:roundf(slider.value) success:^{
-        [SVProgressHUD wy_showToast:WYLocalString(@"success_set")];
+        [SVProgressHUD wy_showToast:WYLocalString(@"toast_set_success")];
     } failure:^(NSError *error) {
-        slider.value = weakSelf.doorBell.volume;
+        slider.value = weakSelf.camera.param.bell.volume;
         weakSelf.volumeLabel.text = @(slider.value).stringValue;
-        [SVProgressHUD wy_showToast:WYLocalString(@"fail_set")];
-    }];
-}
-
-#pragma mark - transition
-- (void)transitionObject:(id)obj fromPage:(WYVCType)VCType {
-    [super transitionObject:obj fromPage:VCType];
-    if(WY_IsKindOfClass(obj, NSArray)) {
-        NSArray *param = (NSArray *)obj;
-        self.camera = param[0];
-        if (WY_IsKindOfClass(param[1], MeariDeviceParamBell)) {
-            self.doorBell = param[1];
+        if (weakSelf.camera.iotDevice) {
+            WY_HUD_SHOW_ERROR(error);
+        } else {
+            WY_HUD_SHOW_TOAST(WYLocalString(@"toast_setting_failed_online"))
         }
-    }
+    }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -90,7 +83,7 @@
     title.numberOfLines = 0;
     title.font = WYFontNormal(15);
     [title ajustedHeightWithWidth:WY_ScreenWidth - 40];
-    title.text = WYLocalString(@"des_doorBellVolume");
+    title.text = WYLocalString(@"des_doorbell_volume");
     [view  addSubview:title];
     [title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(view).offset(20);
@@ -139,7 +132,7 @@
         _volumeSlider  = [[UISlider alloc] init];
         _volumeSlider.minimumValue = 0;
         _volumeSlider.maximumValue = 100;
-        _volumeSlider.value = self.doorBell.volume;
+        //        _volumeSlider.value = WY_BOOL(self.isVoiceBell, self.camera.iothub.iothub_ringSpeakerVolume, self.doorBell.volume);
         [_volumeSlider setTintColor:WY_MainColor];
         [_volumeSlider addTarget:self action:@selector(vlolumeValueChange:) forControlEvents:UIControlEventValueChanged];
         [_volumeSlider addTarget:self action:@selector(volumeSliderFinished:) forControlEvents:UIControlEventTouchUpInside];
@@ -150,7 +143,7 @@
     if (!_volumeLabel) {
         _volumeLabel = [[UILabel alloc] init];
         _volumeLabel.textColor = WY_MainColor;
-        _volumeLabel.text = @(self.doorBell.volume).stringValue;
+        //        _volumeLabel.text = @(self.isVoiceBell?self.camera.iothub.iothub_ringSpeakerVolume:self.doorBell.volume).stringValue;
     }
     return _volumeLabel;
 }

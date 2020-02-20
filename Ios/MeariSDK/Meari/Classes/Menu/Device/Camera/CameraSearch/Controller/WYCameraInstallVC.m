@@ -126,6 +126,7 @@
     if (!self.hideOtherNetConfig) {
         self.navigationItem.rightBarButtonItem = [UIBarButtonItem otherDistributionMethod:self action:@selector(otherMethod:)];
     }
+    WY_UserM.configToken = nil;
 }
 - (void)initLayout {
     WY_WeakSelf

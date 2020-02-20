@@ -10,7 +10,7 @@
 #import "WYCameraSearchCell.h"
 
 
-@interface WYCameraSearchVC ()<WYCameraSearchCellDelegate>
+@interface WYCameraSearchVC ()<WYCameraSearchCellDelegate, MeariDeviceActivatorDelegate>
 {
     WYWifiInfo *_wifi;        //Wi-Fi信息
     BOOL _justSearch;       //Y-只搜索，N-搜索+配网
@@ -271,38 +271,60 @@ WYGetter_MutableArray(searchSource)
     }
     
     WY_WeakSelf
-    if (!_justSearch) {
+    if (self.wy_pushFromVCType == WYVCTypeCameraTryManuallyAdd) {
+        [MeariDeviceActivator sharedInstance].delegate = self;
+        MeariDeviceTokenType tokenType = self.wy_pushFromVCType == WYVCTypeCameraTryManuallyAdd ? MeariDeviceTokenTypeAP : MeariDeviceTokenTypeQRCode;
+        [[MeariDeviceActivator sharedInstance] startConfigWiFi:MeariSearchModeAll token:WY_UserM.configToken type:tokenType nvr:NO timeout:1000];
+    } else {
         [self networkRequestToken:^(NSString *obj) {
-            [MeariDevice startMonitorWifiSSID:_wifi.ssid wifiPwd:_wifi.password token:obj success:^{
-                NSLog(@"----");
-            } failure:^(NSError *error){
-                NSLog(@"----");
-            }];
-        } failure:^(NSError *error) {
-            if (weakSelf.wy_isTop) {
-                WY_HUD_SHOW_ServerError
-            }
-        }];
+             [MeariDeviceActivator sharedInstance].delegate = self;
+             MeariDeviceTokenType tokenType = self.wy_pushFromVCType == WYVCTypeCameraTryManuallyAdd ? MeariDeviceTokenTypeAP : MeariDeviceTokenTypeQRCode;
+             [[MeariDeviceActivator sharedInstance] startConfigWiFi:MeariSearchModeAll token:obj type:tokenType nvr:NO timeout:1000];
+         } failure:^(NSError *error) {
+             if (weakSelf.wy_isTop) {
+                 WY_HUD_SHOW_ServerError
+             }
+         }];
     }
-    MeariDeviceSearchMode mode = self.wy_pushToVCType == WYVCTypeCameraQRCodeMaker ? MeariSearchModeCloud : MeariSearchModeAll;
-    //Choose this model with a higher success rate
-    mode = MeariSearchModeAll;
-    [MeariDevice startSearch:mode success:^(MeariDevice *device) {
-        for (MeariDevice *d in weakSelf.dataSource) {
-            if ([device.info.sn isEqualToString:d.info.sn]) {
-                return;
-            }
-        }
-        
-        for (MeariDevice *d in weakSelf.searchSource) {
-            if ([device.info.sn isEqualToString:d.info.sn]) {
-                return;
-            }
-        }
-        [weakSelf.searchSource addObject:device];
-        [weakSelf networkRequestStatusWithDevices:weakSelf.searchSource];
-    } failure:nil]; 
+    
+//    [MeariDevice startSearch:mode success:^(MeariDevice *device) {
+//        NSLog(@"name = %@", device.info.nickname);
+//        for (MeariDevice *d in weakSelf.dataSource) {
+//            if ([device.info.sn isEqualToString:d.info.sn]) {
+//                return;
+//            }
+//        }
+//
+//        for (MeariDevice *d in weakSelf.searchSource) {
+//            if ([device.info.sn isEqualToString:d.info.sn]) {
+//                return;
+//            }
+//        }
+//        [weakSelf.searchSource addObject:device];
+//        [weakSelf networkRequestStatusWithDevices:weakSelf.searchSource];
+//    } failure:nil];
 }
+
+#pragma mark ---- MeariDeviceActivatorDelegate
+- (void)activator:(MeariDeviceActivator *)activator didReceiveDevice:(MeariDevice *)deviceModel error:(NSError *)error {
+    WY_WeakSelf
+    NSLog(@"name = %@", deviceModel.info.nickname);
+    for (MeariDevice *d in weakSelf.dataSource) {
+        if ([deviceModel.info.sn isEqualToString:d.info.sn]) {
+            return;
+        }
+    }
+
+    for (MeariDevice *d in weakSelf.searchSource) {
+        if ([deviceModel.info.sn isEqualToString:d.info.sn]) {
+            return;
+        }
+    }
+    [weakSelf.searchSource addObject:deviceModel];
+    [weakSelf networkRequestStatusWithDevices:weakSelf.searchSource];
+
+}
+
 - (void)stopSearch {
     [super stopSearch];
     [MeariDevice stopSearch];
@@ -340,7 +362,7 @@ WYGetter_MutableArray(searchSource)
     } failure:^(NSError *error) {
     //....
     }];
- 2.Let the camera scan the QR code and Hear the sound of a cuckoo.(User manual)
+ 2.Let the camera scan the QR code and Hear the sound of a cuckoo.(User manual) or ap
  
  3.start config device
   E.g :

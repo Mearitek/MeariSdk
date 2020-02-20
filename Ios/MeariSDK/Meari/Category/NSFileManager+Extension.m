@@ -52,6 +52,19 @@ static NSString *audioFolderName = @"Audio";
     return [[self photoFolder] stringByAppendingFormat:@"/%@-%@.jpg", sn, [self dateFormatterName]];
 }
 
++ (void)renameFileOriginPath:(NSString *)originPath newFilePath:(NSString *)path {
+    if (originPath.length <= 0 || path.length <= 0) return;
+    if (![[self defaultManager] fileExistsAtPath:originPath]) return;
+    NSError *error;
+    if ([[self defaultManager] fileExistsAtPath:path]) {
+        [[self defaultManager] removeItemAtPath:path error:&error];
+    }
+    [[self defaultManager] moveItemAtURL:[NSURL fileURLWithPath:originPath] toURL:[NSURL fileURLWithPath:path]  error:&error];
+    if (error) {
+        
+    }
+}
+
 
 #pragma mark - private
 + (NSString *)createSubFolder:(NSString *)subFolderName superFolder:(NSString *)superFolder {

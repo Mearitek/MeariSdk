@@ -21,7 +21,10 @@ typedef NS_ENUM(NSInteger, WYSettingCellType) {
     
     WYSettingCellTypePIRDetection,
     WYSettingCellTypeBatteryLock,
+    WYSettingCellTypeClearRecords,
     WYSettingCellTypeHostMessage,
+    WYSettingCellTypeMessageBoard,
+    WYSettingCellTypeSleepOverTime,
     WYSettingCellTypeBellVolume,
     WYSettingCellTypeJingleBell,
     WYSettingCellTypePowerManagement
@@ -60,6 +63,12 @@ typedef NS_ENUM(NSInteger, WYSettingCellType) {
 + (instancetype)PowerManagementModel;
 + (instancetype)BellVolumeModel;
 + (instancetype)JingleBellModel;
+
+// 语音门铃
++ (instancetype)clearAllVistorMsgModel;
++ (instancetype)sleepOverTimeModel;
++ (instancetype)messageBoardModel;
+
 //-分享
 + (instancetype)sharedPIRDetectionModel;
 

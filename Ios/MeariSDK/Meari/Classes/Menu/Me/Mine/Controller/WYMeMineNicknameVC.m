@@ -20,7 +20,7 @@
     if (!_tf) {
         _tf = [UITextField new];
         _tf.font = WYFont_Text_S_Normal;
-        [_tf setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
+//        [_tf setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
         _tf.text = WY_USER_NICK;
         _tf.delegate = self;
         _tf.returnKeyType = UIReturnKeyDone;

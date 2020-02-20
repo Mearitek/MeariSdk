@@ -21,7 +21,7 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.line.backgroundColor = WY_LineColor_LightGray;
     self.tf.font = WYFont_Text_S_Normal;
-    [self.tf setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
+//    [self.tf setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
     self.tf.clearButtonMode = UITextFieldViewModeNever;
     
     [self.tf addTarget:self action:@selector(textDidChangedAction:) forControlEvents:UIControlEventEditingChanged];

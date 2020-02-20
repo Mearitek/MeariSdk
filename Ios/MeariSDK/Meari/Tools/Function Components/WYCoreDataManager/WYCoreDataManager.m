@@ -26,7 +26,6 @@ WY_Singleton_Implementation(CoreDataManager)
     [self saveContext];
 }
 
-
 /**
  *  删除
  */
@@ -112,7 +111,8 @@ WY_Singleton_Implementation(CoreDataManager)
     NSFetchRequest *fetchR = [self fetchRequestWithEntityName:entityName
                                                     predicate:predicate
                                             sortDescriptors:sortDescriptors
-                                                   fetchLimit:fetchLimit];
+                                                   fetchLimit:fetchLimit
+                                                  fetchOffset:-1];
     NSError *error;
     NSArray *results = [self.managedObjectContext executeFetchRequest:fetchR error:nil];
     if (error) {
@@ -120,14 +120,31 @@ WY_Singleton_Implementation(CoreDataManager)
     }
     return results;
 }
-    
+- (NSArray *)queryDataWithEntityName:(NSString *)entityName
+                           predicate:(NSPredicate *)predicate
+                      sortDescriptor:(NSArray *)sortDescriptors
+                          fetchLimit:(NSUInteger)fetchLimit
+                         fetchOffset:(NSInteger)fetchOffset {
+    NSFetchRequest *fetchR = [self fetchRequestWithEntityName:entityName
+                                                    predicate:predicate
+                                              sortDescriptors:sortDescriptors
+                                                   fetchLimit:fetchLimit
+                                                  fetchOffset:fetchOffset];
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchR error:nil];
+    if (error) {
+        NSLog(@"%s [line %d] 查询数据库失败:%@", __FUNCTION__, __LINE__, error);
+    }
+    return results;
+}
 /**
  *  创建请求
  */
 - (NSFetchRequest *)fetchRequestWithEntityName:(NSString *)entityName
                                      predicate:(NSPredicate *)predicate
                                sortDescriptors:(NSArray *)sortDescriptors
-                                    fetchLimit:(NSUInteger)fetchLimit {
+                                    fetchLimit:(NSUInteger)fetchLimit
+                                   fetchOffset:(NSInteger)fetchOffset {
     if (!entityName) {
         return nil;
     }
@@ -141,7 +158,9 @@ WY_Singleton_Implementation(CoreDataManager)
     if (fetchLimit > 0) {
         fetchR.fetchLimit = fetchLimit;
     }
-    
+    if (fetchOffset > 0) {
+        fetchR.fetchOffset = fetchOffset * fetchLimit;
+    }
     [fetchR setReturnsObjectsAsFaults:NO];
     return fetchR;
 }

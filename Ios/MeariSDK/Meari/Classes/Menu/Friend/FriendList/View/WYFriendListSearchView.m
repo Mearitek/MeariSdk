@@ -31,7 +31,7 @@
         _textField.delegate = self;
         _textField.placeholder = [NSString wy_placeholder_friend_account];
         _textField.font = WYFont_Text_S_Normal;
-        [_textField setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
+//        [_textField setValue:WYFont_Text_S_Normal forKeyPath:@"_placeholderLabel.font"];
         [self addSubview:_textField];
     }
     return _textField;

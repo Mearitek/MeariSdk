@@ -62,6 +62,9 @@
 #pragma mark -- WYTransition
 - (void)transitionObject:(id)obj fromPage:(WYVCType)VCType {
     self.wy_pushFromVCType = VCType;
+    if (WY_IsKindOfClass(obj, MeariDevice)) {
+        self.camera = obj;
+    }
 }
 
 #pragma mark - Public

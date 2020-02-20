@@ -22,7 +22,7 @@
 
 - (void)setModel:(WYVoiceMsgModel *)model {
     _model = model;
-//    self.isReceived = model.msg.msgType.integerValue == 2;
+    self.isReceived = model.msg.msgType.integerValue == 2;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {

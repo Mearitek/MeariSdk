@@ -124,7 +124,10 @@ UITableViewDelegate
         
         WYCameraSettingModel *jingleBellModel    = [WYCameraSettingModel JingleBellModel];
         
-        
+        // 语音门铃
+        WYCameraSettingModel *clearAllVistorMsgModel                = [WYCameraSettingModel clearAllVistorMsgModel];
+        WYCameraSettingModel *sleepOverTimeModel = [WYCameraSettingModel sleepOverTimeModel];
+        WYCameraSettingModel *messageBoardModel = [WYCameraSettingModel messageBoardModel];
         
         previewNameModel.detailedText = self.camera.info.nickname;
         ownerModel.detailedText = self.camera.info.userAccount;
@@ -143,6 +146,15 @@ UITableViewDelegate
                 
             }else {
                 _dataSource = @[ownerModel, snModel, shareModel, sdcardModel, nvrModel, sleepmodeModel, mirrorModel, motionModel, versionModel].mutableCopy;
+            }
+        }
+        if (self.camera.info.subType == MeariDeviceSubTypeIpcVoiceBell) {
+            if (self.camera.info.shared) {
+//                _dataSource = @[ownerModel, snModel, ].mutableCopy;
+                _dataSource = @[ownerModel, snModel, shareModel,clearAllVistorMsgModel,bellVolumeModel,powerManagementModel,sleepOverTimeModel,versionModel, messageBoardModel].mutableCopy;
+                
+            }else {
+                _dataSource = @[ownerModel, snModel, shareModel,clearAllVistorMsgModel,bellVolumeModel,powerManagementModel,sleepOverTimeModel,versionModel, messageBoardModel].mutableCopy;
             }
         }
         if (!self.camera.hasBindedNvr) {
@@ -190,24 +202,18 @@ UITableViewDelegate
     }];
 }
 
-- (void)getParamsVoiceBell {
-    WY_WeakSelf
-    [self.camera getParamsSuccess:^(MeariDeviceParam *param) {
-        NSLog(@"语音门铃----%@",param);
-    } failure:^(NSError *error) {
-        
-    }];
-}
-
-
 - (void)initConnect {
-    if (self.camera.sdkLogining) {
-        return;
-    }
-    if (self.camera.sdkLogined) {
+    if (self.camera.iotDevice) {
         [self getParams];
-    }else {
-        [self.camera wy_startConnectSuccess:nil failure:nil];
+    } else {
+        if (self.camera.sdkLogining) {
+            return;
+        }
+        if (self.camera.sdkLogined) {
+            [self getParams];
+        }else {
+            [self.camera wy_startConnectSuccess:nil failure:nil];
+        }
     }
 }
 
@@ -215,12 +221,7 @@ UITableViewDelegate
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (self.camera.info.subType == MeariDeviceSubTypeIpcVoiceBell) {
-        [self getParamsVoiceBell];
-    } else {
-        [self initConnect];
-    }
-    
+    [self initConnect];
     
     [self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
     [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:YES];
@@ -303,6 +304,7 @@ UITableViewDelegate
     if (device.connectSuccess) {
         [self getParams];
     }else {
+        [self updateCellWithCellType:WYSettingCellTypeBellVolume param:WYLocal_Timeout];
         [self updateCellWithCellType:WYSettingCellTypeMirror param:WYLocal_Timeout];
         [self updateCellWithCellType:WYSettingCellTypeMotion param:WYLocal_Timeout];
         [self updateCellWithCellType:WYSettingCellTypeVersion param:WYLocal_Timeout];
@@ -362,8 +364,9 @@ UITableViewDelegate
     } failure:^(NSError *error) {
         [weakSelf updateCellWithCellType:WYSettingCellTypeVersion param:WYLocal_Timeout];
     }];
-    if (self.camera.info.subType == MeariDeviceSubTypeIpcBell) {
         [weakSelf.camera getParamsSuccess:^(MeariDeviceParam *params) {
+            //对讲音量
+            [weakSelf updateCellWithCellType:WYSettingCellTypeBellVolume param:@(self.camera.param.bell.volume).stringValue];
             NSString *levelStr;
             if (params.bell.pir.enable) {
                 switch (params.bell.pir.level) {
@@ -383,7 +386,6 @@ UITableViewDelegate
         } failure:^(NSError *error) {
             [weakSelf updateCellWithCellType:WYSettingCellTypePIRDetection param:WYLocal_Timeout];
         }];
-    }
 }
 - (void)updateCellWithCellType:(WYSettingCellType)type param:(NSString *)param{
     
@@ -474,11 +476,7 @@ UITableViewDelegate
     model.accesoryType = WYSettingAccesoryTypeJuhua;
     [self.tableView reloadData];
     
-    if (self.camera.info.subType == MeariDeviceSubTypeIpcVoiceBell) {
-        [self getParamsVoiceBell];
-    } else {
-        [self initConnect];
-    }
+    [self initConnect];
     
 }
 
@@ -556,6 +554,7 @@ UITableViewDelegate
     cell.accessoryView  = nil;
     [cell.textLabel viewWithTag:10000].hidden = YES;
     switch (model.type) {
+        case WYSettingCellTypeClearRecords:
         case WYSettingCellTypeShare: {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
@@ -577,6 +576,7 @@ UITableViewDelegate
             }
             break;
         }
+        
         case WYSettingCellTypeSleepMode: {
             switch (model.accesoryType) {
                 case WYSettingAccesoryTypeNone: {
@@ -734,6 +734,22 @@ UITableViewDelegate
     WYCameraSettingModel *model = self.dataSource[indexPath.row];
     
     switch (model.type) {
+        case WYSettingCellTypeClearRecords: {
+            [WYAlertView showWithTitle:WYLocalString(@"setting_clear_record")
+                               message:WYLocalString(@"alert_delete_all_voice_record")
+                          cancelButton:WYLocal_Cancel
+                           otherButton:WYLocalString(@"OK")
+                           alertAction:^(WYAlertView *alertView, NSInteger buttonIndex) {
+                               if (buttonIndex != alertView.cancelButtonIndex) {
+                                   [[MeariUser sharedInstance] deleteAllVoiceMessagesWithDeviceID:self.camera.info.ID success:^{
+                                       
+                                   } failure:^(NSError *error) {
+                                       
+                                   }];
+                               }
+                           }];
+            break;
+        }
         case WYSettingCellTypeMotion: {
             if (model.accesoryType != WYSettingAccesoryTypeNormal) return;
             [self wy_pushToVC:WYVCTypeCameraSettingMotion sender:self.camera];
@@ -789,14 +805,21 @@ UITableViewDelegate
             break;
         }
         case WYSettingCellTypeBellVolume: {
-            [self wy_pushToVC:WYVCTypeBellVolume sender:@[WY_SafeValue(self.camera), WY_SafeValue(self.doorBell)]];
+            [self wy_pushToVC:WYVCTypeBellVolume sender:self.camera];
             break;
         }
         case WYSettingCellTypePowerManagement: {
             [self wy_pushToVC:WYVCTypePowerManagement sender:@[WY_SafeValue(self.camera), WY_SafeValue(self.doorBell)]];
             break;
         }
-            
+        case WYSettingCellTypeSleepOverTime: {
+            [self wy_pushToVC:WYVCTypeCameraSettingSleepOverTime sender:self.camera];
+            break;
+        }
+        case WYSettingCellTypeMessageBoard:{
+            [self wy_pushToVC:WYVCTypeCameraSettingMessageBoard sender:self.camera];
+            break;
+        }
         case WYSettingCellTypeBatteryLock: {
             if (![self.doorBell.power isEqualToString:WYLocalString(@"battery")]) {
                 WY_HUD_SHOW_TOAST(WYLocalString(@"当前没有电池"));

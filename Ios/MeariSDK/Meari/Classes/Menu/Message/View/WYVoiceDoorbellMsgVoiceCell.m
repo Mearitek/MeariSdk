@@ -65,7 +65,7 @@
 }
 //标记已读
 - (void)networkRequestReadStatus {
-    //    [[MeariUser sharedInstance] markReadVoiceMessage:<#deviceID#> success:<#^(void)success#> failure:<#^(NSError *error)failure#>]
+    [[MeariUser sharedInstance] updateVoiceMessageStatusWithMessageID:self.model.msg.msgID.integerValue success:nil failure:nil];
 }
 
 - (void)playbackFinished:(id)sender {

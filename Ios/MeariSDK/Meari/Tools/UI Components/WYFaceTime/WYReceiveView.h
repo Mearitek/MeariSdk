@@ -20,8 +20,10 @@
 @end
 @interface WYReceiveView : UIView
 @property (nonatomic,   weak) id<WYReceiveViewDelegate>delegate;
+@property (nonatomic,   weak) UIButton *speakBtn;
 @property (nonatomic, strong) MeariDevice *camera;
 @property (nonatomic, assign) BOOL showSpeakAnimation;
+@property (nonatomic, assign) BOOL isDurationTimerValid;
 @property (nonatomic, assign) BOOL logined;
-
+- (void)readyTalking;
 @end

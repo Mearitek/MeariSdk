@@ -21,6 +21,7 @@
 @property (nonatomic, weak) id<WYDoorBellHostMessageAudioDelegate> delegate;
 @property (nonatomic, assign) BOOL enableRecord;
 @property (nonatomic, assign) BOOL microphoneAuth;
+- (void)setRecordLimitTime:(float)time;
 //取消试听状态
 - (void)cancelAudition;
 //试听结束

@@ -59,6 +59,8 @@
 - (instancetype)wy_YMDString;
 - (instancetype)wy_HMSString;
 - (instancetype)wy_dateString;
+- (instancetype)WY_dateStringEN;
+- (instancetype)WY_dateStringZH;
 - (int)wy_secondsInYMDHMSStringWithSprit;
 - (int)wy_dayInYMDHMSStringWithSprit;
 

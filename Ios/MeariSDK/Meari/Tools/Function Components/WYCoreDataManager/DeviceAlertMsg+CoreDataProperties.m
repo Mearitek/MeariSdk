@@ -14,6 +14,7 @@
 	return [[NSFetchRequest alloc] initWithEntityName:@"DeviceAlertMsg"];
 }
 
+@dynamic createDate;
 @dynamic deviceID;
 @dynamic deviceUUID;
 @dynamic devLocalTime;
@@ -21,10 +22,20 @@
 @dynamic imgUrl;
 @dynamic isRead;
 @dynamic msgID;
+@dynamic msgType;
 @dynamic selected;
+@dynamic thumbnailPic;
 @dynamic userID;
 @dynamic userIDS;
-@dynamic thumbnailPic;
+@dynamic decibel;
+@dynamic isTimeTag;
+@dynamic localImageArray;
+@dynamic localImageData;
+@dynamic localVoiceData;
+@dynamic state;
+@dynamic voiceDuration;
+@dynamic voiceUrl;
+
 
 - (void)setModelWithInfo:(MeariMessageInfoAlarmDevice *)info UUID:(NSString *)uuid {
     self.deviceID       = @(info.deviceID);
@@ -41,8 +52,34 @@
     self.selected   = @0;
     self.deviceUUID = uuid;
 }
+
+- (void)setModelWithInfoVisitor:(MeariMessageInfoVisitor *)msg UUID:(NSString *)uuid{
+    
+    self.deviceID = @(msg.deviceID);
+    self.msgType = @(msg.msgType);
+    self.msgID = @(msg.msgID);
+    self.userID = @([WY_USER_ID integerValue]);
+    self.userIDS = @(msg.userID);
+    self.createDate = msg.createDate;
+    //    self.devLocalTime = msg.createDate;
+    self.isRead = msg.isRead ? @"Y" : @"N";
+    self.voiceUrl = msg.voiceUrl;
+    self.voiceDuration = msg.voiceDuration;
+    self.localImageArray = [NSMutableArray array];
+    //自定义键
+    self.selected   = @0;
+    self.deviceUUID = uuid;
+    self.isTimeTag = @(0);
+}
+
 - (void)setReaded {
     self.isRead = @"Y";
+}
+- (void)saveLocalImageData:(NSData *)localImageData {
+    self.localImageData = localImageData;
+}
+- (void)saveLocalVoiceData:(NSData *)localVoiceData {
+    self.localVoiceData = localVoiceData;
 }
 - (NSArray <NSURL *> *)alarmImageUrls {
     NSArray *arr = nil;

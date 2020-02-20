@@ -12,6 +12,8 @@
 "Add Device" = "Add Device";
 "Add NVR" = "Add NVR";
 "Agree" = "Agree";
+"des_message_answered" = "Answered call";
+"des_message_missed" = "missed call";
 "AgreeAddFriend" = "agree with add friend";
 "AgreeShareDevice" = "agree to share device";
 "Alert Message" = "Alert Message";

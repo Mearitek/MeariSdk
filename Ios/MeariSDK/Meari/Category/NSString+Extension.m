@@ -215,6 +215,39 @@
     if (string.length != 14) return 0;
     return [string substringWithRange:NSMakeRange(6, 2)].intValue;
 }
+- (instancetype)WY_dateStringEN {
+    //格式为：20151211120503 --> 2015-12-11 12:05:03
+    if (self.length < 14) return nil;
+    return [NSString stringWithFormat:@"%@/%@/%@ %@:%@:%@", self.subStringDay, self.subStringMonth, self.subStringYear, self.subStringHour, self.subStringMinute, self.subStringSecond];
+}
+- (instancetype)WY_dateStringZH {
+    if (self.length < 14) return nil;
+    return [NSString stringWithFormat:@"%@年%@月%@日 %@:%@:%@", self.subStringYear, self.subStringMonth, self.subStringDay, self.subStringHour, self.subStringMinute, self.subStringSecond];
+}
+- (instancetype)subStringYear {
+    if (self.length < 4) return nil;
+    return [self substringWithRange:NSMakeRange(0, 4)];
+}
+- (instancetype)subStringMonth {
+    if (self.length < 6) return nil;
+    return [self substringWithRange:NSMakeRange(4, 2)];
+}
+- (instancetype)subStringDay {
+    if (self.length < 8) return nil;
+    return [self substringWithRange:NSMakeRange(6, 2)];
+}
+- (instancetype)subStringHour {
+    if (self.length < 10) return nil;
+    return [self substringWithRange:NSMakeRange(8, 2)];
+}
+- (instancetype)subStringMinute {
+    if (self.length < 12) return nil;
+    return [self substringWithRange:NSMakeRange(10, 2)];
+}
+- (instancetype)subStringSecond {
+    if (self.length < 14) return nil;
+    return [self substringWithRange:NSMakeRange(12, 2)];
+}
 
 /**
  版本处理

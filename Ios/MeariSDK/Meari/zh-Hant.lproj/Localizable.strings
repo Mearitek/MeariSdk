@@ -15,6 +15,8 @@
 "AgreeAddFriend" = "已同意添加好友";
 "AgreeShareDevice" = "已同意分享设备";
 "Alert Message" = "报警事件";
+"des_message_answered" = "Answered call";
+"des_message_missed" = "missed call";
 "AutoGetIP" = "自动获取IP(DHCP)";
 "BABY MONITOR" = "婴儿监护器";
 "BROWSER" = "本地截图和录像";
