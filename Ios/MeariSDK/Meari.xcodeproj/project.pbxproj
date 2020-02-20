@@ -27,8 +27,6 @@
 		28528BF323B3153400A3C6F0 /* WYHostMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 28528BF123B3153400A3C6F0 /* WYHostMessageModel.m */; };
 		28528C0123B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28528BFF23B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.xib */; };
 		28528C0223B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28528C0023B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.m */; };
-		285DC9E823C0335900946869 /* MeariKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28528BEA23B2FA4600A3C6F0 /* MeariKit.framework */; };
-		285DC9E923C0335900946869 /* MeariKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 28528BEA23B2FA4600A3C6F0 /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		28699F8423B35EE000EA2E30 /* WYVoiceCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28699F8323B35EE000EA2E30 /* WYVoiceCallView.m */; };
 		28699FA923B9935E00EA2E30 /* WYCameraSettingMessageBoardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 28699FA523B9935E00EA2E30 /* WYCameraSettingMessageBoardVC.m */; };
 		9C2E45C6217E00E100D31732 /* WYVoiceDoorbellAlarmMsgDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2E45C5217E00E100D31732 /* WYVoiceDoorbellAlarmMsgDetailVC.m */; };
@@ -49,6 +47,8 @@
 		CD860385215A097F00719A34 /* WYDoorbellSettingJingleBellPairFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = CD860380215A097E00719A34 /* WYDoorbellSettingJingleBellPairFooterView.m */; };
 		CD860386215A097F00719A34 /* WYDoorbellSettingJingleBellPairCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD860381215A097E00719A34 /* WYDoorbellSettingJingleBellPairCell.xib */; };
 		CD860387215A097F00719A34 /* WYDoorbellSettingJingleBellPairCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD860384215A097F00719A34 /* WYDoorbellSettingJingleBellPairCell.m */; };
+		CD9180BA23FE8EE200119570 /* MeariKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD9180B923FE8EE100119570 /* MeariKit.framework */; };
+		CD9180BB23FE8EEF00119570 /* MeariKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD9180B923FE8EE100119570 /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CDC038D2223BD1620022A9DB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C5FCC36216F37D2000E6264 /* libc++.tbd */; };
 		CDC038D3223BD1680022A9DB /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D63294E61F7D1731004FB7D6 /* libresolv.tbd */; };
 		CDC038D4223BD16B0022A9DB /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D65B24A41ECE00E0006CB827 /* CoreMotion.framework */; };
@@ -394,20 +394,6 @@
 			remoteGlobalIDString = 178798091C2A3D9A00CDCC7D;
 			remoteInfo = PPStrongVideo;
 		};
-		28528BE923B2FA4600A3C6F0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 28528BE423B2FA4600A3C6F0 /* MeariKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D6035DB81FE3A7F80034E70F;
-			remoteInfo = MeariKit;
-		};
-		28528BEB23B2FA4600A3C6F0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 28528BE423B2FA4600A3C6F0 /* MeariKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D6F0F2691FF38F3C00BE3C11;
-			remoteInfo = MeariKitTests;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -417,7 +403,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				285DC9E923C0335900946869 /* MeariKit.framework in Embed Frameworks */,
+				CD9180BB23FE8EEF00119570 /* MeariKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,7 +437,6 @@
 		17D6E0881C530E3700166134 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		2807B8CA23C75C6300611A2D /* WYCameraSettingSleepOverTimeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WYCameraSettingSleepOverTimeVC.h; sourceTree = "<group>"; };
 		2807B8CB23C75C6300611A2D /* WYCameraSettingSleepOverTimeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WYCameraSettingSleepOverTimeVC.m; sourceTree = "<group>"; };
-		28528BE423B2FA4600A3C6F0 /* MeariKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MeariKit.xcodeproj; path = ../../../meariKit/MeariKit.xcodeproj; sourceTree = "<group>"; };
 		28528BF123B3153400A3C6F0 /* WYHostMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYHostMessageModel.m; sourceTree = "<group>"; };
 		28528BF223B3153400A3C6F0 /* WYHostMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYHostMessageModel.h; sourceTree = "<group>"; };
 		28528BFE23B3353700A3C6F0 /* WYDoorBellSettingHostMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYDoorBellSettingHostMessageCell.h; sourceTree = "<group>"; };
@@ -497,6 +482,7 @@
 		CD860382215A097F00719A34 /* WYDoorbellSettingJingleBellPairFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYDoorbellSettingJingleBellPairFooterView.h; sourceTree = "<group>"; };
 		CD860383215A097F00719A34 /* WYDoorbellSettingJingleBellPairCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYDoorbellSettingJingleBellPairCell.h; sourceTree = "<group>"; };
 		CD860384215A097F00719A34 /* WYDoorbellSettingJingleBellPairCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYDoorbellSettingJingleBellPairCell.m; sourceTree = "<group>"; };
+		CD9180B923FE8EE100119570 /* MeariKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MeariKit.framework; sourceTree = "<group>"; };
 		D60360171FE3BB0C0034E70F /* gif_camera_qrcode.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gif_camera_qrcode.gif; sourceTree = "<group>"; };
 		D609B4241D48B07D000ADDEE /* NSTimer+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Extension.h"; sourceTree = "<group>"; };
 		D609B4251D48B07D000ADDEE /* NSTimer+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Extension.m"; sourceTree = "<group>"; };
@@ -1063,7 +1049,6 @@
 				178978C21C424EA0003C507D /* CoreText.framework in Frameworks */,
 				17879A7A1C2A428C00CDCC7D /* CoreMedia.framework in Frameworks */,
 				D64F598E1C86EC3000FD4066 /* CoreImage.framework in Frameworks */,
-				285DC9E823C0335900946869 /* MeariKit.framework in Frameworks */,
 				D64F598A1C86EC1D00FD4066 /* CoreFoundation.framework in Frameworks */,
 				D64F59881C86EC1600FD4066 /* CoreData.framework in Frameworks */,
 				177905A71C352DA000F0E19D /* CoreAudioKit.framework in Frameworks */,
@@ -1072,6 +1057,7 @@
 				17879A761C2A424400CDCC7D /* AVKit.framework in Frameworks */,
 				17879A741C2A423D00CDCC7D /* AVFoundation.framework in Frameworks */,
 				D64F59841C86EBE400FD4066 /* AudioToolbox.framework in Frameworks */,
+				CD9180BA23FE8EE200119570 /* MeariKit.framework in Frameworks */,
 				D64F59821C86EBDB00FD4066 /* Accelerate.framework in Frameworks */,
 				17879A661C2A419700CDCC7D /* GLKit.framework in Frameworks */,
 			);
@@ -1181,7 +1167,6 @@
 		178798011C2A3D9A00CDCC7D = {
 			isa = PBXGroup;
 			children = (
-				28528BE423B2FA4600A3C6F0 /* MeariKit.xcodeproj */,
 				1787980C1C2A3D9A00CDCC7D /* Meari */,
 				178798261C2A3D9A00CDCC7D /* MeariTests */,
 				1787980B1C2A3D9A00CDCC7D /* Products */,
@@ -1242,15 +1227,6 @@
 				178798291C2A3D9A00CDCC7D /* Info.plist */,
 			);
 			path = MeariTests;
-			sourceTree = "<group>";
-		};
-		28528BE523B2FA4600A3C6F0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				28528BEA23B2FA4600A3C6F0 /* MeariKit.framework */,
-				28528BEC23B2FA4600A3C6F0 /* MeariKitTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		9C3EBA911FCCF6F50049B772 /* Recovered References */ = {
@@ -1432,6 +1408,7 @@
 		D60F9E351FFB718C007E3B40 /* MeariKit */ = {
 			isa = PBXGroup;
 			children = (
+				CD9180B923FE8EE100119570 /* MeariKit.framework */,
 			);
 			path = MeariKit;
 			sourceTree = SOURCE_ROOT;
@@ -2929,12 +2906,6 @@
 			mainGroup = 178798011C2A3D9A00CDCC7D;
 			productRefGroup = 1787980B1C2A3D9A00CDCC7D /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 28528BE523B2FA4600A3C6F0 /* Products */;
-					ProjectRef = 28528BE423B2FA4600A3C6F0 /* MeariKit.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				178798091C2A3D9A00CDCC7D /* Meari */,
@@ -2942,23 +2913,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		28528BEA23B2FA4600A3C6F0 /* MeariKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MeariKit.framework;
-			remoteRef = 28528BE923B2FA4600A3C6F0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		28528BEC23B2FA4600A3C6F0 /* MeariKitTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = MeariKitTests.xctest;
-			remoteRef = 28528BEB23B2FA4600A3C6F0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		178798081C2A3D9A00CDCC7D /* Resources */ = {

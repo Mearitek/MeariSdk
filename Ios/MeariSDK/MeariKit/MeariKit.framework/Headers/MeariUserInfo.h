@@ -16,20 +16,21 @@ typedef NS_ENUM(NSInteger, MeariThirdLoginType) {
 };
 
 @interface MeariUserInfo : MeariBaseModel
-@property (nonatomic, strong) NSString * avatarUrl;     //user's avatar
-@property (nonatomic, strong) NSString * nickName;      //user's nickname
-@property (nonatomic, strong) NSString * userAccount;   //user's account
-@property (nonatomic, strong) NSString * userID;        //user's id
-@property (nonatomic, strong) NSString * loginTime;     //user's login timestamp
-@property (nonatomic, strong) NSString * pushAlias;     //user's push alias for jpush
-@property (nonatomic, strong) NSString * token;         //user's token
-@property (nonatomic, strong) NSString * secrect;       //user's secrect
-@property (nonatomic, strong) NSString * userKey;       //user's key
-@property (nonatomic, strong) NSString * userName;      //user's name
-@property (nonatomic, strong) NSString * countryCode;   //Registered country code
-@property (nonatomic, strong) NSString * phoneCode;     //Registered country phone code
-@property (nonatomic, assign) NSInteger loginType;      //Login type
-@property (nonatomic, assign) BOOL notificationSound;   //Whether the message is pushed or not
-@property (nonatomic, assign, readonly) MeariThirdLoginType thirdLoginType; // Login type
+@property (nonatomic, strong) NSString * avatarUrl;     // user's avatar (用户头像)
+@property (nonatomic, strong) NSString * nickName;      // user's nickname (用户昵称)
+@property (nonatomic, strong) NSString * userAccount;   // user's account (用户账号)
+@property (nonatomic, strong) NSString * userID;        // user's id (用户ID)
+@property (nonatomic, strong) NSString * loginTime;     // user's login timestamp (用户登录时间)
+@property (nonatomic, strong) NSString * pushAlias;     // user's push alias for jpush (用户推送别名)
+@property (nonatomic, strong) NSString * token;         // user's token (用户有效标识)
+@property (nonatomic, strong) NSString * secrect;       // user's secrect (用户有效标识)
+@property (nonatomic, strong) NSString * userKey;       // user's key (用户key)
+@property (nonatomic, strong) NSString * userName;      // user's name (用户名称)
+@property (nonatomic, strong) NSString * countryCode;   // Registered country code (注册国家代号)
+@property (nonatomic, strong) NSString * phoneCode;     // Registered country phone code (注册国家手机代号)
+@property (nonatomic, assign) NSInteger loginType;      // Login type (登录类型)
+
+@property (nonatomic, assign) BOOL notificationSound;   // Whether the message is pushed or not (消息推送是否有声音)
+@property (nonatomic, assign, readonly) MeariThirdLoginType thirdLoginType; // Login type (登录类型)
 @end
 

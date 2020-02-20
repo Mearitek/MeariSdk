@@ -7,31 +7,40 @@
 //
 
 #import <Foundation/Foundation.h>
-
 typedef NS_ENUM(NSInteger, MeariDeviceSleepmode) {
     MeariDeviceSleepmodeUnknown,
-    MeariDeviceSleepmodeLensOn, // on
-    MeariDeviceSleepmodeLensOff, // off
-    MeariDeviceSleepmodeLensOffByTime,  // Timed sleep
-    MeariDeviceSleepmodeLensOffByGeographic, // Geographic sleep
+    MeariDeviceSleepmodeLensOn, // on (开启镜头)
+    MeariDeviceSleepmodeLensOff, // off (关闭镜头)
+    MeariDeviceSleepmodeLensOffByTime,  // Timed sleep (按时间休眠)
+    MeariDeviceSleepmodeLensOffByGeographic, // Geographic sleep (地理围栏休眠）
 };
 typedef NS_ENUM(NSInteger, MeariDeviceLevel) {
     MeariDeviceLevelNone = -1,
-    MeariDeviceLevelOff, // off
-    MeariDeviceLevelLow, // low
-    MeariDeviceLevelMedium, // medium
-    MeariDeviceLevelHigh // high
+    MeariDeviceLevelOff, // off (关闭)
+    MeariDeviceLevelLow, // low (低)
+    MeariDeviceLevelMedium, // medium (中)
+    MeariDeviceLevelHigh // high (高)
+};
+typedef NS_ENUM(NSInteger, MeariDeviceRecordDuration) {
+    MeariDeviceRecordDurationNone = -1,
+    MeariDeviceRecordDurationOff ,
+    MeariDeviceRecordDurationOneMin,
+    MeariDeviceRecordDurationTwoMin,
+    MeariDeviceRecordDurationThreeMin,
+    MeariDeviceRecordDuration20Seconds,
+    MeariDeviceRecordDuration40Seconds,
+   
 };
 /**
- switch 4G mode
+ 4G模式切换
  */
 typedef NS_ENUM (NSUInteger, MeariDeviceNetMode) {
-    MeariDeviceNetModeAuto, // auto switch
-    MeariDeviceNetModeWifi, // wifi switch
-    MeariDeviceNetMode4G // 4g switch
+    MeariDeviceNetModeAuto,
+    MeariDeviceNetModeWifi,
+    MeariDeviceNetMode4G
 };
 /**
- Wifi encryption
+ Wifi 加密
  */
 typedef NS_ENUM (NSUInteger, MRWiFiEncryption) {
     MRWiFiEncryptionNone,
@@ -42,21 +51,22 @@ typedef NS_ENUM (NSUInteger, MRWiFiEncryption) {
 };
 
 typedef NS_ENUM (NSInteger, MRBabyMusicPlayMode) {
-    MRBabyMusicPlayModeRepeatOne = 1 << 0, // play Single cycle
-    MRBabyMusicPlayModeRepeatAll = 1 << 1, // play all music cycle
-    MRBabyMusicPlayModeRandom    = 1 << 2, // Shuffle Play
-    MRBabyMusicPlayModeSingle    = 1 << 3, // play single music
+    MRBabyMusicPlayModeRepeatOne = 1 << 0,
+    MRBabyMusicPlayModeRepeatAll = 1 << 1,
+    MRBabyMusicPlayModeRandom    = 1 << 2,
+    MRBabyMusicPlayModeSingle    = 1 << 3,
     MRBabyMusicPlayModeDefault   = MRBabyMusicPlayModeSingle,
     MRBabyMusicPlayModeSupport   = MRBabyMusicPlayModeRepeatAll | MRBabyMusicPlayModeSingle,
     MRBabyMusicPlayModeAll       = MRBabyMusicPlayModeRepeatOne | MRBabyMusicPlayModeRepeatAll | MRBabyMusicPlayModeRandom | MRBabyMusicPlayModeSingle,
 };
 
 typedef NS_ENUM(NSInteger, MROtaUpgradeMode) {
-    MROtaUpgradeModeNormal,  // status normal
-    MROtaUpgradeModeUpgrading, // status upgrading
-    MROtaUpgradeModeWaitReboot // status upgraded and wait reboot
+    MROtaUpgradeModeNormal,  // 正常
+    MROtaUpgradeModeUpgrading, // 升级中
+    MROtaUpgradeModeWaitReboot // 升级完成等待重启
 };
-#pragma mark -- Device information
+
+#pragma mark -- 设备固件信息
 @interface MeariDeviceParamFirmInfo : MeariBaseModel
 @property (nonatomic, copy)NSString *name;
 @property (nonatomic, copy)NSString *longname;
@@ -68,23 +78,23 @@ typedef NS_ENUM(NSInteger, MROtaUpgradeMode) {
 @property (nonatomic, copy)NSString *firmware_version;
 @property (nonatomic, copy)NSString *factory;
 @end
-#pragma mark -- device network information
+#pragma mark -- 设备连接网络信息
 @interface MeariDeviceParamNetwork : MeariBaseModel
 @property (nonatomic, copy)NSString *type;
-@property (nonatomic, copy)NSString *mac; // Mac address
+@property (nonatomic, copy)NSString *mac;
 @property (nonatomic, copy)NSString *ipaddr;
-@property (nonatomic, copy)NSString *gateway; // gateway
-@property (nonatomic, copy)NSString *ssid; // wifi ssid
+@property (nonatomic, copy)NSString *gateway;
+@property (nonatomic, copy)NSString *ssid;
 //v1.2.0
-@property (nonatomic, copy) NSString *ip; // ip address
-@property (nonatomic, copy) NSString *mask; // Subnet mask
-@property (nonatomic, copy) NSString *bssid; // bssid
-@property (nonatomic, copy) NSString *signal; // signal
-@property (nonatomic, strong) NSArray *dns; // dns
-@property (nonatomic,   copy) NSString *sig; // siggal
-@property (nonatomic, assign) NSInteger cfg;
-@property (nonatomic, assign) MRWiFiEncryption mgmt; // Encryption
-@property (nonatomic, assign) NSInteger ch;  // Wifi channel
+@property (nonatomic, copy) NSString *ip;
+@property (nonatomic, copy) NSString *mask;
+@property (nonatomic, copy) NSString *bssid;
+@property (nonatomic, copy) NSString *signal;
+@property (nonatomic, strong) NSArray *dns;
+@property (nonatomic,   copy) NSString *sig;//信号
+@property (nonatomic, assign) NSInteger cfg;//是否配置过
+@property (nonatomic, assign) MRWiFiEncryption mgmt;//加密方式
+@property (nonatomic, assign) NSInteger ch;//通道
 @property (nonatomic, assign) NSInteger netOperator;
 @property (nonatomic, assign) NSInteger sim_card_existed;
 @property (nonatomic, assign) NSInteger bytes_for_cur_month;
@@ -93,7 +103,7 @@ typedef NS_ENUM(NSInteger, MROtaUpgradeMode) {
 @end
 
 
-#pragma mark -- SD card information
+#pragma mark -- SD卡信息
 @interface MeariDeviceParamCloudStorage : NSObject
 @property (nonatomic, assign) NSInteger enable;
 @end
@@ -101,154 +111,204 @@ typedef NS_ENUM(NSInteger, MROtaUpgradeMode) {
 @interface MeariDeviceParamStorage : MeariBaseModel
 @property (nonatomic, copy)NSString *company;
 /** Total storage space */
+/** 总存储空间 */
 @property (nonatomic, copy)NSString *totalSpace;
 /** Remaining storage space */
+/** 剩余存储空间 */
 @property (nonatomic, copy)NSString *freeSpace;
 /** Is formatting ? */
+/** 是否正在格式化 */
 @property (nonatomic, assign)BOOL isFormatting;
 /** Is there an SD card ? */
+/** 没有SD卡 */
 @property (nonatomic, assign)BOOL hasSDCard;
 /** Is the SD card not supported ? */
+/** 不支持的SD卡 */
 @property (nonatomic, assign)BOOL unSupported;
 /** ID card is being recognized */
+/** 正在识别SD卡 */
 @property (nonatomic, assign)BOOL isReading;
+/** 未知状态 */
+@property (nonatomic, assign)BOOL unKnown;
 @end
 
-#pragma mark -- motion detection
+#pragma mark -- 移动侦测
 
 @interface MeariDeviceParamMotion : MeariBaseModel
-@property (nonatomic, assign)NSInteger enable; // Whether to open motion detection
+/** 是否开启motion移动侦测 */
+/** Whether to open motion detection */
+@property (nonatomic, assign)NSInteger enable;
 @property (nonatomic, assign)NSInteger alarmtype;
-@property (nonatomic, assign)NSInteger sensitivity; // motion detection sensitivity
+/** 灵敏度 */
+/** motion detection sensitivity */
+@property (nonatomic, assign)NSInteger sensitivity;
 /** MeariDeviceLevelLow|MeariDeviceLevelMedium|MeariDeviceLevelHigh */
 @property (nonatomic, assign) MeariDeviceLevel level;
 @end
 
 #pragma mark -- 人形侦测
 @interface MeariDeviceParamPeopleDetect : MeariBaseModel
+/** Whether to open people detect */
+/** 是否开启 人形侦测 */
 @property (nonatomic, assign)NSInteger enable;
+/** Whether to open people bnddraw border */
+/**  是否开启 人形画框  */
 @property (nonatomic, assign)NSInteger bnddraw;
 @end
 
 #pragma mark -- 哭声检测
 @interface MeariDeviceParamCryDetect : MeariBaseModel
+/** Whether to open cry detect */
+/** 是否开启 哭声侦测 */
 @property (nonatomic, assign)NSInteger enable;
 @end
 
-#pragma mark --PeopleTrack
+#pragma mark -- 人形跟踪
 @interface MeariDeviceParamPeopleTrack : MeariBaseModel
+/** Whether to open people track */
+/** 是否开启 人形跟踪 */
 @property (nonatomic, assign)NSInteger enable;
 @end
 
-#pragma mark -- SleepMode:by Times
+#pragma mark -- 休眠模式:按时间休眠
 @interface MeariDeviceParamSleepTime : MeariBaseModel
-@property (nonatomic, assign)BOOL enable; // Whether to open Sleep Time
-@property (nonatomic, copy)NSString *start_time; // Start sleep time
-@property (nonatomic, copy)NSString *stop_time; // Stop sleep time
-@property (nonatomic, copy)NSArray *repeat;  // whether repeat
+/** Whether to turn off the timed sleep */
+/** 是否开启 该时间断的休眠 */
+@property (nonatomic, assign)BOOL enable;
+/**  Start sleep time */
+/** 开始时间 */
+@property (nonatomic, copy)NSString *start_time;
+/** Stop sleep time */
+/** 结束时间 */
+@property (nonatomic, copy)NSString *stop_time;
+/** whether repeat */
+/** 是否重复 */
+@property (nonatomic, copy)NSArray *repeat;
 @end
-#pragma mark -- Sleep mode : by geographic
+#pragma mark -- 休眠模式:按地理位置休眠
 @interface MeariDeviceParamSleepGeographic : NSObject
-@property (nonatomic, copy) NSString *latitude; // set latitude for Geographic
-@property (nonatomic, copy) NSString *longitude; // set longitude for Geographic
-@property (nonatomic, copy) NSString *radius; // sleep radius
+/** set latitude for Geographic */
+/** 设置经度 */
+@property (nonatomic, copy) NSString *latitude;
+/** set longitude for Geographic */
+/** 设置纬度 */
+@property (nonatomic, copy) NSString *longitude;
+/** 半径 */
+/** sleep radius */
+@property (nonatomic, copy) NSString *radius;
 @end
-#pragma mark -- Human detection(pir)
+#pragma mark -- 人体侦测
 @interface MeariDeviceParamPIR : MeariBaseModel
-@property (nonatomic, assign)NSInteger enable; // Whether to open PIR
+/** Whether to open PIR */
+/** 是否开启pir */
+@property (nonatomic, assign)NSInteger enable;
 /** MeariDeviceLevelLow|MeariDeviceLevelMedium|MeariDeviceLevelHigh */
 @property (nonatomic, assign) MeariDeviceLevel level; // pir sensitivity level
 @end
-#pragma mark -- device battery info
+#pragma mark -- 设备电池信息
 @interface MeariDeviceParamBellBattery : MeariBaseModel
-@property (nonatomic, assign)NSInteger percent; // Battery percentage
-@property (nonatomic, assign)NSInteger remain; // Battery remaining time available
-@property (nonatomic,   copy)NSString  *status; // Battery current status
+/** Battery percentage */
+/** 电池剩余百分比 */
+@property (nonatomic, assign)NSInteger percent;
+/** Battery remaining time available */
+/** 可用电池剩余时间 */
+@property (nonatomic, assign)NSInteger remain;
+/** Battery current status */
+/** 当前电池状态 */
+@property (nonatomic,   copy)NSString  *status;
 @end
-#pragma mark -- Wireless bell setting
+#pragma mark -- 无线铃铛设置
 @interface MeariDeviceParamBellSound : MeariBaseModel
-@property (nonatomic, assign)NSInteger enable; // Whether to open Wireless bell
-@property (nonatomic, strong)NSArray *song; //  song list of device
-@property (nonatomic, assign)NSInteger repetition; // repeat times
-@property (nonatomic, assign)NSInteger volume;  // volume
-@property (nonatomic,   copy)NSString *selected; // current select song
+/** Whether to open Wireless bell */
+/** 是否开启无限铃铛 */
+@property (nonatomic, assign)NSInteger enable;
+/** song list of device */
+/** 当前歌曲列表 */
+@property (nonatomic, strong)NSArray *song;
+/** repeat times */
+/** 重复次数 */
+@property (nonatomic, assign)NSInteger repetition;
+/** 音量 */
+@property (nonatomic, assign)NSInteger volume;
+/** current select song */
+/** 当前选中歌曲 */
+@property (nonatomic,   copy)NSString *selected;
 /** MeariDeviceLevelLow|MeariDeviceLevelMedium|MeariDeviceLevelHigh */
-@property (nonatomic, assign) MeariDeviceLevel level; // level
+@property (nonatomic, assign) MeariDeviceLevel level;
 @end
-#pragma mark -- Noise detection
+
+#pragma mark -- 噪声检测
 @interface MeariDeviceParamDBDetection : NSObject
+/** Whether to open noise detection */
+/** 是否开启噪声检测 */
 @property (nonatomic, assign) NSInteger enable;
 @property (nonatomic, assign) NSInteger threshold;
 /** MeariDeviceLevelLow|MeariDeviceLevelMedium|MeariDeviceLevelHigh */
 @property (nonatomic, assign) MeariDeviceLevel level;
 @end
-#pragma mark -- set playback video fragment
+#pragma mark -- 回放录像设置
 @interface MeariDeviceParamPlaybackVideoRecord : NSObject
-@property (nonatomic, assign) BOOL enable; // enable 0:all day record 1:event record
+/** enable: 1为报警时录像 0为全天录像 */
+@property (nonatomic, assign) BOOL enable;
 @property (nonatomic, assign) NSInteger duration;
 @property (nonatomic, assign) NSInteger continuity;
 /**
  level:
- When enable is 1, the device will only record to the local SD card when an alarm event occurs
- , and the level level corresponds to the recording duration after the alarm time occurs.
+ 当enable 为1时，设备只在有报警事件发生时，才会录像到本地SD卡，level等级对应报警时刻发生后的录像时长
  MeariDeviceLevelLow = 1*60s |
  MeariDeviceLevelMedium = 2*60s |
  MeariDeviceLevelHigh = 3*60s
  */
-@property (nonatomic, assign) MeariDeviceLevel level;
+@property (nonatomic, assign) MeariDeviceRecordDuration level;
 @end
-#pragma mark -- doorbell param
+#pragma mark -- 门铃参数
 @interface MeariDeviceParamBell : MeariBaseModel
 @property (nonatomic, strong)MeariDeviceParamPIR *pir;
 @property (nonatomic, strong)MeariDeviceParamBellBattery *battery;
 @property (nonatomic, strong)MeariDeviceParamBellSound *charm;
-@property (nonatomic, assign) NSInteger volume; // bell volume
-@property (nonatomic, assign) NSInteger batterylock; // Whether battery is lock
-@property (nonatomic, assign) NSInteger pwm; // whether to open low power consumption mode
-@property (nonatomic,   copy) NSString  *power; // Power supply
-
-@property (nonatomic, assign)NSInteger mechanicalBell; // use mechanical Bell:  0: use  1 not use
+/** bell volume */
+/** 门铃音量 */
+@property (nonatomic, assign) NSInteger volume;
+/** Whether battery is lock */
+/** 是否电池锁了 */
+@property (nonatomic, assign) NSInteger batterylock;
+/** whether to open low power consumption mode */
+/** 是否开启低功耗模式 */
+@property (nonatomic, assign) NSInteger pwm;
+/** Power supply */
+/** 是否电影供电 */
+@property (nonatomic,   copy) NSString  *power;
+/** use mechanical Bell:  0: use  1 not use */
+/** 默认:0 使用机械铃铛:2 不使用机械铃铛:1 */
+@property (nonatomic, assign)NSInteger mechanicalBell;
 @end
-#pragma mark -- Upload video to the cloud
+#pragma mark -- 上报录像至云端
 @interface MeariDeviceCloudStorage : NSObject
 @property (nonatomic, assign) NSInteger enable;
 @end
-#pragma mark -- open light schedule of Flight camera
+#pragma mark -- 灯具摄像头开灯计划
 @interface MeariDeviceFlightSchedule : NSObject
+/** whether the flood schedule is open */
+/** 灯具摄像头开灯计划开启 */
 @property (nonatomic, assign) NSInteger enable;
+/** begin time */
+/** 开始时间 */
 @property (nonatomic, strong) NSString *from;
+/** end time */
+/** 结束时间 */
 @property (nonatomic, strong) NSString *to;
 @end
-#pragma mark -- floodcamera
+#pragma mark -- 灯具摄像头
 @interface MeariDeviceFlight : NSObject
-@property (nonatomic, assign) NSInteger alwaysOn; // whether to always on
-@property (nonatomic, assign) NSInteger pirDuration; // Detection interval
-@property (nonatomic, assign) NSInteger pirEnable; // whether to open pir
+@property (nonatomic, assign) NSInteger alwaysOn;
+@property (nonatomic, assign) NSInteger pirDuration;
+@property (nonatomic, assign) NSInteger pirEnable;
 @property (nonatomic, assign) NSInteger siren;
-@property (nonatomic, assign) NSInteger lightState; // light state : 1 or 0
-@property (nonatomic, assign) NSInteger sirenTimeout;  // Alarm countdown
-@property (nonatomic, strong) MeariDeviceFlightSchedule *schedule;
+@property (nonatomic, assign) NSInteger lightState;
+@property (nonatomic, assign) NSInteger sirenTimeout;
+@property (nonatomic, assign) NSInteger lightPercent;
 @property (nonatomic, assign) MeariDeviceLevel level;
-@end
-
-@interface MeariDeviceParamBaseI : NSObject
-@property (nonatomic, copy) NSString *jingle_volume;  // Bell volume
-@property (nonatomic, assign) NSInteger jingle0_song; //
-@property (nonatomic, assign) NSInteger jingle0_song_len;
-@property (nonatomic, assign) NSInteger msg_time_limit; // Message limit
-@property (nonatomic, assign) NSInteger ring_mic_volume; // Mike sound
-@property (nonatomic, assign) NSInteger ring_speaker_volume;  // Horn sound
-@property (nonatomic, assign) NSInteger wait_time; //  Message waiting time
-@property (nonatomic, copy) NSString *steal_proof_enable; // Prevent removal alarm
-@property (nonatomic, copy) NSString *upgrade_status;  //device upgrade ststus
-@property (nonatomic, copy) NSString *online;  // Whether the device is online
-@property (nonatomic, copy) NSString *version; //device version
-@property (nonatomic, copy) NSString *upgrade_plan; // device upgrade plan
-
-@end
-@interface MeariDeviceParamIState : NSObject
-@property (nonatomic, strong) MeariDeviceParamBaseI *desired;
-@property (nonatomic, strong) MeariDeviceParamBaseI *reported;
+@property (nonatomic, strong) MeariDeviceFlightSchedule *schedule;
 @end
 
 @class MeariDeviceLEDAll;
@@ -260,66 +320,67 @@ typedef NS_ENUM(NSInteger, MROtaUpgradeMode) {
 @property (nonatomic, assign) NSInteger enable;
 
 @end
-#pragma mark -- voice doorbell
+#pragma mark -- voicebell (语音门铃)
 @interface MeariDeviceParamVoiceBell : MeariBaseModel
-@property (nonatomic,   copy) NSString *deviceName; // device name
-@property (nonatomic,   copy) NSString *productKey; // key
-@property (nonatomic, strong) MeariDeviceParamIState *state;
-@property (nonatomic, assign) NSInteger version; // device version
-@property (nonatomic, assign) long timestamp;
+// Doorbell sleep timeout
+// 门铃休眠超时时间
+// The main purpose is to allow the doorbell to continue working for a period of time after the user hangs up to ensure that new requests can be quickly received. (To discuss whether it is directly defaulted by the device, the default can be 5 seconds)
+@property (nonatomic, assign) NSInteger sleepOverTime;
+/** Message limit */
+/** 留言限制时间 */
+// The unit is second. The default value is 60s. It is used for: the length of the guest's message after the doorbell owner does not answer.
+@property (nonatomic, assign) NSInteger msgLimitTime;
+/** Prevent removal alarm  1 or 0 */
+/** 防止拆卸警报 */
+@property (nonatomic, assign) NSInteger tamperAlarm;
+/** 留言等待时间 */
+/** Message waiting time */
+// The unit is second. The default value is 20s. It is used to: after the doorbell button is pressed, when the host does not answer, it will enter the message state after this time
+@property (nonatomic, assign) NSInteger callWaitTime;
+// 语音门铃对讲音量
+// speak volume
+@property (nonatomic, assign) NSInteger volume;
 
-@property (nonatomic, assign, readonly) NSInteger jingleVolume; // bell sound
-@property (nonatomic, assign, readonly) NSInteger jingleRing; // bell ringtone
-@property (nonatomic, assign, readonly) NSInteger jingleDuration; //bell sound duration
-@property (nonatomic, assign, readonly) NSInteger ringSpeakerVolume; //doorbell speaker volume
-@property (nonatomic, assign, readonly) NSInteger msgLimitTime; //Message limit time
-@property (nonatomic, assign, readonly) NSInteger online; //whether the device is online
-@property (nonatomic, assign, readonly) NSInteger tamperAlarm; // tamper alarm
-@property (nonatomic, assign, readonly) NSInteger upgradeStatus; //Update status
-@property (nonatomic, assign, readonly) NSInteger waitMsgTime; //Message waiting time
-@property (nonatomic, copy, readonly) NSString *deviceVersion; //Device version
-@property (nonatomic, copy, readonly) NSString *updatePlan; //Device upgrade plan
-@property (nonatomic, strong) NSDictionary *updateParam;
 @end
-#pragma mark -- device parameters
+#pragma mark -- 设备参数
 @interface MeariDeviceParam : MeariBaseModel
 
-@property (nonatomic, copy) NSString *timezone; // Time zone of the device
-@property (nonatomic, copy) NSString *time_now; // current time
-@property (nonatomic, assign) NSInteger video_mirror; // device flip
-@property (nonatomic, assign) CGFloat temperature_c; // temperature
-@property (nonatomic, assign) CGFloat humidity; // humidity
-@property (nonatomic, copy) NSString *sleep; // The string corresponding to the sleepmode
-@property (nonatomic, strong) MeariDeviceParamBell *bell; // Doorbell parameters
-@property (nonatomic, strong) MeariDeviceParamFirmInfo *firmInfo; // device info
-@property (nonatomic, strong) NSArray <MeariDeviceParamNetwork *>*network; // net info array
-@property (nonatomic, strong) MeariDeviceParamStorage *sdcard; // sdcard parameters
-@property (nonatomic, strong) MeariDeviceParamMotion *motion_detect; // Motion Detection parameters
-
+@property (nonatomic,   copy) NSString *timezone;
+@property (nonatomic,   copy) NSString *time_now;
+@property (nonatomic, assign) NSInteger video_mirror;
+@property (nonatomic, assign) CGFloat temperature_c;
+@property (nonatomic, assign) CGFloat humidity;
+@property (nonatomic,   copy) NSString *sleep;
+@property (nonatomic, strong) MeariDeviceParamBell *bell;
+@property (nonatomic, strong) MeariDeviceParamFirmInfo *firmInfo;
+@property (nonatomic, strong) NSArray <MeariDeviceParamNetwork *>*network;
+@property (nonatomic, strong) MeariDeviceParamStorage *sdcard;
+@property (nonatomic, strong) MeariDeviceParamMotion *motion_detect;
 @property (nonatomic, strong) MeariDeviceParamPeopleDetect *people_detect;
 @property (nonatomic, strong) MeariDeviceParamCryDetect *cry_detect;
 @property (nonatomic, strong) MeariDeviceParamPeopleTrack *people_track;
-
-@property (nonatomic, strong) MeariDeviceParamSleepGeographic *home_geographic; // geographic sleep mode
-@property (nonatomic, strong) NSArray <MeariDeviceParamSleepTime *>*sleep_time;// time sllep mode
-@property (nonatomic, strong) MeariDeviceParamVoiceBell *voiceBell; // voice bell parameters
-@property (nonatomic, strong) MeariDeviceParamDBDetection *decibel_alarm; // Decibel alarm parameters
+@property (nonatomic, strong) MeariDeviceParamSleepGeographic *home_geographic;
+@property (nonatomic, strong) NSArray <MeariDeviceParamSleepTime *>*sleep_time;
+//iOT
+@property (nonatomic, strong) NSArray <MeariDeviceParamSleepTime *>*alarm_time;
+@property (nonatomic, strong) MeariDeviceParamVoiceBell *voiceBell;
+@property (nonatomic, strong) MeariDeviceParamDBDetection *decibel_alarm;
 @property (nonatomic, strong) MeariDeviceParamNetwork *wlan;
 @property (nonatomic, strong) MeariDeviceParamNetwork *eth;
 @property (nonatomic, strong) MeariDeviceParamNetwork *net_4G;
 @property (nonatomic, strong) MeariDeviceParamPlaybackVideoRecord *playbackVideoRecord;
 @property (nonatomic, strong) NSArray <MeariDeviceParamNetwork *> *wifi_config;
-@property (nonatomic, strong) NSArray <MeariDeviceParamNetwork *> *wifi_list; // wifi array
-@property (nonatomic, assign) NSInteger day_night_mode;  // current status of Day night mode
-@property (nonatomic, strong) MeariDeviceCloudStorage *cloud_storage; // cloud storage parameters
+@property (nonatomic, strong) NSArray <MeariDeviceParamNetwork *> *wifi_list;
+@property (nonatomic, assign) NSInteger day_night_mode;
+@property (nonatomic, strong) MeariDeviceCloudStorage *cloud_storage;
 @property (nonatomic, strong) MeariDeviceFlight *flight;
 @property (nonatomic, assign) NSInteger net_4G_mode;
-@property (nonatomic, assign) NSInteger cur_network_mode; // current network mode
-@property (nonatomic, assign) NSInteger network_supported; // whether to support 4g network
-@property (nonatomic, assign) NSInteger onvif_enable; // whether to support onvif
-@property (nonatomic,   copy) NSString *device_password; // the password of device
-@property (nonatomic, assign) MeariDeviceSleepmode sleepmode; // sleep mode
-@property (nonatomic, assign) NSInteger videoEnc; // Video encoding type
+@property (nonatomic, assign) NSInteger cur_network_mode;
+@property (nonatomic, assign) NSInteger network_supported;
+@property (nonatomic, assign) NSInteger onvif_enable;
+@property (nonatomic,   copy) NSString *device_password;
+@property (nonatomic, assign) MeariDeviceSleepmode sleepmode;
+@property (nonatomic, assign) NSInteger videoEnc;
 @property (nonatomic, strong) MeariDeviceLED *led;
 
 @property (nonatomic,   copy) NSString * onvifAddress;

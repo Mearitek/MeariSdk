@@ -21,7 +21,6 @@ typedef NS_ENUM(NSInteger, MearEnvironment) {
     MearEnvironmentPrerelease
 };
 
-
 /**
  Log flag
 
@@ -99,6 +98,7 @@ typedef NS_ENUM(NSInteger, MeariLogLevel) {
  - MeariUserCodeTuyaTokenError : tuya token error
  - MeariUserCodeUserChanged : the user changed
  - MeariUserCodeIotOffline : iot Device offline
+ - MeariUserCodeShareByYourself: share by yourself is not invalid
  */
 typedef NS_ENUM(NSInteger, MeariUserCode) {
     MeariUserCodeUnKnown                = 0,
@@ -161,6 +161,7 @@ typedef NS_ENUM(NSInteger, MeariUserCode) {
     MeariUserCodeIotOffline             = 1066,
     MeariUserCodeVerificationExpired    = 1067,
     MeariUserCodeVerificationError      = 1068,
+    MeariUserCodeShareByYourself        = 1069,
 };
 
 
@@ -201,6 +202,7 @@ typedef NS_ENUM(NSInteger, MeariDeviceCode) {
     MeariDeviceCodeNoTemperatureAndHumidityCantRead = -1044,
     MeariDeviceCodeVoiceTalkFail                  = -1045,
     MeariDeviceCodeVideoClipRecording             = -1050,
+    MeariDeviceCodeDeviceParamFail                = -10000
 };
 
 typedef NS_ENUM(NSInteger, MeariNetworkReachabilityStatus) {

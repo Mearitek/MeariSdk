@@ -10,24 +10,24 @@
 
 NS_ASSUME_NONNULL_BEGIN
 typedef struct {
-    int year;               //!< year
-    int month;              //!< month
-    int day;                //!< day
+    int year;               //!< 年
+    int month;              //!< 月
+    int day;                //!< 日
 } MeariDate;
 
 typedef struct {
-    int hour;               //!< hour
-    int min;                //!< minute
-    int sec;                //!< second
+    int hour;               //!< 时
+    int min;                //!< 分
+    int sec;                //!< 秒
 } MeariTime;
 
 @interface MeariDeviceTime : MeariBaseModel
 @property (nonatomic, assign) MeariDate date;
-@property (nonatomic, assign) MeariDate videoDay;//  date
-@property (nonatomic, assign) MeariTime startTime; // startTime
-@property (nonatomic, assign) MeariTime endTime; // endTime
+@property (nonatomic, assign) MeariDate videoDay;
+@property (nonatomic, assign) MeariTime startTime;
+@property (nonatomic, assign) MeariTime endTime;
 
-@property (nonatomic, assign) MeariTime alarmTime; // alarmTime
+@property (nonatomic, assign) MeariTime alarmTime;
 
 
 @end
