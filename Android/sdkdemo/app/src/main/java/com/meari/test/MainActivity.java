@@ -282,16 +282,16 @@ public class MainActivity extends SlidingFragmentActivity implements MainMenuAda
     }
 
     private void postTokenChange() {
-        MeariUser.getInstance().getToken(Distribution.DISTRIBUTION_QR, this, new IGetTokenCallback() {
+        MeariUser.getInstance().getToken(new IGetTokenCallback() {
             @Override
-            public void onError(int code, String error) {
-                CommonUtils.showToast(error);
-                stopProgressDialog();
+            public void onSuccess(String s, int i, int i1) {
+                Preference.getPreference().setToken(s);
             }
 
             @Override
-            public void onSuccess(String token, int leftTime) {
-                Preference.getPreference().setToken(token);
+            public void onError(int i, String s) {
+                CommonUtils.showToast(s);
+                stopProgressDialog();
             }
         });
     }

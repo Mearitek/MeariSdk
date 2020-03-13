@@ -22,6 +22,7 @@ import com.meari.sdk.MeariSdk;
 import com.meari.sdk.preferences.ProtocalConstants;
 import com.meari.test.BellCallActivity;
 import com.meari.test.LoginActivity;
+import com.meari.test.common.MyMessageHandler;
 import com.meari.test.service.CommonData;
 import com.meari.test.service.CommonDialogService;
 import com.meari.test.utils.CommonUtils;
@@ -53,10 +54,8 @@ public class MeariSmartApp extends Application implements Application.ActivityLi
     }
 
     private void initSdk() {
-        MeariSdk.init(this, new MeariMessage(),false);
-//        MeariSdk.getInstance().setPrivateCloudUrl("https://pre-apis-cn-hangzhou.meari.com.cn");
+        MeariSdk.init(this, new MyMessageHandler());
         MeariSdk.getInstance().setDebug(true);
-        MeariSdk.getInstance().setLoginType(2);
 //        closeSpeaker();
     }
 

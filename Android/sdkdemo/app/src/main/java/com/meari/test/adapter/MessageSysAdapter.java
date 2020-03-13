@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.view.View;
 
 import com.meari.sdk.MeariUser;
-import com.meari.sdk.bean.SystemMessageInfo;
+import com.meari.sdk.bean.SystemMessage;
 import com.meari.sdk.bean.UserInfo;
 import com.meari.test.R;
 import com.meari.test.recyclerview.BaseQuickAdapter;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * ================================================
  */
 
-public class MessageSysAdapter extends BaseQuickAdapter<SystemMessageInfo, MessageSysViewHolder> {
+public class MessageSysAdapter extends BaseQuickAdapter<SystemMessage, MessageSysViewHolder> {
     private boolean isEditStaus;
     private UserInfo mUseInfo;
 
@@ -35,9 +35,9 @@ public class MessageSysAdapter extends BaseQuickAdapter<SystemMessageInfo, Messa
     }
 
     @Override
-    protected void convert(MessageSysViewHolder viewHolder, SystemMessageInfo item) {
+    protected void convert(MessageSysViewHolder viewHolder, SystemMessage item) {
         int position = viewHolder.getLayoutPosition();
-        SystemMessageInfo messgeInfo = getData().get(position);
+        SystemMessage messgeInfo = getData().get(position);
         if (!messgeInfo.getNickName().isEmpty() && !messgeInfo.getUserAccount().isEmpty()) {
             String userAccount = messgeInfo.getUserAccount();
             String nickName = messgeInfo.getNickName();
@@ -138,7 +138,7 @@ public class MessageSysAdapter extends BaseQuickAdapter<SystemMessageInfo, Messa
     }
 
     public void changeStatus(int flag) {
-        for (SystemMessageInfo info : getData()) {
+        for (SystemMessage info : getData()) {
             info.setDelNum(flag);
         }
         notifyDataSetChanged();
@@ -149,8 +149,8 @@ public class MessageSysAdapter extends BaseQuickAdapter<SystemMessageInfo, Messa
     }
 
     public void clearDelData() {
-        ArrayList<SystemMessageInfo> arrayList = new ArrayList<SystemMessageInfo>();
-        for (SystemMessageInfo ppsAlarmMessageInfo : getData()) {
+        ArrayList<SystemMessage> arrayList = new ArrayList<SystemMessage>();
+        for (SystemMessage ppsAlarmMessageInfo : getData()) {
             if (ppsAlarmMessageInfo.getDelNum() != 2) {
                 arrayList.add(ppsAlarmMessageInfo);
             }
@@ -193,7 +193,7 @@ public class MessageSysAdapter extends BaseQuickAdapter<SystemMessageInfo, Messa
     }
 
     public void changeDelDate(long msgID) {
-        ArrayList<SystemMessageInfo> list = new ArrayList<>();
+        ArrayList<SystemMessage> list = new ArrayList<>();
         if (getData() != null && getData().size() > 0) {
             for (int i = 0; i < getData().size(); i++) {
                 if (getData().get(i).getMsgID() != msgID) {

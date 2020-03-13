@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.meari.sdk.bean.DeviceMessageStatusInfo;
+import com.meari.sdk.bean.DeviceMessageStatus;
 import com.meari.test.R;
 import com.meari.test.common.Constant;
 import com.meari.test.fragment.MessageSquareFragment;
@@ -27,7 +27,7 @@ import java.util.List;
  * ================================================
  */
 
-public class MessageAdapter extends BaseQuickAdapter<DeviceMessageStatusInfo, DeviceAlarmViewHolder> {
+public class MessageAdapter extends BaseQuickAdapter<DeviceMessageStatus, DeviceAlarmViewHolder> {
     private boolean bEditStatus;
     private MessageSquareFragment mfragment;
 
@@ -41,15 +41,15 @@ public class MessageAdapter extends BaseQuickAdapter<DeviceMessageStatusInfo, De
     }
 
     @Override
-    protected void convert(DeviceAlarmViewHolder holder, DeviceMessageStatusInfo item) {
+    protected void convert(DeviceAlarmViewHolder holder, DeviceMessageStatus item) {
         int position = holder.getLayoutPosition();
-        DeviceMessageStatusInfo info = getData().get(position);
+        DeviceMessageStatus info = getData().get(position);
         holder.txtName.setText(info.getDeviceName());
-        if (info.getHasMessgFlag().equals("N")) {
+        if (info.getHasMessageFlag().equals("N")) {
             holder.txtName.setTextColor(Color.parseColor("#333333"));
         } else
             holder.txtName.setTextColor(Color.parseColor("#f44336"));
-        holder.deviceTypeImg.setImageURI(Uri.parse(info.getUrl()));
+        holder.deviceTypeImg.setImageURI(Uri.parse(info.getDeviceIcon()));
         String snPathString = Constant.DOCUMENT_CACHE_PATH + info.getSnNum() + ".jpg";
         holder.preView.setImageURI(Uri.parse("file://" + snPathString));
         RelativeLayout.LayoutParams textparams = (RelativeLayout.LayoutParams) holder.txtName.getLayoutParams();
@@ -132,7 +132,7 @@ public class MessageAdapter extends BaseQuickAdapter<DeviceMessageStatusInfo, De
 
     public void changeFriendData() {
         if (getData() != null && getData().size() > 0) {
-            List<DeviceMessageStatusInfo> friendDTOs = new ArrayList<>();
+            List<DeviceMessageStatus> friendDTOs = new ArrayList<>();
             for (int i = 0; i < getData().size(); i++) {
                 if (getData().get(i).getDelMsgFlag() != 2) {
                     friendDTOs.add(getData().get(i));

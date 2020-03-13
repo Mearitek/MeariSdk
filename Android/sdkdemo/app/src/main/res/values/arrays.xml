@@ -21,6 +21,11 @@
         <item>1</item>
         <item>2</item>
     </integer-array>
+    <integer-array name="sensitivity_com_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </integer-array>
     <!--日历  中的标题-->
     <string-array name="monthNum">
         <item>@string/jan</item>

@@ -114,7 +114,7 @@ public class PasswordActivity extends BaseActivity {
         startProgressDialog();
         String country = MeariUser.getInstance().getUserInfo().getClientID();
         String phoneCode = MeariUser.getInstance().getUserInfo().getClientID();
-        MeariUser.getInstance().resetAccountPassword(country, phoneCode, MeariUser.getInstance().getUserInfo().getUserAccount(), verificationCode, rePwdTxt,this , new IResetPasswordCallback() {
+        MeariUser.getInstance().resetPasswordWithAccount(country, phoneCode, MeariUser.getInstance().getUserInfo().getUserAccount(), verificationCode, rePwdTxt, new IResetPasswordCallback() {
             @Override
             public void onSuccess(UserInfo user) {
                 stopProgressDialog();
@@ -135,7 +135,8 @@ public class PasswordActivity extends BaseActivity {
             CommonUtils.showToast(getString(R.string.network_unavailable));
         } else {
             startProgressDialog();
-            MeariUser.getInstance().getValidateCode(MeariUser.getInstance().getUserInfo().getUserAccount(), this ,new IValidateCallback() {
+            UserInfo userInfo = MeariUser.getInstance().getUserInfo();
+            MeariUser.getInstance().getValidateCodeWithAccount(userInfo.getCountryCode(),userInfo.getPhoneCode(),userInfo.getUserAccount() ,new IValidateCallback() {
                 @Override
                 public void onSuccess(int leftTime) {
                     stopProgressDialog();

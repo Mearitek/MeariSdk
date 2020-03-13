@@ -23,6 +23,8 @@ import com.meari.sdk.bean.NVRInfo;
 import com.meari.sdk.callback.IAddDeviceCallback;
 import com.meari.sdk.callback.INVRStatusCallback;
 import com.meari.sdk.callback.IRequestDeviceShareCallback;
+import com.meari.sdk.listener.CameraSearchListener;
+import com.meari.sdk.utils.MangerCameraScanUtils;
 import com.meari.test.adapter.ScanningNVRResultAdapter;
 import com.meari.test.common.ActivityType;
 import com.meari.test.common.Preference;
@@ -35,8 +37,6 @@ import com.meari.test.utils.NetUtil;
 import com.meari.test.widget.ProgressLoadingDialog;
 import com.meari.test.widget.RoundProgressBar;
 import com.ppstrong.ppsplayer.BaseDeviceInfo;
-import com.meari.test.common.CameraSearchListener;
-import com.meari.test.utils.MangerCameraScanUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -261,7 +261,7 @@ public class AddNvrResultActivity extends BaseActivity implements CameraSearchLi
             mPullToRefreshRecyclerView.onRefreshComplete();
             return;
         }
-        MeariUser.getInstance().checkNvrStatus(mNVRInfoList, this ,new INVRStatusCallback() {
+        MeariUser.getInstance().checkNvrStatus(mNVRInfoList, new INVRStatusCallback() {
             @Override
             public void onSuccess(ArrayList<NVRInfo> deviceList) {
                 mPullToRefreshRecyclerView.onRefreshComplete();
@@ -321,7 +321,7 @@ public class AddNvrResultActivity extends BaseActivity implements CameraSearchLi
             CommonUtils.showToast(getString(R.string.network_unavailable));
             return;
         }
-        MeariUser.getInstance().addNvrDevice(info,this , new IAddDeviceCallback() {
+        MeariUser.getInstance().addNvrDevice(info, new IAddDeviceCallback() {
             @Override
             public void onSuccess(int code, String sn, String deviceID) {
                 stopProgressDialog();
@@ -343,7 +343,7 @@ public class AddNvrResultActivity extends BaseActivity implements CameraSearchLi
 
     private void requestShareDevice(BaseDeviceInfo info) {
         startProgressDialog();
-        MeariUser.getInstance().requestDeviceShare(info,this , new IRequestDeviceShareCallback() {
+        MeariUser.getInstance().requestDeviceShare(info, new IRequestDeviceShareCallback() {
 
             @Override
             public void onError(int code, String error) {

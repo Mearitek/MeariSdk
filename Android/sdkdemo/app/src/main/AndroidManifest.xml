@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.meari.test">
@@ -10,6 +11,7 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
@@ -29,7 +31,6 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
     <application
         android:name=".application.MeariSmartApp"
         android:allowBackup="true"
@@ -39,6 +40,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:label">
+        <activity android:name=".PreviewActivity"></activity>
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
@@ -46,13 +48,12 @@
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="android.intent.action.VIEW"/>
-            </intent-filter>
 
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
         </activity>
-        <activity android:name=".CameraSettingIotActivity"
-            android:screenOrientation="portrait"/>
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
@@ -148,7 +149,7 @@
             android:name=".MotionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="NvrRemoveCameraActivity"
+            android:name=".NvrRemoveCameraActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ShareDeviceActivity"
@@ -222,20 +223,13 @@
             android:value="8a48b2105058489aba0c08b79325ef3f" />
         <meta-data
             android:name="MEARI_SECRET"
-            android:value="f6c33593133c44f98372f67213568411" />
-
-
-
-        <!--接收访客事件服务end-->
-
-        <!--专门去除通知栏的service start-->
-        <!-- Rich push 核心功能 since 2.0.6-->
+            android:value="f6c33593133c44f98372f67213568411" /> <!-- 接收访客事件服务end -->
+        <!-- 专门去除通知栏的service start -->
+        <!-- Rich push 核心功能 since 2.0.6 -->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:exported="false"
-            android:theme="@style/MyDialogStyle"></activity>
-
-        <!-- Required SDK核心功能-->
+            android:theme="@style/MyDialogStyle" /> <!-- Required SDK核心功能 -->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -247,9 +241,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="com.meari.test" />
             </intent-filter>
-        </activity>
-
-        <!-- Required SDK 核心功能-->
+        </activity> <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <service
             android:name="cn.jpush.android.service.PushService"
@@ -261,14 +253,11 @@
                 <action android:name="cn.jpush.android.intent.PushService" />
                 <action android:name="cn.jpush.android.intent.PUSH_TIME" />
             </intent-filter>
-        </service>
-        <!-- since 3.0.9 Required SDK 核心功能-->
+        </service> <!-- since 3.0.9 Required SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DataProvider"
             android:authorities="com.meari.test.DataProvider"
-            android:exported="false" />
-
-        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
+            android:exported="false" /> <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
         <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
         <service
             android:name="cn.jpush.android.service.DaemonService"
@@ -276,22 +265,20 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
+
                 <category android:name="com.meari.test" />
             </intent-filter>
-
-        </service>
-        <!-- since 3.1.0 Required SDK 核心功能-->
+        </service> <!-- since 3.1.0 Required SDK 核心功能 -->
         <provider
             android:name="cn.jpush.android.service.DownloadProvider"
             android:authorities="com.meari.test.DownloadProvider"
-            android:exported="true" />
-        <!-- Required SDK核心功能-->
+            android:exported="true" /> <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!-- Required  显示通知栏 -->
                 <category android:name="com.meari.test" />
             </intent-filter>
             <intent-filter>
@@ -305,44 +292,39 @@
 
                 <data android:scheme="package" />
             </intent-filter>
-        </receiver>
-
-        <!-- Required SDK核心功能-->
+        </receiver> <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.AlarmReceiver"
-            android:exported="false" />
-
-        <!-- User defined.  For test only  用户自定义的广播接收器-->
+            android:exported="false" /> <!-- User defined.  For test only  用户自定义的广播接收器 -->
         <receiver
             android:name=".receiver.MyReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
-                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!-- Required  用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!-- Required  用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!-- Required  用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!-- Required  用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /> <!-- 接收网络变化 连接/断开 since 1.6.3 -->
                 <category android:name="com.meari.test" />
             </intent-filter>
-        </receiver>
-
-        <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调-->
+        </receiver> <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调 -->
         <receiver android:name=".receiver.MyJPushMessageReceiver">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-                <category android:name="com.meari.test"></category>
+
+                <category android:name="com.meari.test" />
             </intent-filter>
-        </receiver>
-        <!-- Required  . Enable it you can get statistics data with channel -->
+        </receiver> <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="你的极光appkey" /> <!--  </>值来自开发者平台取得的AppKey-->
+            android:value="你的极光appkey" /> <!-- </>值来自开发者平台取得的AppKey -->
         <service
             android:name="org.eclipse.paho.android.service.MqttService"
             android:priority="1000" />
     </application>
+
 </manifest>

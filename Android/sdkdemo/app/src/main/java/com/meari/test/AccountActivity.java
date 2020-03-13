@@ -99,7 +99,7 @@ public class AccountActivity extends BaseActivity {
             dialog.dismiss();
             startProgressDialog(getString(R.string.logout));
             startProgressDialog();
-            MeariUser.getInstance().logout(this ,new ILogoutCallback() {
+            MeariUser.getInstance().logout(new ILogoutCallback() {
                 @Override
                 public void onSuccess(int resultCode) {
                     stopProgressDialog();
@@ -159,7 +159,7 @@ public class AccountActivity extends BaseActivity {
         intentBroad.putExtra("msgId", StringConstants.MESSAGE_ID_TOKEN_CHANGE);
         intentBroad.setAction(StringConstants.MESSAGE_EXIT_APP);
         this.sendBroadcast(intentBroad);
-        MeariUser.getInstance().removeUser();
+        MeariUser.getInstance().removeUserInfo();
         finish();
     }
 

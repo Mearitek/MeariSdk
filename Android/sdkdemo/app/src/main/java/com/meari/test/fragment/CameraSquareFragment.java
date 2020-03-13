@@ -33,6 +33,7 @@ import com.meari.sdk.callback.IDevListCallback;
 import com.meari.sdk.json.BaseJSONObject;
 import com.meari.test.AddDeviceActivity;
 import com.meari.test.NVRSettingActivity;
+import com.meari.test.PreviewActivity;
 import com.meari.test.R;
 import com.meari.test.SingleVideoActivity;
 import com.meari.test.adapter.CameraSquareAdapter;
@@ -173,7 +174,7 @@ public class CameraSquareFragment extends BaseRecyclerFragment<BaseDeviceInfo>
             bindError(getString(R.string.network_unavailable));
             return;
         }
-        MeariUser.getInstance().getDevList(this ,new IDevListCallback() {
+        MeariUser.getInstance().getDeviceList(new IDevListCallback() {
             @Override
             public void onSuccess(MeariDevice dev) {
                 mPullToRefreshRecyclerView.onRefreshComplete();
@@ -265,8 +266,8 @@ public class CameraSquareFragment extends BaseRecyclerFragment<BaseDeviceInfo>
 
     private void bindOrderList(MeariDevice meariDevice) {
         List<CameraInfo> cameraInfos = meariDevice.getIpcs();
-        List<NVRInfo> nvrInfos = meariDevice.getNvrs();
-        List<CameraInfo> bellInfos = meariDevice.getBells();
+        List<CameraInfo> nvrInfos = meariDevice.getNvrs();
+        List<CameraInfo> bellInfos = meariDevice.getDoorBells();
         cameraInfos = dealData(cameraInfos);
         mDeviceList.clear();
         mDeviceList.addAll(cameraInfos);
@@ -379,7 +380,8 @@ public class CameraSquareFragment extends BaseRecyclerFragment<BaseDeviceInfo>
      * @param cameraInfo
      */
     public void startSingleVideo(CameraInfo cameraInfo, View param) {
-        Intent intent = new Intent(getActivity(), SingleVideoActivity.class);
+//        Intent intent = new Intent(getActivity(), SingleVideoActivity.class);
+        Intent intent = new Intent(getActivity(), PreviewActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("cameraInfo", cameraInfo);
         bundle.putInt("type", 0);
@@ -450,7 +452,7 @@ public class CameraSquareFragment extends BaseRecyclerFragment<BaseDeviceInfo>
     }
 
     public void startCheckStatus(final BaseDeviceInfo info) {
-        MeariUser.getInstance().checkDeviceOnline(info.getDeviceID(),this , new ICheckDeviceOnlineCallback() {
+        MeariUser.getInstance().checkDeviceOnline(info.getDeviceID(), new ICheckDeviceOnlineCallback() {
             @Override
             public void onSuccess(String deviceId, boolean online) {
                 if (isDetached())

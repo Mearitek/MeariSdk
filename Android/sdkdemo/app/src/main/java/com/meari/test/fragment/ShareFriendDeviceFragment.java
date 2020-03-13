@@ -194,7 +194,7 @@ public class ShareFriendDeviceFragment extends BaseRecyclerFragment<MeariSharedD
             bindError(getString(R.string.network_unavailable));
             return;
         }
-        MeariUser.getInstance().queryDeviceListForFriend(DeviceType.IPC, mInfo.getUserFriendID(),this , new IQueryDeviceListForFriendCallback() {
+        MeariUser.getInstance().queryDeviceListForFriend(DeviceType.IPC, mInfo.getUserFriendID(), new IQueryDeviceListForFriendCallback() {
             @Override
             public void onError(int code, String error) {
                 mPullToRefreshRecyclerView.onRefreshComplete();
@@ -300,7 +300,7 @@ public class ShareFriendDeviceFragment extends BaseRecyclerFragment<MeariSharedD
             if (!nickNameText.equals(mInfo.getNickName())) {
                 CommonUtils.hideKeyBoard(getActivity());
                 startProgressDialog(getString(R.string.pps_waite));
-                MeariUser.getInstance().renameFriendMark(mInfo.getUserFriendID(), nickNameText, this ,new IResultCallback() {
+                MeariUser.getInstance().renameFriendMark(mInfo.getUserFriendID(), nickNameText, new IResultCallback() {
                     @Override
                     public void onSuccess() {
                         CommonUtils.showToast(R.string.setting_successfully);
@@ -335,7 +335,7 @@ public class ShareFriendDeviceFragment extends BaseRecyclerFragment<MeariSharedD
         }
 
         if (shareFlag)
-            MeariUser.getInstance().addShareUserForDev(1, mInfo.getUserFriendID(), friendDetailDTO.getDeviceUUID(), friendDetailDTO.getDeviceID()+"",this , new IShareForDevCallback() {
+            MeariUser.getInstance().addShareUserForDev(1, mInfo.getUserFriendID(), friendDetailDTO.getDeviceUUID(), friendDetailDTO.getDeviceID()+"", new IShareForDevCallback() {
                 @Override
                 public void onSuccess(String userId, String devId) {
                     stopProgressDialog();
@@ -353,7 +353,7 @@ public class ShareFriendDeviceFragment extends BaseRecyclerFragment<MeariSharedD
 
             });
         else {
-            MeariUser.getInstance().removeShareUserForDev(1, mInfo.getUserFriendID(), friendDetailDTO.getDeviceUUID(), friendDetailDTO.getDeviceID()+"",this , new IShareForDevCallback() {
+            MeariUser.getInstance().removeShareUserForDev(1, mInfo.getUserFriendID(), friendDetailDTO.getDeviceUUID(), friendDetailDTO.getDeviceID()+"", new IShareForDevCallback() {
                 @Override
                 public void onSuccess(String userId, String devId) {
                     mAdapter.changeDateFriendDetail(devId, false);

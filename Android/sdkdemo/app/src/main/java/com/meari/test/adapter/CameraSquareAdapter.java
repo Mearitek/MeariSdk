@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.bean.CameraInfo;
-import com.meari.sdk.bean.DeviceMessageStatusInfo;
+import com.meari.sdk.bean.DeviceMessageStatus;
 import com.meari.sdk.bean.NVRInfo;
 import com.meari.test.MessageDeviceActivity;
 import com.meari.test.R;
@@ -88,7 +88,7 @@ public class CameraSquareAdapter extends BaseQuickAdapter<BaseDeviceInfo, Camera
                 public void onClick(View v) {
                     CameraInfo info = (CameraInfo) v.getTag();
                     Bundle bundle = new Bundle();
-                    DeviceMessageStatusInfo msgInfo = new DeviceMessageStatusInfo();
+                    DeviceMessageStatus msgInfo = new DeviceMessageStatus();
                     msgInfo.setDeviceUUID(info.getDeviceUUID());
                     msgInfo.setDeviceID(Long.valueOf(info.getDeviceID()));
                     msgInfo.setSnNum(info.getSnNum());

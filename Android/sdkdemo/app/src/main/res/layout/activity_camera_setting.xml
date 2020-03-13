@@ -159,45 +159,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/layout_iot"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp66"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/image_iot"
-                    android:layout_width="@dimen/dp36"
-                    android:layout_height="@dimen/dp36"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp20"
-                    android:layout_marginRight="@dimen/dp8"
-                    android:contentDescription="@string/app_meari_name"
-                    android:src="@mipmap/ic_share" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@id/image_iot"
-                    android:layout_toRightOf="@id/image_iot"
-                    android:text="IOT 设置设备参数状态Demo"
-                    android:textColor="@color/font_dark"
-                    android:textSize="@dimen/sp15" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dp16"
-                    android:contentDescription="@string/app_meari_name"
-                    android:src="@mipmap/ic_arrow_right_n" />
-
-                <ImageView
-                    style="@style/common_line_vertical"
-                    android:layout_alignParentBottom="true" />
-            </RelativeLayout>
-            <RelativeLayout
                 android:id="@+id/share_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp66"
@@ -322,8 +283,55 @@
                     style="@style/common_line_vertical"
                     android:layout_alignParentBottom="true" />
             </RelativeLayout>
+
             <RelativeLayout
-                android:id="@+id/mirrorContent"
+                android:id="@+id/layout_led"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp66"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_led"
+                    android:layout_width="@dimen/dp36"
+                    android:layout_height="@dimen/dp36"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:layout_marginRight="@dimen/dp8"
+                    android:contentDescription="@string/app_meari_name"
+                    android:src="@mipmap/ic_mirror" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/img_led"
+                    android:layout_toRightOf="@id/img_led"
+                    android:text="LED Light"
+                    android:textColor="@color/font_dark"
+                    android:textSize="@dimen/sp15" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true">
+                    <com.meari.test.widget.SwitchButton
+                        android:id="@+id/switch_led"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dp16"
+                        android:checked="false" />
+                </RelativeLayout>
+
+                <ImageView
+                    style="@style/common_line_vertical"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_mirror"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp66"
                 android:orientation="horizontal">
@@ -366,30 +374,14 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true">
-                    <ImageView
-                        android:src="@drawable/dialog_anim"
-                        android:id="@+id/mirror_loading"
-                        android:layout_width="25dip"
-                        android:layout_height="25dip"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/dp16"
-                        android:layout_marginRight="@dimen/dp16"
-                        android:contentDescription="@string/app_meari_name"
-                        android:gravity="center" />
-
-
                     <com.meari.test.widget.SwitchButton
-                        android:id="@+id/mirror_switchchk"
+                        android:id="@+id/switch_mirror"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/dp16"
-                        android:layout_toRightOf="@id/mirror_loading"
                         android:checked="false" />
-
                 </RelativeLayout>
 
                 <ImageView
@@ -397,6 +389,7 @@
                     android:layout_alignParentBottom="true" />
             </RelativeLayout>
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/layout_nvr"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp66"
@@ -538,28 +531,10 @@
                     android:layout_marginRight="@dimen/dp16">
 
                     <ImageView
-                        android:src="@drawable/dialog_anim"
-                        android:id="@+id/alarm_loading"
-                        android:layout_width="25dip"
-                        android:layout_height="25dip"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/dp16"
-                        android:layout_marginRight="@dimen/dp16"
-                        android:contentDescription="@string/app_meari_name"
-                        android:gravity="center" />
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_toRightOf="@id/alarm_loading" />
-
-                    <ImageView
                         android:id="@+id/alarmArrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/alarm_loading"
                         android:contentDescription="@string/app_meari_name"
                         android:src="@mipmap/ic_arrow_right_n" />
                 </RelativeLayout>
@@ -621,30 +596,11 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/dp16">
-
-                    <ImageView
-                        android:id="@+id/version_loading"
-                        android:layout_width="25dip"
-                        android:layout_height="25dip"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/dp12"
-                        android:src="@drawable/dialog_anim"
-                        android:layout_marginRight="@dimen/dp12"
-                        android:contentDescription="@string/app_meari_name"
-                        android:gravity="center" />
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_toRightOf="@id/version_loading" />
-
                     <ImageView
                         android:id="@+id/version_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/version_loading"
                         android:contentDescription="@string/app_meari_name"
                         android:src="@mipmap/ic_arrow_right_n" />
                 </RelativeLayout>

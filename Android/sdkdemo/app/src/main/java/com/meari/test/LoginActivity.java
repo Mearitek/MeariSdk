@@ -247,29 +247,8 @@ public class LoginActivity extends BaseActivity {
             CommonUtils.showToast(getString(R.string.passIsNull));
         else {
             startProgressDialog();
-//            MeariUser.getInstance().loginWithUid2(this.mRegionInfo.getCountryCode(), this.mRegionInfo.getPhoneCode(), account_edits,this ,new ILoginCallback() {
-//                @Override
-//                public void onSuccess(UserInfo user) {
-//                    stopProgressDialog();
-//                    if (mAdapter != null) {
-//                        saveAccountData(mAdapter.getData(), user);
-//                    } else
-//                        saveAccountData(new ArrayList<String>(), user);
-//                    Intent it = new Intent(LoginActivity.this, MainActivity.class);
-//                    LoginActivity.this.startActivity(it);
-//                    // 建议在MainActivity中初始化极光和连接mqtt服务，第一次登陆完保存用户信息，不必每次启动app都去登录。
-////                    initJPushAlias(user.getJpushAlias());
-////                    MeariUser.getInstance().connectMqttServer(getApplication());
-//                    finish();
-//                }
-//
-//                @Override
-//                public void onError(int code, String error) {
-//                    stopProgressDialog();
-//                    CommonUtils.showToast(error);
-//                }
-//            });
-            MeariUser.getInstance().login2(this.mRegionInfo.getCountryCode(), this.mRegionInfo.getPhoneCode(), account_edits, password_edits,this , new ILoginCallback() {
+            //账号登入
+            MeariUser.getInstance().loginWithAccount(this.mRegionInfo.getCountryCode(), this.mRegionInfo.getPhoneCode(), account_edits, password_edits, new ILoginCallback() {
                 @Override
                 public void onSuccess(UserInfo user) {
                     initJPushAlias(user.getJpushAlias());
@@ -289,6 +268,27 @@ public class LoginActivity extends BaseActivity {
                     CommonUtils.showToast(error);
                 }
             });
+            // 如果有自己的用户体系，可以通过UID登录，无需注册。
+//            MeariUser.getInstance().loginWithUid(this.mRegionInfo.getCountryCode(), this.mRegionInfo.getPhoneCode(), account_edits, new ILoginCallback() {
+//                @Override
+//                public void onSuccess(UserInfo userInfo) {
+//                    initJPushAlias(userInfo.getJpushAlias());
+//                    stopProgressDialog();
+//                    if (mAdapter != null) {
+//                        saveAccountData(mAdapter.getData(), userInfo);
+//                    } else
+//                        saveAccountData(new ArrayList<String>(), userInfo);
+//                    Intent it = new Intent(LoginActivity.this, MainActivity.class);
+//                    LoginActivity.this.startActivity(it);
+//                    finish();
+//                }
+//
+//                @Override
+//                public void onError(int i, String s) {
+//                    stopProgressDialog();
+//                    CommonUtils.showToast(s);
+//                }
+//            });
         }
 
     }

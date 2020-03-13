@@ -451,7 +451,7 @@ public class BellSettingActivity extends BaseActivity {
             return;
         }
         startProgressDialog(getString(R.string.pps_waite));
-        MeariUser.getInstance().removeDevice(cameraInfo.getDeviceID(), DeviceType.DOORBELL, this ,new IResultCallback() {
+        MeariUser.getInstance().deleteDevice(cameraInfo.getDeviceID(), DeviceType.DOORBELL, new IResultCallback() {
             @Override
             public void onSuccess() {
                 stopProgressDialog();
@@ -566,7 +566,7 @@ public class BellSettingActivity extends BaseActivity {
 
                 mAliasEdit.setText(deviceName);
                 startProgressDialog(getString(R.string.pps_waite));
-                MeariUser.getInstance().renameDeviceNickname(cameraInfo.getDeviceID(), DeviceType.DOORBELL, deviceName,this , new IResultCallback() {
+                MeariUser.getInstance().renameDevice(cameraInfo.getDeviceID(), DeviceType.DOORBELL, deviceName, new IResultCallback() {
                     @Override
                     public void onSuccess() {
                         stopProgressDialog();
@@ -681,7 +681,7 @@ public class BellSettingActivity extends BaseActivity {
      */
     private void postClosePush(int status) {
         startProgressDialog();
-        MeariUser.getInstance().closeDeviceAlarmPush(cameraInfo.getDeviceID(), status,this , new IPushStatusCallback() {
+        MeariUser.getInstance().closeDeviceAlarmPush(cameraInfo.getDeviceID(), status, new IPushStatusCallback() {
             @Override
             public void onSuccess(int status) {
                 stopProgressDialog();

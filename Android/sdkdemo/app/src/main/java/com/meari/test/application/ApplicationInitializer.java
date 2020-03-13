@@ -24,8 +24,8 @@ public class ApplicationInitializer {
         }).start();
         Fresco.initialize(application);
         Preference.init(application);
-        CrashHandler crashHandler = new CrashHandler();
-        Thread.setDefaultUncaughtExceptionHandler(crashHandler);
+//        CrashHandler crashHandler = new CrashHandler();
+//        Thread.setDefaultUncaughtExceptionHandler(crashHandler);
         CrashReport.initCrashReport(application, "327992a863", false);
     }
 }

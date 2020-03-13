@@ -9,7 +9,7 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import com.meari.sdk.MeariUser;
-import com.meari.sdk.bean.DeviceMessageStatusInfo;
+import com.meari.sdk.bean.DeviceMessageStatus;
 import com.meari.sdk.json.BaseJSONObject;
 import com.meari.test.BellCallActivity;
 import com.meari.test.LoginActivity;
@@ -150,7 +150,7 @@ public class MyReceiver extends BroadcastReceiver {
                     Intent intent = new Intent();
                     intent.setClass(context, MessageDeviceActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    DeviceMessageStatusInfo mMsgInfo = new DeviceMessageStatusInfo();
+                    DeviceMessageStatus mMsgInfo = new DeviceMessageStatus();
                     mMsgInfo.setDeviceName(deviceName);
                     mMsgInfo.setDeviceID(deviceID);
                     mMsgInfo.setDeviceUUID(uuid);

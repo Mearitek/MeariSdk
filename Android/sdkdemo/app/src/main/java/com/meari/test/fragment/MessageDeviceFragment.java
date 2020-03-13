@@ -17,9 +17,9 @@ import android.widget.ImageView;
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.bean.CameraInfo;
 import com.meari.sdk.bean.DeviceAlarmMessage;
-import com.meari.sdk.bean.DeviceMessageStatusInfo;
+import com.meari.sdk.bean.DeviceMessageStatus;
 import com.meari.sdk.bean.UserInfo;
-import com.meari.sdk.callback.IGetAlarmMessagesCallback;
+import com.meari.sdk.callback.IDeviceAlarmMessagesCallback;
 import com.meari.sdk.callback.IResultCallback;
 import com.meari.test.R;
 import com.meari.test.SingleVideoActivity;
@@ -65,7 +65,7 @@ public class MessageDeviceFragment extends BaseRecyclerFragment<DeviceAlarmMessa
     public MsgDeviceAdapter mAdapter;
     public View mFragmentView;
     public UserInfo mUserInfo;
-    private DeviceMessageStatusInfo mMsgInfo;
+    private DeviceMessageStatus mMsgInfo;
     private AlertMsgDb mAlertMsgDb;
     private Dialog mPop;
     private ImageView mRightBtn;
@@ -80,7 +80,7 @@ public class MessageDeviceFragment extends BaseRecyclerFragment<DeviceAlarmMessa
     private boolean deviceStatus = false;
     public CameraInfo mCameraInfo;
 
-    public static MessageDeviceFragment newInstance(DeviceMessageStatusInfo info) {
+    public static MessageDeviceFragment newInstance(DeviceMessageStatus info) {
         MessageDeviceFragment fragment = new MessageDeviceFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("msgInfo", info);
@@ -94,7 +94,7 @@ public class MessageDeviceFragment extends BaseRecyclerFragment<DeviceAlarmMessa
     public View onCreateView(LayoutInflater inflater, ViewGroup paramViewGroup, Bundle paramBundle) {
         mFragmentView = inflater.inflate(R.layout.fragment_alram_message_list, null);
         this.mUserInfo = MeariUser.getInstance().getUserInfo();
-        this.mMsgInfo = (DeviceMessageStatusInfo) getArguments().getSerializable("msgInfo");
+        this.mMsgInfo = (DeviceMessageStatus) getArguments().getSerializable("msgInfo");
         mAdapter = new MsgDeviceAdapter(getActivity(), this);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<DeviceAlarmMessage>() {
             @Override
@@ -176,13 +176,13 @@ public class MessageDeviceFragment extends BaseRecyclerFragment<DeviceAlarmMessa
             return;
         }
         if (this.mMsgInfo.getDeviceID() > 0) {
-            MeariUser.getInstance().getAlarmMessagesForDev(this.mMsgInfo.getDeviceID(),this , new IGetAlarmMessagesCallback() {
+            MeariUser.getInstance().getAlarmMessagesForDev(this.mMsgInfo.getDeviceID(), new IDeviceAlarmMessagesCallback() {
                 @Override
-                public void onSuccess(List<DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo, boolean isDelete) {
+                public void onSuccess(List<DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
                     mPullToRefreshListView.onRefreshComplete();
                     bindList(deviceAlarmMessages);
                     mCameraInfo = cameraInfo;
-                    deviceStatus = isDelete;
+//                    deviceStatus = isDelete;
                 }
 
                 @Override
@@ -261,7 +261,7 @@ public class MessageDeviceFragment extends BaseRecyclerFragment<DeviceAlarmMessa
     }
 
     private void onPostMarkAlertMsg() {
-        MeariUser.getInstance().markDevicesAlarmMessage(mMsgInfo.getDeviceID(), this ,new IResultCallback() {
+        MeariUser.getInstance().markDevicesAlarmMessage(mMsgInfo.getDeviceID(), new IResultCallback() {
             @Override
             public void onSuccess() {
 
@@ -443,7 +443,7 @@ public class MessageDeviceFragment extends BaseRecyclerFragment<DeviceAlarmMessa
             mAdapter.clearDelData();
             ArrayList<Long> devices = new ArrayList<>();
             devices.add(mMsgInfo.getDeviceID());
-            MeariUser.getInstance().deleteDevicesAlarmMessage(devices, this ,new IResultCallback() {
+            MeariUser.getInstance().deleteDevicesAlarmMessage(devices, new IResultCallback() {
                 @Override
                 public void onSuccess() {
                     stopProgressDialog();
@@ -560,9 +560,9 @@ public class MessageDeviceFragment extends BaseRecyclerFragment<DeviceAlarmMessa
 
     class DeleteMessageTask extends AsyncTask<Void, Integer, Void> {
 
-        private DeviceMessageStatusInfo msgInfo;
+        private DeviceMessageStatus msgInfo;
 
-        private DeleteMessageTask(DeviceMessageStatusInfo msgInfo) {
+        private DeleteMessageTask(DeviceMessageStatus msgInfo) {
             this.msgInfo = msgInfo;
         }
 

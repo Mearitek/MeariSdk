@@ -205,7 +205,7 @@ public class RegisterActivity extends BaseActivity {
         }
         String nickname = nickname_et.getText().toString().trim();
         startProgressDialog();
-        MeariUser.getInstance().registerAccount(mRegionInfo.getCountryCode(), mRegionInfo.getPhoneCode(), account_txt, pwdTxt, nickname, verificationCode,this , new IRegisterCallback() {
+        MeariUser.getInstance().registerWithAccount(mRegionInfo.getCountryCode(), mRegionInfo.getPhoneCode(), account_txt, pwdTxt, nickname, verificationCode, new IRegisterCallback() {
             @Override
             public void onSuccess(UserInfo user) {
                 setResult(RESULT_OK);
@@ -233,7 +233,7 @@ public class RegisterActivity extends BaseActivity {
             return;
         }
         startProgressDialog();
-        MeariUser.getInstance().getValidateCode(this.mRegionInfo.getCountryCode(), this.mRegionInfo.getPhoneCode(), userAccount, this ,new IValidateCallback() {
+        MeariUser.getInstance().getValidateCodeWithAccount(this.mRegionInfo.getCountryCode(), this.mRegionInfo.getPhoneCode(), userAccount, new IValidateCallback() {
             @Override
             public void onSuccess(int leftTime) {
                 stopProgressDialog();

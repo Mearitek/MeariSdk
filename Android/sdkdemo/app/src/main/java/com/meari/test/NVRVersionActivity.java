@@ -134,19 +134,19 @@ public class NVRVersionActivity extends BaseActivity implements CameraPlayerList
             CommonUtils.showToast(getString(R.string.network_unavailable));
             return;
         }
-        MeariUser.getInstance().checkNewFirmwareForDev(mInfo.getNvrVersionID(), CommonUtils.getLangType(this),this , new ICheckNewFirmwareForDevCallback() {
+        MeariUser.getInstance().checkNewFirmwareForDev(mInfo.getNvrVersionID(), CommonUtils.getLangType(this), new ICheckNewFirmwareForDevCallback() {
             @Override
             public void onSuccess(DeviceUpgradeInfo info) {
                 mDeviceUpgradeInfo = info;
                 findViewById(R.id.ser_version_layout).setVisibility(View.VISIBLE);
                 mSerText.setText(getSerVersionName());
-                if (info.getVersionDesc() == null || info.getVersionDesc().length() == 0) {
+                if (info.getUpgradeDescription() == null || info.getUpgradeDescription().length() == 0) {
                     findViewById(R.id.updata_text).setVisibility(View.GONE);
                 } else {
                     findViewById(R.id.updata_text).setVisibility(View.VISIBLE);
-                    ((TextView) findViewById(R.id.updata_text)).setText(info.getVersionDesc());
+                    ((TextView) findViewById(R.id.updata_text)).setText(info.getUpgradeDescription());
                 }
-                if (info.getUpdateStatus() != 0) {
+                if (info.getUpgradeStatus() != 0) {
                     mUpdateBtn.setVisibility(View.VISIBLE);
                 }
             }
@@ -162,7 +162,7 @@ public class NVRVersionActivity extends BaseActivity implements CameraPlayerList
 
     public String getSerVersionName() {
         if (mDeviceUpgradeInfo != null) {
-            String[] versionList =mDeviceUpgradeInfo.getSerVersion().split("-");
+            String[] versionList =mDeviceUpgradeInfo.getNewVersion().split("-");
             if (versionList.length == 0) {
                 return mDeviceText.getText().toString();
             } else
@@ -179,7 +179,7 @@ public class NVRVersionActivity extends BaseActivity implements CameraPlayerList
             finish();
             return;
         }
-        if (mDeviceUpgradeInfo.getUpdateStatus() == 0) {
+        if (mDeviceUpgradeInfo.getUpgradeStatus() == 0) {
             return;
         }
         if (mDialog == null)
@@ -201,8 +201,8 @@ public class NVRVersionActivity extends BaseActivity implements CameraPlayerList
                 connectCamera();
             else {
                 BaseJSONObject json = new BaseJSONObject();
-                json.put("upgradeurl", mDeviceUpgradeInfo.getDevUrl());
-                json.put("firmwareversion", mDeviceUpgradeInfo.getSerVersion());
+                json.put("upgradeurl", mDeviceUpgradeInfo.getUpgradeUrl());
+                json.put("firmwareversion", mDeviceUpgradeInfo.getNewVersion());
                 mCurPlayer.setdeviceparams(CameraPlayer.SET_PPS_DEVICE_UPGRADE,
                         json.toString(),
                         new CameraPlayerListener() {
@@ -251,8 +251,8 @@ public class NVRVersionActivity extends BaseActivity implements CameraPlayerList
                     mUpdateBtn.setVisibility(View.VISIBLE);
                     return;
                 } else if (desc == 100) {
-                    if (mDeviceUpgradeInfo.getSerVersion() != null) {
-                        String[] versionList = mDeviceUpgradeInfo.getSerVersion().split("-");
+                    if (mDeviceUpgradeInfo.getNewVersion() != null) {
+                        String[] versionList = mDeviceUpgradeInfo.getNewVersion().split("-");
                         if (versionList.length == 0) {
 //                            mDeviceText.setText(getString(R.string.fail));
                         } else
@@ -333,8 +333,8 @@ public class NVRVersionActivity extends BaseActivity implements CameraPlayerList
                 case MESSAGE_LOGIN_SUCCESS:
                     bConnect = true;
                     BaseJSONObject json = new BaseJSONObject();
-                    json.put("upgradeurl", mDeviceUpgradeInfo.getDevUrl());
-                    json.put("firmwareversion", mDeviceUpgradeInfo.getSerVersion());
+                    json.put("upgradeurl", mDeviceUpgradeInfo.getUpgradeUrl());
+                    json.put("firmwareversion", mDeviceUpgradeInfo.getNewVersion());
                     mCurPlayer.setdeviceparams(CameraPlayer.SET_PPS_DEVICE_UPGRADE,
                             json.toString(),
                             new CameraPlayerListener() {

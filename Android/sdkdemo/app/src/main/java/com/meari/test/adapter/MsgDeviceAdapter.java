@@ -25,6 +25,7 @@ import com.meari.test.utils.DisplayUtil;
 import com.meari.test.utils.StringUtil;
 import com.meari.test.viewholder.MsgHolderView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -236,7 +237,7 @@ public class MsgDeviceAdapter extends BaseQuickAdapter<DeviceAlarmMessage, MsgHo
                 mAlertMsgDb.updateAlertMsgIsRead(deviceAlarmMessage.getMsgID());
                 getData().get(position).setIsRead("Y");
                 Intent intent = new Intent(mContext, ImagePagerActivity.class);
-                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, deviceAlarmMessage.getUrList());
+                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, (Serializable)deviceAlarmMessage.getUrList());
                 intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, 0);
                 intent.putExtra(ImagePagerActivity.EXTRA_DEVICEID, deviceAlarmMessage.getDeviceID());
                 mContext.startActivity(intent);

@@ -16,18 +16,17 @@ import android.widget.RelativeLayout;
 import com.meari.sdk.MeariSmartSdk;
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.bean.CameraInfo;
-import com.meari.sdk.callback.ICreateQRCallback;
+import com.meari.sdk.callback.ICreateQRCodeCallback;
 import com.meari.sdk.callback.IDeviceStatusCallback;
 import com.meari.sdk.callback.IGetTokenCallback;
+import com.meari.sdk.listener.CameraSearchListener;
+import com.meari.sdk.utils.MangerCameraScanUtils;
 import com.meari.test.common.ActivityType;
-import com.meari.test.common.CameraSearchListener;
 import com.meari.test.common.Constant;
-import com.meari.test.common.Distribution;
 import com.meari.test.common.StringConstants;
 import com.meari.test.utils.BaseActivity;
 import com.meari.test.utils.CommonUtils;
 import com.meari.test.utils.DisplayUtil;
-import com.meari.test.utils.MangerCameraScanUtils;
 import com.meari.test.utils.NetUtil;
 import com.ppstrong.ppsplayer.BaseDeviceInfo;
 import com.ppstrong.ppsplayer.CameraPlayer;
@@ -100,7 +99,7 @@ public class QRCodeActivity extends BaseActivity implements CameraSearchListener
     }
 
     private void CreateQrImage() {
-        MeariUser.getInstance().createQR(mWifiName, mPwd, mToken, this, new ICreateQRCallback() {
+        MeariUser.getInstance().createQRCode(mWifiName, mPwd, mToken, new ICreateQRCodeCallback() {
             @Override
             public void onSuccess(Bitmap bitmap) {
                 mQrImage.setImageBitmap(bitmap);
@@ -124,18 +123,18 @@ public class QRCodeActivity extends BaseActivity implements CameraSearchListener
     }
 
     private void postTokenChange() {
-        MeariUser.getInstance().getToken(Distribution.DISTRIBUTION_QR, this, new IGetTokenCallback() {
+        MeariUser.getInstance().getToken(new IGetTokenCallback() {
             @Override
-            public void onError(int code, String error) {
-                CommonUtils.showToast(error);
+            public void onSuccess(String s, int i, int i1) {
+                mToken = s;
+                startTimeCount(i);
+                CreateQrImage();
                 stopProgressDialog();
             }
 
             @Override
-            public void onSuccess(String token, int leftTime) {
-                mToken = token;
-                startTimeCount(leftTime);
-                CreateQrImage();
+            public void onError(int i, String s) {
+                CommonUtils.showToast(s);
                 stopProgressDialog();
             }
         });
@@ -204,7 +203,7 @@ public class QRCodeActivity extends BaseActivity implements CameraSearchListener
     };
 
     private void checkDeviceStatus(List<CameraInfo> cameraInfos, int deviceTypeID) {
-        MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, this, new IDeviceStatusCallback() {
+        MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
             @Override
             public void onSuccess(ArrayList<CameraInfo> deviceList) {
 

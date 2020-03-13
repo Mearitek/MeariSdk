@@ -109,14 +109,14 @@ public class UpdateDeviceActivity extends BaseActivity {
             CommonUtils.showToast(getString(R.string.network_unavailable));
             return;
         }
-        MeariUser.getInstance().checkNewFirmwareForDev(mDeviceVersion, CommonUtils.getLangType(this), this ,new ICheckNewFirmwareForDevCallback() {
+        MeariUser.getInstance().checkNewFirmwareForDev(mDeviceVersion, CommonUtils.getLangType(this), new ICheckNewFirmwareForDevCallback() {
             @Override
             public void onSuccess(DeviceUpgradeInfo info) {
                 findViewById(R.id.ser_version_layout).setVisibility(View.VISIBLE);
-                updateStatus = info.getUpdateStatus();
-                mSerVersion = info.getSerVersion();
-                String versionDesc = info.getVersionDesc();
-                mDevUrl = info.getDevUrl();
+                updateStatus = info.getUpgradeStatus();
+                mSerVersion = info.getNewVersion();
+                String versionDesc = info.getUpgradeDescription();
+                mDevUrl = info.getUpgradeUrl();
                 mSerText.setText(getSerVersionName());
                 if (versionDesc == null || versionDesc.length() == 0) {
                     findViewById(R.id.updata_text).setVisibility(View.GONE);

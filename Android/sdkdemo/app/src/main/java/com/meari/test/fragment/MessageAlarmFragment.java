@@ -16,9 +16,10 @@ import android.widget.ImageView;
 
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.bean.DeviceAlarmMessage;
-import com.meari.sdk.bean.DeviceMessageStatusInfo;
+import com.meari.sdk.bean.DeviceMessageStatus;
 import com.meari.sdk.bean.UserInfo;
-import com.meari.sdk.callback.IGetAlarmMessageStatusForDevCallback;
+import com.meari.sdk.callback.IDeviceAlarmMessagesCallback;
+import com.meari.sdk.callback.IDeviceMessageStatusCallback;
 import com.meari.sdk.callback.IResultCallback;
 import com.meari.test.MainActivity;
 import com.meari.test.MessageDeviceActivity;
@@ -57,12 +58,12 @@ import butterknife.OnClick;
  * ================================================
  */
 
-public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStatusInfo> implements View.OnClickListener {
+public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStatus> implements View.OnClickListener {
     private static final String TAG = "MessageAlarmFragment";
     protected int mOffset = 0;
     protected int mIndexPage = 1;
     private PullToRefreshRecyclerView mPullToRefreshRecyclerView;
-    private ArrayList<DeviceMessageStatusInfo> mList = new ArrayList<>();
+    private ArrayList<DeviceMessageStatus> mList = new ArrayList<>();
     public MessageAdapter mAdapter;
     public View mFragmentView;
     public UserInfo mUserInfo;
@@ -91,10 +92,10 @@ public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStat
         this.mUserInfo = MeariUser.getInstance().getUserInfo();
         mAdapter = new MessageAdapter(getActivity());
         mAlertMsgDb = new AlertMsgDb(getActivity());
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<DeviceMessageStatusInfo>() {
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<DeviceMessageStatus>() {
             @Override
-            public void onItemClick(BaseQuickAdapter<DeviceMessageStatusInfo, ? extends BaseViewHolder> adapter, View view, int position) {
-                DeviceMessageStatusInfo info = adapter.getItem(position);
+            public void onItemClick(BaseQuickAdapter<DeviceMessageStatus, ? extends BaseViewHolder> adapter, View view, int position) {
+                DeviceMessageStatus info = adapter.getItem(position);
                 onRecyclerItemClick(view, info, position);
             }
         });
@@ -168,7 +169,7 @@ public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStat
             bindError(getString(R.string.network_unavailable));
             return;
         }
-        MeariUser.getInstance().getAlarmMessageStatusForDev(this ,new IGetAlarmMessageStatusForDevCallback() {
+        MeariUser.getInstance().getDeviceMessageStatusList(new IDeviceMessageStatusCallback() {
             @Override
             public void onError(int code, String error) {
                 if (isDetached())
@@ -177,7 +178,7 @@ public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStat
             }
 
             @Override
-            public void onSuccess(List<DeviceMessageStatusInfo> deviceMessageStatus) {
+            public void onSuccess(List<DeviceMessageStatus> deviceMessageStatus) {
                 if (isDetached())
                     return;
                 bindOrderList(deviceMessageStatus);
@@ -296,7 +297,7 @@ public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStat
                 CommonUtils.showToast(getString(R.string.delete_file));
                 PPSDeleteMessageTask deleteMessageTask = new PPSDeleteMessageTask(deviceInfos);
                 deleteMessageTask.execute();
-                MeariUser.getInstance().deleteDevicesAlarmMessage(deviceInfos, this ,new IResultCallback() {
+                MeariUser.getInstance().deleteDevicesAlarmMessage(deviceInfos, new IResultCallback() {
                     @Override
                     public void onSuccess() {
                         stopProgressDialog();
@@ -362,7 +363,7 @@ public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStat
 //        }
 //    }
 
-    private void bindOrderList(List<DeviceMessageStatusInfo> infos) {
+    private void bindOrderList(List<DeviceMessageStatus> infos) {
         if (mIndexPage <= 1) {
             mList.clear();
         }
@@ -420,7 +421,7 @@ public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStat
             showonMessageDeviceDelDialg();
     }
 
-    public void onRecyclerItemClick(View viewParam, DeviceMessageStatusInfo data, int position) {
+    public void onRecyclerItemClick(View viewParam, DeviceMessageStatus data, int position) {
         if (mAdapter.isEditStatus()) {
             selectItem(viewParam, position);
         } else {
@@ -431,7 +432,7 @@ public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStat
     private void goMessageActivity(int position) {
         if (getDataSource() == null || getDataSource().size() < position)
             return;
-        DeviceMessageStatusInfo data = getDataSource().get(position);
+        DeviceMessageStatus data = getDataSource().get(position);
         Bundle bundle = new Bundle();
         bundle.putSerializable("msgInfo", data);
         Intent intent = new Intent(getActivity(), MessageDeviceActivity.class);
@@ -441,7 +442,7 @@ public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStat
 
     private void selectItem(View view, int position) {
         ImageView img = view.findViewById(R.id.select_img);
-        DeviceMessageStatusInfo messageInfo = getDataSource().get(position);
+        DeviceMessageStatus messageInfo = getDataSource().get(position);
         if (messageInfo.getDelMsgFlag() == 1) {
             img.setImageResource(R.mipmap.icon_select_p);
             messageInfo.setDelMsgFlag(2);
@@ -489,7 +490,7 @@ public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStat
         return list;
     }
 
-    public void dealCallBackData(List<DeviceMessageStatusInfo> infos) {
+    public void dealCallBackData(List<DeviceMessageStatus> infos) {
         if (infos == null || infos.size() == 0) {
             return;
         }
@@ -536,15 +537,15 @@ public class MessageAlarmFragment extends BaseRecyclerFragment<DeviceMessageStat
     private void dealData() {
         mDeviceIDNoReadList = mAlertMsgDb.findAlertMsgNoReadStatus(mUserInfo.getUserID());
         mDeviceIDAllList = mAlertMsgDb.findAlertMsgStatus(mUserInfo.getUserID());
-        for (DeviceMessageStatusInfo msgInfo : mList) {
-            if (msgInfo.getHasMessgFlag().equals("N")) {
+        for (DeviceMessageStatus msgInfo : mList) {
+            if (msgInfo.getHasMessageFlag().equals("N")) {
                 if (this.mDeviceIDNoReadList.contains(msgInfo.getDeviceID())) {
-                    msgInfo.setHasMessgFlag("Y");
+                    msgInfo.setHasMessageFlag("Y");
                 }
             } else {
-                msgInfo.setHasMessgFlag("Y");
+                msgInfo.setHasMessageFlag("Y");
             }
-            if (msgInfo.getHasMessgFlag().equals("N") && !this.mDeviceIDAllList.contains(msgInfo.getDeviceID())) {
+            if (msgInfo.getHasMessageFlag().equals("N") && !this.mDeviceIDAllList.contains(msgInfo.getDeviceID())) {
                 msgInfo.setbHasMsg(false);
             } else
                 msgInfo.setbHasMsg(true);

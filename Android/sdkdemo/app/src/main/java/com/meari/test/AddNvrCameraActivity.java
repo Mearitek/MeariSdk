@@ -17,6 +17,8 @@ import com.meari.sdk.bean.CameraInfo;
 import com.meari.sdk.bean.NVRInfo;
 import com.meari.sdk.bean.NvrDeviceStatusInfo;
 import com.meari.sdk.callback.IBindDeviceCallback;
+import com.meari.sdk.listener.CameraSearchListener;
+import com.meari.sdk.utils.MangerCameraScanUtils;
 import com.meari.test.adapter.NvrAddCameraAdapter;
 import com.meari.test.common.ActivityType;
 import com.meari.test.common.Preference;
@@ -28,8 +30,6 @@ import com.meari.test.utils.CommonUtils;
 import com.meari.test.utils.NetUtil;
 import com.meari.test.widget.RoundProgressBar;
 import com.ppstrong.ppsplayer.BaseDeviceInfo;
-import com.meari.test.common.CameraSearchListener;
-import com.meari.test.utils.MangerCameraScanUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +47,6 @@ import butterknife.OnClick;
  * 修订历史：
  * ================================================
  */
-
 public class AddNvrCameraActivity extends BaseActivity implements CameraSearchListener, WifiReceiver.WifiChangeListener {
     private ArrayList<NvrDeviceStatusInfo> mInfos;
     private NVRInfo mInfo;
@@ -137,7 +136,7 @@ public class AddNvrCameraActivity extends BaseActivity implements CameraSearchLi
             CommonUtils.showToast(getString(R.string.network_unavailable));
             return;
         }
-        MeariUser.getInstance().bindDevice(mInfo.getDeviceID(), info.getDeviceID(), this ,new IBindDeviceCallback() {
+        MeariUser.getInstance().bindDevice(mInfo.getDeviceID(), info.getDeviceID(), new IBindDeviceCallback() {
             @Override
             public void onSuccess(String deviceID) {
                 mPullToRefreshListView.onRefreshComplete();

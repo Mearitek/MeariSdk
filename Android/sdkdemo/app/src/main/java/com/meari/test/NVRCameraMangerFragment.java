@@ -195,7 +195,7 @@ public class NVRCameraMangerFragment extends BaseRecyclerFragment<NvrDeviceStatu
             bindError(getString(R.string.network_unavailable));
             return;
         }
-        MeariUser.getInstance().getBindDeviceList(mInfo.getDeviceID(),this , new IGetBindDeviceList() {
+        MeariUser.getInstance().getBindDeviceList(mInfo.getDeviceID(), new IGetBindDeviceList() {
             @Override
             public void onSuccess(ArrayList<NvrDeviceStatusInfo> bindDevices, ArrayList<NvrDeviceStatusInfo> unBindDevices) {
                 mBindCameras = bindDevices;
@@ -323,7 +323,7 @@ public class NVRCameraMangerFragment extends BaseRecyclerFragment<NvrDeviceStatu
         }
         startProgressDialog();
         ArrayList<String> deviceList = mAdapter.getSelectId();
-        MeariUser.getInstance().unBindDevice(mInfo.getDeviceID(), deviceList, this ,new IRemoveBindDeviceCallback() {
+        MeariUser.getInstance().unBindDevice(mInfo.getDeviceID(), deviceList, new IRemoveBindDeviceCallback() {
             @Override
             public void onSuccess(String[] deviceIds) {
                 stopProgressDialog();

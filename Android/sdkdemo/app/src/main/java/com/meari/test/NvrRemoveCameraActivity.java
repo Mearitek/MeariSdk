@@ -59,7 +59,7 @@ public class NvrRemoveCameraActivity extends BaseActivity {
         startProgressDialog();
         List<String> infos = new ArrayList<>();
         infos.add(mCameraInfo.getDeviceID());
-        MeariUser.getInstance().unbindDevice(nvrID, infos, this ,new IResultCallback() {
+        MeariUser.getInstance().unbindDevice(nvrID, infos, new IResultCallback() {
             @Override
             public void onSuccess() {
                 CommonUtils.showToast(getString(R.string.remove_camera_success));

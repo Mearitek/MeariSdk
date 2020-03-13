@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.meari.sdk.MeariUser;
-import com.meari.sdk.bean.SystemMessageInfo;
+import com.meari.sdk.bean.SystemMessage;
 import com.meari.sdk.bean.UserInfo;
 import com.meari.sdk.callback.IDealSystemCallback;
-import com.meari.sdk.callback.IGetSystemMessageCallback;
 import com.meari.sdk.callback.IResultCallback;
+import com.meari.sdk.callback.ISystemMessageCallback;
 import com.meari.test.R;
 import com.meari.test.adapter.MessageSysAdapter;
 import com.meari.test.pulltorefresh.PullToRefreshBase;
@@ -44,7 +44,7 @@ import butterknife.ButterKnife;
  * ================================================
  */
 
-public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInfo> {
+public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessage> {
 
     protected int mOffset = 0;
     protected int pageNum = 0;
@@ -77,10 +77,10 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
         ButterKnife.bind(this, mFragmentView);
         this.mUserInfo = MeariUser.getInstance().getUserInfo();
         mAdapter = new MessageSysAdapter(getActivity());
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<SystemMessageInfo>() {
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener<SystemMessage>() {
             @Override
-            public void onItemClick(BaseQuickAdapter<SystemMessageInfo, ? extends BaseViewHolder> adapter, View view, int position) {
-                SystemMessageInfo info = adapter.getItem(position);
+            public void onItemClick(BaseQuickAdapter<SystemMessage, ? extends BaseViewHolder> adapter, View view, int position) {
+                SystemMessage info = adapter.getItem(position);
                 onRecyclerItemClick(view, info, position);
             }
         });
@@ -163,7 +163,7 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
         if (getContext() == null || getActivity() == null || getActivity().isFinishing())
             return;
 
-        MeariUser.getInstance().getSystemMessage(this ,new IGetSystemMessageCallback() {
+        MeariUser.getInstance().getSystemMessage(new ISystemMessageCallback() {
             @Override
             public void onError(int code, String error) {
                 mPullToRefreshListView.onRefreshComplete();
@@ -172,7 +172,7 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
             }
 
             @Override
-            public void onSuccess(List<SystemMessageInfo> systemMessages) {
+            public void onSuccess(List<SystemMessage> systemMessages) {
                 bindList(systemMessages);
                 mPullToRefreshListView.onRefreshComplete();
             }
@@ -280,7 +280,11 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
             if (NetUtil.checkNet(getActivity())) {
                 startProgressDialog();
                 getProgressDialog().setOnCancelListener(this.mCancelListener);
-                MeariUser.getInstance().deleteSystemMessage(selectDeleteMsgIds,this , new IResultCallback() {
+                ArrayList<String> list = new ArrayList<>();
+                for (int i = 0; i <selectDeleteMsgIds.size() ; i++) {
+                    list.add(selectDeleteMsgIds.get(i) + "");
+                }
+                MeariUser.getInstance().deleteSystemMessage(list,new IResultCallback() {
                     @Override
                     public void onSuccess() {
                         stopProgressDialog();
@@ -377,7 +381,7 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
             this.mRightBtn.setVisibility(View.VISIBLE);
     }
 
-    private void bindList(List<SystemMessageInfo> infos) {
+    private void bindList(List<SystemMessage> infos) {
         if (infos == null)
             return;
         mPullToRefreshListView.onRefreshComplete();
@@ -395,7 +399,7 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
     }
 
 
-    public void onRecyclerItemClick(View view, SystemMessageInfo data, int position) {
+    public void onRecyclerItemClick(View view, SystemMessage data, int position) {
         if (mAdapter.isEditStaus()) {
             seletItem(view, data, position);
         } else {
@@ -403,9 +407,9 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
         }
     }
 
-    private void seletItem(View view, SystemMessageInfo data, int position) {
+    private void seletItem(View view, SystemMessage data, int position) {
         ImageView img = view.findViewById(R.id.select_img);
-        SystemMessageInfo messgeInfo = getDataSource().get(position);
+        SystemMessage messgeInfo = getDataSource().get(position);
         if (messgeInfo.getDelNum() == 1) {
             view.findViewById(R.id.arrow_img).setVisibility(View.GONE);
             img.setImageResource(R.mipmap.icon_select_p);
@@ -427,7 +431,7 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
 
 
     private void postDealMessage(int position) {
-        final SystemMessageInfo msgInfo = getDataSource().get(position);
+        final SystemMessage msgInfo = getDataSource().get(position);
         if ((msgInfo.getMsgTypeID() != 1) && (msgInfo.getMsgTypeID() != 2)) {
             return;
         }
@@ -441,7 +445,7 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     startProgressDialog();
-                    MeariUser.getInstance().agreeFriend(msgInfo.getMsgID(), msgInfo.getUserID(),this , new IDealSystemCallback() {
+                    MeariUser.getInstance().agreeFriend(msgInfo.getMsgID(), msgInfo.getUserID(), new IDealSystemCallback() {
                         @Override
                         public void onSuccess(long msgId) {
                             stopProgressDialog();
@@ -461,7 +465,7 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     startProgressDialog();
-                    MeariUser.getInstance().refuseFriend(msgInfo.getMsgID(), msgInfo.getUserID(),this , new IDealSystemCallback() {
+                    MeariUser.getInstance().refuseFriend(msgInfo.getMsgID(), msgInfo.getUserID(), new IDealSystemCallback() {
                         @Override
                         public void onSuccess(long msgId) {
                             stopProgressDialog();
@@ -485,7 +489,7 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
                     dialog.cancel();
                     // 同意分享设备
                     startProgressDialog();
-                    MeariUser.getInstance().agreeShareDevice(msgInfo.getMsgID(), msgInfo.getUserID(), msgInfo.getDeviceID(),this , new IDealSystemCallback() {
+                    MeariUser.getInstance().agreeShareDevice(msgInfo.getMsgID(), msgInfo.getUserID(), msgInfo.getDeviceID(), new IDealSystemCallback() {
                         @Override
                         public void onSuccess(long msgId) {
                             stopProgressDialog();
@@ -507,7 +511,7 @@ public class SystemMessageFragment extends BaseRecyclerFragment<SystemMessageInf
                     dialog.dismiss();
                     startProgressDialog();
                     startProgressDialog();
-                    MeariUser.getInstance().refuseShareDevice(msgInfo.getMsgID(), msgInfo.getUserID(), msgInfo.getDeviceID(),this , new IDealSystemCallback() {
+                    MeariUser.getInstance().refuseShareDevice(msgInfo.getMsgID(), msgInfo.getUserID(), msgInfo.getDeviceID(), new IDealSystemCallback() {
                         @Override
                         public void onSuccess(long msgId) {
                             stopProgressDialog();

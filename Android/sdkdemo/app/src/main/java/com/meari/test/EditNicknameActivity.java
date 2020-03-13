@@ -62,7 +62,7 @@ public class EditNicknameActivity extends BaseActivity {
             return;
         }
         startProgressDialog();
-        MeariUser.getInstance().renameNickname(nickname, this ,new IResultCallback() {
+        MeariUser.getInstance().renameNickname(nickname, new IResultCallback() {
             @Override
             public void onSuccess() {
                 stopProgressDialog();

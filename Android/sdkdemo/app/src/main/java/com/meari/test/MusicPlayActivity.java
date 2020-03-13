@@ -174,7 +174,7 @@ public class MusicPlayActivity extends BaseActivity implements SongAdapter.SongP
     }
 
     public void postSongData() {
-        MeariUser.getInstance().getMusicList(this ,new IGetMusicListCallback() {
+        MeariUser.getInstance().getMusicList(new IGetMusicListCallback() {
             @Override
             public void onSuccess(ArrayList<MeariMusic> songInfos) {
                 mListSong.clear();

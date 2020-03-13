@@ -121,7 +121,7 @@ public class ShareDeviceFragment extends BaseRecyclerFragment<ShareFriendInfo> i
             bindError(getString(R.string.network_unavailable));
             return;
         }
-        MeariUser.getInstance().queryFriendListForDevice(DeviceType.IPC, mInfo.getDeviceID(), this ,new IQueryFriendListForDeviceCallback() {
+        MeariUser.getInstance().queryFriendListForDevice(DeviceType.IPC, mInfo.getDeviceID(), new IQueryFriendListForDeviceCallback() {
             @Override
             public void onSuccess(ArrayList<ShareFriendInfo> result) {
                 mPullToRefreshRecyclerView.onRefreshComplete();
@@ -205,7 +205,7 @@ public class ShareDeviceFragment extends BaseRecyclerFragment<ShareFriendInfo> i
     public void shareDeviceToFriends(ShareFriendInfo friendDetailDTO) {
         if (!friendDetailDTO.isShare()) {
             startProgressDialog(getString(R.string.share_device));
-            MeariUser.getInstance().addShareUserForDev(DeviceType.IPC, friendDetailDTO.getUserId(), mInfo.getDeviceUUID(), mInfo.getDeviceID(),this , new IShareForDevCallback() {
+            MeariUser.getInstance().addShareUserForDev(DeviceType.IPC, friendDetailDTO.getUserId(), mInfo.getDeviceUUID(), mInfo.getDeviceID(), new IShareForDevCallback() {
                 @Override
                 public void onSuccess(String userId, String devId) {
                     stopProgressDialog();
@@ -222,7 +222,7 @@ public class ShareDeviceFragment extends BaseRecyclerFragment<ShareFriendInfo> i
             });
         } else {
             startProgressDialog(getString(R.string.share_device_cancel));
-            MeariUser.getInstance().removeShareUserForDev(DeviceType.IPC, friendDetailDTO.getUserId(), mInfo.getDeviceUUID(), mInfo.getDeviceID(), this ,new IShareForDevCallback() {
+            MeariUser.getInstance().removeShareUserForDev(DeviceType.IPC, friendDetailDTO.getUserId(), mInfo.getDeviceUUID(), mInfo.getDeviceID(),new IShareForDevCallback() {
                 @Override
                 public void onSuccess(String userId, String devId) {
                     stopProgressDialog();

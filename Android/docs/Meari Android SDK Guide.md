@@ -1,28 +1,34 @@
+
 <h1><center> directory </center></h1>
+
 [TOC]
 
+<center>
+
+---
 Version number | Development team | Update date | Notes
 :-:|:-:|:-:|:-:
-2.0.0 | Meari Technical Team | 2019.09.20 | Optimization
+2.2.0 | Towers Perrin Technical Team | 2020.03.03 | Optimization
+
+<center>
 
 # 1. Function Overview
 
-The Meari APP SDK provides interface packaging with hardware devices and Meari Cloud, and accelerates the application development process, including the following functions:
+The Towers Technology APP SDK provides interface packaging with hardware devices and Towers Perrin, and accelerates the application development process, including the following functions:
 
-- Hardware device related (with network, control, status reporting, firmware upgrade, preview playback, etc.)
-- Account system (mobile phone number, email registration, login, password reset, etc.)
+- Account system
+- Device addition
+- equipment control
+- Device settings
 - Device sharing
-- Friends management
 - Message Center
-- Feedback
-- Meari cloud HTTPS API interface package (see Meari cloud api call)
 
 --------------
 
 # 2. Integration preparation
 ## Create App ID and App Secert
 ```
-Meari Technical Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
+Towers Perrin Technology Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
 <meta-data
     Android:name="MEARI_APPKEY"
     Android:value="your MEARI_APPKEY" />
@@ -36,28 +42,41 @@ Meari Technical Cloud Platform provides webpages to automatically create App ID 
 ## 3.1 Integration Process
 ### 3.1.1 Introducing the sdk package
 ```
-Copy meatisdk_2.0.0.aar to the libs directory and copy the so files from the demo to the libs directory.
-The so file is introduced according to the full or partial type of the needs of the project.
+The so files and aar files in the libs folder are imported into your own project, so files are imported in all or part of the types according to the needs of your project.
 ```
 
-### 3.1.2 Configuring build.gradle
-
-Add the following configuration to the build.gradle file.
+### 3.1.2 Configure build.gradle
 ```
-Repositories {
-    flatDir {
-        Dirs 'libs'
-    }
+Add the following configuration to the build.gradle file:
+
+android {
+     defaultConfig {
+         ...
+         ndk {
+         // Select the .so library corresponding to the cpu type to be added.
+         abiFilters 'armeabi', 'arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'
+         }
+     }
+      sourceSets {
+         main {
+             jniLibs.srcDirs = ['libs']
+         }
+     }
 }
-Android {
-     sourceSets {
-        Main {
-            jniLibs.srcDirs = ['libs']
-        }
-    }
+
+repositories {
+     flatDir {
+         dirs 'libs'
+     }
 }
-Dependencies {
-    Implementation(name: 'mearisdk-1.0.0', ext: 'aar')
+
+dependencies {
+     // Required libraries
+    implementation(name: 'mearisdk-2.2.0-20200313', ext: 'aar')
+    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'com.alibaba:fastjson:1.2.57'
+    implementation 'com.google.zxing:core:3.3.3'
 }
 ```
 
@@ -98,7 +117,7 @@ Configure appkey and appSecret in the AndroidManifest.xml file, configure the co
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
-Aurora push configuration
+Jpush push configuration
  <!-- Rich push core function since 2.0.6-->
         <activity
             Android:name="cn.jpush.android.ui.PopWinActivity"
@@ -221,39 +240,31 @@ It is mainly used to initialize internal resources, communication services, redi
 /**
  * Initialization
  * @param context application
- * @param callback mqtt message callback
+ * @param mqttMessageCallback mqtt message callback
  */
-MeariSdk.init(Contex context, IMessageCallback callback);
+MeariSdk.init(Context application, MqttMessageCallback mqttMessageCallback);
 
 [code example]
-
-Public class MeariMessage implements IMessageCallback {
-    @Override
-    Public void messageArrived( String message) {
-        / / Process mqtt message
-    }
-}
 
 Public class MeariSmartApp extends Application {
     @Override
     Public void onCreate() {
         super.onCreate();
         // Initialize
-        MeariSdk.init(this, new MeariMessage());
+        MeariSdk.init(this, new MyMessageHandler());
         // output log
         MeariSdk.getInstance().setDebug(true);
     }
 }
 ```
-# 4. User Management (MeariUser Tools)
+# 4. User Management
 ```
-Meari Technology provides mobile phone/email password login, uid login, password reset, etc.
-After registration or login is successful, use the return information to connect to the mqtt service, initialize the aurora and other operations.
-(Hint: Object tag parameter in the function, you can pass this, the following is true)
+Towers Perrin provides mobile phone/email password login, uid login, password reset, etc.
+After registration or login is successful, use the return information to connect to the mqtt service, initialize the Jpush and other operations.
 ```
 
 UserInfo class
-- jpushAlias ​​Aurora Push Alias
+- jpushAlias ​​Jpush Push Alias
 - userID user ID
 - nickName nickname
 - phoneCode country code
@@ -269,143 +280,148 @@ UserInfo class
 - desc user description;
 
 
-## 4.1 Mobile/Email Password Registration
+## 4.1 Mobile / Email Registration
 ```
 【description】
-Phone password registration. Currently only supports domestic mobile phone registration.
+Mobile or email registration (Mobile registration is only supported in Mainland China).
 
-[function call]
-    
-/**
- * Get phone verification code
- *
- * @param countryCode country code
- * @param phoneCode country phone number area code
- * @param account
- * @param tag Network request tag (Hint: Object tag parameter in the function, you can pass this, the following is the same, no longer listed)
- * @paramI ValidateCallback network request return
- */
-Public void getValidateCode(String countryCode, String phoneCode, String account, Object tag, final IValidateCallback callback);
-  
-/**
- * register account
- *
- * @param countryCode country code
- * @param phoneCode country phone number area code
- * @param account
- * @param pwd password
- * @param nickname nickname
- * @param code verification code
- * @param callback returns callback
- */
-Public void registerAccount2(String countryCode, String phoneCode, String account, String pwd, String nickname, String code, IRegisterCallback callback);
+[Function call]
 
-[code example]
+/ **
+ * get verification code
+ *
+ * @param countryCode country code
+ * @param phoneCode area code
+ * @param userAccount account
+ * @param callback network request callback
+ * /
+public void getValidateCodeWithAccount (String countryCode, String phoneCode, String userAccount, IValidateCallback callback);
 
-MeariUser.getInstance().getValidateCode(countryCode, phoneCode, account, this, new IValidateCallback() {
-    @Override
-    Public void onSuccess(int leftTime) {
-        stopProgressDialog();
-        startTimeCount(leftTime);//leftTime indicates the remaining valid time of the verification code
-    }
+/ **
+ * register account, and return the mqtt iot info.
+ *
+ * @param countryCode country code
+ * @param phoneCode area code
+ * @param account
+ * @param pwd password
+ * @param nickname
+ * @param code verification code
+ * @param callback network request callback
+ * /
+public void registerWithAccount (String countryCode, String phoneCode, String account, String pwd, String nickname, String code, IRegisterCallback callback);
 
-    @Override
-    Public void onError(int code, String error) {
-        stopProgressDialog();
-        CommonUtils.showToast(error);
-    }
+[Code example]
+
+MeariUser.getInstance (). GetValidateCodeWithAccount (countryCode, phoneCode, account, new IValidateCallback () {
+    @Override
+    public void onSuccess (int leftTime) {
+        // leftTime indicates the remaining valid time of the verification code
+    }
+
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 
-MeariUser.getInstance().registerAccount2(countryCode,phoneCode,account,pwd,nickname,code, new IRegisterCallback() {
-    @Override
-    Public void onSuccess(UserInfo user) {
-        //UserInfo returns user information
-    }
+MeariUser.getInstance (). RegisterWithAccount (countryCode, phoneCode, account, pwd, nickname, code, new IRegisterCallback () {
+    @Override
+    public void onSuccess (UserInfo user) {
+        // UserInfo returns user information
+    }
 
-    @Override
-    Public void onError(int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
-## 4.2 Mobile/Email Password Login
+## 4.2 Mobile / Email Login
 ```
 【description】
-Support domestic mobile phone password login.
- 
-[function call]
+Mobile / email login
 
-/**
- * Login account
- *
- * @param countryCode country code
- * @param phoneCode country phone number area code
- * @param userAccount Domestic Phone/Email
- * @param password user password
- * @param callback login callback interface return user information
- */
-Public void login2(String countryCode, String phoneCode, String userAccount, String password, ILoginCallback callback);
-    
-[code example]
+[Function call]
 
-MeariUser.getInstance().login2(countryCode,phoneCode, userAccount, password, new ILoginCallback() {
-    @Override
-    Public void onSuccess(UserInfo user) {
-        // It is recommended to initialize Aurora and connect mqtt service in MainActivity. After logging in for the first time, save the user information, you don't have to log in every time you start the app.
-        / / If you need to receive push messages, contact us to configure the relevant parameters, use our alias to initialize the Aurora push, access process reference Aurora official documentation.
-        initJPushAlias(user.getJpushAlias());
-        // connect to the mqtt service
-        MeariUser.getInstance().connectMqttServer(getApplication());
-    }
+/ **
+ * Login Account
+ *
+ * @param countryCode country code
+ * @param phoneCode area code
+ * @param userAccount domestic phone / email
+ * @param password user password
+ * @param callback network request callback
+ * /
+public void loginWithAccount (String countryCode, String phoneCode, String userAccount, String password, ILoginCallback callback);
+    
+[Code example]
 
-    @Override
-    Public void onError(int code, String error) {
-    }
+MeariUser.getInstance (). LoginWithAccount (countryCode, phoneCode, userAccount, password, new ILoginCallback () {
+    @Override
+    public void onSuccess (UserInfo user) {
+        // It is recommended to initialize the Aurora and connect to the mqtt service in MainActivity, save the user information after the first login, and do not have to log in every time you start the app.
+        // If you need to receive push messages, contact us to configure related parameters, use our alias to initialize Aurora Push, and refer to the Aurora official document for the access process.
+        initJPushAlias ​​(user.getJpushAlias ​​());
+        // connect mqtt service
+        if (! MeariUser.getInstance (). isMqttConnected ()) {
+            MeariUser.getInstance (). ConnectMqttServer (getApplication ());
+        }
+    }
+
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
 ## 4.3 Reset password
 ```
 【description】
-Only passwords for mailbox and / domestic mobile phones are supported.
- 
-[function call]
-/**
- * Get phone verification code
- *
- * @param countryCode country code
- * @param username Mobile number/email
- */
-MeariUser.getInstance().getValidateCode(String countryCode, String username, final IValidateCallback callback);
+reset Password
+ 
+[Function call]
+/ **
+ * get verification code
+ *
+ * @param countryCode country code
+ * @param phoneCode area code
+ * @param userAccount account
+ * @param callback network request callback
+ * /
+public void getValidateCodeWithAccount (String countryCode, String phoneCode, String userAccount, IValidateCallback callback);
 
-/**
- * reset Password
- *
- * @param countryCode country code
- * @param phoneCode country phone number area code
- * @param account Domestic Phone/Email
- * @param verificationCode verification code
- * @param password User new password password
- * @param callback login callback interface return user information
- */
-Public void resetAccountPassword2(String countryCode, String phoneCode, String account, String verificationCode, String pwd, final IResetPasswordCallback callback)
-    
-[code example]
+/ **
+ * reset Password
+ *
+ * @param countryCode country code
+ * @param phoneCode area code
+ * @param account Domestic phone / email
+ * @param verificationCode verification code
+ * @param password User new password password
+ * @param callback network request callback
+ * /
+public void resetPasswordWithAccount (String countryCode, String phoneCode, String account, String verificationCode, String pwd, IResetPasswordCallback callback);
+    
+[Code example]
 
-MeariUser.getInstance().resetAccountPassword2(countryCode, phoneCode, account, verificationCode, pwd, new IResetPasswordCallback() {
-    @Override
-    Public void onSuccess(UserInfo user) {
-        If(user == null) {
-/ / means reset password
-}else {
-/ / Indicates the password is retrieved
-}
-    }
+MeariUser.getInstance (). GetValidateCodeWithAccount (countryCode, phoneCode, account, new IValidateCallback () {
+    @Override
+    public void onSuccess (int leftTime) {
+        // leftTime indicates the remaining valid time of the verification code
+    }
 
-    @Override
-    Public void onError(int code, String error) {
-        stopProgressDialog();
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
+});
+
+MeariUser.getInstance (). ResetPasswordWithAccount (countryCode, phoneCode, account, verificationCode, pwd, new IResetPasswordCallback () {
+    @Override
+    public void onSuccess (UserInfo user) {
+    }
+
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -413,1332 +429,1192 @@ MeariUser.getInstance().resetAccountPassword2(countryCode, phoneCode, account, v
 
 ```
 【description】
-If the customer has their own user system, they can log in via uid and access our sdk.
-User uid login, uid requires unique, defined by the access side. The uid system can log in directly without registration.
+If customers have their own user system, then they can log in via uid and access our SDK.
+The user uid logs in. The uid is required to be unique and defined by the access party itself. The uid system can log in directly without registration.
 
-[function call]
+[Function call]
 
-/**
- * User uid registration
- * @param countryCode country number (CN)
- * @param phoneCode country phone number area code (+86)
- * @param uid user unique identifier
- * @param callback uid registration callback interface
- */
-Public void loginWithUid2(String countryCode, String phoneCode, String uid, final ILoginCallback callback);
-        
-[code example]
+/ **
+ * User UID login
+ * @param countryCode country code
+ * @param phoneCode area code
+ * @param uid user unique identifier
+ * @param callback network request callback
+ * /
+public void loginWithUid (String countryCode, String phoneCode, String uuid, ILoginCallback callback);
+        
+[Code example]
 
-MeariUser.getInstance().loginWithUid2(countryCode, phoneCode,uid, new IRegisterCallback() {
-    @Override
-    Public void onSuccess(UserInfo user) {
-        // It is recommended to initialize Aurora and connect mqtt service in MainActivity. After logging in for the first time, save the user information, you don't have to log in every time you start the app.
-        / / If you need to receive push messages, contact us to configure the relevant parameters, use our alias to initialize the Aurora push, access process reference Aurora official documentation.
-        initJPushAlias(user.getJpushAlias());
-        // connect to the mqtt service
-        MeariUser.getInstance().connectMqttServer(getApplication());
-    }
-    @Override
-    Public void onError(String code, String error) {
-        // failed
-    }
+MeariUser.getInstance (). LoginWithUid (countryCode, phoneCode, uid, new ILoginCallback () {
+    @Override
+    public void onSuccess (UserInfo user) {
+        // It is recommended to initialize the Aurora and connect to the mqtt service in MainActivity, save the user information after the first login, and do not have to log in every time you start the app.
+        // If you need to receive push messages, contact us to configure related parameters, use our alias to initialize Aurora Push, and refer to the Aurora official document for the access process.
+        initJPushAlias ​​(user.getJpushAlias ​​());
+        // connect mqtt service
+        if (! MeariUser.getInstance (). isMqttConnected ()) {
+            MeariUser.getInstance (). ConnectMqttServer (getApplication ());
+        }
+    }
+    @Override
+    public void onError (String code, String error) {
+        // fail
+    }
 });
 ```
 
-## 4.5 Logout
+## 4.5 Log out
 ```
 【description】
-Call the following interface to log out when you exit the application or log out.
+sign out
 
-[function call]
-/**
- * @param callback logout callback
- */
-MeariUser.getInstance().logout(ILogoutCallback callback);
+[Function call]
 
-[code example]
-MeariUser.getInstance().logout(new ILogoutCallback() {
-    @Override
-    Public void onSuccess(int resultCode) {
-        / / Clear user information, disconnect mqtt connection, etc.
-        MqttMangerUtils.getInstance().disConnectService();
-    }
+/ **
+ * sign out
+ *
+ * @param callback network request callback
+ * /
+public void logout (ILogoutCallback callback);
 
-    @Override
-    Public void onError(int code, String error) {
-    }
+[Code example]
+MeariUser.getInstance (). Logout (new ILogoutCallback () {
+    @Override
+    public void onSuccess () {
+        // Clear user information, disconnect mqtt connection, etc.
+        MqttMangerUtils.getInstance (). DisConnectService ();
+    }
+
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
-## 4.6 Uploading User Avatar (MeariUser Tool Class)
+## 4.6 Upload user avatar
 ```
 【description】
 Upload a user avatar.
- 
-[function call]
+ 
+[Function call]
 
-/**
- * Upload user avatar
- *
- * @param file User avatar image file path (preferably 300*300)
- * @param callback callback
- */
-Public void uploadUserAvatar(String filePath, IAvatarCallback callback);
-        
-[code example]
+/ **
+ * Upload user avatar
+ *
+ * @param file User avatar picture file (preferably 300 * 300)
+ * @param callback network request callback
+ * /
+public void uploadUserAvatar (List <File> fileList, IAvatarCallback callback);
+        
+[Code example]
 
-MeariUser.getInstance().uploadUserAvatar(path, new IAvatarCallback() {
-    @Override
-    Public void onSuccess(String path) {
-//path is the address of the server avatar after returning the upload.
-    }
+MeariUser.getInstance (). UploadUserAvatar (path, new IAvatarCallback () {
+    @Override
+    public void onSuccess (String path) {
+// path is the avatar address stored on the server after returning the upload
+    }
 
-    @Override
-    Public void onError(String code, String error) {
+    @Override
+    public void onError (String code, String error) {
 
-    }
+    }
 });
 ```
-## 4.7 Modify nickname
+## 4.7 Change nickname
 ```
 【description】
-Modify the user nickname.
- 
-[function call]
+Modify user nickname.
+ 
+[Function call]
 
-/**
- * Upload user avatar
- *
- * @param nickname User new nickname
- * @param callback network request callback
- */
-Public void renameNickname(String nickname, final IResultCallback callback);
-        
-[code example]
+/ **
+ * change username
+ *
+ * @param nickname
+ * @param callback network request callback
+ * /
+public void renameNickname (String nickname, IResultCallback callback);
+        
+[Code example]
 
-MeariUser.getInstance().renameNickname(name, new IResultCallback() {
-    @Override
-    Public void onSuccess() {
+MeariUser.getInstance (). RenameNickname (name, new IResultCallback () {
+    @Override
+    public void onSuccess () {
 
-    }
+    }
 
-    @Override
-    Public void onError(String code, String error) {
+    @Override
+    public void onError (String code, String error) {
 
-    }
+    }
 });
 ```
 
-# 5. Equipment distribution network (PPSCameraPlayer tool class)
+# 5. Add device
 ```
-Meari's hardware modules support three distribution modes: Quick Connect mode (TLink, EZ mode for short), Hotspot mode (AP mode), and QR code distribution mode.
-The QR code and Quick Connect mode are relatively easy to operate. It is recommended to use the hotspot mode as an alternative after the distribution network fails. Among them, the success rate of the two-dimensional code distribution network is high.
+Connect the device to WiFi and add the device to the user's account. It is recommended to use a QR code to accompany the network to add
 ```
-
-## 5.1 Generating QR code
+## 5.1 Add equipment to QR code distribution network
+```
+After obtaining the token, a QR code is generated. The device scans the QR code and hears a tone, which turns into a blue light to indicate that the company has successfully accompany the network.
+Then search for device addition, support automatic addition and wait for device addition to complete.
+```
+### 5.1.1 Generate QR Code
 ```
 【description】
-After obtaining the token, generate the QR code for scanning the device.
+After obtaining the token, a QR code is generated. The device scans the QR code and hears a tone, which turns into a blue light to indicate that the company has successfully accompany the network.
+Then search for device addition, support automatic addition and wait for device addition to complete.
 
-[function call]
+[Function call]
 
-/**
- * Get distribution network temporary token
- *
- * @param type with network type
- * @param callback callback
- */
-Public void getToken(int type, IGetTokenCallback callback);
+/ **
+ * Get distribution token
+ *
+ * @param callback callback
+ * /
+public void getToken (IGetTokenCallback callback);
 
-/**
- * Generate distribution network QR code
- *
- * @param ssid wifi name
- * @param password wifi password
- * @param token distribution network temporary token
- * @param callback callback
- */
-Public void createQR(String ssid, String password, String token, ICreateQRCallback callback);
+/ **
+ * Generate distribution network QR code
+ *
+ * @param ssid wifi name
+ * @param password wifi password
+ * @param token distribution network token
+ * @param callback callback
+ * /
+public void createQRCode (String ssid, String password, String token, ICreateQRCodeCallback callback);
 
-[code example]
+[Code example]
 
-MeariUser.getInstance().getToken(Distribution.DISTRIBUTION_QR, new IGetTokenCallback() {
-    @Override
-    Public void onError(int code, String error) {
-        // error
-    }
-    @Override
-    Public void onSuccess(String token, int leftTime) {
-        // token distribution token
-        // leftTime remaining effective time
-    }
+// Get distribution token
+MeariUser.getInstance (). GetToken (new IGetTokenCallback () {
+    @Override
+    public void onSuccess (String token, int leftTime, int smart_switch) {
+        // token distribution token
+        // leftTime remaining valid time
+    }
+
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 
-
-MeariUser.getInstance().createQR(wifiName, wifiPwd, token, new ICreateQRCallback() {
-    @Override
-    Public void onSuccess(Bitmap bitmap) {
-        mQrImage.setImageBitmap(bitmap);// Display QR code
-    }
+// Generate distribution network QR code
+MeariUser.getInstance (). CreateQRCode (wifiName, pwd, token, new ICreateQRCodeCallback () {
+    @Override
+    public void onSuccess (Bitmap bitmap) {
+        mQrImage.setImageBitmap (bitmap); // Show QR code
+    }
 });
 ```
 
-## 5.2 Searching for added devices
+### 5.1.2 Search for add device
 ```
 【description】
-After the device is searched, it is detected whether the device can be added, and then the add interface is added.
+After the device is found, the status of the device is detected. If automatic addition is not supported, the add interface is called.
+If auto-add is supported, wait for the mqtt message to add or fail successfully.
+There may be a delay in the mqtt message. In order to improve the experience, you can periodically call the getDeviceList () interface and check whether there are more new devices to determine whether the addition was successful.
 
-[function call]
+[Function call]
 
-/**
- * Query device status list
- *
- * @param ssid wifi name
- * @param pwd wifi password
- * @param wifiMode wifi encryption type
- * @param scanningResultActivity search result callback
- * @param status status
- */
-Public MangerCameraScanUtils(String ssid, String pwd, int wifiMode, CameraSearchListener scanningResultActivity, boolean status)
+/ **
+ * Query device status list
+ *
+ * @param ssid wifi name
+ * @param pwd wifi password
+ * @param wifiMode wifi encryption type
+ * @param scanningResultActivity search result callback
+ * @param status status
+ * /
+public MangerCameraScanUtils (String ssid, String pwd, int wifiMode, CameraSearchListener scanningResultActivity, boolean status)
 
-/**
- * Query device status list
- *
- * @paramList<CameraInfo>cameraInfos device list
- * @param callback network request callback
- */
-Public void checkDeviceStatus(List<CameraInfo>cameraInfos, IDeviceStatusCallback callback);
+/ **
+ * Query device status list
+ *
+ * @paramList <CameraInfo> cameraInfos device list
+ * @param callback network request callback
+ * /
+public void checkDeviceStatus (List <CameraInfo> cameraInfos, IDeviceStatusCallback callback);
 
-/**
- * Add device
- *
- * @paramList<CameraInfo>cameraInfos device list
- * @param callback network request callback
- */
-Public void addDevice(CameraInfo cameraInfo, int deviceTypeID, IAddDeviceCallback callback);
+/ **
+ * Add device
+ *
+ * @paramList <CameraInfo> cameraInfos device list
+ * @param callback network request callback
+ * /
+public void addDevice (CameraInfo cameraInfo, int deviceTypeID, IAddDeviceCallback callback);
 
-[code example]
+[Code example]
 
-MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(ssid, pwd, wifiMode, new CameraSearchListener() {
-    @Override
-    Public void onCameraSearchDetected(CameraInfo cameraInfo) {
-        / / Search device callback, execute when the device is discovered
-    }
+MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils (ssid, pwd, wifiMode, new CameraSearchListener () {
+    @Override
+    public void onCameraSearchDetected (CameraInfo cameraInfo) {
+        // Discover the device and check the device status
+        checkDeviceStatus ();
+    }
 
-    @Override
-    Public void onCameraSearchFinished() {
-        //Search is complete
-    }
+    @Override
+    public void onCameraSearchFinished () {
+        // Search completed
+    }
 
-    /**
-     * @param time How many s have gone?
-     * Refresh progress, if it is larger than progress and the search device is not empty, jump to the next interface
-     */
-    @Override
-    Public void onRefreshProgress(int time) {
-        
-    }
+    @Override
+    public void onRefreshProgress (int time) {
+        // Search progress 100-0, search ends after 100s
+    }
 
 }, false);
 
 // start searching
-mangerCameraScan.startSearchDevice(mIsMonitor, -1, ActivityType.ACTIVITY_SEARCHCANERARESLUT);
+mangerCameraScan.startSearchDevice (false, -1, 100, ActivityType.ACTIVITY_SEARCHCANERARESLUT, token)
 
 
-MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
-    @Override
-    Public void onSuccess(ArrayList<CameraInfo> deviceList) {
-        // 1 means your own device, 2 means someone else's micro share to the device, 3 means the device can add 4, others' devices have been shared with themselves
-        If (cameraInfo.getAddStatus() == 3) {
-            / / Add equipment
-        }
-    }
+MeariUser.getInstance (). CheckDeviceStatus (cameraInfos, deviceTypeID, new IDeviceStatusCallback () {
+    @Override
+    public void onSuccess (ArrayList <CameraInfo> deviceList) {
+        // 1 means your own device, 2 means someone else ’s micro share to the device, 3 means the device can be added to 4, others' devices have been shared to themselves
+        if (cameraInfo.getAddStatus () == 3) {
+            // Add device
+            if (cameraInfo.getAutoBinding () == 1) {
+                // Support automatic binding, no manual processing required
+            } else {
+                // Automatic binding is not supported. Active addition
+                addDevice (info);
+            }
+        }
+    }
 
-    @Override
-    Public void onError(int code, String error) {
+    @Override
+    public void onError (int code, String error) {
 
-    }
+    }
 });
 
-MeariUser.getInstance().addDevice(info, this.mDeviceTypeID, new IAddDeviceCallback() {
-    @Override
-    Public void onSuccess(String sn) {
-       
-    }
+MeariUser.getInstance (). AddDevice (info, this.mDeviceTypeID, new IAddDeviceCallback () {
+    @Override
+    public void onSuccess (String sn) {
+       
+    }
 
-    @Override
-    Public void onError(int code, String error) {
-        
-    }
+    @Override
+    public void onError (int code, String error) {
+        
+    }
 });
+
+// The automatically added device waits for a callback message in MyMessageHandler
+@Override
+public void addDeviceSuccess (String message) {
+    // Add device success message
+}
+
+@Override
+public void addDeviceFailed (String message) {
+    // Add device failure message
+}
 ```
+
+## 5.2 AP Network Add Device
 
 # 6. Device Control
 
-## 6.1 Introduction to device related classes
+## 6.1 Basic Device operation
 
-MeariDevice (manage acquisition device return list)
+### 6.1.1 Introduction to device-related classes
 
-- List<CameraInfo> ipcs; normal camera list
-- List<CameraInfo> bells; doorbell list
-- List<CameraInfo> snapCameras; battery camera list
-- List<CameraInfo> voiceBells; voice doorbell list
-- List<CameraInfo> fourthGenerations; 4G camera list
-- List<CameraInfo> flightCameras; luminaire camera list
-- List<NVRInfo> nvrs; NVR list
+MeariDevice (manages the list of devices returned by management)
 
-BaseDeviceInfo (device information base class)
+-List <NVRInfo> nvrs; NVR list
+-List <CameraInfo> ipcs; common cameras list
+-List <CameraInfo> doorBells; doorBell list
+-List <CameraInfo> batteryCameras; batteryCamera list
+-List <CameraInfo> voiceBells; voiceBell list
+-List <CameraInfo> fourthGenerations; 4G camera list
+-List <CameraInfo> flightCameras; floodlight camera list
+-List <CameraInfo> chimes; relay device list
 
-- String deviceID //Device ID
-- String deviceUUID // device unique identifier
-- boolean state//device online status
-- String hostKey //Device password
-- String snNum / / device SN
-- String deviceName / / device name
-- String tp//device item number
-- String deviceIcon / / device icon gray icon
-- int addStatus//Device status 1 means that it is your own device, 2 means that others' micro-shares to the device, 3 means that the device can be added 4, others' devices have been shared with themselves
-- String deviceIconGray / / device icon gray icon
-- int protocolVersion//device version
-- int devTypeID; / / device type
-- String userAccount; / / has an account
+CameraInfo extends BaseDeviceInfo (device information class)
 
+-String deviceID // device Id
+-String snNum // Device SN
+-String deviceName // device name
+-String deviceIcon // device icon gray icon
+-int addStatus // device status 1 means own device, 2 means others have not shared to the device, 3 means device can be added 4, others' devices have been shared to themselves
+-int devTypeID; // device type
+-String userAccount; // Has an account
+-boolean asFriend // Whether to share to your device as a friend
 
-CameraInfo extends BaseDeviceInfo (camera information class)
-
-- int vtk = -1//device capability level voice intercom: 0=none, 1=speaker only, 2=mic only, 3=speaker/mic/halfduplex, 4=speaker/mic/Fullduplex
-- int fcr = -1//device capability level face recognition: face recognize support value
-- int dcb = -1//device capability level audible alarm: decibel support value
-- int ptz = -1//device capability level PTZ 0=not support, 1=left/right, 2=up/down, 3=left/right/up/down
-- int pir = -1//device capability level infrared detection
-- int tmpr = -1//device capability level temperature support value
-- int md = -1//device capability level humidity detect support value
-- int hmd = -1//device capability level human body support value
-  //doorbell added
-- String bellVoiceURL//recorded address of the owner's message
-- boolean pirEnable//pir switch, off: 0; on: 1
-- int pirLevel//pir level, 1: low; 2: medium; 3: high
-- int bellVol// //doorbell volume, 0~100
-- boolean batteryLock / / battery lock switch, locked: true; unlock: false
-- String bellPower//doorbell power supply, battery powered: battery; wired power: wire; coexistence: both
-- int batteryPercent//% of remaining battery, 0~100
-- float batteryRemain// remaining usage time, accurate to 1 decimal place, in hours
-- String bellStatus //doorbell charging status, charging: charging; full: charged; uncharged: discharing
-- int bellPwm / / low power, this is still uncertain, late change
-- int charmVol//bell volume, third gear: high, medium and low
-- int charmDuration / / bell length, this is still uncertain, later change
-- String bellSongs//doorbell ringtone list
-- String bellSelectSong//Selected ringtones
-- int nvrPort//NVR port number
-- String deviceID//device id
-- int trialCloud / / whether to try the cloud
-- String deviceVersionID//version number
-- int nvrID / / bind nvrId
-- String nvrUUID//bind nvr uuid
-- String nvrKey // bind nvr password
-- boolean asFriend// is a friend device
-- String sleep//sleep mode
-- long userID / / user ID of the device
-- boolean isChecked = false / / no is the selected state (4-way check button)
-- String isBindingTY//isBindingTY N (unbound) ND (not expired) D (expired) Y
-- String deviceType//device type
-- boolean hasAlertMsg //whether the server has a message
-- boolean updateVersion //whether the server has a new version
-- int closePush//turn off server push
-- String updatePersion //If the server has a new version, the device must be forced to upgrade.
-
-NVRInfo extends BaseDeviceInfo (NVR information class)
-
-- int userID; / / device also has the ID
-- int addStatus;//Add status
-- String tp; / / account name
-- int nvrFlag; / / binding indicates 0 means cancel 1: indicates existence
-- String nvrVersionID; / / nvr device version number
-- String nvrTypeName; / / nvr device version number
-- String nvrTypeNameGray; / / nvr device version number
-- boolean updateVersion = false;
-
-## 6.2 Device Information Acquisition
+### 6.1.2 Get device information list
 ```
 【description】
-Meari provides a rich interface for developers to achieve device information acquisition and management capabilities (removal, etc.). Device-related return data is notified to the recipient by means of asynchronous messages.
-We used the EventBus solution to implement message notification. Therefore, the notification object needs to be registered and destroyed on each device operation page. Please refer to the demo implementation for details.
+Mi Rui provides a rich interface for developers to achieve device information acquisition and management capabilities (removal, etc.). The device-related return data is notified to the recipient using an asynchronous message.
+We use the EventBus scheme to implement message notification. Therefore, the notification object needs to be registered and destroyed on each device operation page. For details, please refer to the demo implementation.
 
-[function call]
+[Function call]
+/ **
+ * Get user's device list
+ *
+ * @param callback Function callback
+ * /
+public void getDeviceList (IDevListCallback callback);
 
-/**
- * Get a list of all devices
- *
- * @param callback network request callback
- */
-MeariUser.getInstance().getDevList(IDevListCallback callback);
+[Code example]
+MeariUser.getInstance (). GetDeviceList (new IDevListCallback () {
+    @Override
+    public void onSuccess (MeariDevice dev) {
+        // Select according to the device you access
+        ArrayList <CameraInfo> cameraInfos = new ArrayList <> ();
+        cameraInfos.addAll (dev.getNvrs ());
+        cameraInfos.addAll (dev.getIpcs ());
+        cameraInfos.addAll (dev.getDoorBells ());
+        cameraInfos.addAll (dev.getBatteryCameras ());
+        cameraInfos.addAll (dev.getVoiceBells ());
+        cameraInfos.addAll (dev.getFourthGenerations ());
+        cameraInfos.addAll (dev.getFlightCameras ());
+        cameraInfos.addAll (dev.getChimes ());
+    }
 
-[code example]
-
-MeariUser.getInstance().getDevList(new IDevListCallback() {
-    @Override
-    Public void onSuccess(MeariDevice dev) {
-
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
-## 6.3 Device Removal
+### 6.1.3 Device removal
 ```
 【description】
-    Device removal
+Device removal
 
-[function call]
+[Function call]
+/ **
+ * Remove device
+ *
+ * @param devId device id
+ * @param deviceType device type
+ * @param callback Function callback
+ * /
+public void deleteDevice (String devId, int deviceType, IResultCallback callback);
 
-Devtype - 0-nvr 1-ipc 2-bell (can be customized)
-/**
- * Remove device
- *
- * @param devId device id
- * @param deviceType device type
- * @param callback callback
- */
-Public void removeDevice(String devId, int deviceType, IResultCallback callback);
+[Code example]
+MeariUser.getInstance (). DeleteDevice (cameraInfo.getDeviceID (), DeviceType.IPC, new IResultCallback () (
+    @Override
+    public void onSuccess () {
 
-[code example]
+    }
 
-MeariUser.getInstance().removeDevice(cameraInfo.getDeviceID(), DeviceType.IPC, new IResultCallback()(
-    @Override
-    Public void onSuccess() {
+    @Override
+    public void onError (String code, String error) {
 
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-
-    }
+    }
 ));
 ```
 
-## 6.4 Device nickname modification
+### 6.1.4 Device Nickname Modification
 ```
 【description】
-Modify device nickname modification
+Device nickname modification
 
-[function call]
+[Function call]
+/ **
+ * Modify device nickname
+ *
+ * @param deviceId device id
+ * @param deviceType device type
+ * @param nickname device nickname
+ * @param callback Function callback
+ * /
+public void renameDevice (String deviceId, int deviceType, String nickname, IResultCallback callback);
 
-/**
- * Modify device nickname
- *
- * @param deviceId device id
- * @param deviceType device type
- * @param nickname device nickname
- * @param callback callback
- */
-Public void renameDeviceNickname(String deviceId, int deviceType, String nickname, IResultCallback callback);
+[Code example]
+MeariUser.getInstance (). RenameDeviceNickName (cameraInfo.getDeviceID (), DeviceType.IPC, nickName, new IRemoveDeviceCallback () (
+    @Override
+    public void onSuccess () {
 
-[code example]
+    }
 
-MeariUser.getInstance().renameDeviceNickName(cameraInfo.getDeviceID(), DeviceType.IPC, nickName, new IRemoveDeviceCallback()(
-    @Override
-    Public void onSuccess() {
+    @Override
+    public void onError (String code, String error) {
 
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-
-    }
+    }
 ));
 ```
 
-## 6.5 NVR Binding Device
+### 6.1.5 Get device alarm message time segment
 ```
 【description】
-NVR binding device
+Get device alarm message time slice
 
-[function call]
+[Function call]
 
-/ / Bind the device
-MeariUser.getInstance().bindDevice(int devid, int nvrid, IRemoveDeviceCallback callback);
-/ / Unbundling equipment
-MeariUser.getInstance().unbindDevice(int nvrid,,List<int>devid,IunBindDeviceCallback callback);
-/ / Query the list of bound devices
-MeariUser.getInstance().getBindDeviceList(int nvrid,,IGetBindDeviceList callback);
+/ **
+  * Get device alarm message time segment
+  *
+  * @param deviceID device ID
+  * @param dayTime Time: "20200303"
+  * @param callback callback
+  * /
+public void getDeviceAlarmMessageTimeForDate (String deviceID, String dayTime, IDeviceAlarmMessageTimeCallback callback);
 
-[code example]
+[Code example]
+MeariUser.getInstance().GetDeviceAlarmMessageTimeForDate (deviceID, dayTime, new IDeviceAlarmMessageTimeCallback () {
+     @Override
+     public void onSuccess (ArrayList <VideoTimeRecord> videoTimeList) {
+     }
 
-/ / Bind the device
-MeariUser.getInstance().bindDevice(devid,nvrid,new IRemoveDeviceCallback(){
-    @Override
-    Public void onSuccess() {
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-    }
-});
-/ / Unbundling equipment
-MeariUser.getInstance().unbindDevice(nvrid,,List<int>devid,new IunBindDeviceCallback(){
-    @Override
-    Public void onSuccess() {
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-    }
-});
-/ / Query the list of bound devices
-MeariUser.getInstance().getBindDeviceList(nvrid,new IGetBindDeviceList(){
-    @Override
-    Public void onSuccess(List<MeariDeviceStatusInfo> list) {
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-    }
+     @Override
+     public void onError (int code, String error) {
+     }
 });
 ```
 
-## 6.6 Single device one day alarm time point acquisition
+## 6.2 Device preview and playback
+### 6.2.1 Device Preview
 ```
 【description】
-Single device one day alarm time point acquisition
+One device corresponds to one CameraInfo and one MeariDeviceController. When performing multiple operations on the same device, ensure that you use the same object and do not create it repeatedly.
+CameraInfo and a MeariDeviceController can be stored in the MeariUser class and retrieved when needed. You need to recreate and save when operating another device.
 
-[function call]
-/**
- * Single device one day alarm time point acquisition
- *
- * @param deviceID device id
- * @param dayTime day time (format YYMMDD)
- * @param callback callback
- */
-MeariUser.getInstance().getDeviceAlarmMessageTimeForDate(int devid,String date,IDeviceAlarmMessageTimeCallback callback);
+[Function call]
+/ **
+ * Connected device
+ *
+ * @param deviceListener device listener
+ * /
+public void startConnect (MeariDeviceListener deviceListener);
 
-[code example]
+/ **
+ * Start preview
 
-MeariUser.getInstance().getDeviceAlarmMessageTimeForDate(devid,date,new IDeviceAlarmMessageTimeCallback()(
-    @Override
-    Public void onSuccess(List<AlarmMessageTime> list) {
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-    }
-));
-```
-
-Class AlarmMessageTime:
-
--int StartHour;//Start time: hour
--int StartMinute;//Start time: minute
--int StartSecond;//Start time: seconds
--int EndHour;//End time: hour
--int EndMinute;//End time: minute
--int EndSecond;//End time: seconds
--int bHasVideo;//has no video
--int recordType;//doorbell adds time point type, in order to facilitate future expansion defined as int type
--int TYPE_PIR = 0x1001; // PIR alarm type time point
--int TYPE_MOVE = 0x1002;//Motion detection alarm type time point
--int TYPE_VISIT = 0x1003; / / visitor alarm type time point
+ * @param ppsGLSurfaceView video control
+ * @param videoId video resolution 0-HD; 1-SD
+ * @param deviceListener operation listen
+ * @param videoStopListener
+ * /
+public void startPreview (PPSGLSurfaceView ppsGLSurfaceView, int videoId, MeariDeviceListener deviceListener, MeariDeviceVideoStopListener videoStopListener);
 
 
-## 6.7 Check if the device has a new version
-```
-【description】
-Check if the device has a new version
+[Code example]
 
-[function call]
+LinearLayout ll_video_view = findViewById (R.id.ll_video);
+PPSGLSurfaceView videoSurfaceView = new PPSGLSurfaceView (this, screenWidth, screenHeight);
+videoSurfaceView.setKeepScreenOn (true);
+ll_video_view.addView (videoSurfaceView);
 
-/**
- * Check if the device has a new version
- *
- * @param devVersion device version
- * @param lanType Language type
- * @param callback callback
- */
-Public void checkNewFirmwareForDev(String devVersion, String lanType, ICheckNewFirmwareForDevCallback callback);
+// Connect the device
+MeariDeviceController deviceController = new MeariDeviceController ();
+deviceController.setCameraInfo (cameraInfo);
+deviceController.startConnect (new MeariDeviceListener () {
+    @Override
+    public void onSuccess (String successMsg) {
+        // After successful connection, start preview
+        startPreview ();
+        // Save the object and avoid duplicate creation
+        MeariUser.getInstance (). SetCameraInfo (cameraInfo);
+        MeariUser.getInstance (). SetController (deviceController);
+    }
 
-[code example]
-MeariUser.getInstance().checkNewFirmwareForDev(firmware_version, "zh", new ICheckNewFirmwareForDevCallback() {
-    @Override
-    Public void onSuccess(DeviceUpgradeInfo info) {
-        mDeviceUpgradeInfo = info;
-    }
+    @Override
+    public void onFailed (String errorMsg) {
+        
+    }
+});
 
-    @Override
-    Public void onError(int code, String error) {
-    }
+// Get saved objects when needed
+CameraInfo cameraInfo = MeariUser.getInstance (). GetCameraInfo ();
+MeariDeviceController deviceController = MeariUser.getInstance (). GetController ();
+
+// start preview
+deviceController.startPreview (videoSurfaceView, videoId, new MeariDeviceListener () {
+    @Override
+    public void onSuccess (String successMsg) {
+
+    }
+
+    @Override
+    public void onFailed (String errorMsg) {
+
+    }
+}, new MeariDeviceVideoStopListener () {
+    @Override
+    public void onVideoClosed (int code) {
+        
+    }
+});
+
+// switch resolution
+deviceController.changeVideoResolution (videoSurfaceView, videoId, new MeariDeviceListener () {
+    @Override
+    public void onSuccess (String successMsg) {
+
+    }
+
+    @Override
+    public void onFailed (String errorMsg) {
+
+    }
+}, new MeariDeviceVideoStopListener () {
+    @Override
+    public void onVideoClosed (int code) {
+        
+    }
+});
+
+// stop preview
+deviceController.stopPreview (new MeariDeviceListener () {
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
+
+    @Override
+    public void onFailed (String errorMsg) {
+
+    }
+});
+
+// Disconnect, you must disconnect when exiting preview and playback
+deviceController.stopConnect (new MeariDeviceListener () {
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
+
+    @Override
+    public void onFailed (String errorMsg) {
+
+    }
 });
 ```
 
-DeviceUpgradeInfo:
-
-- String updatePersion;//Do you need a device forced upgrade?
-- int updateStatus;//Can the device be upgraded?
-- String serVersion ;//server version
-- String versionDesc;//Upgrade description
-- String devUrl; / / new firmware address
-
-```
-Contains the upgraded address, etc.
-```
-
-## 6.8 Querying Device Online Status
+### 6.2.2 Device SD card playback
 ```
 【description】
-    Check if the device has a new version
+After the device is inserted into SD, it will record the video and save it to the SD card, and then you can view the video in the SD card. The playback operation can only be performed after the device is successfully connected.
 
-[function call]
-/*
- * Query whether the device is online
- *
- * @param deviceId device ID
- * @param callback callback
- *
- */
-MeariUser.getInstance().checkDeviceOnline(String devid,ICheckDeviceOnlineCallback callback);
+[Function call]
 
-[code example]
-MeariUser.getInstance().checkDeviceOnline(info.getDeviceID(), new ICheckDeviceOnlineCallback() {
-    @Override
-    Public void onSuccess(String deviceId, boolean online) {
-        mAdapter.changeDeviceStatus(deviceId,online);
-    }
-    @Override
-    Public void onError(int code, String error) {
-        mAdapter.changeStatusByUuid(info.getDeviceID(), -27);
-    }
+/ **
+ * Get a month with a video date
+ * @param year
+ * @param month
+ * @param videoId video definition
+ * @param callback callback
+ * /
+public void getPlaybackVideoDaysInMonth (int year, int month, int videoId, IPlaybackDaysCallback callback);
+
+/ **
+ * Get all video clips of the day
+ * @param year
+ * @param month
+ * @param videoId video definition
+ * @param callback callback
+ * /
+public void getPlaybackVideoTimesInDay (int year, int month, int day, int videoId, MeariDeviceListener deviceListener);
+
+
+/ **
+ * Start playing video
+ *
+ * @param ppsGLSurfaceView video control
+ * @param videoId video resolution 0-HD; 1-SD
+ * @param startTime video start time
+ * @param deviceListener operation listen
+ * @param videoStopListener
+ * /
+public void startPlaybackSDCard (PPSGLSurfaceView ppsGLSurfaceView, int videoId, String startTime, MeariDeviceListener deviceListener, MeariDeviceVideoStopListener videoStopListener);
+
+/ **
+ * Drag to change playback video
+ *
+ * @param seekTime the time the video started
+ * @param deviceListener operation listen
+ * @param videoStopListener
+ * /
+public void seekPlaybackSDCard (String seekTime, MeariDeviceListener deviceListener, MeariDeviceVideoSeekListener seekListener);
+
+/ **
+ * Pause video
+ *
+ * @param deviceListener operation listen
+ * /
+public void pausePlaybackSDCard (MeariDeviceListener deviceListener);
+
+/ **
+ * Replay video after pause
+ *
+ * @param deviceListener operation listen
+ * /
+public void resumePlaybackSDCard (MeariDeviceListener deviceListener)
+
+/ **
+ * Stop playing video
+ *
+ * @param deviceListener operation listen
+ * /
+public void stopPlaybackSDCard (MeariDeviceListener deviceListener);
+
+
+[Code example]
+
+// Play the video only after the device is successfully connected
+// Get the date of a month with video
+deviceController.getPlaybackVideoDaysInMonth (year, month, videoId, new IPlaybackDaysCallback () {
+    @Override
+    public void onSuccess (ArrayList <Integer> playbackDays) {
+        
+    }
+
+    @Override
+    public void onFailed (String errorMsg) {
+
+    }
+});
+
+// Get all video clips of the day
+deviceController.getPlaybackVideoTimesInDay (year, month, day, videoId, new MeariDeviceListener () {
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
+
+    @Override
+    public void onFailed (String errorMsg) {
+
+    }
+});
+
+// start playing video
+deviceController.startPlaybackSDCard (ppsGLSurfaceView, videoId, startTime, new MeariDeviceListener () {
+    @Override
+    public void onSuccess (String successMsg) {
+
+    }
+
+    @Override
+    public void onFailed (String errorMsg) {
+
+    }
+}, new MeariDeviceVideoStopListener () {
+    @Override
+    public void onVideoClosed (int code) {
+        
+    }
+});
+
+// Drag to change playback video
+deviceController.seekPlaybackSDCard (seekTime, new MeariDeviceListener () {
+    @Override
+    public void onSuccess (String successMsg) {
+
+    }
+
+    @Override
+    public void onFailed (String errorMsg) {
+
+    }
+}, new MeariDeviceVideoSeekListener () {
+    @Override
+    public void onVideoSeek () {
+        
+    }
+});
+
+// Pause video
+deviceController.pausePlaybackSDCard (new MeariDeviceListener () {
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
+
+    @Override
+    public void onFailed (String errorMsg) {
+
+    }
+});
+
+// Replay video after pause
+deviceController.resumePlaybackSDCard (new MeariDeviceListener () {
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
+
+    @Override
+    public void onFailed (String errorMsg) {
+
+    }
+});
+
+// stop playing video
+deviceController.stopPlaybackSDCard (new MeariDeviceListener () {
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
+
+    @Override
+    public void onFailed (String errorMsg) {
+
+    }
 });
 ```
 
-## 6.9 Querying the music list
+# 7. Share device
+
+## 7.1 Related Classes
+
+ShareUserInfo Share user information
+-String userAccount; User account
+-String userName; User name
+-String userIcon; User avatar
+-String shareStatus; Share status
+
+ShareDeviceInfo shared device information
+-long deviceID; device ID
+-String deviceName; device name
+-String deviceIcon; device icon
+-List <String> shareUserList; list of users shared by the device
+
+## 7.2 Get device share list
 ```
 【description】
-    Query music list
+Get device share list
 
-[function call]
+[Function call]
+/ **
+ * Get device share list
+ *
+ * @param deviceID device ID
+ * @param callback Function callback
+ * /
+public void getShareListForDevice (String deviceID, IShareUserListCallback callback);
 
- /**
- * Query music list
- *
- * @param callback callback
- */
-MeariUser.getInstance().getMusicList(new IGetMusicListCallback());
+[Code example]
+MeariUser.getInstance (). GetShareListForDevice (cameraInfo.getDeviceID (), new IShareUserListCallback () {
+    @Override
+    public void onSuccess (ArrayList <ShareUserInfo> shareUserInfoList) {
+    }
 
-[code example]
-
-MeariUser.getInstance().getMusicList(new IGetMusicListCallback()(
-    @Override
-    Public void onSuccess(List<MeariMusic> list) {
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-    }
-));
-```
-MeariMusicList:
-
-- String musicID; //id
-- int download_percent;//Download progress
-- boolean is_playing; / / is playing
-- String musicName;//music name
-- String musicFormat;//music format
-- String musicUrl;//Music address
-
-
-## 6.10 Remote wake-up doorbell
-```
-【description】
-Remote wake-up doorbell
-Note: For doorbell-type low-power products, you need to wake up remotely and then call the hole-punching interface (may need to punch holes multiple times)
-
-[function call]
-/**
- * Remote wake-up doorbell
- *
- * @param deviceId deviceId
- * @param callback callback
- */
-Public void remoteWakeUp(String deviceId, IResultCallback callback);
-
-[code example]
-MeariUser.getInstance().remoteWakeUp(mCameraInfo.getDeviceID(), new IResultCallback() {
-    @Override
-    Public void onSuccess() {
-
-    }
-    @Override
-    Public void onError(int code, String error) {
-
-    }
-});
-```
-## 6.11 Sharing equipment
-
-【description】
-Share your device with others
-
-```
-[function call]
-
-/**
- * Request sharing device
- *
- * @param cameraInfo device information object
- * @param callback callback
- */
-Public void requestDeviceShare(BaseDeviceInfo deviceInfo, IRequestDeviceShareCallback callback);
-
-[code example]
-
-MeariUser.getInstance().requestDeviceShare(cameraInfo, new IRequestDeviceShareCallback() {
-    @Override
-    Public void onSuccess(String sn) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
-
-# 7. Sharing device
-
-## 7.1 Related Class Introduction
-
-MeariFriend Friends
-- String nickName; Nickname
-- String accountName; account number
-- String userFriendID; buddy id
-- String imageUrl; Friend avatar
-
-ShareFriendInfo Friends information shared by a device
-- String nickName;
-- String imageUrl; Friend avatar
-- String userId; buddy id
-- boolean share; whether it has been shared
-- String userAccount; friend account
-
-MeariSharedDevice shared device information for a friend
-
-- long deviceID; device id
-- String deviceName; device name
-- String deviceUUID; device unique identifier
-- boolean isShared; whether it has been shared
-- String snNum; device sn
-
-## 7.1 Friend Management
-
-### 7.1.1 Get a buddy list
+## 7.3 Get history share list
 ```
 【description】
-Get a list of friends
-    
-[function call]
-/**
- * Get a list of friends
- *
- * @param callback returns callback
- */
-Public void getFriendList(IGetFriendCallback callback);
+Get history share list
 
-[code example]
+[Function call]
+/ **
+ * Get history share list
+ *
+ * @param deviceID device ID
+ * @param callback Function callback
+ * /
+public void getHistoryShare (String deviceID, IShareUserListCallback callback);
 
-MeariUser.getInstance().getFriendList(new IGetFriendCallback() {
-    @Override
-    public void onSuccess(List<MeariFriend> friends) {
-    }
+[Code example]
+MeariUser.getInstance (). GetHistoryShare (cameraInfo.getDeviceID (), new IShareUserListCallback () {
+    @Override
+    public void onSuccess (ArrayList <ShareUserInfo> shareUserInfoList) {
+    }
 
-    @Override
-    public void onError(int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
-### 7.1.2 Adding a friend
+## 7.4 Get sharing results for all devices
 ```
 【description】
-Request to add a friend
+Get sharing results for all devices
 
-[function call]
+[Function call]
+/ **
+ * Get sharing results for all devices
+ *
+ * @param callback Function callback
+ * /
+public void getAllDeviceShare (IShareDeviceListCallback callback);
 
-/**
- * Request to add a friend
- *
- * @param callback callback
- */
-Public void addFriend(String userAccount, IResultCallback callback);
+[Code example]
+MeariUser.getInstance (). GetAllDeviceShare (new IShareDeviceListCallback () {
+    @Override
+    public void onSuccess (ArrayList <ShareDeviceInfo> shareDeviceInfoList) {
+    }
 
-[code example]
-
-MeariUser.getInstance().addFriend(userAccount, new IResultCallback() {
-    @Override
-    Public void onSuccess() {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
-### 7.1.3 Deleting friends
+## 7.5 Search users
 ```
 【description】
-Delete single or multiple friends
+Search users
 
-[function call]
+[Function call]
+/ **
+ * Search for a user
+ *
+ * @param account
+ * @param deviceID device ID
+ * @param callback Function callback
+ * /
+public void searchUser (String account, String deviceID, ISearchUserCallback callback)
 
-/**
- * delete friend
- *
- * @param userIds buddy id, format: ["xxxxxxxx","xxxxxxxx"]
- * @param callback callback
- */
-Public void deleteFriend(String userIds, IResultCallback callback);
+[Code example]
+MeariUser.getInstance (). SearchUser (account, deviceID, new ISearchUserCallback () {
+    @Override
+    public void onSuccess (ShareUserInfo shareUserInfo) {
+    }
 
-[code example]
-
-MeariUser.getInstance().deleteFriend(userIds, new IResultCallback() {
-    @Override
-    Public void onSuccess() {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
-### 7.1.4 Modify friend nickname
+## 7.6 Share device
 ```
 【description】
-Modify a friend's name
+Share device
 
-[function call]
+[Function call]
+/ **
+ * Share device
+ * @param account
+ * @param deviceID device ID
+ * @param callback Function callback
+ * /
+public void shareDevice (String account, String deviceID, IResultCallback callback);
 
-/**
- * Modify your friend's name
- *
- * @param friendId buddy ID
- * @param nickname buddy tag
- * @param callback returns callback
- */
-Public void renameFriendMark(String friendId, String nickname, IResultCallback callback);
+[Code example]
+MeariUser.getInstance (). ShareDevice (account, deviceID, new IResultCallback () {
+    @Override
+    public void onSuccess () {
+    }
 
-[code example]
-
-MeariUser.getInstance().renameFriendMark(meariFriend.getUserFriendID(), nickname, new IResultCallback() {
-    @Override
-    Public void onSuccess(){
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-## 7.2 Query sharing
-
-### 7.2.1 Querying the list of friends shared by a single device
-```
-【description】
-Query the list of friends shared by a single device
-
-[function call]
-
-/**
- * Query the list of friends that a single device is shared with
- *
- * @param deviceType device type
- * @param deviceId device id
- * @param callback network request callback callback
- */
-Public void queryFriendListForDevice(int deviceType, String deviceId, IQueryFriendListForDeviceCallback callback) ;
-
-[Method call]
-
-MeariUser.getInstance().queryFriendListForDevice(DeviceType.IPC, cameraInfo.getDeviceID(), new IQueryFriendListForDeviceCallback() {
-    @Override
-    Public void onSuccess(ArrayList<ShareFriendInfo> shareFriendInfos) {
-    }
-    @Override
-    Public void onError(int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
-### 7.2.2 Querying the list of devices shared with a friend
+## 7.7 Cancel sharing device
 ```
 【description】
-Query the list of devices shared with a friend
+Cancel sharing device
 
-[function call]
-    
-/**
- * Query the list of devices shared with a friend
- *
- * @param devType device type 0-nvr 1-ipc 2-bell
- * @param userId share user ID
- */
-Public void queryDeviceListForFriend(int devType, String userId, IQueryDeviceListForFriendCallback callback);
+[Function call]
+/ **
+ * Cancel sharing device
+ * @param account
+ * @param deviceID device ID
+ * @param callback Function callback
+ * /
+public void cancelShareDevice (String account, String deviceID, IResultCallback callback);
 
-[Method call]
+[Code example]
+MeariUser.getInstance (). CancelShareDevice (account, cameraInfo.getDeviceID (), new IResultCallback () {
+    @Override
+    public void onSuccess () {
+    }
 
-MeariUser.getInstance().queryDeviceListForFriend(DeviceType.DEVICE_IPC, meariFriend.getUserFriendID(), new IQueryDeviceListForFriendCallback() {
-    @Override
-    Public void onSuccess(List<MeariSharedDevice> list) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
-## 7.3 Adding Share
-### 7.3.1 Adding a single device share
+## 7.8 Delete history sharing user
 ```
 【description】
-Share a single device to a given user
+Delete history sharing user
 
-[function call]
+[Function call]
+/ **
+ * Delete history sharing users
+ *
+ * @param accountArray user array
+ * @param deviceID device ID
+ * @param callback Function callback
+ * /
+public void deleteHistoryShare (String accountArray, String deviceID, IResultCallback callback);
 
-/**
- * Share a single device to a specified user
- *
- * @param devType device type 0-nvr 1-ipc 2-bell
- * @param userId share user ID
- * @param devUuid device identifier
- * @param callback returns callback
- */
-Public void addShareUserForDev(int devType, String userId, String devUuid, String devId, IShareForDevCallback callback);
+[Code example]
+MeariUser.getInstance (). DeleteHistoryShare (accountArray, deviceID, new IResultCallback () {
+    @Override
+    public void onSuccess () {
+    }
 
-[Method call]
-
-MeariUser.getInstance().addShareUserForDev(DeviceType.IPC, meariFriend.getUserFriendID(), shareFriendInfo.getDeviceUUID(), shareFriendInfo.getDeviceID(), new IShareForDevCallback() {
-    @Override
-    Public void onSuccess(String userId, String devId) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
-### 7.3.2 Cancel individual device sharing
+## 7.9 Processing shared messages
 ```
 【description】
-Cancel individual device sharing
+Handling shared messages
 
-[function call]
-/**
- * Unshare device to friend
- *
- * @param devType device type 0-nvr 1-ipc 2-bell
- * @param userId share user ID
- * @param devUuid device identifier
- * @param devId device id
- * @param callback returns callback
- */
-Public void removeShareUserForDev(int devType, String userId, String devUuid, String devId, IShareForDevCallback callback) ;
+[Function call]
+/ **
+ * Handle shared messages
+ *
+ * @param msgID message ID
+ * @param dealFlag 0-reject; 1-accept
+ * @param callback Function callback
+ * /
+public void dealShareMessage (long msgID, int dealFlag, IResultCallback callback);
 
-[Method call]
-MeariUser.getInstance().removeShareUserForDev(DeviceType.IPC, shareFriendInfo.getUserId(), cameraInfo.getDeviceID(), cameraInfo.getDeviceUUID(), new IShareForDevCallback() {
-    @Override
-    Public void onSuccess(String userId, String devId) {
-    }
+[Code example]
+MeariUser.getInstance (). DealShareMessage (msgID, dealFlag, new IResultCallback () {
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-
-```
-
-### 7.3.3 Request to share a device
-```
-【description】
-Request to share a device
-
-[function call]
-
-/**
- * Request to share a device
- *
- * @param cameraInfo device
- * @param callback callback
- */
-Public void requestDeviceShare(BaseDeviceInfo cameraInfo, IRequestDeviceShareCallback callback);
-
-[Method call]
-
-MeariUser.getInstance().requestDeviceShare(info, new IRequestDeviceShareCallback() {
-    @Override
-    Public void onError(int code, String error) {
-    }
-
-    @Override
-    Public void onSuccess(String sn) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
-
 
 # 8.Message Center
-## 8.1 Get all devices have messages
+## 8.1 Device sharing messages
+
+### 8.1.1 Get device share message list
 ```
 【description】
-Get all devices have messages
+Get device share message list
 
-[function call]
-/**
- * Get a list of messages
- *
- * @param callback callback
- */
-Public void getAlarmMessageStatusForDev(IGetAlarmMessageStatusForDevCallback callback);
+[Function call]
+/ **
+ * Get device share message list
+ *
+ * @param callback Function callback
+ * /
+public void getShareMessage (IShareMessageCallback callback);
 
 [Method call]
-MeariUser.getInstance().getAlarmMessageStatusForDev(new IGetAlarmMessageStatusForDevCallback() {
-    @Override
-    Public void onError(int code, String error) {
-        mPullToRefreshRecyclerView.onRefreshComplete();
-        CommonUtils.showToast(error);
-    }
 
-    @Override
-    Public void onSuccess(List<DeviceMessageStatusInfo> deviceMessageStatus) {
-        bindOrderList(deviceMessageStatus);
-    }
+ShareMessage
+-String date; Message time
+-String msgID; Message ID
+-String state; Message status: 1-receive; 0-reject
+-String shareName; name of the person being shared
+-String deviceName; device name
+
+MeariUser.getInstance (). GetShareMessage (new IShareMessageCallback () {
+    @Override
+    public void onSuccess (ArrayList <ShareMessage> shareMessages) {
+    }
+
+    @Override
+    public void onError (int code, String error) {
+    }
 });
- 
 ```
-Class DeviceMessageStatus:
 
-- long deviceID //device ID
-- String deviceName //Device name
-- String deviceUUID // device unique identifier
-- String hasMessgFlag //"Y" indicates that there is an unread message "N" indicates no unread message
-- boolean bHasMsg //Do you have a message?
-- int delMsgFlag //0 means unedited state, 1 means editing unit selection 2 means selection
-- boolean bSysmsg // Is it a system message?
-- String snNum // Is it a system message?
-- String url // Is it a system message?
-- String userAccount // Is it a system message?
-
-
-
-## 8.2 Getting System Messages
+### 8.1.2 Delete device share messages
 ```
 【description】
-    Get system messages
+Delete device share message
 
-[function call]
-    /**
-     * Get system messages
-     *
-     * @param callback callback
-     */
-    Public void getSystemMessage(IGetSystemMessageCallback callback);
+[Function call]
+/ **
+ * Delete device sharing messages
+ *
+ * @param msgIDList Message ID array
+ * @param callback Function callback
+ * /
+public void deleteShareMessage (List <String> msgIDList, IResultCallback callback);
 
 [Method call]
-    MeariUser.getInstance().getSystemMessage(new IGetSystemMessageCallback() {
-        @Override
-        Public void onError(int code, String error) {
-            mPullToRefreshListView.onRefreshComplete();
-            bindError(error);
-            CommonUtils.showToast(error);
-        }
 
-        @Override
-        Public void onSuccess(List<SystemMessageInfo> systemMessages) {
-            bindList(systemMessages);
-            mPullToRefreshListView.onRefreshComplete();
-        }
-        });
+MeariUser.getInstance (). DeleteShareMessage (msgIDList, new IResultCallback () {
+    @Override
+    public void onSuccess () {
+    }
+
+    @Override
+    public void onError (int code, String error) {
+    }
+});
 ```
-Class SystemMessage:
+## 8.2 Device alarm message
 
-- long msgID; //MessageId
-- int msgTypeID; / / message type
-- String isRead; / / Is it read?
-- Date createDate; / / create time time
-- Date updateDate; / / update time
-- long userID; / / user ID
-- String userAccount; / / user account
-- String nickName;//user name
-- String delState; / / whether to deal with
-- long deviceID; / / device Id
-- String deviceName; / / device name
-- String deviceUUID; / / device identifier
-- long userIDS; / / requester Id
-- String imageUrl;//avatar
-
-
-## 8.3 Get a device alarm message
+### 8.2.1 Get all messages
 ```
 【description】
-    Get a device alarm message
+Gets whether all devices have messages
 
-[function call]
-    /**
-      * refuse friend share device
-      *
-      * @param deviceId deviceId
-      * @param callback callback
-      */
-    Public void getAlarmMessagesForDev(long deviceId, IGetAlarmMessagesCallback callback);
+[Function call]
+/ **
+ * Get alarm messages for all devices
+ *
+ * @param callback function callback
+ * /
+public void getDeviceMessageStatusList (IDeviceMessageStatusCallback callback);
 
 [Method call]
-    MeariUser.getInstance().getAlarmMessagesForDev(this.mMsgInfo.getDeviceID(), new IGetAlarmMessagesCallback() {
 
-        @Override
-        Public void onSuccess(List<DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo, boolean isDelete) {
-            mPullToRefreshListView.onRefreshComplete();
-            bindList(deviceAlarmMessages);
-            mCameraInfo = cameraInfo;
-            deviceStatus = isDelete;
-        }
+DeviceMessageStatus
+-long deviceID; device ID
+-String deviceName; device name
+-String snNum; device SN
+-String deviceIcon; device icon
+-boolean hasMessage; whether the device has an alarm message
 
-        @Override
-        Public void onError(int code, String error) {
-            CommonUtils.showToast(error);
-            bindError(error);
-        }
-    });;
- 【Precautions】
-    If the message is pulled by the owner, the server will not save the message, and the shared friends will not see the message.
+MeariUser.getInstance (). GetDeviceMessageStatusList (new IDeviceMessageStatusCallback () {
+    @Override
+    public void onSuccess (List <DeviceMessageStatus> deviceMessageStatusList) {
+        // If the device has an alarm message, you can get the alarm message
+    }
+
+    @Override
+    public void onError (int code, String error) {
+
+    }
+});
 ```
 
-Class DeviceAlarmMessage:
-- long deviceID; / / device ID
-- String deviceUuid; / / device unique identifier
-- String imgUrl;// Alarm picture address
-- int imageAlertType; / / alarm type (PIR and Motion)
-- int msgTypeID; / / message type
-- long userID; / / user ID
-- long userIDS;
-- String createDate; / / wear time
-- String isRead; / / Is it read?
-- String tumbnailPic;//thumbnail
-- String decibel; / / decibel
-- long msgID; / / message Id
-
-
-## 8.3 Batch delete system messages
+### 8.2.2 Get alarm messages for a single device
 ```
 【description】
+Get alarm messages for a single device
 
-    Batch delete system messages
-
-[function call]
-    /**
-     * Delete system messages in batches
-     *
-     * @param callback callback
-     * @param msgIds Message Ids
-     */
-    Public void deleteSystemMessage(List<Long> msgIds, final IResultCallback callback);
+[Function call]
+/ **
+ * refuse friend share device
+ * Get the alarm message of a single device (get the latest 20 at a time, after the device owner pulls it, the server deletes the data, pay attention to save the data)
+ *
+ * @param deviceId device id
+ * @param callback function callback
+ * /
+public void getAlarmMessagesForDev (long deviceId, IGetAlarmMessagesCallback callback);
 
 [Method call]
-    MeariUser.getInstance().deleteSystemMessage(selectDeleteMsgIds, new IResultCallback() {
-        @Override
-        Public void onSuccess() {
-            stopProgressDialog();
-            }
-        @Override
-        Public void onError(int code, String error) {
-            stopProgressDialog();
-            CommonUtils.showToast(error);
-            }
-        });
 
+class DeviceAlarmMessage:
+-long deviceID; // device ID
+-String deviceUuid; // device unique identifier
+-String imgUrl; // Alarm picture address
+-int imageAlertType; // Alarm type (PIR and Motion)
+-int msgTypeID; // message type
+-long userID; // User Id
+-long userIDS;
+-String createDate; // wear time
+-String isRead; // whether read
+-String tumbnailPic; // Thumbnails
+-String decibel; // dB
+-long msgID; // Message Id
+
+
+MeariUser.getInstance (). GetAlarmMessagesForDev (getMsgInfo (). GetDeviceID (), new IDeviceAlarmMessagesCallback () {
+    @Override
+    public void onSuccess (List <DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
+
+    }
+
+    @Override
+    public void onError (int code, String error) {
+    }
+});
 ```
 
-## 8.4 Batch Delete Multiple Device Alarm Messages
+## 8.3 System Message
+
+### 8.3.1 Get system message list
 ```
 【description】
-    Delete multiple device alarm messages in bulk
+Get list of system messages
 
-[function call]
-     /**
-     * Delete multiple device alarm messages in batches
-     *
-     * @param callback callback
-     * @param deviceInfos Device Id
-     */
-    Public void deleteDevicesAlarmMessage(ArrayList<Long> deviceInfos, IResultCallback callback) ;
+[Function call]
+/ **
+ * Get system message list
+ *
+ * @param callback function callback
+ * /
+public void getSystemMessage (ISystemMessageCallback callback);
 
 [Method call]
-    MeariUser.getInstance().deleteDevicesAlarmMessage(deviceInfos, new IResultCallback() {
-        @Override
-        Public void onSuccess() {
-            stopProgressDialog();
-            deleteCallback();
-        }
-        @Override
-        Public void onError(int code, String error) {
-        stopProgressDialog();
-        CommonUtils.showToast(error);
-        }
-    });
+
+class SystemMessage:
+-long msgID; // message Id
+-int msgTypeID; // message type
+-String isRead; // whether read
+-Date createDate; // Creation time
+-Date updateDate; // Update time
+-long userID; // User Id
+-String userAccount; // User account
+-String nickName; // user name
+-String delState; // Whether to process
+-long deviceID; // device Id
+-String deviceName; // device name
+-String deviceUUID; // device identifier
+-long userIDS; // Requester Id
+-String imageUrl; // Avatar
+
+MeariUser.getInstance (). GetSystemMessage (new ISystemMessageCallback () {
+    @Override
+    public void onSuccess (List <SystemMessage> systemMessageList) {
+    }
+
+    @Override
+    public void onError (int code, String error) {
+    }
+});
 ```
 
-## 8.5 Marking a single device message has been read
+### 8.3.2 Delete system messages
 ```
 【description】
-    Mark a single device message all read
+Delete system messages
 
-[function call]
-    Void MarkDevicesAlarmMessage(int devid, IMarkDevicesAlarmMessageCallback callback);
-
-[Method call]
-    MeariUser.getInstance().MarkDevicesAlarmMessage(
-        Devid, new IMarkDevicesAlarmMessageCallback() {
-            @Override
-            Public void onSuccess() {
-                
-            }
-
-            @Override
-            Public void onError(String errorCode, String errorMessage) {
-
-            }
-    });
-```
-
-## 8.6 Friend Message Processing
-```
-【description】
-    Friend message processing - consent | rejection
-
-[function call]
-    /**
-     * Agree to add friends
-     *
-     * @param msgId messageId
-     * @param friendId friend userId
-     * @param callback callback
-     */
-    Public void agreeFriend(long msgId, long friendId, IDealSystemCallback callback) ;
-
-    /**
-     * Refuse to add friends
-     *
-     * @param msgId messageId
-     * @param friendId friend userId
-     * @param callback callback
-     */
-    Public void refuseFriend(long msgId, long friendId, IDealSystemCallback callback);
+[Function call]
+/ **
+ * delete system message by message ID
+ * Delete system messages
+ *
+ * @param msgIdList message id
+ * @param callback function callback
+ * /
+public void deleteSystemMessage (List <String> msgIdList, final IResultCallback callback);
 
 [Method call]
-   MeariUser.getInstance().agreeFriend(msgInfo.getMsgID(), msgInfo.getUserID(), new IDealSystemCallback() {
-        @Override
-        Public void onSuccess(long msgId) {
-            stopProgressDialog();
-            shareResult(msgId);
-        }
 
-        @Override
-        Public void onError(int code, String error) {
-            stopProgressDialog();
-            CommonUtils.showToast(error);
-        }
-    });
+MeariUser.getInstance (). DeleteSystemMessage (msgIdList, new IResultCallback () {
+    @Override
+    public void onSuccess () {
+    }
 
-    MeariUser.getInstance().refuseFriend(msgInfo.getMsgID(), msgInfo.getUserID(), new IDealSystemCallback() {
-        @Override
-        Public void onSuccess(long msgId) {
-            stopProgressDialog();
-            shareResult(msgId);
-        }
-
-        @Override
-        Public void onError(int code, String error) {
-            stopProgressDialog();
-            CommonUtils.showToast(error);
-        }
-    });;
-【Precautions】
-    If the message is processed, you need to manually delete the message.
+    @Override
+    public void onError (int code, String error) {
+    }
+});
 ```
 
-## 8.6 Device Message Processing
-```
-【description】
-    Device Message Processing - Agree | Reject
 
-[function call]
-    /**
-     * Agree to share the device
-     *
-     * @param msgId messageId
-     * @param friendId friend userId
-     * @param deviceId deviceId
-     * @param callback callback
-     */
-    Public void agreeShareDevice(long msgId, long friendId, long deviceId, IDealSystemCallback callback);
 
-    /**
-     * Refuse to share device
-     *
-     * @param msgId messageId
-     * @param friendId friend userId
-     * @param deviceId deviceId
-     * @param callback callback
-     */
-    Public void refuseShareDevice(long msgId, long friendId, long deviceId, IDealSystemCallback callback);
-
-[Method call]
-    MeariUser.getInstance().agreeShareDevice(msgInfo.getMsgID(), msgInfo.getUserID(), msgInfo.getDeviceID(), new IDealSystemCallback() {
-        @Override
-        Public void onSuccess(long msgId) {
-            stopProgressDialog();
-            shareResult(msgId);
-        }
-
-        @Override
-        Public void onError(int code, String error) {
-            stopProgressDialog();
-            CommonUtils.showToast(error);
-        }
-    });
-
-    MeariUser.getInstance().refuseShareDevice(msgInfo.getMsgID(), msgInfo.getUserID(), msgInfo.getDeviceID(), new IDealSystemCallback() {
-        @Override
-        Public void onSuccess(long msgId) {
-            stopProgressDialog();
-            shareResult(msgId);
-        }
-
-        @Override
-        Public void onError(int code, String error) {
-            stopProgressDialog();
-            CommonUtils.showToast(error);
-            }
-    });
-
-【Precautions】
-    If the message is processed, you need to manually delete the message.
-```
-
-# 9. Camera parameter settings
+# 9. Camera settings
 Used to set the camera's detection alarm, sleep mode, local playback and so on.
 Whether different devices support a certain setting can be judged by the device's capability set.
 
+
+## 9.1 device Capability
 If (cameraInfo.getLed() == 1) {
     / / Support switch settings such as LED
 } else {
     // does not support switch settings such as LEDs
 }
 
-Equipment capability set
+device Capability
 
 - int dcb; noise alarm: 0-not supported; 1-support
 - int pir; human detection: 0-not supported; 1-support
@@ -1751,779 +1627,851 @@ Equipment capability set
 - int ptr; humanoid tracking: 0-not supported; 1-support
 - int pdt; humanoid detection: 0-not supported; 1-support
 
+## 9.2 device parameters
 
-
-## 9.1 P2P Setting Parameters
-Set the parameters of the camera by punching holes in P2P. For specific usage, refer to the use of CameraPlayer in demo.
-
-## 9.2 Iot setting parameters
-Get and set camera parameters via Iothub.
-How to use the reference to the use of CameraSettingIotActivity in the demo
-
-### 9.2.1 Iot settings related classes
-
-Device attribute class obtained by IotPropertyInfo Iot
-- String userId; User ID
-- String deviceTimeZone; device time zone
-- String deviceKey; device key
-- String capability; device capability level
-- String snNum; SN number
-- String firmwareCode; Firmware code ppstrong-c2-neutral-1.0.0.20190617
-- String firmwareVersion; Firmware version number 1.0.0
-- String cloudRecordType; Cloud service recording type: 0-event recording; 1-all-day recording;
-- String cloudSaveCycle; cloud service storage cycle
-- String cloudExpireDate; cloud service expiration time
-- int cloudUploadEnable; cloud storage upload switch: 0-off; 1-open;
-- String wifiName; WiFi name of the device connection
-- int wifiStrength; WiFi strength of device connection: 0 to 100;
-- int rotateEnable; Video flip: 0-normal; 1-turn;
+- String firmwareCode; firmware code ppstrong-c2-neutral-1.0.0.20190617
+- String firmwareVersion; firmware version 1.0.0
+- String wifiName; WiFi name connected to the device
+- int wifiStrength; WiFi strength to which the device is connected: 0 to 100;
+- int netMode; current network mode: 0-wireless; 1-wired; 2-4G; 3-unknown
 - int ledEnable; LED indicator status: 0-off; 1-on;
-- int sdRecordType; SD card recording type: 0-event recording; 1-all day video;
-- int sdRecordDuration; SD card recording time: 0-1 minutes; 1-2 minutes; 2-3 minutes;
-- int motionDetEnable; Motion detection enable switch: 0-off; 1-on;
-- int motionDetSensitivity; Motion detection sensitivity: 0-low; 1-in; 2-high;
-- int humanDetEnable; humanoid detection enable switch: 0-off; 1-open;
-- int humanFrameEnable; Humanoid frame enable switch: 0-off; 1-open;
-- int humanTrackEnable; Humanoid tracking enable switch: 0-off; 1-open;
-- int soundDetEnable; audible alarm enable switch: 0-off; 1-open;
-- int soundDetSensitivity; audible alarm sensitivity: 0-low; 1-in; 2-high;
-- int cryDetEnable; Cry detection enable switch: 0-off; 1-on;
-- int dayNightMode; day and night mode: 0-automatic; 1-day mode; 2-night mode;
-- int sdStatus; SD card status:
-- String sdCapacity; total SD card capacity
-- String sdRemainingCapacity; SD card remaining capacity
-- int sleepMode; sleep mode: 0 - no sleep; 1 - sleep; 2 - timed sleep; 3 - geofence sleep;
-- String sleepTime; time period for timed sleep
-- String sleepWifi; WiFi for geofencing sleep
+- int mirrorEnable; video flip: 0-normal; 1-flip;
+- int sdRecordType; SD card recording type: 0-event recording; 1-all day recording;
+- int sdRecordDuration; SD card recording time (seconds): 20, 30, 40, 60, 120, 180
+- int dayNightMode; day-night mode: 0-automatic; 1-day mode; 2-night mode;
+- int sleepMode; sleep mode: 0-not sleep; 1-sleep; 2-timed sleep; 3-geo fence sleep;
+- String sleepTimeList; List of timed sleep time: json array
+- String sleepWifi; Geo-fence sleep WiFi
+- int motionDetEnable; motion detection enable switch: 0-off; 1-on;
+- int motionDetSensitivity; Motion detection sensitivity: 0-low; 1-medium; 2-high;
+- int PirDetEnable; human detection enable switch: 0-off; 1-on;
+- int PirDetSensitivity; human detection sensitivity: 0-low; 1-medium; 2-high;
+- int soundDetEnable; sound alarm enable switch: 0-off; 1-on;
+- int soundDetSensitivity; audible alarm sensitivity: 0-low; 1-medium; 2-high;
+- int cryDetEnable; cry detection enable switch: 0-off; 1-on;
+- int humanDetEnable; human shape detection enable switch: 0-off; 1-on;
+- int humanFrameEnable; humanoid picture frame enable switch: 0-off; 1-on;
+- int humanTrackEnable; humanoid tracking enable switch: 0-off; 1-on;
 - int onvifEnable; Onvif enable switch: 0-off; 1-on;
 - String onvifPwd; Onvif password
 - String onvifUrl; Onvif service network address
 - int h265Enable; H265 enable switch: 0-H264; 1-H265
-- String ip; device IP address
-- int NetMode; device network mode: 0-wireless; 1-wired
-- int OTAUpgradeStatus; OTA upgrade status: 0 - not upgraded; 1 - upgrade; 2 - upgrade completed to be restarted;
-- int OTAUpgradeDownload; OTA upgrade Download progress: -1 to 100
-- int OTAUpgradeUpdate; OTA upgrade Upgrade progress: -1 to 100
-- int OTAUpgradeTotal; OTA upgrade Total progress: -1~100
-- int temperature; temperature
-- int humidity; humidity
-- int flightSwitchStatus; luminaire camera headlight switch: 0-off; 1-open;
+- String alarmPlanList; list of alarm plan time: json array
+- int temperature;
+- int humidity;
+- int speakVolume; speaker volume during intercom (doorbell, battery camera): 0-100
+- int powerType; Power supply mode: 0-battery; 1-power; 2-battery plus power
+- int batteryPercent; 0-100
+- int batteryRemaining; remaining battery life: minutes (inaccurate, not used for the time being)
+- int chargeStatus; battery charge status: 0-uncharged; 1-charging; 2-full
+- int wirelessChimeEnable; wireless bell enable switch: 0-off; 1-on
+- int wirelessChimeVolume; wireless bell volume: 0-100
+- String wirelessChimeSongs; wireless bell song list: ["song1", "song2", "song3"]
 
-IotConstants Iot related attribute characters
-Device property constant, used when refreshing properties, corresponding to the properties of IotPropertyInfo.
 
-### 9.2.2 Get all attribute parameters of the device
+## 9.3 Format Device SD Card
 ```
 【description】
-Get all the attribute parameters of the device
+The device formats the SD card. After the formatting is successful, the formatting progress is obtained through the mqtt message.
+
+[Function call]
+/ **
+ * Get device SD card information
+ *
+ * @param callback Function callback
+ * /
+public void getSDCardInfo (ISDCardInfoCallback callback);
+
+/ **
+ * Start formatting SD card
+ *
+ * @param callback Function callback
+ * /
+public void startSDCardFormat (ISDCardFormatCallback callback);
+
+/ **
+ * Get SD card progress
+ *
+ * @param callback Function callback
+ * /
+public void getSDCardFormatPercent (ISDCardFormatPercentCallback callback)
+
+[Code example]
+
+
+SDCardInfo
+-sdStatus SD card status 0: No SD card; 1: Normal use; 2: Card read and write abnormal; 3: Formatting; 4: File system is not supported; 5: Card is being recognized; 6: Unformatted; 7: Other errors
+-sdCapacity SD card total capacity
+-sdRemainingCapacity SD card remaining capacity
+
+// Get device SD card information
+MeariUser.getInstance (). GetSDCardInfo (new ISDCardInfoCallback () {
+    @Override
+    public void onSuccess (SDCardInfo sdCardInfo) {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+
+// start formatting SD card
+MeariUser.getInstance (). StartSDCardFormat (new ISDCardFormatCallback () {
+    @Override
+    public void onSuccess () {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+
+// Get the format SD card progress
+MeariUser.getInstance (). GetSDCardFormatPercent (new ISDCardFormatPercentCallback () {
+    @Override
+    public void onSuccess (int percent) {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+```
+
+
+## 9.4 Upgrade Device Firmware
+```
+【description】
+Upgrade device firmware
+
+[Function call]
+
+DeviceUpgradeInfo
+-boolean forceUpgrade; whether to force upgrade
+-int upgradeStatus; whether it can be upgraded 0-No; 1-Yes
+-String newVersion; New version
+-String upgradeDescription; New version description
+-String upgradeUrl; new version address
+
+/ **
+ * Check if the device has a new version
+ *
+ * @param devVersion device version
+ * @param lanType language type ("en")
+ * @param callback callback
+ * /
+public void checkNewFirmwareForDev (String devVersion, String lanType, ICheckNewFirmwareForDevCallback callback);
+
+/ **
+ * Start to upgrade device firmware
+ *
+ * @param upgradeUrl upgrade address
+ * @param upgradeVersion upgrade version
+ * @param callback Function callback
+ * /
+public void startDeviceUpgrade (String upgradeUrl, String upgradeVersion, IDeviceUpgradeCallback callback);
+
+/ **
+ * Get progress of firmware upgrade
+ *
+ * @param callback Function callback
+ * /
+public void getDeviceUpgradePercent (IDeviceUpgradePercentCallback callback);
+
+
+[Code example]
+
+MeariUser.getInstance (). CheckNewFirmwareForDev (firmware_version, "en", new ICheckNewFirmwareForDevCallback () {
+    @Override
+    public void onSuccess (DeviceUpgradeInfo info) {
+        mDeviceUpgradeInfo = info;
+    }
+
+    @Override
+    public void onError (int code, String error) {
+    }
+});
+
+// If you can upgrade, start the upgrade
+MeariUser.getInstance (). StartDeviceUpgrade (deviceUpgradeInfo.getUpgradeUrl (), deviceUpgradeInfo.getNewVersion (), new IDeviceUpgradeCallback () {
+    @Override
+    public void onSuccess () {
+
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+
+    }
+});
+
+// Get upgrade progress
+MeariUser.getInstance (). GetDeviceUpgradePercent (new IDeviceUpgradePercentCallback () {
+    @Override
+    public void onSuccess (int percent) {
+
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+
+    }
+});
+```
+
+
+## 9.5 Basic parameter settings
+
+### 9.5.1 Get device parameters
+```
+【description】
+Get all parameters of the device
 
 [function call]
-
 /**
- * Get all the parameters of the device
+ * Get the params of the device
  *
- * @param snNum device's sn number
- * @param tag request tag
- * @param callback request callback
+ * @param callback Function callback
  */
-Public void getIotProperty(String snNum, Object tag, IPropertyCallback callback);
+public void getDeviceParams(IGetDeviceParamsCallback callback);
 
 [code example]
-
-MeariUser.getInstance().getIotProperty(cameraInfo.getSnNum(),this, new IPropertyCallback() {
+MeariUser.getInstance().getDeviceParams(new IGetDeviceParamsCallback() {
     @Override
-    Public void onSuccess(IotPropertyInfo iotPropertyInfo) {
+    public void onSuccess(DeviceParams deviceParams) {
     }
 
     @Override
-    Public void onError(int code, String error) {
+    public void onFailed(int errorCode, String errorMsg) {
     }
 });
 ```
 
-### 9.2.3 Refreshing device properties
+### 9.5.2 Device LED light switch control
 ```
 【description】
-Refresh the device properties, select the properties that need to be refreshed, call the refresh interface, and the device returns the latest property values ​​through the mqtt message.
+Device LED light switch control
 
 [function call]
-
 /**
- * Refresh device properties
+ * Set LED light on or off
  *
- * @param snNum device's sn number
- * @param timeList 0-off 1-open
- * @param tag request tag
- * @param callback request callback
+ * @param ledEnable 0-off; 1-on
+ * @param callback Function callback
  */
-Public void refreshProperty(String snNum, List<String> propertyList, Object tag, IStringResultCallback callback);
+public void setLED(int ledEnable, ISetDeviceParamsCallback callback);
 
 [code example]
-
-ArrayList<String> arrayList = new ArrayList<>();
-arrayList.add(IotConstants.sdCapacity);
-arrayList.add(IotConstants.sdRemainingCapacity);
-
-MeariUser.getInstance().refreshProperty(cameraInfo.getSnNum(), arrayList, this, new IStringResultCallback() {
+MeariUser.getInstance().setLED(ledEnable, new ISetDeviceParamsCallback() {
     @Override
-    Public void onSuccess(String result) {
+    public void onSuccess() {
     }
 
     @Override
-    Public void onError(int code, String error) {
+    public void onFailed(int errorCode, String errorMsg) {
     }
 });
 ```
 
-### 9.2.4 Device upload cloud recording settings
-```
-【description】
-Device upload cloud recording settings
-
-[function call]
-
-/**
- * Device upload cloud recording settings
- *
- * @param snNum device's sn number
- * @param enable 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setCloudUploadEnable(String snNum, int enable, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setCloudUploadEnable(cameraInfo.getSnNum(), enable, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.5 Equipment LED light switch control
-```
-【description】
-Equipment LED light switch control
-
-[function call]
-
-/**
- * Equipment LED light switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setLedEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setLedEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.6 Device Preview Video Flip Control
+### 9.5.3 Device Preview Video Flip Control
 ```
 【description】
 Device preview video flip control
 
 [function call]
-
 /**
- * Device preview video flip control
+ * Set whether the video is mirrored
  *
- * @param snNum device's sn number
- * @param status 0-normal; 1-turn;
- * @param tag request tag
- * @param callback request callback
+ * @param mirrorEnable 0-normal;1-mirror
+ * @param callback Function callback
  */
-Public void setRotateEnable(String snNum, int status, Object tag, IStringResultCallback callback);
+public void setMirror(int mirrorEnable, ISetDeviceParamsCallback callback);
 
 [code example]
-
-MeariUser.getInstance().setRotateEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
+MeariUser.getInstance().setMirror(mirrorEnable, new ISetDeviceParamsCallback() {
     @Override
-    Public void onSuccess(String result) {
+    public void onSuccess() {
     }
 
     @Override
-    Public void onError(int code, String error) {
+    public void onFailed(int errorCode, String errorMsg) {
     }
 });
 ```
 
-### 9.2.7 Device motion detection switch control
+### 9.5.4 Device local recording settings
 ```
 【description】
-Device motion detection switch control
+Device local recording type and event recording clip time setting
 
 [function call]
-
 /**
- * Device motion detection switch control
+ * Set day and night mode
  *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
+ * @param mode mode
+ * @param callback Function callback
  */
-Public void setMotionDetEnable(String snNum, int status, Object tag, IStringResultCallback callback);
+public void setDayNightMode(int mode, ISetDeviceParamsCallback callback);
 
 [code example]
-
-MeariUser.getInstance().setMotionDetEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
+MeariUser.getInstance().setDayNightMode(mode, new ISetDeviceParamsCallback() {
     @Override
-    Public void onSuccess(String result) {
+    public void onSuccess() {
     }
 
     @Override
-    Public void onError(int code, String error) {
+    public void onFailed(int errorCode, String errorMsg) {
     }
 });
 ```
 
-### 9.2.8 Device motion detection sensitivity setting
-```
-【description】
-Device motion detection sensitivity setting
-
-[function call]
-
-/**
- * Device motion detection sensitivity setting
- *
- * @param snNum device's sn number
- * @param sensitivity 0-low; 1-in; 2-high;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setMotionDetSensitivity(String snNum, int sensitivity, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setMotionDetSensitivity(cameraInfo.getSnNum(), sensitivity, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.9 Device noise detection switch control
-```
-【description】
-Device noise detection switch control
-
-[function call]
-
-/**
- * Equipment noise detection switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSoundDetEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setSoundDetEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.10 Device Noise Detection Sensitivity Control
-```
-【description】
-Device noise detection sensitivity control
-
-[function call]
-
-/**
- * Equipment noise detection sensitivity control
- *
- * @param snNum device's sn number
- * @param sensitivity 0-low; 1-in; 2-high;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSoundDetSensitivity(String snNum, int sensitivity, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setSoundDetSensitivity(cameraInfo.getSnNum(), sensitivity, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.11 Device Local Recording Type Setting
-```
-【description】
-Device local recording type setting
-
-[function call]
-
-/**
- * Device local recording type setting
- *
- * @param snNum device's sn number
- * @param type 0- event recording; 1-all day video;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSdRecordType(String snNum, int type, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setSdRecordType(cameraInfo.getSnNum(),type, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.12 Device local recording event video clip time setting
-```
-【description】
-Device local recording event video clip time setting
-
-[function call]
-
-/**
- * Device local recording event video clip time setting
- *
- * @param snNum device's sn number
- * @param duration 0-1 minutes; 1-2 minutes; 2-3 minutes;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSdRecordDuration(String snNum, int duration, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setSdRecordDuration(cameraInfo.getSnNum(), duration, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.13 Equipment day and night mode setting
+### 9.5.5 Device day and night mode setting
 ```
 【description】
 Device day and night mode setting
 
 [function call]
-
 /**
- * Equipment day and night mode setting
+ * Set day and night mode
  *
- * @param snNum device's sn number
- * @param status 0-automatic; 1-day mode; 2-night mode;
- * @param tag request tag
- * @param callback request callback
+ * @param mode mode
+ * @param callback Function callback
  */
-Public void setDayNightMode(String snNum, int status, Object tag, IStringResultCallback callback);
+public void setDayNightMode(int mode, ISetDeviceParamsCallback callback);
 
 [code example]
-
-MeariUser.getInstance().setDayNightMode(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
+MeariUser.getInstance().setDayNightMode(mode, new ISetDeviceParamsCallback() {
     @Override
-    Public void onSuccess(String result) {
+    public void onSuccess() {
     }
 
     @Override
-    Public void onError(int code, String error) {
+    public void onFailed(int errorCode, String errorMsg) {
     }
 });
 ```
 
-### 9.2.14 Device Video Encoding Format Settings
+### 9.5.6 Device Sleep Mode Setting
 ```
 【description】
-Device video encoding format setting
+Device sleep mode settings
 
-[function call]
+[Function call]
+/ **
+  * Set sleep mode
+  *
+  * @param mode mode
+  * @param callback Function callback
+  * /
+public void setSleepMode (int mode, ISetDeviceParamsCallback callback);
 
-/**
- * Device video encoding format setting
- *
- * @param snNum device's sn number
- * @param status 0-H264; 1-H265
- * @param tag request tag
- * @param callback request callback
- */
-Public void setH265Enable(String snNum, int status, Object tag, IStringResultCallback callback);
+[Code example]
+MeariUser.getInstance (). SetSleepMode (sleepMode, new ISetDeviceParamsCallback () {
+     @Override
+     public void onSuccess () {
+     }
 
-[code example]
-
-MeariUser.getInstance().setH265Enable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
 
-### 9.2.15 Device Onvif Switch Control
+### 9.5.7 Device scheduled sleep period setting
 ```
 【description】
-Device Onvif Switch Control
+Device scheduled sleep period setting
 
-[function call]
+[Function call]
+/ **
+  * Set the period of sleep
+  *
+  * @param timeList the period of sleep
+  * @param callback Function callback
+  * /
+public void setSleepModeTimes (String timeList, ISetDeviceParamsCallback callback);
 
-/**
- * Device Onvif switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setOnvifEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setOnvifEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.16 Device Onvif Password Settings
-```
-【description】
-Device Onvif password settings
-
-[function call]
-
-/**
- * Device Onvif password settings
- *
- * @param snNum device's sn number
- * @param pwd Onvif password
- * @param tag request tag
- * @param callback request callback
- */
-Public void setOnvifPwd(String snNum, String pwd, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setOnvifPwd(cameraInfo.getSnNum(), pwd, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.17 Device Format SD Card
-```
-【description】
-The device formats the SD card. After the format is successful, the format progress is obtained through the mqtt message.
-
-[function call]
-
-/**
- * Device format SD card
- *
- * @param snNum device's sn number
- * @param tag request tag
- * @param callback request callback
- */
-Public void formatSdcard(String snNum, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().formatSdcard(cameraInfo.getSnNum(), this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.18 Device upgrade firmware
-```
-【description】
-Call checkNewFirmwareForDev() to detect whether the device has new firmware to update. After the firmware is successfully upgraded, the upgrade progress is obtained through the mqtt message.
-
-[function call]
-
-/**
- * Device upgrade firmware
- *
- * @param snNum device's sn number
- * @param OTAUpgradeInfo 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void upgradeFirmware(String snNum, String OTAUpgradeInfo, Object tag, IStringResultCallback callback);
-
-[code example]
-
-JSONObject object = new JSONObject();
-Object.put("url",deviceUpgradeInfo.getDevUrl());
-Object.put("version",deviceUpgradeInfo.getSerVersion() + "-upgrade.bin");
-
-MeariUser.getInstance().upgradeFirmware(cameraInfo.getSnNum(), object.toString(), this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.19 Equipment humanoid tracking switch control
-```
-【description】
-Equipment humanoid tracking switch control
-
-[function call]
-
-/**
- * Equipment humanoid tracking switch control
- *
- * @param snNum device's sn number
- * @param OTAUpgradeInfo 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setHumanTrackEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setHumanTrackEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.20 Equipment humanoid detection alarm switch control
-```
-【description】
-Equipment humanoid detection alarm switch control
-
-[function call]
-
-/**
- * Equipment humanoid detection alarm switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setHumanDetEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setHumanDetEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.21 Equipment Humanoid Frame Switch Control
-```
-【description】
-Equipment humanoid frame switch control
-
-[function call]
-
-/**
- * Equipment humanoid frame switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setHumanFrameEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setHumanFrameEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.22 Equipment crying alarm switch control
-```
-【description】
-Equipment crying alarm switch control
-
-[function call]
-
-/**
- * Equipment crying alarm switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setCryDetEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setCryDetEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.23 Device Sleep Mode Settings
-```
-【description】
-Device sleep mode setting
-
-[function call]
-
-/**
- * Device sleep mode setting
- *
- * @param snNum device's sn number
- * @param mode 0- no sleep; 1-sleep; 2-timed sleep; 3-geo-fence sleep;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSleepMode(String snNum, int mode, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setSleepMode(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-### 9.2.24 Device Timing Sleep Time Period Setting
-```
-【description】
-Device timed sleep period setting
-
-[function call]
-
-/**
- * Device timed sleep period setting
- *
- * @param snNum device's sn number
- * @param timeList sleep time period list
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSleepTimeList(String snNum, String timeList, Object tag, IStringResultCallback callback);
-
-[code example]
+[Code example]
 
 timeList description:
-Enable: whether to enable
-Start_time: start time point
-Stop_time: end time point
-Repeat: The number of days that take effect every week 1~7
+enable: whether to enable
+start_time: start time
+stop_time: end time
+repeat: 1 ~ 7 days in effect every week
 
 [{
-    "enable": true,
-    "start_time": "03:00",
-    "stop_time": "04:00",
-    "repeat": [3, 4]
+     "enable": true,
+     "start_time": "03:00",
+     "stop_time": "04:00",
+     "repeat": [3, 4]
 }, {
-    "enable": false,
-    "start_time": "00:00",
-    "stop_time": "03:00",
-    "repeat": [1, 2]
+     "enable": false,
+     "start_time": "00:00",
+     "stop_time": "03:00",
+     "repeat": [1, 2]
 }]
 
-MeariUser.getInstance().setSleepTimeList(cameraInfo.getSnNum(), timeList, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
+MeariUser.getInstance (). SetSleepModeTimes (timeList, new ISetDeviceParamsCallback () {
+     @Override
+     public void onSuccess () {
+     }
 
-    @Override
-    Public void onError(int code, String error) {
-    }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
+
+### 9.5.8 Device motion detection settings
+```
+【description】
+Device motion detection settings
+
+[Function call]
+/ **
+  * Set motion detection
+  *
+  * @param motionDetEnable motion detection enable
+  * @param motionDetSensitivity motion detection sensitivity
+  * @param callback Function callback
+  * /
+public void setMotionDetection (int motionDetEnable, int motionDetSensitivity, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetMotionDetection (motionDetEnable, motionDetSensitivity, new ISetDeviceParamsCallback () {
+     @Override
+     public void onSuccess () {
+     }
+
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
+});
+```
+
+### 9.5.9 Device PIR Detection Settings
+```
+【description】
+Device PIR detection settings
+
+[Function call]
+/ **
+  * Set PIR detection
+  *
+  * @param pirDetEnable PIR detection enable
+  * @param pirDetSensitivity PIR detection sensitivity
+  * @param callback Function callback
+  * /
+public void setPirDetection (int pirDetEnable, int pirDetSensitivity, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetPirDetection (pirDetEnable, pirDetSensitivity, new ISetDeviceParamsCallback () {
+     @Override
+     public void onSuccess () {
+     }
+
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
+});
+```
+
+### 9.5.10 Device noise detection settings
+```
+【description】
+Device noise detection settings
+
+[Function call]
+/ **
+  * Set sound detection
+  *
+  * @param soundDetEnable sound detection enable
+  * @param soundDetSensitivity sound detection sensitivity
+  * @param callback Function callback
+  * /
+public void setSoundDetection (int soundDetEnable, int soundDetSensitivity, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetSoundDetection (soundDetEnable, soundDetSensitivity, new ISetDeviceParamsCallback () {
+     @Override
+     public void onSuccess () {
+     }
+
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
+});
+```
+
+### 9.5.11 Device cry alarm setting
+```
+【description】
+Device cry alarm setting
+
+[Function call]
+/ **
+  * Set up cry detection
+  *
+  * @param cryDetEnable cry detection
+  * @param callback Function callback
+  * /
+public void setCryDetection (int cryDetEnable, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetCryDetection (cryDetEnable, new ISetDeviceParamsCallback () {
+     @Override
+     public void onSuccess () {
+     }
+
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
+});
+```
+
+### 9.5.12 Device human tracking settings
+```
+【description】
+Device human tracking settings
+
+[Function call]
+/ **
+ * Set up human tracking
+ *
+ * @param humanTrackEnable human track enable
+ * @param callback Function callback
+ * /
+public void setHumanTrack (int humanTrackEnable, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetHumanTrack (humanTrackEnable, new ISetDeviceParamsCallback () {
+    @Override
+    public void onSuccess () {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.13 Device human detection alarm setting
+```
+【description】
+Device human detection alarm setting
+
+[Function call]
+/ **
+ * Set up human detection
+ *
+ * @param humanDetEnable human detection enable
+ * @param callback Function callback
+ * /
+public void setHumanDetection (int humanDetEnable, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetHumanDetection (humanDetEnable, new ISetDeviceParamsCallback () {
+    @Override
+    public void onSuccess () {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.14 Device humanoid frame setting
+```
+【description】
+Device humanoid frame settings
+
+[Function call]
+/ **
+ * Set up human frame
+ *
+ * @param humanFrameEnable human frame enable
+ * @param callback Function callback
+ * /
+public void setHumanFrame (int humanFrameEnable, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetHumanFrame (humanFrameEnable, new ISetDeviceParamsCallback () {
+    @Override
+    public void onSuccess () {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.15 Device Onvif settings
+```
+【description】
+Device Onvif settings
+
+[Function call]
+/ **
+  * set onvif
+  *
+  * @param enable onvif enable
+  * @param password onvif password
+  * @param callback Function callback
+  * /
+public void setOnvif (int enable, String password, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetOnvif (enable, password, new ISetDeviceParamsCallback () {
+     @Override
+     public void onSuccess () {
+     }
+
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
+});
+```
+
+### 9.5.16 Device video encoding format settings
+```
+【description】
+Device video encoding format settings
+
+[Function call]
+/ **
+  * Set video encoding type
+  *
+  * @param type encoding type
+  * @param callback Function callback
+  * /
+public void setVideoEncoding (int type, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetVideoEncoding (type, new ISetDeviceParamsCallback () {
+     @Override
+     public void onSuccess () {
+     }
+
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
+});
+```
+
+## 9.6 NVR parameter settings
+## 9.7 BabyMonitor parameter settings
+## 9.8 Doorbell parameter setting
+### 9.8.1 Device Intercom Volume Settings
+```
+【description】
+Device intercom volume setting
+
+[Function call]
+/ **
+ * Set device intercom volume
+ *
+ * @param volume intercom volume
+ * @param callback Function callback
+ * /
+public void setSpeakVolume (int volume, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetSpeakVolume (volume, new ISetDeviceParamsCallback () {
+    @Override
+    public void onSuccess () {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.8.2 Unlocking the battery lock
+```
+【description】
+Unlock battery lock
+
+[Function call]
+/ **
+ * Unlock battery lock
+ *
+ * @param callback Function callback
+ * /
+public void unlockBattery (ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). UnlockBattery (new ISetDeviceParamsCallback () {
+    @Override
+    public void onSuccess () {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.8.3 Binding Wireless Chime
+```
+【description】
+Bind wireless chime
+
+[Function call]
+/ **
+  * Bind wireless chime
+  *
+  * @param callback Function callback
+  * /
+public void bindWirelessChime (ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). BindWirelessChime (new ISetDeviceParamsCallback () {
+     @Override
+     public void onSuccess () {
+     }
+
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
+});
+```
+
+### 9.8.4 Unbinding Wireless Chime
+```
+【description】
+Untie the wireless chime
+
+[Function call]
+/ **
+  * unbind wireless chime
+  *
+  * @param callback Function callback
+  * /
+public void unbindWirelessChime (ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). UnbindWirelessChime (new ISetDeviceParamsCallback () {
+     @Override
+     public void onSuccess () {
+     }
+
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
+});
+```
+
+### 9.8.5 Whether the wireless chime works
+```
+【description】
+Whether the wireless chime works
+
+[Function call]
+/ **
+ * Set wireless chime enable
+ *
+ * @param enable wireless chime enable
+ * @param callback Function callback
+ * /
+public void setWirelessChimeEnable (int enable, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetWirelessChimeEnable (enable, new ISetDeviceParamsCallback () {
+    @Override
+    public void onSuccess () {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+```
+
+
+### 9.8.6 Wireless Chime Volume Settings
+```
+【description】
+Wireless Chime Volume Settings
+
+[Function call]
+/ **
+ * Set wireless chime volume
+ *
+ * @param volume wireless chime volume
+ * @param callback Function callback
+ * /
+public void setWirelessChimeVolume (int volume, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetWirelessChimeVolume (volume, new ISetDeviceParamsCallback () {
+    @Override
+    public void onSuccess () {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.8.7 Wireless Chime Ringtone Settings
+```
+【description】
+Wireless Chime Ringtone Settings
+
+[Function call]
+/ **
+ * Set wireless chime ringtone
+ *
+ * @param song wireless chime ringtone
+ * @param callback Function callback
+ * /
+public void setWirelessChimeSong (String song, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetWirelessChimeSong (song, new ISetDeviceParamsCallback () {
+    @Override
+    public void onSuccess () {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.8.8 Whether the mechanical chime works
+```
+【description】
+Whether the mechanical chime works
+
+[Function call]
+/ **
+ * Set mechanical chime on or off
+ *
+ * @param status 0-off; 1-on
+ * @param callback Function callback
+ * /
+public void setMechanicalChimeEnable (int status, ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance (). SetMechanicalChimeEnable (enable, new ISetDeviceParamsCallback () {
+    @Override
+    public void onSuccess () {
+    }
+
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
+});
+```
+
+## 9.9 Voice Doorbell Parameter Setting
+## 9.10 Floodlight Camera Parameter Setting
+## 9.11 Relay router parameter settings
 
 ### 9.2.25 Device start rotation command
 ```
@@ -2561,13 +2509,13 @@ MeariUser.getInstance().startPTZ(cameraInfo.getSnNum(), -80, 0, 0, this, new ISt
 ---
 Version number | Development team | Update date | Notes
 :-:|:-:|:-:|:-:
-2.0.0 | Meari Technical Team | 2019.09.20 | Optimization
+2.0.0 | Towers Perrin Technical Team | 2019.09.20 | Optimization
 
 </center>
 
 # 1. Function Overview
 
-The Meari APP SDK provides interface packaging with hardware devices and Meari Technology, and accelerates the application development process, including the following functions:
+The Towers Technology APP SDK provides interface packaging with hardware devices and Towers Perrin, and accelerates the application development process, including the following functions:
 
 - Hardware device related (with network, control, status reporting, firmware upgrade, preview playback, etc.)
 - Account system (mobile phone number, email registration, login, password reset, etc.)
@@ -2582,7 +2530,7 @@ The Meari APP SDK provides interface packaging with hardware devices and Meari T
 # 2. Integration preparation
 ## Create App ID and App Secert
 ```
-Meari Technology Technology Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
+Towers Perrin Technology Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
 <meta-data
     Android:name="MEARI_APPKEY"
     Android:value="your MEARI_APPKEY" />
@@ -2623,2545 +2571,130 @@ MeariUser.getInstance().stopPTZ(cameraInfo.getSnNum(), this, new IStringResultCa
 });
 ```
 
-# 10. Integrated Push (temporarily only supports Aurora)
+# 10.MQTT and push
 ```
-Based on the app developed by Meari SDK, Meari platform supports Push function, which supports users to push device alarms, doorbell calls and other messages.
-```
-## 10.1 Integrated Aurora
-The Push function is based on Aurora Push, and the official document is used to access Aurora.
-Contact us to configure the aurora's key and secret.
-
-## 10.2 Setting User Aliases
-Get UserInfo after logging in to meari successfully.
-After initializing the aurora, use the userInfo.getJpushAlias() successfully obtained by login to set the aurora alias.
-Initialize and set the alias reference to the official documentation or the MeariSDK demo
-
-## 10.3 Push Message
-Refer to the handling of messages in the MyReceiver file in the demo.
-
---------------
-
-# 3. Integrated SDK
-## 3.1 Integration Process
-### 3.1.1 Introducing the sdk package
-```
-Copy meatisdk_2.0.0.aar to the libs directory and copy the so files from the demo to the libs directory.
-The so file is introduced according to the full or partial type of the needs of the project.
+The meari SDK supports internal MQTT push messages, as well as Aurora, FCM and other vendors (supported in future)
 ```
 
-### 3.1.2 Configuring build.gradle
-
-Add the following configuration to the build.gradle file.
+## 10.1 MQTT messages
 ```
-Repositories {
-    flatDir {
-        Dirs 'libs'
-    }
-}
-Android {
-     sourceSets {
-        Main {
-            jniLibs.srcDirs = ['libs']
-        }
-    }
-}
-Dependencies {
-    Implementation(name: 'mearisdk-1.0.0', ext: 'aar')
-}
+Used to receive messages such as device add success message, doorbell call message, voice doorbell call message, remote login, etc.
 ```
 
-### 3.1.3 Configuring AndroidManifest.xml
-```
-Configure appkey and appSecret in the AndroidManifest.xml file, configure the corresponding permissions, etc.
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+### 10.1.1 Connect to MQTT Service
 
-    <permission
-        Android:name="${applicationId}.permission.JPUSH_MESSAGE"
-        Android:protectionLevel="signature" />
-
-    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
-
-Aurora push configuration
- <!-- Rich push core function since 2.0.6-->
-        <activity
-            Android:name="cn.jpush.android.ui.PopWinActivity"
-            Android:theme="@style/MyDialogStyle"
-            Android:exported="false">
-        </activity>
-
-        <!-- Required SDK core features -->
-        <activity
-            Android:name="cn.jpush.android.ui.PushActivity"
-            Android:configChanges="orientation|keyboardHidden"
-            Android:theme="@android:style/Theme.NoTitleBar"
-            Android:exported="false">
-            <intent-filter>
-                <action android:name="cn.jpush.android.ui.PushActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.meari.test" />
-            </intent-filter>
-        </activity>
-
-        <!-- Required SDK Core Features -->
-        <!-- Configurable android: process parameter will put PushService in other processes -->
-        <service
-            Android:name="cn.jpush.android.service.PushService"
-            Android:process=":mult"
-            Android:exported="false">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTER" />
-                <action android:name="cn.jpush.android.intent.REPORT" />
-                <action android:name="cn.jpush.android.intent.PushService" />
-                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
-            </intent-filter>
-        </service>
-        <!-- since 3.0.9 Required SDK Core Features -->
-        <provider
-            Android:authorities="com.meari.test.DataProvider"
-            Android:name="cn.jpush.android.service.DataProvider"
-            Android:exported="false"
-            />
-
-        <!-- since 1.8.0 option is optional. The function of the JPush service for different applications in the same device to pull each other up. -->
-        <!-- If you do not enable this feature to delete the component, it will not pull up other applications and can not be pulled up by other applications -->
-        <service
-            Android:name="cn.jpush.android.service.DaemonService"
-            Android:enabled="true"
-            Android:exported="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService" />
-                <category android:name="com.meari.test" />
-            </intent-filter>
-
-        </service>
-        <!-- since 3.1.0 Required SDK Core Features -->
-        <provider
-            Android:authorities="com.meari.test.DownloadProvider"
-            Android:name="cn.jpush.android.service.DownloadProvider"
-            Android:exported="true"
-            />
-        <!-- Required SDK core features -->
-        <receiver
-            Android:name="cn.jpush.android.service.PushReceiver"
-            Android:enabled="true"
-            Android:exported="false">
-            <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!--Required Display notification bar -->
-                <category android:name="com.meari.test" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <!-- Optional -->
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
-        <!-- Required SDK core features -->
-        <receiver android:name="cn.jpush.android.service.AlarmReceiver" android:exported="false"/>
-
-        <!-- User defined. For test only User-defined broadcast receiver -->
-        <receiver
-            Android:name=".receiver.MyReceiver"
-            Android:exported="false"
-            Android:enabled="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required User registration SDK intent-->
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required User receives the intent of the SDK message-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required The user receives the intent of the SDK notification bar information-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required user opens the intent of the custom notification bar-->
-                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- Receive network changes Connection/disconnection since 1.6.3 -->
-                <category android:name="com.meari.test" />
-            </intent-filter>
-        </receiver>
-
-        <!-- User defined. For test only User-defined receiving message, 3.0.7 starts to support, the current tag/alias interface setting result will be called back in the corresponding method of the broadcast receiver -->
-        <receiver android:name=".receiver.MyJPushMessageReceiver">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-                <category android:name="com.meari.test"></category>
-            </intent-filter>
-        </receiver>
-        <!-- Required . Enable it you can get statistics data with channel -->
-        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
-        <meta-data android:name="JPUSH_APPKEY" android:value="" />
-```
-
-
-## 3.2 Initializing the SDK
-
-```
-【description】
-It is mainly used to initialize internal resources, communication services, redirection, and logging.
- 
-[function call]
-
-/**
- * Initialization
- * @param context application
- * @param callback mqtt message callback
- */
-MeariSdk.init(Contex context, IMessageCallback callback);
-
-[code example]
-
-Public class MeariMessage implements IMessageCallback {
-    @Override
-    Public void messageArrived( String message) {
-        // Process mqtt message
-    }
+// Called after the user logs in successfully
+if (! MeariUser.getInstance (). isMqttConnected ()) {
+    MeariUser.getInstance (). ConnectMqttServer (application);
 }
 
-Public class MeariSmartApp extends Application {
-    @Override
-    Public void onCreate() {
-        super.onCreate();
-        // Initialize
-        MeariSdk.init(this, new MeariMessage());
-        // output log
-        MeariSdk.getInstance().setDebug(true);
-    }
-}
-```
-# 4. User Management (MeariUser Tools)
-```
-Meari provides mobile phone/email password login, uid login, password reset, etc.
-After registration or login is successful, use the return information to connect to the mqtt service, initialize the aurora and other operations.
-(Hint: Object tag parameter in the function, you can pass this, the following is true)
-```
-
-UserInfo class
-- jpushAlias ​​Aurora Push Alias
-- userID user ID
-- nickName nickname
-- phoneCode country code
-- userAccount user
-- token unique identifier when the user logs in
-- headPic user avatar path
-- phoneCode country phone code
-- countryCode country code
-- loginTime login time
-- soundFlag pushes the sound;
-- imageUrl avatar;
-- userToken user unique representation;
-- desc user description;
-
-
-## 4.1 Mobile/Email Password Registration
-```
-【description】
-Phone password registration. Currently only supports domestic mobile phone registration.
-
-[function call]
-    
-/**
- * Get phone verification code
- *
- * @param countryCode country code
- * @param phoneCode country phone number area code
- * @param account
- * @param tag Network request tag (Hint: Object tag parameter in the function, you can pass this, the following is the same, no longer listed)
- * @paramI ValidateCallback network request return
- */
-Public void getValidateCode(String countryCode, String phoneCode, String account, Object tag, final IValidateCallback callback);
-  
-/**
- * register account
- *
- * @param countryCode country code
- * @param phoneCode country phone number area code
- * @param account
- * @param pwd password
- * @param nickname nickname
- * @param code verification code
- * @param callback returns callback
- */
-Public void registerAccount2(String countryCode, String phoneCode, String account, String pwd, String nickname, String code, IRegisterCallback callback);
-
-[code example]
-
-MeariUser.getInstance().getValidateCode(countryCode, phoneCode, account, this, new IValidateCallback() {
-    @Override
-    Public void onSuccess(int leftTime) {
-        stopProgressDialog();
-        startTimeCount(leftTime);//leftTime indicates the remaining valid time of the verification code
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-        stopProgressDialog();
-        CommonUtils.showToast(error);
-    }
-});
-
-MeariUser.getInstance().registerAccount2(countryCode,phoneCode,account,pwd,nickname,code, new IRegisterCallback() {
-    @Override
-    Public void onSuccess(UserInfo user) {
-        //UserInfo returns user information
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-## 4.2 Mobile/Email Password Login
-```
-【description】
-Support domestic mobile phone password login.
- 
-[function call]
-
-/**
- * Login account
- *
- * @param countryCode country code
- * @param phoneCode country phone number area code
- * @param userAccount Domestic Phone/Email
- * @param password user password
- * @param callback login callback interface return user information
- */
-Public void login2(String countryCode, String phoneCode, String userAccount, String password, ILoginCallback callback);
-    
-[code example]
-
-MeariUser.getInstance().login2(countryCode,phoneCode, userAccount, password, new ILoginCallback() {
-    @Override
-    Public void onSuccess(UserInfo user) {
-        // It is recommended to initialize Aurora and connect mqtt service in MainActivity. After logging in for the first time, save the user information, you don't have to log in every time you start the app.
-        / / If you need to receive push messages, contact us to configure the relevant parameters, use our alias to initialize the Aurora push, access process reference Aurora official documentation.
-        initJPushAlias(user.getJpushAlias());
-        // connect to the mqtt service
-        MeariUser.getInstance().connectMqttServer(getApplication());
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-## 4.3 Reset password
-```
-【description】
-Only passwords for mailbox and / domestic mobile phones are supported.
- 
-[function call]
-/**
- * Get phone verification code
- *
- * @param countryCode country code
- * @param username Mobile number/email
- */
-MeariUser.getInstance().getValidateCode(String countryCode, String username, final IValidateCallback callback);
-
-/**
- * reset Password
- *
- * @param countryCode country code
- * @param phoneCode country phone number area code
- * @param account Domestic Phone/Email
- * @param verificationCode verification code
- * @param password User new password password
- * @param callback login callback interface return user information
- */
-Public void resetAccountPassword2(String countryCode, String phoneCode, String account, String verificationCode, String pwd, final IResetPasswordCallback callback)
-    
-[code example]
-
-MeariUser.getInstance().resetAccountPassword2(countryCode, phoneCode, account, verificationCode, pwd, new IResetPasswordCallback() {
-    @Override
-    Public void onSuccess(UserInfo user) {
-        If(user == null) {
-/ / means reset password
-}else {
-/ / Indicates the password is retrieved
-}
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-        stopProgressDialog();
-    }
-});
-```
-
-## 4.4 uid user system
-
-```
-【description】
-If the customer has their own user system, they can log in via uid and access our sdk.
-User uid login, uid requires unique, defined by the access side. The uid system can log in directly without registration.
-
-[function call]
-
-/**
- * User uid registration
- * @param countryCode country number (CN)
- * @param phoneCode country phone number area code (+86)
- * @param uid user unique identifier
- * @param callback uid registration callback interface
- */
-Public void loginWithUid2(String countryCode, String phoneCode, String uid, final ILoginCallback callback);
-        
-[code example]
-
-MeariUser.getInstance().loginWithUid2(countryCode, phoneCode,uid, new IRegisterCallback() {
-    @Override
-    Public void onSuccess(UserInfo user) {
-        // It is recommended to initialize Aurora and connect mqtt service in MainActivity. After logging in for the first time, save the user information, you don't have to log in every time you start the app.
-        // If you need to receive push messages, contact us to configure the relevant parameters, use our alias to initialize the Aurora push, access process reference Aurora official documentation.
-        initJPushAlias(user.getJpushAlias());
-        // connect to the mqtt service
-        MeariUser.getInstance().connectMqttServer(getApplication());
-    }
-    @Override
-    Public void onError(String code, String error) {
-        // failed
-    }
-});
-```
-
-## 4.5 Logout
-```
-【description】
-Call the following interface to log out when you exit the application or log out.
-
-[function call]
-/**
- * @param callback logout callback
- */
-MeariUser.getInstance().logout(ILogoutCallback callback);
-
-[code example]
-MeariUser.getInstance().logout(new ILogoutCallback() {
-    @Override
-    Public void onSuccess(int resultCode) {
-        // Clear user information, disconnect mqtt connection, etc.
-        MqttMangerUtils.getInstance().disConnectService();
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-## 4.6 Uploading User Avatar (MeariUser Tool Class)
-```
-【description】
-Upload a user avatar.
- 
-[function call]
-
-/**
- * Upload user avatar
- *
- * @param file User avatar image file path (preferably 300*300)
- * @param callback callback
- */
-Public void uploadUserAvatar(String filePath, IAvatarCallback callback);
-        
-[code example]
-
-MeariUser.getInstance().uploadUserAvatar(path, new IAvatarCallback() {
-    @Override
-    Public void onSuccess(String path) {
-//path is the address of the server avatar after returning the upload.
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-
-    }
-});
-```
-## 4.7 Modify nickname
-```
-【description】
-Modify the user nickname.
- 
-[function call]
-
-/**
- * Upload user avatar
- *
- * @param nickname User new nickname
- * @param callback network request callback
- */
-Public void renameNickname(String nickname, final IResultCallback callback);
-        
-[code example]
-
-MeariUser.getInstance().renameNickname(name, new IResultCallback() {
-    @Override
-    Public void onSuccess() {
-
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-
-    }
-});
-```
-
-# 5. Equipment distribution network (PPSCameraPlayer tool class)
-```
-Meari's hardware modules support three distribution modes: Quick Connect mode (TLink, EZ mode for short), Hotspot mode (AP mode), and QR code distribution mode.
-The QR code and Quick Connect mode are relatively easy to operate. It is recommended to use the hotspot mode as an alternative after the distribution network fails. Among them, the success rate of the two-dimensional code distribution network is high.
-```
-
-## 5.1 Generating QR code
-```
-【description】
-After obtaining the token, generate the QR code for scanning the device.
-
-[function call]
-
-/**
- * Get distribution network temporary token
- *
- * @param type with network type
- * @param callback callback
- */
-Public void getToken(int type, IGetTokenCallback callback);
-
-/**
- * Generate distribution network QR code
- *
- * @param ssid wifi name
- * @param password wifi password
- * @param token distribution network temporary token
- * @param callback callback
- */
-Public void createQR(String ssid, String password, String token, ICreateQRCallback callback);
-
-[code example]
-
-MeariUser.getInstance().getToken(Distribution.DISTRIBUTION_QR, new IGetTokenCallback() {
-    @Override
-    Public void onError(int code, String error) {
-        // error
-    }
-    @Override
-    Public void onSuccess(String token, int leftTime) {
-        // token distribution token
-        // leftTime remaining effective time
-    }
-});
-
-
-MeariUser.getInstance().createQR(wifiName, wifiPwd, token, new ICreateQRCallback() {
-    @Override
-    Public void onSuccess(Bitmap bitmap) {
-        mQrImage.setImageBitmap(bitmap);// Display QR code
-    }
-});
-```
-
-## 5.2 Searching for added devices
-```
-【description】
-After the device is searched, it is detected whether the device can be added, and then the add interface is added.
-
-[function call]
-
-/**
- * Query device status list
- *
- * @param ssid wifi name
- * @param pwd wifi password
- * @param wifiMode wifi encryption type
- * @param scanningResultActivity search result callback
- * @param status status
- */
-Public MangerCameraScanUtils(String ssid, String pwd, int wifiMode, CameraSearchListener scanningResultActivity, boolean status)
-
-/**
- * Query device status list
- *
- * @paramList<CameraInfo>cameraInfos device list
- * @param callback network request callback
- */
-Public void checkDeviceStatus(List<CameraInfo>cameraInfos, IDeviceStatusCallback callback);
-
-/**
- * Add device
- *
- * @paramList<CameraInfo>cameraInfos device list
- * @param callback network request callback
- */
-Public void addDevice(CameraInfo cameraInfo, int deviceTypeID, IAddDeviceCallback callback);
-
-[code example]
-
-MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(ssid, pwd, wifiMode, new CameraSearchListener() {
-    @Override
-    Public void onCameraSearchDetected(CameraInfo cameraInfo) {
-        / / Search device callback, execute when the device is discovered
-    }
-
-    @Override
-    Public void onCameraSearchFinished() {
-        //Search is complete
-    }
-
-    /**
-     * @param time How many s have gone?
-     * Refresh progress, if it is larger than progress and the search device is not empty, jump to the next interface
-     */
-    @Override
-    Public void onRefreshProgress(int time) {
-        
-    }
-
-}, false);
-
-// start searching
-mangerCameraScan.startSearchDevice(mIsMonitor, -1, ActivityType.ACTIVITY_SEARCHCANERARESLUT);
-
-
-MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
-    @Override
-    Public void onSuccess(ArrayList<CameraInfo> deviceList) {
-        // 1 means your own device, 2 means someone else's micro share to the device, 3 means the device can add 4, others' devices have been shared with themselves
-        If (cameraInfo.getAddStatus() == 3) {
-            / / Add equipment
-        }
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-
-    }
-});
-
-MeariUser.getInstance().addDevice(info, this.mDeviceTypeID, new IAddDeviceCallback() {
-    @Override
-    Public void onSuccess(String sn) {
-       
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-        
-    }
-});
-```
-
-# 6. Device Control
-
-## 6.1 Introduction to device related classes
-
-MeariDevice (manage acquisition device return list)
-
-- List<CameraInfo> ipcs; normal camera list
-- List<CameraInfo> bells; doorbell list
-- List<CameraInfo> snapCameras; battery camera list
-- List<CameraInfo> voiceBells; voice doorbell list
-- List<CameraInfo> fourthGenerations; 4G camera list
-- List<CameraInfo> flightCameras; luminaire camera list
-- List<NVRInfo> nvrs; NVR list
-
-BaseDeviceInfo (device information base class)
-
-- String deviceID //Device ID
-- String deviceUUID // device unique identifier
-- boolean state//device online status
-- String hostKey //Device password
-- String snNum / / device SN
-- String deviceName / / device name
-- String tp//device item number
-- String deviceIcon / / device icon gray icon
-- int addStatus//Device status 1 means that it is your own device, 2 means that others' micro-shares to the device, 3 means that the device can be added 4, others' devices have been shared with themselves
-- String deviceIconGray / / device icon gray icon
-- int protocolVersion//device version
-- int devTypeID; / / device type
-- String userAccount; / / has an account
-
-
-CameraInfo extends BaseDeviceInfo (camera information class)
-
-- int vtk = -1//device capability level voice intercom: 0=none, 1=speaker only, 2=mic only, 3=speaker/mic/halfduplex, 4=speaker/mic/Fullduplex
-- int fcr = -1//device capability level face recognition: face recognize support value
-- int dcb = -1//device capability level audible alarm: decibel support value
-- int ptz = -1//device capability level PTZ 0=not support, 1=left/right, 2=up/down, 3=left/right/up/down
-- int pir = -1//device capability level infrared detection
-- int tmpr = -1//device capability level temperature support value
-- int md = -1//device capability level humidity detect support value
-- int hmd = -1//device capability level human body support value
-  //doorbell added
-- String bellVoiceURL//recorded address of the owner's message
-- boolean pirEnable//pir switch, off: 0; on: 1
-- int pirLevel//pir level, 1: low; 2: medium; 3: high
-- int bellVol// //doorbell volume, 0~100
-- boolean batteryLock / / battery lock switch, locked: true; unlock: false
-- String bellPower//doorbell power supply, battery powered: battery; wired power: wire; coexistence: both
-- int batteryPercent//% of remaining battery, 0~100
-- float batteryRemain// remaining usage time, accurate to 1 decimal place, in hours
-- String bellStatus //doorbell charging status, charging: charging; full: charged; uncharged: discharing
-- int bellPwm / / low power, this is still uncertain, late change
-- int charmVol//bell volume, third gear: high, medium and low
-- int charmDuration / / bell length, this is still uncertain, later change
-- String bellSongs//doorbell ringtone list
-- String bellSelectSong//Selected ringtones
-- int nvrPort//NVR port number
-- String deviceID//device id
-- int trialCloud / / whether to try the cloud
-- String deviceVersionID//version number
-- int nvrID / / bind nvrId
-- String nvrUUID//bind nvr uuid
-- String nvrKey // bind nvr password
-- boolean asFriend// is a friend device
-- String sleep//sleep mode
-- long userID / / user ID of the device
-- boolean isChecked = false / / no is the selected state (4-way check button)
-- String isBindingTY//isBindingTY N (unbound) ND (not expired) D (expired) Y
-- String deviceType//device type
-- boolean hasAlertMsg //whether the server has a message
-- boolean updateVersion //whether the server has a new version
-- int closePush//turn off server push
-- String updatePersion //If the server has a new version, the device must be forced to upgrade.
-
-NVRInfo extends BaseDeviceInfo (NVR information class)
-
-- int userID; / / device also has the ID
-- int addStatus;//Add status
-- String tp; / / account name
-- int nvrFlag; / / binding indicates 0 means cancel 1: indicates existence
-- String nvrVersionID; / / nvr device version number
-- String nvrTypeName; / / nvr device version number
-- String nvrTypeNameGray; / / nvr device version number
-- boolean updateVersion = false;
-
-## 6.2 Device Information Acquisition
-```
-【description】
-Meari provides a rich interface for developers to achieve device information acquisition and management capabilities (removal, etc.). Device-related return data is notified to the recipient by means of asynchronous messages.
-We used the EventBus solution to implement message notification. Therefore, the notification object needs to be registered and destroyed on each device operation page. Please refer to the demo implementation for details.
-
-[function call]
-
-/**
- * Get a list of all devices
- *
- * @param callback network request callback
- */
-MeariUser.getInstance().getDevList(IDevListCallback callback);
-
-[code example]
-
-MeariUser.getInstance().getDevList(new IDevListCallback() {
-    @Override
-    Public void onSuccess(MeariDevice dev) {
-
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-
-    }
-});
-```
-
-## 6.3 Device Removal
-```
-【description】
-    Device removal
-
-[function call]
-
-Devtype - 0-nvr 1-ipc 2-bell (can be customized)
-/**
- * Remove device
- *
- * @param devId device id
- * @param deviceType device type
- * @param callback callback
- */
-Public void removeDevice(String devId, int deviceType, IResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().removeDevice(cameraInfo.getDeviceID(), DeviceType.IPC, new IResultCallback()(
-    @Override
-    Public void onSuccess() {
-
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-
-    }
-));
-```
-
-## 6.4 Device nickname modification
-```
-【description】
-Modify device nickname modification
-
-[function call]
-
-/**
- * Modify device nickname
- *
- * @param deviceId device id
- * @param deviceType device type
- * @param nickname device nickname
- * @param callback callback
- */
-Public void renameDeviceNickname(String deviceId, int deviceType, String nickname, IResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().renameDeviceNickName(cameraInfo.getDeviceID(), DeviceType.IPC, nickName, new IRemoveDeviceCallback()(
-    @Override
-    Public void onSuccess() {
-
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-
-    }
-));
-```
-
-## 6.5 NVR Binding Device
-```
-【description】
-NVR binding device
-
-[function call]
-
-/ / Bind the device
-MeariUser.getInstance().bindDevice(int devid, int nvrid, IRemoveDeviceCallback callback);
-/ / Unbundling equipment
-MeariUser.getInstance().unbindDevice(int nvrid,,List<int>devid,IunBindDeviceCallback callback);
-/ / Query the list of bound devices
-MeariUser.getInstance().getBindDeviceList(int nvrid,,IGetBindDeviceList callback);
-
-[code example]
-
-/ / Bind the device
-MeariUser.getInstance().bindDevice(devid,nvrid,new IRemoveDeviceCallback(){
-    @Override
-    Public void onSuccess() {
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-    }
-});
-/ / Unbundling equipment
-MeariUser.getInstance().unbindDevice(nvrid,,List<int>devid,new IunBindDeviceCallback(){
-    @Override
-    Public void onSuccess() {
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-    }
-});
-/ / Query the list of bound devices
-MeariUser.getInstance().getBindDeviceList(nvrid,new IGetBindDeviceList(){
-    @Override
-    Public void onSuccess(List<MeariDeviceStatusInfo> list) {
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-    }
-});
-```
-
-## 6.6 Single device one day alarm time point acquisition
-```
-【description】
-Single device one day alarm time point acquisition
-
-[function call]
-/**
- * Single device one day alarm time point acquisition
- *
- * @param deviceID device id
- * @param dayTime day time (format YYMMDD)
- * @param callback callback
- */
-MeariUser.getInstance().getDeviceAlarmMessageTimeForDate(int devid,String date,IDeviceAlarmMessageTimeCallback callback);
-
-[code example]
-
-MeariUser.getInstance().getDeviceAlarmMessageTimeForDate(devid,date,new IDeviceAlarmMessageTimeCallback()(
-    @Override
-    Public void onSuccess(List<AlarmMessageTime> list) {
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-    }
-));
-```
-
-Class AlarmMessageTime:
-
--int StartHour;//Start time: hour
--int StartMinute;//Start time: minute
--int StartSecond;//Start time: seconds
--int EndHour;//End time: hour
--int EndMinute;//End time: minute
--int EndSecond;//End time: seconds
--int bHasVideo;//has no video
--int recordType;//doorbell adds time point type, in order to facilitate future expansion defined as int type
--int TYPE_PIR = 0x1001; // PIR alarm type time point
--int TYPE_MOVE = 0x1002;//Motion detection alarm type time point
--int TYPE_VISIT = 0x1003; / / visitor alarm type time point
-
-
-## 6.7 Check if the device has a new version
-```
-【description】
-Check if the device has a new version
-
-[function call]
-
-/**
- * Check if the device has a new version
- *
- * @param devVersion device version
- * @param lanType Language type
- * @param callback callback
- */
-Public void checkNewFirmwareForDev(String devVersion, String lanType, ICheckNewFirmwareForDevCallback callback);
-
-[code example]
-MeariUser.getInstance().checkNewFirmwareForDev(firmware_version, "zh", new ICheckNewFirmwareForDevCallback() {
-    @Override
-    Public void onSuccess(DeviceUpgradeInfo info) {
-        mDeviceUpgradeInfo = info;
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-DeviceUpgradeInfo:
-
-- String updatePersion;//Do you need a device forced upgrade?
-- int updateStatus;//Can the device be upgraded?
-- String serVersion ;//server version
-- String versionDesc;//Upgrade description
-- String devUrl; / / new firmware address
-
-```
-Contains the upgraded address, etc.
-```
-
-## 6.8 Querying Device Online Status
-```
-【description】
-    Check if the device has a new version
-
-[function call]
-/*
- * Query whether the device is online
- *
- * @param deviceId device ID
- * @param callback callback
- *
- */
-MeariUser.getInstance().checkDeviceOnline(String devid,ICheckDeviceOnlineCallback callback);
-
-[code example]
-MeariUser.getInstance().checkDeviceOnline(info.getDeviceID(), new ICheckDeviceOnlineCallback() {
-    @Override
-    Public void onSuccess(String deviceId, boolean online) {
-        mAdapter.changeDeviceStatus(deviceId,online);
-    }
-    @Override
-    Public void onError(int code, String error) {
-        mAdapter.changeStatusByUuid(info.getDeviceID(), -27);
-    }
-});
-```
-
-## 6.9 Querying the music list
-```
-【description】
-    Query music list
-
-[function call]
-
- /**
- * Query music list
- *
- * @param callback callback
- */
-MeariUser.getInstance().getMusicList(new IGetMusicListCallback());
-
-[code example]
-
-MeariUser.getInstance().getMusicList(new IGetMusicListCallback()(
-    @Override
-    Public void onSuccess(List<MeariMusic> list) {
-    }
-
-    @Override
-    Public void onError(String code, String error) {
-    }
-));
-```
-MeariMusicList:
-
-- String musicID; //id
-- int download_percent;//Download progress
-- boolean is_playing; / / is playing
-- String musicName;//music name
-- String musicFormat;//music format
-- String musicUrl;//Music address
-
-
-## 6.10 Remote wake-up doorbell
-```
-【description】
-Remote wake-up doorbell
-Note: For doorbell-type low-power products, you need to wake up remotely and then call the hole-punching interface (may need to punch holes multiple times)
-
-[function call]
-/**
- * Remote wake-up doorbell
- *
- * @param deviceId deviceId
- * @param callback callback
- */
-Public void remoteWakeUp(String deviceId, IResultCallback callback);
-
-[code example]
-MeariUser.getInstance().remoteWakeUp(mCameraInfo.getDeviceID(), new IResultCallback() {
-    @Override
-    Public void onSuccess() {
-
-    }
-    @Override
-    Public void onError(int code, String error) {
-
-    }
-});
-```
-## 6.11 Sharing equipment
-
-【description】
-Share your device with others
-
-```
-[function call]
-
-/**
- * Request sharing device
- *
- * @param cameraInfo device information object
- * @param callback callback
- */
-Public void requestDeviceShare(BaseDeviceInfo deviceInfo, IRequestDeviceShareCallback callback);
-
-[code example]
-
-MeariUser.getInstance().requestDeviceShare(cameraInfo, new IRequestDeviceShareCallback() {
-    @Override
-    Public void onSuccess(String sn) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-
-# 7. Sharing device
-
-## 7.1 Related Class Introduction
-
-MeariFriend Friends
-- String nickName; Nickname
-- String accountName; account number
-- String userFriendID; buddy id
-- String imageUrl; Friend avatar
-
-ShareFriendInfo Friends information shared by a device
-- String nickName;
-- String imageUrl; Friend avatar
-- String userId; buddy id
-- boolean share; whether it has been shared
-- String userAccount; friend account
-
-MeariSharedDevice shared device information for a friend
-
-- long deviceID; device id
-- String deviceName; device name
-- String deviceUUID; device unique identifier
-- boolean isShared; whether it has been shared
-- String snNum; device sn
-
-## 7.1 Friend Management
-
-### 7.1.1 Get a buddy list
-```
-【description】
-Get a list of friends
-    
-[function call]
-/**
- * Get a list of friends
- *
- * @param callback returns callback
- */
-Public void getFriendList(IGetFriendCallback callback);
-
-[code example]
-
-MeariUser.getInstance().getFriendList(new IGetFriendCallback() {
-    @Override
-    public void onSuccess(List<MeariFriend> friends) {
-    }
-
-    @Override
-    public void onError(int code, String error) {
-    }
-});
-```
-
-### 7.1.2 Adding a friend
-```
-【description】
-Request to add a friend
-
-[function call]
-
-/**
- * Request to add a friend
- *
- * @param callback callback
- */
-Public void addFriend(String userAccount, IResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().addFriend(userAccount, new IResultCallback() {
-    @Override
-    Public void onSuccess() {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 7.1.3 Deleting friends
-```
-【description】
-Delete single or multiple friends
-
-[function call]
-
-/**
- * delete friend
- *
- * @param userIds buddy id, format: ["xxxxxxxx","xxxxxxxx"]
- * @param callback callback
- */
-Public void deleteFriend(String userIds, IResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().deleteFriend(userIds, new IResultCallback() {
-    @Override
-    Public void onSuccess() {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-
-    }
-});
-```
-
-### 7.1.4 Modify friend nickname
-```
-【description】
-Modify a friend's name
-
-[function call]
-
-/**
- * Modify your friend's name
- *
- * @param friendId buddy ID
- * @param nickname buddy tag
- * @param callback returns callback
- */
-Public void renameFriendMark(String friendId, String nickname, IResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().renameFriendMark(meariFriend.getUserFriendID(), nickname, new IResultCallback() {
-    @Override
-    Public void onSuccess(){
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-## 7.2 Query sharing
-
-### 7.2.1 Querying the list of friends shared by a single device
-```
-【description】
-Query the list of friends shared by a single device
-
-[function call]
-
-/**
- * Query the list of friends that a single device is shared with
- *
- * @param deviceType device type
- * @param deviceId device id
- * @param callback network request callback callback
- */
-Public void queryFriendListForDevice(int deviceType, String deviceId, IQueryFriendListForDeviceCallback callback) ;
-
-[Method call]
-
-MeariUser.getInstance().queryFriendListForDevice(DeviceType.IPC, cameraInfo.getDeviceID(), new IQueryFriendListForDeviceCallback() {
-    @Override
-    Public void onSuccess(ArrayList<ShareFriendInfo> shareFriendInfos) {
-    }
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 7.2.2 Querying the list of devices shared with a friend
-```
-【description】
-Query the list of devices shared with a friend
-
-[function call]
-    
-/**
- * Query the list of devices shared with a friend
- *
- * @param devType device type 0-nvr 1-ipc 2-bell
- * @param userId share user ID
- */
-Public void queryDeviceListForFriend(int devType, String userId, IQueryDeviceListForFriendCallback callback);
-
-[Method call]
-
-MeariUser.getInstance().queryDeviceListForFriend(DeviceType.DEVICE_IPC, meariFriend.getUserFriendID(), new IQueryDeviceListForFriendCallback() {
-    @Override
-    Public void onSuccess(List<MeariSharedDevice> list) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-## 7.3 Adding Share
-### 7.3.1 Adding a single device share
-```
-【description】
-Share a single device to a given user
-
-[function call]
-
-/**
- * Share a single device to a specified user
- *
- * @param devType device type 0-nvr 1-ipc 2-bell
- * @param userId share user ID
- * @param devUuid device identifier
- * @param callback returns callback
- */
-Public void addShareUserForDev(int devType, String userId, String devUuid, String devId, IShareForDevCallback callback);
-
-[Method call]
-
-MeariUser.getInstance().addShareUserForDev(DeviceType.IPC, meariFriend.getUserFriendID(), shareFriendInfo.getDeviceUUID(), shareFriendInfo.getDeviceID(), new IShareForDevCallback() {
-    @Override
-    Public void onSuccess(String userId, String devId) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 7.3.2 Cancel individual device sharing
-```
-【description】
-Cancel individual device sharing
-
-[function call]
-/**
- * Unshare device to friend
- *
- * @param devType device type 0-nvr 1-ipc 2-bell
- * @param userId share user ID
- * @param devUuid device identifier
- * @param devId device id
- * @param callback returns callback
- */
-Public void removeShareUserForDev(int devType, String userId, String devUuid, String devId, IShareForDevCallback callback) ;
-
-[Method call]
-MeariUser.getInstance().removeShareUserForDev(DeviceType.IPC, shareFriendInfo.getUserId(), cameraInfo.getDeviceID(), cameraInfo.getDeviceUUID(), new IShareForDevCallback() {
-    @Override
-    Public void onSuccess(String userId, String devId) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-
-```
-
-### 7.3.3 Request to share a device
-```
-【description】
-Request to share a device
-
-[function call]
-
-/**
- * Request to share a device
- *
- * @param cameraInfo device
- * @param callback callback
- */
-Public void requestDeviceShare(BaseDeviceInfo cameraInfo, IRequestDeviceShareCallback callback);
-
-[Method call]
-
-MeariUser.getInstance().requestDeviceShare(info, new IRequestDeviceShareCallback() {
-    @Override
-    Public void onError(int code, String error) {
-    }
-
-    @Override
-    Public void onSuccess(String sn) {
-    }
-});
-```
-
-
-# 8.Message Center
-## 8.1 Get all devices have messages
-```
-【description】
-Get all devices have messages
-
-[function call]
-/**
- * Get a list of messages
- *
- * @param callback callback
- */
-Public void getAlarmMessageStatusForDev(IGetAlarmMessageStatusForDevCallback callback);
-
-[Method call]
-MeariUser.getInstance().getAlarmMessageStatusForDev(new IGetAlarmMessageStatusForDevCallback() {
-    @Override
-    Public void onError(int code, String error) {
-        mPullToRefreshRecyclerView.onRefreshComplete();
-        CommonUtils.showToast(error);
-    }
-
-    @Override
-    Public void onSuccess(List<DeviceMessageStatusInfo> deviceMessageStatus) {
-        bindOrderList(deviceMessageStatus);
-    }
-});
- 
-```
-Class DeviceMessageStatus:
-
-- long deviceID //device ID
-- String deviceName //Device name
-- String deviceUUID // device unique identifier
-- String hasMessgFlag //"Y" indicates that there is an unread message "N" indicates no unread message
-- boolean bHasMsg //Do you have a message?
-- int delMsgFlag //0 means unedited state, 1 means editing unit selection 2 means selection
-- boolean bSysmsg // Is it a system message?
-- String snNum // Is it a system message?
-- String url // Is it a system message?
-- String userAccount // Is it a system message?
-
-
-
-## 8.2 Getting System Messages
-```
-【description】
-    Get system messages
-
-[function call]
-    /**
-     * Get system messages
-     *
-     * @param callback callback
-     */
-    Public void getSystemMessage(IGetSystemMessageCallback callback);
-
-[Method call]
-    MeariUser.getInstance().getSystemMessage(new IGetSystemMessageCallback() {
-        @Override
-        Public void onError(int code, String error) {
-            mPullToRefreshListView.onRefreshComplete();
-            bindError(error);
-            CommonUtils.showToast(error);
-        }
-
-        @Override
-        Public void onSuccess(List<SystemMessageInfo> systemMessages) {
-            bindList(systemMessages);
-            mPullToRefreshListView.onRefreshComplete();
-        }
-        });
-```
-Class SystemMessage:
-
-- long msgID; //MessageId
-- int msgTypeID; / / message type
-- String isRead; / / Is it read?
-- Date createDate; / / create time time
-- Date updateDate; / / update time
-- long userID; / / user ID
-- String userAccount; / / user account
-- String nickName;//user name
-- String delState; / / whether to deal with
-- long deviceID; / / device Id
-- String deviceName; / / device name
-- String deviceUUID; / / device identifier
-- long userIDS; / / requester Id
-- String imageUrl;//avatar
-
-
-## 8.3 Get a device alarm message
-```
-【description】
-    Get a device alarm message
-
-[function call]
-    /**
-      * refuse friend share device
-      *
-      * @param deviceId deviceId
-      * @param callback callback
-      */
-    Public void getAlarmMessagesForDev(long deviceId, IGetAlarmMessagesCallback callback);
-
-[Method call]
-    MeariUser.getInstance().getAlarmMessagesForDev(this.mMsgInfo.getDeviceID(), new IGetAlarmMessagesCallback() {
-
-        @Override
-        Public void onSuccess(List<DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo, boolean isDelete) {
-            mPullToRefreshListView.onRefreshComplete();
-            bindList(deviceAlarmMessages);
-            mCameraInfo = cameraInfo;
-            deviceStatus = isDelete;
-        }
-
-        @Override
-        Public void onError(int code, String error) {
-            CommonUtils.showToast(error);
-            bindError(error);
-        }
-    });;
- 【Precautions】
-    If the message is pulled by the owner, the server will not save the message, and the shared friends will not see the message.
-```
-
-Class DeviceAlarmMessage:
-- long deviceID; / / device ID
-- String deviceUuid; / / device unique identifier
-- String imgUrl;// Alarm picture address
-- int imageAlertType; / / alarm type (PIR and Motion)
-- int msgTypeID; / / message type
-- long userID; / / user ID
-- long userIDS;
-- String createDate; / / wear time
-- String isRead; / / Is it read?
-- String tumbnailPic;//thumbnail
-- String decibel; / / decibel
-- long msgID; / / message Id
-
-
-## 8.3 Batch delete system messages
-```
-【description】
-
-    Batch delete system messages
-
-[function call]
-    /**
-     * Delete system messages in batches
-     *
-     * @param callback callback
-     * @param msgIds Message Ids
-     */
-    Public void deleteSystemMessage(List<Long> msgIds, final IResultCallback callback);
-
-[Method call]
-    MeariUser.getInstance().deleteSystemMessage(selectDeleteMsgIds, new IResultCallback() {
-        @Override
-        Public void onSuccess() {
-            stopProgressDialog();
-            }
-        @Override
-        Public void onError(int code, String error) {
-            stopProgressDialog();
-            CommonUtils.showToast(error);
-            }
-        });
-
-```
-
-## 8.4 Batch Delete Multiple Device Alarm Messages
-```
-【description】
-    Delete multiple device alarm messages in bulk
-
-[function call]
-     /**
-     * Delete multiple device alarm messages in batches
-     *
-     * @param callback callback
-     * @param deviceInfos Device Id
-     */
-    Public void deleteDevicesAlarmMessage(ArrayList<Long> deviceInfos, IResultCallback callback) ;
-
-[Method call]
-    MeariUser.getInstance().deleteDevicesAlarmMessage(deviceInfos, new IResultCallback() {
-        @Override
-        Public void onSuccess() {
-            stopProgressDialog();
-            deleteCallback();
-        }
-        @Override
-        Public void onError(int code, String error) {
-        stopProgressDialog();
-        CommonUtils.showToast(error);
-        }
-    });
-```
-
-## 8.5 Marking a single device message has been read
-```
-【description】
-    Mark a single device message all read
-
-[function call]
-    Void MarkDevicesAlarmMessage(int devid, IMarkDevicesAlarmMessageCallback callback);
-
-[Method call]
-    MeariUser.getInstance().MarkDevicesAlarmMessage(
-        Devid, new IMarkDevicesAlarmMessageCallback() {
-            @Override
-            Public void onSuccess() {
-                
-            }
-
-            @Override
-            Public void onError(String errorCode, String errorMessage) {
-
-            }
-    });
-```
-
-## 8.6 Friend Message Processing
-```
-【description】
-    Friend message processing - consent | rejection
-
-[function call]
-    /**
-     * Agree to add friends
-     *
-     * @param msgId messageId
-     * @param friendId friend userId
-     * @param callback callback
-     */
-    Public void agreeFriend(long msgId, long friendId, IDealSystemCallback callback) ;
-
-    /**
-     * Refuse to add friends
-     *
-     * @param msgId messageId
-     * @param friendId friend userId
-     * @param callback callback
-     */
-    Public void refuseFriend(long msgId, long friendId, IDealSystemCallback callback);
-
-[Method call]
-   MeariUser.getInstance().agreeFriend(msgInfo.getMsgID(), msgInfo.getUserID(), new IDealSystemCallback() {
-        @Override
-        Public void onSuccess(long msgId) {
-            stopProgressDialog();
-            shareResult(msgId);
-        }
-
-        @Override
-        Public void onError(int code, String error) {
-            stopProgressDialog();
-            CommonUtils.showToast(error);
-        }
-    });
-
-    MeariUser.getInstance().refuseFriend(msgInfo.getMsgID(), msgInfo.getUserID(), new IDealSystemCallback() {
-        @Override
-        Public void onSuccess(long msgId) {
-            stopProgressDialog();
-            shareResult(msgId);
-        }
-
-        @Override
-        Public void onError(int code, String error) {
-            stopProgressDialog();
-            CommonUtils.showToast(error);
-        }
-    });;
-【Precautions】
-    If the message is processed, you need to manually delete the message.
-```
-
-## 8.6 Device Message Processing
-```
-【description】
-    Device Message Processing - Agree | Reject
-
-[function call]
-    /**
-     * Agree to share the device
-     *
-     * @param msgId messageId
-     * @param friendId friend userId
-     * @param deviceId deviceId
-     * @param callback callback
-     */
-    Public void agreeShareDevice(long msgId, long friendId, long deviceId, IDealSystemCallback callback);
-
-    /**
-     * Refuse to share device
-     *
-     * @param msgId messageId
-     * @param friendId friend userId
-     * @param deviceId deviceId
-     * @param callback callback
-     */
-    Public void refuseShareDevice(long msgId, long friendId, long deviceId, IDealSystemCallback callback);
-
-[Method call]
-    MeariUser.getInstance().agreeShareDevice(msgInfo.getMsgID(), msgInfo.getUserID(), msgInfo.getDeviceID(), new IDealSystemCallback() {
-        @Override
-        Public void onSuccess(long msgId) {
-            stopProgressDialog();
-            shareResult(msgId);
-        }
-
-        @Override
-        Public void onError(int code, String error) {
-            stopProgressDialog();
-            CommonUtils.showToast(error);
-        }
-    });
-
-    MeariUser.getInstance().refuseShareDevice(msgInfo.getMsgID(), msgInfo.getUserID(), msgInfo.getDeviceID(), new IDealSystemCallback() {
-        @Override
-        Public void onSuccess(long msgId) {
-            stopProgressDialog();
-            shareResult(msgId);
-        }
-
-        @Override
-        Public void onError(int code, String error) {
-            stopProgressDialog();
-            CommonUtils.showToast(error);
-            }
-    });
-
-【Precautions】
-    If the message is processed, you need to manually delete the message.
-```
-
-# 9. Camera parameter settings
-Used to set the camera's detection alarm, sleep mode, local playback and so on.
-Whether different devices support a certain setting can be judged by the device's capability set.
-
-If (cameraInfo.getLed() == 1) {
-    / / Support switch settings such as LED
-} else {
-    // does not support switch settings such as LEDs
+### 11.1.2 Exit MQTT Service
+
+// Called after the user logs out successfully
+if (MeariUser.getInstance (). isMqttConnected ()) {
+    MeariUser.getInstance (). DisConnectMqttService ();
 }
 
-Equipment capability set
+### 11.1.3 MQTT message processing
 
-- int dcb; noise alarm: 0-not supported; 1-support
-- int pir; human detection: 0-not supported; 1-support
-- int md; motion detection: 0-not supported; 1-support
-- int cst; cloud storage : 0 - not supported; 1 - support
-- int dnm; day and night mode: 0-not supported; 1-support
-- int led; LED lights : 0 - not supported; 1 - support
-- int flp; video flip: 0-not supported; 1-support
-- int bcd; crying detection: 0-not supported; 1-support
-- int ptr; humanoid tracking: 0-not supported; 1-support
-- int pdt; humanoid detection: 0-not supported; 1-support
-
-
-
-## 9.1 P2P Setting Parameters
-Set the parameters of the camera by punching holes in P2P. For specific usage, refer to the use of CameraPlayer in demo.
-
-## 9.2 Iot setting parameters
-Get and set camera parameters via Iothub.
-How to use the reference to the use of CameraSettingIotActivity in the demo
-
-### 9.2.1 Iot settings related classes
-
-Device attribute class obtained by IotPropertyInfo Iot
-- String userId; User ID
-- String deviceTimeZone; device time zone
-- String deviceKey; device key
-- String capability; device capability level
-- String snNum; SN number
-- String firmwareCode; Firmware code ppstrong-c2-neutral-1.0.0.20190617
-- String firmwareVersion; Firmware version number 1.0.0
-- String cloudRecordType; Cloud service recording type: 0-event recording; 1-all-day recording;
-- String cloudSaveCycle; cloud service storage cycle
-- String cloudExpireDate; cloud service expiration time
-- int cloudUploadEnable; cloud storage upload switch: 0-off; 1-open;
-- String wifiName; WiFi name of the device connection
-- int wifiStrength; WiFi strength of device connection: 0 to 100;
-- int rotateEnable; Video flip: 0-normal; 1-turn;
-- int ledEnable; LED indicator status: 0-off; 1-on;
-- int sdRecordType; SD card recording type: 0-event recording; 1-all day video;
-- int sdRecordDuration; SD card recording time: 0-1 minutes; 1-2 minutes; 2-3 minutes;
-- int motionDetEnable; Motion detection enable switch: 0-off; 1-on;
-- int motionDetSensitivity; Motion detection sensitivity: 0-low; 1-in; 2-high;
-- int humanDetEnable; humanoid detection enable switch: 0-off; 1-open;
-- int humanFrameEnable; Humanoid frame enable switch: 0-off; 1-open;
-- int humanTrackEnable; Humanoid tracking enable switch: 0-off; 1-open;
-- int soundDetEnable; audible alarm enable switch: 0-off; 1-open;
-- int soundDetSensitivity; audible alarm sensitivity: 0-low; 1-in; 2-high;
-- int cryDetEnable; Cry detection enable switch: 0-off; 1-on;
-- int dayNightMode; day and night mode: 0-automatic; 1-day mode; 2-night mode;
-- int sdStatus; SD card status:
-- String sdCapacity; total SD card capacity
-- String sdRemainingCapacity; SD card remaining capacity
-- int sleepMode; sleep mode: 0 - no sleep; 1 - sleep; 2 - timed sleep; 3 - geofence sleep;
-- String sleepTime; time period for timed sleep
-- String sleepWifi; WiFi for geofencing sleep
-- int onvifEnable; Onvif enable switch: 0-off; 1-on;
-- String onvifPwd; Onvif password
-- String onvifUrl; Onvif service network address
-- int h265Enable; H265 enable switch: 0-H264; 1-H265
-- String ip; device IP address
-- int NetMode; device network mode: 0-wireless; 1-wired
-- int OTAUpgradeStatus; OTA upgrade status: 0 - not upgraded; 1 - upgrade; 2 - upgrade completed to be restarted;
-- int OTAUpgradeDownload; OTA upgrade Download progress: -1 to 100
-- int OTAUpgradeUpdate; OTA upgrade Upgrade progress: -1 to 100
-- int OTAUpgradeTotal; OTA upgrade Total progress: -1~100
-- int temperature; temperature
-- int humidity; humidity
-- int flightSwitchStatus; luminaire camera headlight switch: 0-off; 1-open;
-
-IotConstants Iot related attribute characters
-Device property constant, used when refreshing properties, corresponding to the properties of IotPropertyInfo.
-
-### 9.2.2 Get all attribute parameters of the device
 ```
-【description】
-Get all the attribute parameters of the device
+When the SDK is initialized, it needs to be passed into the implementation of the MqttMessageCallback interface, that is, MyMessageHandler in the demo.
+Handle MQTT in the implementation class of the MqttMessageCallback interface (see Demo MyMessageHandler)
 
-[function call]
+/ **
+ * Other news
+ * @param messageId message ID
+ * @param message message content
+ * /
+void otherMessage (int messageId, String message);
 
-/**
- * Get all the parameters of the device
- *
- * @param snNum device's sn number
- * @param tag request tag
- * @param callback request callback
- */
-Public void getIotProperty(String snNum, Object tag, IPropertyCallback callback);
+/ **
+ * Offsite login
+ * /
+void loginOnOtherDevices ();
 
-[code example]
+/ **
+ * The owner cancels or deletes the shared device
+ * @param deviceId device ID
+ * @param deviceName device name
+ * /
+void onCancelSharingDevice (String deviceId, String deviceName);
 
-MeariUser.getInstance().getIotProperty(cameraInfo.getSnNum(),this, new IPropertyCallback() {
-    @Override
-    Public void onSuccess(IotPropertyInfo iotPropertyInfo) {
-    }
+/ **
+ * Device unbound (e-commerce unbundling)
+ * /
+void deviceUnbundled ();
 
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
+/ **
+ * Doorbell call
+ * @param bellJson doorbell information
+ * @param isUpdateScreenshot is the message to update the screenshot
+ * /
+void onDoorbellCall (String bellJson, boolean isUpdateScreenshot);
+
+/ **
+ * Device added successfully
+ * /
+void addDeviceSuccess (String message);
+
+/ **
+ * Failed to add device
+ * /
+void addDeviceFailed (String message);
+
+/ **
+ * Failed to add the device, the device failed to be unbound and the add failed
+ * /
+void addDeviceFailedUnbundled (String message);
+
+/ **
+ * Received device shared by someone
+ * /
+void ReceivedDevice (String message);
+
+/ **
+ * Request to receive a device shared by someone
+ * @param userName user name
+ * @param deviceName device name
+ * @param msgID message ID
+ * /
+void requestReceivingDevice (String userName, String deviceName, String msgID);
+
+/ **
+ * Request to share device to someone
+ * @param userName user name
+ * @param deviceName device name
+ * @param msgID message ID
+ * /
+void requestShareDevice (String userName, String deviceName, String msgID);
 ```
 
-### 9.2.3 Refreshing device properties
+## 10.2 Integrated Aurora Push
+
+### 10.2.1 Apply for an account
 ```
-【description】
-Refresh the device properties, select the properties that need to be refreshed, call the refresh interface, and the device returns the latest property values ​​through the mqtt message.
-
-[function call]
-
-/**
- * Refresh device properties
- *
- * @param snNum device's sn number
- * @param timeList 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void refreshProperty(String snNum, List<String> propertyList, Object tag, IStringResultCallback callback);
-
-[code example]
-
-ArrayList<String> arrayList = new ArrayList<>();
-arrayList.add(IotConstants.sdCapacity);
-arrayList.add(IotConstants.sdRemainingCapacity);
-
-MeariUser.getInstance().refreshProperty(cameraInfo.getSnNum(), arrayList, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
+Please apply for Aurora Push account and create application by yourself, refer to the official document to access Aurora Push. Contact us to configure the Aurora key and secret you applied for.
+```
+### 10.2.2 Setting User Alias
+```
+UserInfo is obtained after successfully logging in to meati.
+After the aurora is successfully initialized, use the userInfo.getJpushAlias ​​() successfully obtained by login to set the aurora alias.
+Initialize and set the alias refer to the official document or the MeariSDK demo
+```
+### 10.2.3 Message Handling
+```
+Refer to the message processing in the MyReceiver file in the demo
 ```
 
-### 9.2.4 Device upload cloud recording settings
+## 10.3 Integrated Google Push
 ```
-【description】
-Device upload cloud recording settings
-
-[function call]
-
-/**
- * Device upload cloud recording settings
- *
- * @param snNum device's sn number
- * @param enable 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setCloudUploadEnable(String snNum, int enable, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setCloudUploadEnable(cameraInfo.getSnNum(), enable, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
+Not currently supported
 ```
 
-### 9.2.5 Equipment LED light switch control
+## 10.3 Integration with other pushes
 ```
-【description】
-Equipment LED light switch control
-
-[function call]
-
-/**
- * Equipment LED light switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setLedEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setLedEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
+Not currently supported
 ```
 
-### 9.2.6 Device Preview Video Flip Control
-```
-【description】
-Device preview video flip control
-
-[function call]
-
-/**
- * Device preview video flip control
- *
- * @param snNum device's sn number
- * @param status 0-normal; 1-turn;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setRotateEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setRotateEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.7 Device motion detection switch control
-```
-【description】
-Device motion detection switch control
-
-[function call]
-
-/**
- * Device motion detection switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setMotionDetEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setMotionDetEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.8 Device motion detection sensitivity setting
-```
-【description】
-Device motion detection sensitivity setting
-
-[function call]
-
-/**
- * Device motion detection sensitivity setting
- *
- * @param snNum device's sn number
- * @param sensitivity 0-low; 1-in; 2-high;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setMotionDetSensitivity(String snNum, int sensitivity, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setMotionDetSensitivity(cameraInfo.getSnNum(), sensitivity, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.9 Device noise detection switch control
-```
-【description】
-Device noise detection switch control
-
-[function call]
-
-/**
- * Equipment noise detection switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSoundDetEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setSoundDetEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.10 Device Noise Detection Sensitivity Control
-```
-【description】
-Device noise detection sensitivity control
-
-[function call]
-
-/**
- * Equipment noise detection sensitivity control
- *
- * @param snNum device's sn number
- * @param sensitivity 0-low; 1-in; 2-high;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSoundDetSensitivity(String snNum, int sensitivity, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setSoundDetSensitivity(cameraInfo.getSnNum(), sensitivity, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.11 Device Local Recording Type Setting
-```
-【description】
-Device local recording type setting
-
-[function call]
-
-/**
- * Device local recording type setting
- *
- * @param snNum device's sn number
- * @param type 0- event recording; 1-all day video;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSdRecordType(String snNum, int type, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setSdRecordType(cameraInfo.getSnNum(),type, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.12 Device local recording event video clip time setting
-```
-【description】
-Device local recording event video clip time setting
-
-[function call]
-
-/**
- * Device local recording event video clip time setting
- *
- * @param snNum device's sn number
- * @param duration 0-1 minutes; 1-2 minutes; 2-3 minutes;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSdRecordDuration(String snNum, int duration, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setSdRecordDuration(cameraInfo.getSnNum(), duration, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.13 Equipment day and night mode setting
-```
-【description】
-Device day and night mode setting
-
-[function call]
-
-/**
- * Equipment day and night mode setting
- *
- * @param snNum device's sn number
- * @param status 0-automatic; 1-day mode; 2-night mode;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setDayNightMode(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setDayNightMode(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.14 Device Video Encoding Format Settings
-```
-【description】
-Device video encoding format setting
-
-[function call]
-
-/**
- * Device video encoding format setting
- *
- * @param snNum device's sn number
- * @param status 0-H264; 1-H265
- * @param tag request tag
- * @param callback request callback
- */
-Public void setH265Enable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setH265Enable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.15 Device Onvif Switch Control
-```
-【description】
-Device Onvif Switch Control
-
-[function call]
-
-/**
- * Device Onvif switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setOnvifEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setOnvifEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.16 Device Onvif Password Settings
-```
-【description】
-Device Onvif password settings
-
-[function call]
-
-/**
- * Device Onvif password settings
- *
- * @param snNum device's sn number
- * @param pwd Onvif password
- * @param tag request tag
- * @param callback request callback
- */
-Public void setOnvifPwd(String snNum, String pwd, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setOnvifPwd(cameraInfo.getSnNum(), pwd, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.17 Device Format SD Card
-```
-【description】
-The device formats the SD card. After the format is successful, the format progress is obtained through the mqtt message.
-
-[function call]
-
-/**
- * Device format SD card
- *
- * @param snNum device's sn number
- * @param tag request tag
- * @param callback request callback
- */
-Public void formatSdcard(String snNum, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().formatSdcard(cameraInfo.getSnNum(), this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.18 Device upgrade firmware
-```
-【description】
-Call checkNewFirmwareForDev() to detect whether the device has new firmware to update. After the firmware is successfully upgraded, the upgrade progress is obtained through the mqtt message.
-
-[function call]
-
-/**
- * Device upgrade firmware
- *
- * @param snNum device's sn number
- * @param OTAUpgradeInfo 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void upgradeFirmware(String snNum, String OTAUpgradeInfo, Object tag, IStringResultCallback callback);
-
-[code example]
-
-JSONObject object = new JSONObject();
-Object.put("url",deviceUpgradeInfo.getDevUrl());
-Object.put("version",deviceUpgradeInfo.getSerVersion() + "-upgrade.bin");
-
-MeariUser.getInstance().upgradeFirmware(cameraInfo.getSnNum(), object.toString(), this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.19 Equipment humanoid tracking switch control
-```
-【description】
-Equipment humanoid tracking switch control
-
-[function call]
-
-/**
- * Equipment humanoid tracking switch control
- *
- * @param snNum device's sn number
- * @param OTAUpgradeInfo 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setHumanTrackEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setHumanTrackEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.20 Equipment humanoid detection alarm switch control
-```
-【description】
-Equipment humanoid detection alarm switch control
-
-[function call]
-
-/**
- * Equipment humanoid detection alarm switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setHumanDetEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setHumanDetEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.21 Equipment Humanoid Frame Switch Control
-```
-【description】
-Equipment humanoid frame switch control
-
-[function call]
-
-/**
- * Equipment humanoid frame switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setHumanFrameEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setHumanFrameEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.22 Equipment crying alarm switch control
-```
-【description】
-Equipment crying alarm switch control
-
-[function call]
-
-/**
- * Equipment crying alarm switch control
- *
- * @param snNum device's sn number
- * @param status 0-off 1-open
- * @param tag request tag
- * @param callback request callback
- */
-Public void setCryDetEnable(String snNum, int status, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setCryDetEnable(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.23 Device Sleep Mode Settings
-```
-【description】
-Device sleep mode setting
-
-[function call]
-
-/**
- * Device sleep mode setting
- *
- * @param snNum device's sn number
- * @param mode 0- no sleep; 1-sleep; 2-timed sleep; 3-geo-fence sleep;
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSleepMode(String snNum, int mode, Object tag, IStringResultCallback callback);
-
-[code example]
-
-MeariUser.getInstance().setSleepMode(cameraInfo.getSnNum(), status, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.24 Device Timing Sleep Time Period Setting
-```
-【description】
-Device timed sleep period setting
-
-[function call]
-
-/**
- * Device timed sleep period setting
- *
- * @param snNum device's sn number
- * @param timeList sleep time period list
- * @param tag request tag
- * @param callback request callback
- */
-Public void setSleepTimeList(String snNum, String timeList, Object tag, IStringResultCallback callback);
-
-[code example]
-
-timeList description:
-Enable: whether to enable
-Start_time: start time point
-Stop_time: end time point
-Repeat: The number of days that take effect every week 1~7
-
-[{
-    "enable": true,
-    "start_time": "03:00",
-    "stop_time": "04:00",
-    "repeat": [3, 4]
-}, {
-    "enable": false,
-    "start_time": "00:00",
-    "stop_time": "03:00",
-    "repeat": [1, 2]
-}]
-
-MeariUser.getInstance().setSleepTimeList(cameraInfo.getSnNum(), timeList, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    Public void onError(int code, String error) {
-    }
-});
-```
-
-### 9.2.25 Device start rotation command
-```
-【description】
-Device start rotation command
-
-[function call]
-
-/**
- * The device starts to rotate
- *
- * @param snNum device's sn number
- * @param timeList p: left-80; right 80. t: lower -20; upper 20. z: passed in 0
- * @param tag request tag
- * @param callback request callback
- */
-Public void startPTZ(String snNum, int p, int t, int z, Object tag, IStringResultCallback callback);
-
-[code example]
-
-//move to the left
-MeariUser.getInstance().startPTZ(cameraInfo.getSnNum(), -80, 0, 0, this, new IStringResultCallback() {
-    @Override
-    Public void onSuccess(String result) {
-    }
-
-    @Override
-    public void onError(int code, String error) {
-    }
-});
-```
+# Release Notes:
+2020-03-13 wu: Initial draft of 2.2.0 SDK access guide completed

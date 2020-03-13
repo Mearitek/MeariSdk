@@ -243,7 +243,7 @@ public class SingleVideoActivity extends PlayVideoActivity implements VideoPlayC
     }
 
     public void postWakeUpData() {
-        MeariUser.getInstance().remoteWakeUp(mCameraInfo.getDeviceID(), this, new IResultCallback() {
+        MeariUser.getInstance().remoteWakeUp(mCameraInfo.getDeviceID(),  new IResultCallback() {
             @Override
             public void onSuccess() {
 
@@ -933,7 +933,7 @@ public class SingleVideoActivity extends PlayVideoActivity implements VideoPlayC
         } else {
             //先去发送远程唤醒请求
 
-            MeariUser.getInstance().remoteWakeUp(mCameraInfo.getDeviceID(), this, new IResultCallback() {
+            MeariUser.getInstance().remoteWakeUp(mCameraInfo.getDeviceID(), new IResultCallback() {
                 @Override
                 public void onSuccess() {
                     //开启定时器10s内循环打洞
@@ -1116,7 +1116,7 @@ public class SingleVideoActivity extends PlayVideoActivity implements VideoPlayC
         mCameraInfo.setDeviceVersionID(firmware_version);
         if (NetUtil.checkNet(this) && !isShowedDlg) {
 
-            MeariUser.getInstance().checkNewFirmwareForDev(firmware_version, CommonUtils.getLangType(this), this, new ICheckNewFirmwareForDevCallback() {
+            MeariUser.getInstance().checkNewFirmwareForDev(firmware_version, CommonUtils.getLangType(this), new ICheckNewFirmwareForDevCallback() {
                 @Override
                 public void onError(int code, String error) {
 
@@ -1126,8 +1126,8 @@ public class SingleVideoActivity extends PlayVideoActivity implements VideoPlayC
                 public void onSuccess(DeviceUpgradeInfo info) {
                     isShowedDlg = true;
                     mDeviceUpgradeInfo = info;
-                    if (info.getUpdateStatus() == 1) {
-                        if (mDeviceUpgradeInfo.getUpdatePersion().equals("Y"))
+                    if (info.getUpgradeStatus() == 1) {
+                        if (mDeviceUpgradeInfo.isForceUpgrade())
                             CommonUtils.showDlg(SingleVideoActivity.this, getString(R.string.app_meari_name), getString(R.string.force_updata_warning), getString(R.string.ok), mPositiveOnClickListener,
                                     getString(R.string.cancel), mNegativeOnClickListener, false);
                         else {

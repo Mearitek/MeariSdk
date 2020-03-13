@@ -25,9 +25,10 @@ import com.meari.sdk.callback.IAddDeviceCallback;
 import com.meari.sdk.callback.IDeviceStatusCallback;
 import com.meari.sdk.callback.IRequestDeviceShareCallback;
 import com.meari.sdk.json.BaseJSONObject;
+import com.meari.sdk.listener.CameraSearchListener;
+import com.meari.sdk.utils.MangerCameraScanUtils;
 import com.meari.test.adapter.ScanningResultAdapter;
 import com.meari.test.common.ActivityType;
-import com.meari.test.common.CameraSearchListener;
 import com.meari.test.common.Preference;
 import com.meari.test.common.StringConstants;
 import com.meari.test.pulltorefresh.PullToRefreshBase;
@@ -36,7 +37,6 @@ import com.meari.test.recyclerview.animation.FadeInDownAnimator;
 import com.meari.test.utils.BaseActivity;
 import com.meari.test.utils.CommonDateUtils;
 import com.meari.test.utils.CommonUtils;
-import com.meari.test.utils.MangerCameraScanUtils;
 import com.meari.test.utils.NetUtil;
 import com.meari.test.widget.RoundProgressBar;
 import com.ppstrong.ppsplayer.BaseDeviceInfo;
@@ -350,7 +350,7 @@ public class SearchCameraResultActivity extends BaseActivity implements CameraSe
 
     private void requestShareDevice(CameraInfo info) {
         startProgressDialog();
-        MeariUser.getInstance().requestDeviceShare(info, this, new IRequestDeviceShareCallback() {
+        MeariUser.getInstance().requestDeviceShare(info, new IRequestDeviceShareCallback() {
 
             @Override
             public void onError(int code, String error) {
@@ -378,7 +378,7 @@ public class SearchCameraResultActivity extends BaseActivity implements CameraSe
             return;
         }
 
-        MeariUser.getInstance().addDevice(info, this.mDeviceTypeID, this, new IAddDeviceCallback() {
+        MeariUser.getInstance().addDevice(info, this.mDeviceTypeID,  new IAddDeviceCallback() {
             @Override
             public void onSuccess(int code, String sn, String deviceID) {
                 stopProgressDialog();
@@ -471,7 +471,7 @@ public class SearchCameraResultActivity extends BaseActivity implements CameraSe
             Log.i("tag","add-checkDeviceStatus:"+cameraInfos.get(0).getDeviceName());
             Log.i("tag","add-checkDeviceStatus:"+cameraInfos.get(0).getDeviceID());
         }
-        MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, this, new IDeviceStatusCallback() {
+        MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID,  new IDeviceStatusCallback() {
             @Override
             public void onSuccess(ArrayList<CameraInfo> deviceList) {
 //                Log.i("tag","add-checkDeviceStatus:"+deviceList.get(0).getDeviceName());

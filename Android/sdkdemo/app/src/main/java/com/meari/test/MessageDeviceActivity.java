@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 
-import com.meari.sdk.bean.DeviceMessageStatusInfo;
+import com.meari.sdk.bean.DeviceMessageStatus;
 import com.meari.test.fragment.MessageDeviceFragment;
 import com.meari.test.utils.BaseActivity;
 
@@ -20,7 +20,7 @@ import com.meari.test.utils.BaseActivity;
  */
 
 public class MessageDeviceActivity extends BaseActivity {
-    private DeviceMessageStatusInfo mMsgInfo;
+    private DeviceMessageStatus mMsgInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class MessageDeviceActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            mMsgInfo = (DeviceMessageStatusInfo) bundle.getSerializable("msgInfo");
+            mMsgInfo = (DeviceMessageStatus) bundle.getSerializable("msgInfo");
         } else
             finish();
         initView();

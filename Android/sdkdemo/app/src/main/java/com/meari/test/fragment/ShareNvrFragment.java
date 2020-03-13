@@ -125,7 +125,7 @@ public class ShareNvrFragment extends BaseRecyclerFragment<ShareFriendInfo>
             bindError(getString(R.string.network_unavailable));
             return;
         }
-        MeariUser.getInstance().queryFriendListForDevice(DeviceType.NVR, mInfo.getDeviceID(),this , new IQueryFriendListForDeviceCallback() {
+        MeariUser.getInstance().queryFriendListForDevice(DeviceType.NVR, mInfo.getDeviceID(), new IQueryFriendListForDeviceCallback() {
             @Override
             public void onSuccess(ArrayList<ShareFriendInfo> shareFriendInfos) {
                 mPullToRefreshRecyclerView.onRefreshComplete();
@@ -209,7 +209,7 @@ public class ShareNvrFragment extends BaseRecyclerFragment<ShareFriendInfo>
     public void shareDeviceToFriends(ShareFriendInfo friendDetailDTO) {
         if (!friendDetailDTO.isShare()) {
             startProgressDialog(getString(R.string.share_device));
-            MeariUser.getInstance().addShareUserForDev(DeviceType.NVR, friendDetailDTO.getUserId(), mInfo.getDeviceID(), mInfo.getDeviceUUID(),this , new IShareForDevCallback() {
+            MeariUser.getInstance().addShareUserForDev(DeviceType.NVR, friendDetailDTO.getUserId(), mInfo.getDeviceID(), mInfo.getDeviceUUID(), new IShareForDevCallback() {
                 @Override
                 public void onSuccess(String userId, String devId) {
                     stopProgressDialog();
@@ -226,7 +226,7 @@ public class ShareNvrFragment extends BaseRecyclerFragment<ShareFriendInfo>
             });
         } else {
             startProgressDialog(getString(R.string.share_device_cancel));
-            MeariUser.getInstance().removeShareUserForDev(DeviceType.NVR, friendDetailDTO.getUserId(), mInfo.getDeviceID(), mInfo.getDeviceUUID(),this , new IShareForDevCallback() {
+            MeariUser.getInstance().removeShareUserForDev(DeviceType.NVR, friendDetailDTO.getUserId(), mInfo.getDeviceID(), mInfo.getDeviceUUID(), new IShareForDevCallback() {
                 @Override
                 public void onSuccess(String userId, String devId) {
                     stopProgressDialog();

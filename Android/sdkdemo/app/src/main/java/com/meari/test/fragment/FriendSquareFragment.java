@@ -145,7 +145,7 @@ public class FriendSquareFragment extends BaseRecyclerFragment<FriendInfo> {
             return;
         }
         startProgressDialog(getString(R.string.pps_waite));
-        MeariUser.getInstance().addFriend(accountNumFriendText, this ,new IResultCallback() {
+        MeariUser.getInstance().addFriend(accountNumFriendText, new IResultCallback() {
             @Override
             public void onSuccess() {
                 stopProgressDialog();
@@ -200,7 +200,7 @@ public class FriendSquareFragment extends BaseRecyclerFragment<FriendInfo> {
         }
         if (getContext() == null || getActivity() == null || getActivity().isFinishing())
             return;
-        MeariUser.getInstance().getFriendList(this ,new IGetFriendCallback() {
+        MeariUser.getInstance().getFriendList(new IGetFriendCallback() {
             @Override
             public void onSuccess(List<MeariFriend> friends) {
                 if (isDetached())
@@ -290,7 +290,7 @@ public class FriendSquareFragment extends BaseRecyclerFragment<FriendInfo> {
     public void clearDataRequest() {
         String friendMoreDel = mAdapter.getSelectAllMeariFriends();
         if (friendMoreDel != null && friendMoreDel.length() > 0) {
-            MeariUser.getInstance().deleteFriend(friendMoreDel,this , new IResultCallback() {
+            MeariUser.getInstance().deleteFriend(friendMoreDel,new IResultCallback() {
                 @Override
                 public void onSuccess() {
                     stopProgressDialog();

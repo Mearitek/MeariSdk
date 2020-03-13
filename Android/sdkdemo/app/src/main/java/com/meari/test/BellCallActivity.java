@@ -980,7 +980,7 @@ public class BellCallActivity extends Activity implements View.OnClickListener {
         startProgressDialog();
         if (getProgressDialog() != null)
             getProgressDialog().setCancelable(false);
-        MeariUser.getInstance().postHangUpBell(bellInfo.getDeviceID(), this, new IResultCallback() {
+        MeariUser.getInstance().postHangUpBell(bellInfo.getDeviceID(), new IResultCallback() {
             @Override
             public void onSuccess() {
                 startProgressDialog();
@@ -1026,7 +1026,7 @@ public class BellCallActivity extends Activity implements View.OnClickListener {
      */
     private void onBellAnswer() {
         startProgressDialog();
-        MeariUser.getInstance().postAnswerBell(bellInfo.getDeviceID(),String.valueOf(bellInfo.getMsgID()), this, new IStringResultCallback() {
+        MeariUser.getInstance().postAnswerBell(bellInfo.getDeviceID(),String.valueOf(bellInfo.getMsgID()), new IStringResultCallback() {
             @Override
             public void onError(int code, String error) {
                 stopProgressDialog();
@@ -1208,7 +1208,7 @@ public class BellCallActivity extends Activity implements View.OnClickListener {
      */
     private void sendBellKeepAlive() {
         //发送心跳,保持设备在线
-        MeariUser.getInstance().postSendBellHeartBeat(this, bellInfo.getDeviceID());
+        MeariUser.getInstance().postSendBellHeartBeat(bellInfo.getDeviceID());
     }
 
 

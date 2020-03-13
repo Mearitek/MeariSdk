@@ -212,7 +212,7 @@ public class WordActivity extends BaseActivity {
                     List<File> fileList = new ArrayList<>();
                     fileList.add(wavFile);
                     if (wavFile.exists()) {
-                        MeariUser.getInstance().uploadAudioWord(cameraInfo.getDeviceID(), voiceDate, fileList,this , new IUploadAudioCallback() {
+                        MeariUser.getInstance().uploadAudioWord(cameraInfo.getDeviceID(), voiceDate, fileList, new IUploadAudioCallback() {
                             @Override
                             public void onSuccess(String path) {
                                 stopProgressDialog();
@@ -819,7 +819,7 @@ public class WordActivity extends BaseActivity {
                     countdownTimer.cancel();
                     countdownTimer = null;
                 }
-                MeariUser.getInstance().deleteAudioWord(cameraInfo.getDeviceID(),this , new IResultCallback() {
+                MeariUser.getInstance().deleteAudioWord(cameraInfo.getDeviceID(), new IResultCallback() {
                     @Override
                     public void onSuccess() {
                         stopProgressDialog();

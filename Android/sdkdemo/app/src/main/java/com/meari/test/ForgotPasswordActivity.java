@@ -157,7 +157,7 @@ public class ForgotPasswordActivity extends BaseActivity {
             return;
         }
         startProgressDialog();
-        MeariUser.getInstance().resetAccountPassword(mRegionInfo.getCountryCode(), mRegionInfo.getPhoneCode(), accountNumFriendText, verificationCode, pwdTxt, this ,new IResetPasswordCallback() {
+        MeariUser.getInstance().resetPasswordWithAccount(mRegionInfo.getCountryCode(), mRegionInfo.getPhoneCode(), accountNumFriendText, verificationCode, pwdTxt, new IResetPasswordCallback() {
             @Override
             public void onSuccess(UserInfo user) {
                 stopProgressDialog();
@@ -198,7 +198,7 @@ public class ForgotPasswordActivity extends BaseActivity {
 
         }
         startProgressDialog();
-        MeariUser.getInstance().getValidateCode(mRegionInfo.getCountryCode(), mRegionInfo.getPhoneCode(), accountNumFriendText,this , new IValidateCallback() {
+        MeariUser.getInstance().getValidateCodeWithAccount(mRegionInfo.getCountryCode(), mRegionInfo.getPhoneCode(), accountNumFriendText, new IValidateCallback() {
             @Override
             public void onSuccess(int leftTime) {
                 stopProgressDialog();

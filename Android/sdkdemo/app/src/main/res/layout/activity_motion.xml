@@ -45,8 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dp16"
-                android:layout_toEndOf="@id/alarmsImg"
-                android:layout_toRightOf="@id/alarmsImg"
+
                 android:text="@string/arming"
                 android:textColor="@color/font_dark"
                 android:textSize="16sp" />
@@ -58,7 +57,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dp16"
-                android:layout_toRightOf="@id/mirror_loading"
+
                 android:checked="false" />
         </RelativeLayout>
 

@@ -639,7 +639,7 @@
     <string name="wifi_warning">此网络为手机接入的无线路由器热点，请确保手机与此网络连接正常</string>
     <string name="pwd_warning">请输入无线路由器热点的密码，如无密码则无需输入</string>
     <string name="add_help">设备添加失败，请查看帮助</string>
-    <string name="add_device_failed_content" >1) 请检查WIFI密码是否正确\n2) 请确认路由器为2.4G频段\n3) 请确保设备和手机靠近路由器\n4) 设备如果蓝灯常亮，但不能添加，只能请求分享，说明设备已经被其他人添加</string>
+    <string name="add_device_failed_content">1) 请检查WIFI密码是否正确\n2) 请确认路由器为2.4G频段\n3) 请确保设备和手机靠近路由器\n4) 设备如果蓝灯常亮，但不能添加，只能请求分享，说明设备已经被其他人添加</string>
     <string name="free_band_device">③解绑设备</string>
     <string name="free_band_device_content">设备只能绑定一个APP账号，如果需要其他人添加，必须在原有账号中删除设备，进行解绑</string>
     <string name="reset_status">④复位设备</string>

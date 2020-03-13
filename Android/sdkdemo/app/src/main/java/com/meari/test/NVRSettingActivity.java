@@ -218,7 +218,7 @@ public class NVRSettingActivity extends BaseActivity {
 
         mAliasEdit.setText(deviceName);
         startProgressDialog(getString(R.string.pps_waite));
-        MeariUser.getInstance().renameDeviceNickname(this.mInfo.getDeviceID(), DeviceType.NVR,deviceName, this ,new IResultCallback() {
+        MeariUser.getInstance().renameDevice(this.mInfo.getDeviceID(), DeviceType.NVR,deviceName, new IResultCallback() {
             @Override
             public void onSuccess() {
                 stopProgressDialog();
@@ -241,7 +241,7 @@ public class NVRSettingActivity extends BaseActivity {
             return;
         }
         startProgressDialog(getString(R.string.pps_waite));
-        MeariUser.getInstance().removeDevice(mInfo.getDeviceID(), DeviceType.NVR,this , new IResultCallback() {
+        MeariUser.getInstance().deleteDevice(mInfo.getDeviceID(), DeviceType.NVR, new IResultCallback() {
             @Override
             public void onSuccess() {
                 stopProgressDialog();

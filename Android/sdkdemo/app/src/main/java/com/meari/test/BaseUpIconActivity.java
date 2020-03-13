@@ -125,7 +125,7 @@ public abstract class BaseUpIconActivity extends TakePhotoActivity implements Di
         fileList.add(file);
 
 //        startProgressDialog();
-        MeariUser.getInstance().uploadUserAvatar(tResult.getImage().getPath(), this, new IAvatarCallback() {
+        MeariUser.getInstance().uploadUserAvatar(fileList,  new IAvatarCallback() {
             @Override
             public void onSuccess(String path) {
                 getTakePhoto().getProgressDialog().dismiss();

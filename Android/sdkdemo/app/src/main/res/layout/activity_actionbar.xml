@@ -78,6 +78,7 @@
         android:layout_height="match_parent"
         android:layout_toRightOf="@id/title">
         <TextView
+            android:visibility="gone"
             android:id="@+id/right_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

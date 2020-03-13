@@ -20,6 +20,10 @@ import com.meari.test.common.ActivityType;
 import com.meari.test.common.Constant;
 import com.meari.test.utils.CommonUtils;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -116,7 +120,10 @@ public class ChangeHeadIconActivity extends BaseUpIconActivity {
 
     public void postHeadIconRequest(String path) {
         startProgressDialog();
-        MeariUser.getInstance().uploadUserAvatar(path,this , new IAvatarCallback() {
+        File file = new File(path);
+        List<File> fileList = new ArrayList<>();
+        fileList.add(file);
+        MeariUser.getInstance().uploadUserAvatar(fileList,new IAvatarCallback() {
             @Override
             public void onSuccess(String path) {
                 stopProgressDialog();
