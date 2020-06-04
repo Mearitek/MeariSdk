@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="utf-8">
-<title>MeariKit SDK Instruction </title>
+<title>Meari Technology iOS SDK Instruction </title>
 
 
 <style type="text/css">
@@ -392,7 +392,7 @@ sup {
 <a href="#toc_21">4.3 User upload avatar</a>
 </li>
 <li>
-<a href="#toc_22">4.4 Modify? Nickname</a>
+<a href="#toc_22">4.4 Modify Nickname</a>
 </li>
 <li>
 <a href="#toc_23">4.5 Data Model</a>
@@ -403,10 +403,10 @@ sup {
 <a href="#toc_24">5.Device message notification</a>
 </li>
 <li>
-<a href="#toc_25">6.Equipment distribution network</a>
+<a href="#toc_25">6.Device distribution network</a>
 <ul>
 <li>
-<a href="#toc_26">6.1 smartwifi distribution network</a>
+<a href="#toc_26">6.1 Smartwifi distribution network</a>
 <ul>
 <li>
 <a href="#toc_27">(1) Get Token</a>
@@ -445,13 +445,13 @@ sup {
 <a href="#toc_36">6.4 Searching for devices</a>
 <ul>
 <li>
-<a href="#toc_37">(1) smartwifi distribution network and ap distribution network search equipment</a>
+<a href="#toc_37">(1) Searching device via smartwifi distribution network and ap distribution network</a>
 </li>
 <li>
-<a href="#toc_38">(2) QR code matching network search device</a>
+<a href="#toc_38">(2) Searching device via QR code distribution network</a>
 </li>
 <li>
-<a href="#toc_39">(3) Equipment? Add</a>
+<a href="#toc_39">(3) Adding device</a>
 <ul>
 <li>
 <a href="#toc_40">&lt;1&gt; Adding a camera</a>
@@ -506,7 +506,7 @@ sup {
 <a href="#toc_53">8. Device information acquisition</a>
 <ul>
 <li>
-<a href="#toc_54">8.1 Getting Device Columns</a>
+<a href="#toc_54">8.1 Getting device list</a>
 </li>
 <li>
 <a href="#toc_55">8.2 Device Information</a>
@@ -518,7 +518,7 @@ sup {
 <a href="#toc_57">8.4 Device nickname modification</a>
 </li>
 <li>
-<a href="#toc_58">8.5 Single device one day alarm time point acquisition</a>
+<a href="#toc_58">8.5 Alarm time point of one day of single device acquisition</a>
 </li>
 <li>
 <a href="#toc_59">8.6 Check if the device has a new version</a>
@@ -626,7 +626,7 @@ sup {
 <a href="#toc_91">9.19 Device Volume</a>
 </li>
 <li>
-<a href="#toc_92">9.20Doorbell volume</a>
+<a href="#toc_92">9.20 Doorbell volume</a>
 <ul>
 <li>
 <a href="#toc_93">(1) Visual doorbell</a>
@@ -663,10 +663,10 @@ sup {
 <a href="#toc_102">9.26 Message</a>
 <ul>
 <li>
-<a href="#toc_103">(1) Owner&#39;s Message</a>
+<a href="#toc_103">(1) Owner Message</a>
 </li>
 <li>
-<a href="#toc_104">(2) Guestbook</a>
+<a href="#toc_104">(2) Guest Message</a>
 </li>
 </ul>
 </li>
@@ -677,7 +677,7 @@ sup {
 <a href="#toc_106">9.28 Lighting camera settings</a>
 <ul>
 <li>
-<a href="#toc_107">(1) Switch light</a>
+<a href="#toc_107">(1) Light switch</a>
 </li>
 <li>
 <a href="#toc_108">(2) Alarm switch</a>
@@ -686,14 +686,14 @@ sup {
 <a href="#toc_109">(3) Turn on the lights by time period</a>
 </li>
 <li>
-<a href="#toc_110">(4) Press the alarm event switch light</a>
+<a href="#toc_110">(4) Turn on the light by alarm event</a>
 </li>
 </ul>
 </li>
 </ul>
 </li>
 <li>
-<a href="#toc_111">10.Shared device</a>
+<a href="#toc_111">10.Share device</a>
 <ul>
 <li>
 <a href="#toc_112">10.1 Friend Management</a>
@@ -733,7 +733,7 @@ sup {
 <a href="#toc_122">(1) Query the list of friends that the device has been shared with.</a>
 </li>
 <li>
-<a href="#toc_123">(2) Query a list of shared devices of a friend</a>
+<a href="#toc_123">(2) Query the list of devices that a friend has been shared with</a>
 </li>
 </ul>
 </li>
@@ -743,7 +743,7 @@ sup {
 <a href="#toc_124">11.Message Center</a>
 <ul>
 <li>
-<a href="#toc_125">11.1 Get all devices have messages</a>
+<a href="#toc_125">11.1 Get all devices whether have messages</a>
 </li>
 <li>
 <a href="#toc_126">11.2 Getting system messages</a>
@@ -755,10 +755,10 @@ sup {
 <a href="#toc_128">11.4 Batch delete system messages</a>
 </li>
 <li>
-<a href="#toc_129">11.5 Deleting multiple device alarm messages in batches</a>
+<a href="#toc_129">11.5 Deleting alarm messages of multiple devices</a>
 </li>
 <li>
-<a href="#toc_130">11.6 Marking a single device message has been read</a>
+<a href="#toc_130">11.6 Marking message has been read of a single device</a>
 </li>
 <li>
 <a href="#toc_131">11.7 Friend Message Processing</a>
@@ -788,7 +788,7 @@ sup {
 <tbody>
 <tr>
 <td>2.0.0</td>
-<td>Towers Perrin Technical Team</td>
+<td>Meari Technical Team</td>
 <td>2019.05.09</td>
 <td></td>
 </tr>
@@ -799,7 +799,7 @@ sup {
 
 <h1 id="toc_0">1. Functional Overview</h1>
 
-<p>The Towers Technology APP SDK provides interface packaging with hardware devices and Towers Perrin, and accelerates the application development process, including the following functions:</p>
+<p>The Meari SDK provides interface of communicating with hardware devices and Merai Cloud to accelerate the application development process, including the following functions:</p>
 
 <ul>
 <li>Hardware device related (with network, control, status report, firmware upgrade, preview playback, etc.)</li>
@@ -807,14 +807,14 @@ sup {
 <li>Device sharing</li>
 <li>Friends management</li>
 <li>Message Center</li>
-<li>Rui Rui cloud HTTPS API interface package (see 觅睿云api call)</li>
+<li>Meari Cloud HTTPS API interface package (see Meari Cloud api call)</li>
 </ul>
 
 <h1 id="toc_1">2. Integration preparation</h1>
 
 <p><strong>Prepare App Key and App Secert</strong></p>
 
-<p>Meari Technology Cloud Platform provides App ID and App Secert for users to access SDK quick access camera equipment</p>
+<p>Meari Technology Cloud Platform provides App ID and App Secert for users to access SDK and camera device</p>
 
 <h1 id="toc_2">3. Integrated SDK</h1>
 
@@ -879,14 +879,14 @@ sup {
 
 <div><pre><code class="language-none">Affiliation:MeariUser tool class</code></pre></div>
 
-<div><pre><code class="language-none">Towers Perrin Technology SDK provides two user management systems: common user system, UID user system
+<div><pre><code class="language-none">Merai SDK provides two user management systems: common user system, UID user system
 
 Ordinary user system: account login, registration, password change, password recovery, verification code
 UID user system: uid login (up to 64 digits), no need to register without password system, please keep it safe</code></pre></div>
 
 <h2 id="toc_9">4.1 User uid login system</h2>
 
-<div><pre><code class="language-none">Towers Perrin provides the uid landing system. If the customer has its own user system, then you can access our sdk through the uid login system.</code></pre></div>
+<div><pre><code class="language-none">Meari SDK provides the uid landing system. If the customer has its own user system, then you can access our sdk through the uid login system.</code></pre></div>
 
 <h3 id="toc_10">(1) Redirect</h3>
 
@@ -925,7 +925,7 @@ UID user system: uid login (up to 64 digits), no need to register without passwo
 <h3 id="toc_12">(3) User logout</h3>
 
 <div><pre><code class="language-none">【Description】
-    Log out and log out with a normal account
+    Log out is the same as the normal user logout
 
 【Function Call】
     // Log out of the account
@@ -1138,7 +1138,7 @@ UID user system: uid login (up to 64 digits), no need to register without passwo
     
     }];</code></pre></div>
 
-<h2 id="toc_22">4.4 Modify? Nickname</h2>
+<h2 id="toc_22">4.4 Modify Nickname</h2>
 
 <div><pre><code class="language-none">【Description】
     Modify the user nickname.
@@ -1180,7 +1180,7 @@ UID user system: uid login (up to 64 digits), no need to register without passwo
 
 <h1 id="toc_24">5.Device message notification</h1>
 
-<div><pre><code class="language-none">Timely message notification is that MeariSDK promptly informs the current user of the App and some status of the device under the user account, so as to facilitate the App to achieve a better user experience.
+<div><pre><code class="language-none">Timely message notification is that MeariSDK informs current user of the App some status of the device under the user account in time, which facilitates the App to achieve a better user experience.
 
 [Notification Type] See: MeariUser.h
     MeariDeviceOnlineNotification (device online)
@@ -1193,14 +1193,14 @@ UID user system: uid login (up to 64 digits), no need to register without passwo
 【use】
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoginInvalidNotification:) name:MeariUserLoginInvalidNotification object:nil];</code></pre></div>
 
-<h1 id="toc_25">6.Equipment distribution network</h1>
+<h1 id="toc_25">6.Device distribution network</h1>
 
 <div><pre><code class="language-none">Affiliation:MeariDevice tool class</code></pre></div>
 
-<div><pre><code class="language-none">Towers Perrin technology hardware modules support three distribution modes: SmartWifi distribution network, hotspot mode (AP mode), two-dimensional code distribution network mode.
-The QR code and SmartWifi operation are relatively simple. It is recommended to use the hotspot mode as an alternative after the distribution network fails. Among them, the success rate of the two-dimensional code distribution network is high.</code></pre></div>
+<div><pre><code class="language-none">Meari Technology hardware modules support three distribution modes: SmartWifi distribution network, hotspot mode (AP mode), QR code distribution network mode.
+The QR code and SmartWifi operation are relatively simple. It is recommended to use the hotspot mode as an alternative after the distribution network fails. Among them, the success rate of QR code distribution network is high.</code></pre></div>
 
-<h2 id="toc_26">6.1 smartwifi distribution network</h2>
+<h2 id="toc_26">6.1 Smartwifi distribution network</h2>
 
 <div><pre><code class="language-none">Before the distribution network, you need to obtain the Token first, and then call the distribution network interface.</code></pre></div>
 
@@ -1344,7 +1344,7 @@ Smart wifi distribution network needs to provide the name and password of the co
 <h3 id="toc_35">(2) QR code distribution network</h3>
 
 <div><pre><code class="language-none">【Description】
-    The obtained token and the WiFi and password of the mobile phone generate a QR code picture, and the QR code picture is recommended: a 284px square picture
+    Use token, ssid and password of connected wifi to generate a QR code picture, and the recommended size of QR code: a 284px square picture
  
 【Function Call】
     /**
@@ -1369,7 +1369,7 @@ Smart wifi distribution network needs to provide the name and password of the co
 Search mechanism: The search interface does not have a timeout mechanism, and the search will not stop until the stop interface is called.
 Search mode: LAN search and cloud search</code></pre></div>
 
-<h3 id="toc_37">(1) smartwifi distribution network and ap distribution network search equipment</h3>
+<h3 id="toc_37">(1) Searching device via smartwifi distribution network and ap distribution network</h3>
 
 <div><pre><code class="language-none">【Description】
     IPC device: After the device is successfully connected to the network, the blue light is always on, and the device can be searched for display.
@@ -1378,7 +1378,7 @@ Search mode: LAN search and cloud search</code></pre></div>
 【Function Call】
 
     /**
-    Start search: for smartwifi distribution network and ap distribution network
+    Searching device via smartwifi distribution network and ap distribution network
     
     @param success Successful callback: return the searched device
     @param failure failure callback
@@ -1393,14 +1393,14 @@ Search mode: LAN search and cloud search</code></pre></div>
         
     }];</code></pre></div>
 
-<h3 id="toc_38">(2) QR code matching network search device</h3>
+<h3 id="toc_38">(2) Searching device via QR code distribution network</h3>
 
 <div><pre><code class="language-none">【Method One:】
 
 【Description】
     After the device is successfully connected to the network, the blue light is always on, and the device can be searched for display.
     
-    Note: The Token of the search needs to be consistent with the Token of the QR code distribution network, otherwise the device will not be searched.
+    Note: The Token of the search needs to be the same as the Token of the QR code distribution network, otherwise the device will not be searched.
     
 【Function Call】
     /**
@@ -1417,19 +1417,19 @@ Search mode: LAN search and cloud search</code></pre></div>
 【Description】
     After the device is successfully connected to the network, the blue light is always on, and the device can be searched for display.
 
-    Note: You need to update the Token before searching. The Token to be searched must be consistent with the Token of the QR code. Otherwise, the device will not be searched.
+    Note: You need to update the Token before searching. The Token of the search needs to be the same as the Token of the QR code. Otherwise, the device will not be searched.
 
 【Function Call】
     /**
     Update Token
 
-    @param token distribution net token
-    @param type Distribution network
+    @param token distribution token
+    @param type Distribution mode
     */
      + (void)updatetoken:(NSString *)token type:(MeariDeviceTokenType)type;
     
      /**
-     Start searching: Search for a generic interface
+     Start searching: common interface for searching
      Make sure to call the updatetoken method when using this interface.
      @param mode Distribution mode
      @param success Successful callback: return the searched device
@@ -1445,12 +1445,12 @@ Search mode: LAN search and cloud search</code></pre></div>
     
      }];</code></pre></div>
 
-<h3 id="toc_39">(3) Equipment? Add</h3>
+<h3 id="toc_39">(3) Adding device</h3>
 
 <h4 id="toc_40"><1> Adding a camera</h4>
 
 <div><pre><code class="language-none">【Description】
-    After searching for the device, first query the device status query, and add the device operation without being added.
+      After searching for an NVR device, query the device status first, and add the device operation if it is not added.
 
 【Be Applicable】
     type:
@@ -1545,11 +1545,11 @@ MeariDeviceTypeNVR
 【Code Example】
     [MeariDevice stopSearch];
     [[MeariUser sharedInstance] cancelAllRequest];</code></pre></div>
-
+ 
 <h2 id="toc_43">6.5 Autobind Device</h2>
 
 <div><pre><code class="language-none">Before the distribution network, you need to obtain the Token first, and then call the distribution network interface.
-Allow the device to automatically add to the user account after scanning the QR code or AP mode.
+Allow the device to automatically add to the user account after scanning the QR code or using AP mode.
 </code></pre></div>
 
 <h3 id="toc_44">(1) Get Token</h3>
@@ -1624,7 +1624,7 @@ Allow the device to automatically add to the user account after scanning the QR 
 <h2 id="toc_48">7.1 Searching for devices</h2>
 
 <div><pre><code class="language-none">【Description】
-    The device blue light is always on to be searched. It is used to display the binding NVR to the user. MeariDevice-&gt;hasBindedNvr is used to determine whether the NVR has been bound.
+    The device can be searched when blue light is always on, which is used to inform user that NVR is ready to be bound. MeariDevice-&gt;hasBindedNvr is used to determine whether the NVR has been bound.
 
 【Function Call】
     /**
@@ -1697,7 +1697,7 @@ Allow the device to automatically add to the user account after scanning the QR 
 <h2 id="toc_52">7.5 Unbinding the device from the NVR</h2>
 
 <div><pre><code class="language-none">【Description】
-    After the device is bound from the NVR, the video files of the device will not continue to be stored in the NVR.
+    After unbinding the device from the NVR, the video files of the device will not continue to be stored in the NVR.
 
 【Function Call】
     @param deviceID device ID
@@ -1721,7 +1721,7 @@ Allow the device to automatically add to the user account after scanning the QR 
 
 <div><pre><code class="language-none">Affiliation:MeariUser</code></pre></div>
 
-<h2 id="toc_54">8.1 Getting Device Columns</h2>
+<h2 id="toc_54">8.1 Getting device list</h2>
 
 <div><pre><code class="language-none">Affiliation: MeariDeviceList</code></pre></div>
 
@@ -1823,13 +1823,13 @@ The device information is the info attribute of the device object (MeariDeviceIn
 
     }];</code></pre></div>
 
-<h2 id="toc_58">8.5 Single device one day alarm time point acquisition</h2>
+<h2 id="toc_58">8.5 Alarm time point of one day of single device acquisition</h2>
 
 <div><pre><code class="language-none">【Description】
-    Single device one day alarm time point acquisition
+      Alarm time point of one day of single device acquisition
 
 【Function Call】
-    // a single device one day alarm time point to obtain
+    // Alarm time point of one day of single device acquisition
     @param deviceID device ID
     @param date Date: The format is 20171212
     @param success Successful callback: return to the alarm time list
@@ -1872,10 +1872,10 @@ The device information is the info attribute of the device object (MeariDeviceIn
 <h2 id="toc_60">8.7 Querying Device Online Status</h2>
 
 <div><pre><code class="language-none">【Description】
-    Check if the device has a new version
+      Querying Device Online Status
 
 【Function Call】
-    // Query the device for a new version
+    //  Querying Device Online Status
     @param deviceID device ID
     @param success Successful callback: Returns whether the device is online
     @param failure failure callback
@@ -1954,7 +1954,7 @@ The device information is the info attribute of the device object (MeariDeviceIn
     Remote wake-up doorbell
 
 【Function Call】
-    // Remote wake doorbell
+    // Remote wake-up doorbell
     @param deviceID device ID
     @param success Successful callback
     @param failure failure callback
@@ -1967,7 +1967,7 @@ The device information is the info attribute of the device object (MeariDeviceIn
 
     }];
 【Precautions】
-    For doorbell-type low-power products, you need to call the remote wake-up interface first, and then call the hole-punching interface.</code></pre></div>
+    For doorbell-type is low-power products, you need to call the remote wake-up interface first, and then call the hole-punching interface.</code></pre></div>
 
 <h2 id="toc_64">8.11 Uploading the doorbell message</h2>
 
@@ -2021,7 +2021,7 @@ Upload doorbell message
 
 【Function Call】
     /**
-    Delete message
+    Delete doorbell message
 
     @param deviceID device ID
     @param success Successful callback
@@ -2091,7 +2091,7 @@ Upload doorbell message
 
 【Function Call】
     /**
-    Acquisition rate
+    Get the bit rate
 
     @return code rate
     */
@@ -2128,7 +2128,7 @@ Upload doorbell message
 
 
     /**
-    Switch HD SD
+    Switch HD/SD
 
     @param playView play view
     @param HD Whether to play HD
@@ -2183,7 +2183,7 @@ Upload doorbell message
 
 
     /**
-    Get a video clip of a day
+    Get a video segment of a day
 
     @param year year
     @param month月
@@ -2303,7 +2303,7 @@ Upload doorbell message
     /**
     Set mute
 
-    @param muted is mute?
+    @param muted whether is mute
     */
     - (void)setMute:(BOOL)muted;
 
@@ -2318,7 +2318,7 @@ Upload doorbell message
 <h3 id="toc_75">(1) One-way intercom</h3>
 
 <div><pre><code class="language-none">【Description】
-    One-way intercom is that the mobile phone and the device cannot talk at the same time. The mobile terminal starts the intercom call startVoicetalk, and the end of the speech needs to call to stop the intercom stopVoicetalkSuccess, otherwise the mobile phone terminal cannot receive the speech.
+    One-way intercom is that the mobile phone and the device cannot talk at the same time. Call startVoicetalk when start talking, and call stopVoicetalkSuccess when finish talking, otherwise the mobile phone terminal cannot receive the speech.
     
 【Be Applicable】
     subType:
@@ -2386,7 +2386,7 @@ Upload doorbell message
 <h3 id="toc_76">(2) Two-way intercom</h3>
 
 <div><pre><code class="language-none">【Description】
-    Two-way intercom is a mobile phone and device ** can ** speak at the same time, the mobile terminal starts the intercom call startVoicetalk, does not call stopVoicetalkSuccess, does not affect the sound from the device side
+    Two-way intercom is that mobile phone and device can speak at the same time, Call startVoicetalk when start talking, it does not affect the sound from the device side without calling the stopVoicetalkSuccess.
     
 【Be Applicable】
     subType:
@@ -2580,12 +2580,12 @@ Upload doorbell message
 <h2 id="toc_80">9.10 PTZ control</h2>
 
 <div><pre><code class="language-none">【Description】
-    Rotate the camera
+    move the camera
 
 【Function Call】
 
 /**
-    Start turning the camera
+    Start moving the camera
 
     @param direction
     @param success Successful callback
@@ -2595,7 +2595,7 @@ Upload doorbell message
 
 
     /**
-    Stop turning the camera
+    Stop moving the camera
 
     @param success Successful callback
     @param failure failure callback
@@ -2604,14 +2604,14 @@ Upload doorbell message
 
 【Code Example】
 
-    // Start to turn
+    // Start moving
     [self.camera startMoveToDirection:MeariMoveDirectionUp success:^{
 
     } failure:^(NSString *error) {
 
     }];
 
-    // stop turning
+    // stop moving
     [self.camera stopMoveSuccess:^{
 
     } failure:^(NSString *error) {
@@ -2763,7 +2763,7 @@ Upload doorbell message
 <h3 id="toc_85">(1) Online upgrade</h3>
 
 <div><pre><code class="language-none">【Description】
-    Firmware information acquisition and upgrade, point upgrade equipment will be upgraded immediately.
+    Firmware information acquisition and upgrade, the device will be upgraded immediately.
     Note: You need to operate the device online and establish a successful connection.
     
 【Be Applicable】
@@ -2832,8 +2832,8 @@ Upload doorbell message
 <h3 id="toc_86">(2) Plan to upgrade</h3>
 
 <div><pre><code class="language-none">【Description】
-    Firmware information acquisition and upgrade, point upgrade equipment will not be upgraded immediately, and the upgrade plan will not be executed until the device is started.
-    Note: The device can be upgraded if it is not online.
+    Firmware information acquisition and upgrade, the device will not be upgraded immediately, and the upgrade plan will not be executed until the device is started.
+    Note: The device can be upgraded even is not online.
     
 【Be Applicable】
     subType:
@@ -2933,7 +2933,7 @@ Upload doorbell message
     - (void)setSleepmodeTime:(BOOL)open times:(NSArray &lt;MeariDeviceParamSleepTime *&gt;*)times successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
 
     /**
-    Set geofence
+    Set geo-fencing
     
     @param ssid wifi SSID
     @param bssid wifi BSSID
@@ -2958,7 +2958,7 @@ Upload doorbell message
 
     }];
     
-    // Set the WiFi information
+    // Set the geo-fencing
     [[MeariUser sharedInstance] settingGeographyWithSSID:(NSString *)ssid BSSID:(NSString *)bssid deviceID:(NSInteger)deviceID success:^(NSString *str){
     
     } failure:^(NSError *error){
@@ -2969,7 +2969,7 @@ Upload doorbell message
 <h2 id="toc_89">9.17 Temperature and Humidity</h2>
 
 <div><pre><code class="language-none">【Description】
-    Get all parameter information of the device
+    Get Temperature and Humidity of the device
 
 【Function Call】
 
@@ -2982,7 +2982,7 @@ Upload doorbell message
     - (void)getTemperatureHumiditySuccesss:(MeariDeviceSucess_TRH)success failure:(MeariDeviceFailure)failure;
 
 【Code Example】
-    // Set sleep mode
+    // Get temperature and humidity
     [self.camera getTemperatureHumiditySuccesss:^(CGFloat temperature, CGFloat humidty) {
 
     } failure:^(NSError *error) {
@@ -3168,7 +3168,7 @@ Upload doorbell message
 <h3 id="toc_94">(2) Voice doorbell</h3>
 
 <div><pre><code class="language-none">【Description】
-    Get and set the doorbell output volume. Note that this setting does not take effect immediately. It needs to be activated once the device is activated.
+    Doorbell output volume acquisition and setting. Note that this setting does not take effect immediately. It needs to be activated once the device is activated.
     
 【Be Applicable】
     subType:
@@ -3227,7 +3227,7 @@ Set the wireless bell
 <h3 id="toc_97">(2) Voice doorbell</h3>
 
 <div><pre><code class="language-none">【Description】
-    Get and set the doorbell output volume. Note that this setting does not take effect immediately. It needs to be activated once the device is activated.
+    Doorbell output volume acquisition and setting. Note that this setting does not take effect immediately. It needs to be activated once the device is activated.
     
 【Be applicable】
 subType:
@@ -3264,7 +3264,7 @@ Long = MeariDeviceLevelHigh
 <h2 id="toc_98">9.22 Message Settings</h2>
 
 <div><pre><code class="language-none">【Description】
-    Set guest message parameters, note that this setting does not take effect immediately, you need to wait for the device to start once to take effect.
+    Guest message parameters setting, note that this setting does not take effect immediately, you need to wait for the device to start once to take effect.
     
 【Be applicable】
 subType:
@@ -3294,7 +3294,7 @@ Set guest message
 <h2 id="toc_99">9.23 Human body detection alarm</h2>
 
 <div><pre><code class="language-none">【Description】
-    Acquisition and setting of doorbell PIR alarm: Get the call parameter interface
+    Doorbell PIR alarm Acquisition and setting: call the parameter interface
 
 【Function Call】
     // Doorbell PIR alarm acquisition, see 7.15 Obtaining parameter information
@@ -3333,7 +3333,7 @@ Set guest message
 <h2 id="toc_100">9.24 Doorbell low power consumption</h2>
 
 <div><pre><code class="language-none">【Description】
-    Doorbell low power acquisition and setting: Get the call parameter interface
+    Doorbell low power acquisition and setting: call the parameter interface
 
 【Function Call】
     //doorbell low power acquisition, see 7.15 for parameter information
@@ -3372,7 +3372,7 @@ Set guest message
 <h2 id="toc_101">9.25 Doorbell battery lock</h2>
 
 <div><pre><code class="language-none">【Description】
-    Doorbell battery lock acquisition and setting: Get the call parameter interface
+    Doorbell battery lock acquisition and setting: call the parameter interface
 
 【Function Call】
     //doorbell battery lock acquisition, see 7.15 for parameter information
@@ -3408,10 +3408,10 @@ Set guest message
 
 <h2 id="toc_102">9.26 Message</h2>
 
-<h3 id="toc_103">(1) Owner&#39;s Message</h3>
+<h3 id="toc_103">(1) Owner Message</h3>
 
 <div><pre><code class="language-none">【Description】
-    The owner can set a message for the device, and the owner can play the recorded message on the mobile terminal control device.
+    The owner can leave a message for the device, and the owner can play the recorded message on the mobile.
 
 【Be applicable】
 subType:
@@ -3465,10 +3465,10 @@ subType:
     [self.camera stopPlayRecordedAudio];
 </code></pre></div>
 
-<h3 id="toc_104">(2) Guestbook</h3>
+<h3 id="toc_104">(2) Guest Message</h3>
 
 <div><pre><code class="language-none">【Description】
-    After the guest rings the door, no device responds, the device will enter the message mode, the guest can leave a message on the device, and the owner can view the guest message through the mobile app.
+    After the guest rings the door with nobody responds, the device will enter the message mode, the guest can leave a message on the device, and the owner can listen the guest message through the mobile app.
 
 【Be applicable】
 subType:
@@ -3574,7 +3574,7 @@ Delete all messages under a device
 
 <h2 id="toc_106">9.28 Lighting camera settings</h2>
 
-<h3 id="toc_107">(1) Switch light</h3>
+<h3 id="toc_107">(1) Light switch</h3>
 
 <div><pre><code class="language-none">【Description】
     Control light switch
@@ -3636,7 +3636,7 @@ Set the alarm switch
 <h3 id="toc_109">(3) Turn on the lights by time period</h3>
 
 <div><pre><code class="language-none">【Description】
-Set a time period for the device. When the device is in the set time period, the device will turn on the light, and when the time is off, the control light will be turned off.
+Set a time period for the device. When the device is in the time period of setting, the device will turn on the light, and when the time is over, the control light will be turned off.
     
 【Be applicable】
 subType:
@@ -3665,10 +3665,10 @@ Set up the lighting plan
  
     }];</code></pre></div>
 
-<h3 id="toc_110">(4) Press the alarm event switch light</h3>
+<h3 id="toc_110">(4) Turn on the light by alarm event</h3>
 
 <div><pre><code class="language-none">【Description】
-    After turning on the mobile alarm, the device monitors the movement of the human body and turns the light on. It will go out after a period of time.
+    After turning on the mobile alarm, the device monitors the movement of the human body and turns the light on. It will dim after a period of time.
     
 【Be applicable】
 subType:
@@ -3677,7 +3677,7 @@ subType:
 【Function Call】
 
     /**
-Set up the movement monitoring of the luminaire
+Set up the movement monitoring of the light
 
 @param on Is it enabled?
 @param level The lighting time for different levels MeariDeviceLevelLow : 20s , MeariDeviceLevelMedium : 40s, MeariDeviceLevelHigh: 60s
@@ -3704,7 +3704,7 @@ Set up the movement monitoring of the luminaire
 
     }];</code></pre></div>
 
-<h1 id="toc_111">10.Shared device</h1>
+<h1 id="toc_111">10.Share device</h1>
 
 <h2 id="toc_112">10.1 Friend Management</h2>
 
@@ -3854,10 +3854,10 @@ Set up the movement monitoring of the luminaire
 <h3 id="toc_122">(1) Query the list of friends that the device has been shared with.</h3>
 
 <div><pre><code class="language-none">【Description】
-    Query the list of friends that a single device is shared with
+    Query the list of friends that the device has been shared with
 
 【Function Call】
-    // Query the list of friends shared by a single device
+    // Query the list of friends that the device has been shared with.
     @param type device type
     @param deviceID device ID
     @param success Successful callback
@@ -3871,13 +3871,13 @@ Set up the movement monitoring of the luminaire
     
     }];</code></pre></div>
 
-<h3 id="toc_123">(2) Query a list of shared devices of a friend</h3>
+<h3 id="toc_123">(2) Query the list of devices that a friend has been shared with</h3>
 
 <div><pre><code class="language-none">【Description】
-Query if a friend has a device that I have shared
+  Query the list of devices that a friend has been shared with
 
 【Function Call】
-    // Query a friend&#39;s list of shared devices
+    // Query the list of devices that a friend has been shared with
     @param friendID buddy ID
     @param success Successful callback
     @param failure failure callback
@@ -3895,16 +3895,16 @@ Query if a friend has a device that I have shared
 
 <div><pre><code class="language-none">Affiliation:MeariMessageInfo</code></pre></div>
 
-<div><pre><code class="language-none">Note: The alarm message of the device will be deleted after the device owner pulls it.In addition to the message, it needs to be saved locally. The shared person pulls the alarm message of the device, and the server does not delete it. Here, pay attention to the difference between the owner and the shared person.</code></pre></div>
+<div><pre><code class="language-none">Note: The alarm message of the device will be deleted after the device owner pulls it. So it needs to be saved locally. If shared person pulls the alarm message of the device, the server does not delete it. Pay attention to the difference between the owner and the shared person.</code></pre></div>
 
-<h2 id="toc_125">11.1 Get all devices have messages</h2>
+<h2 id="toc_125">11.1 Get all devices whether have messages</h2>
 
 <div><pre><code class="language-none">【Description】
-    Get all devices have messages
+    Get all devices whether have messages
     Affiliation:MeariMessageInfoAlarm
 
 【Function Call】
-    // Get all devices have a message
+    // Get all devices whether have messages
     @param success Successful callback
     @param failure failure callback
     - (void)getAlarmMessageList:(MeariSuccess_MsgAlarmList)success failure:(MeariFailure)failure;
@@ -3916,7 +3916,7 @@ Query if a friend has a device that I have shared
 
     }];
  【Precautions】
-    If the message is pulled by the owner, the server will not save the message, and the shared friends will not see the message.</code></pre></div>
+    If the message is pulled by the owner, the server will not save the message, so the shared friends will not see the message.</code></pre></div>
 
 <h2 id="toc_126">11.2 Getting system messages</h2>
 
@@ -3957,7 +3957,7 @@ Query if a friend has a device that I have shared
 
     }];
  【Precautions】
-    If the message is pulled by the owner, the server will not save the message, and the shared friends will not see the message.</code></pre></div>
+    If the message is pulled by the owner, the server will not save the message, so the shared friends will not see the message.</code></pre></div>
 
 <h2 id="toc_128">11.4 Batch delete system messages</h2>
 
@@ -3978,13 +3978,13 @@ Query if a friend has a device that I have shared
 
     }];</code></pre></div>
 
-<h2 id="toc_129">11.5 Deleting multiple device alarm messages in batches</h2>
+<h2 id="toc_129">11.5 Deleting alarm messages of multiple devices</h2>
 
 <div><pre><code class="language-none">【Description】
-    Delete multiple device alarm messages in bulk
+    Deleting alarm messages of multiple devices
 
 【Function Call】
-    // Batch delete multiple device alarm messages
+    // Deleting alarm messages of multiple devices
     @param deviceIDs Multiple device IDs
     @param success Successful callback
     @param failure failure callback
@@ -3997,13 +3997,13 @@ Query if a friend has a device that I have shared
 
     }];</code></pre></div>
 
-<h2 id="toc_130">11.6 Marking a single device message has been read</h2>
+<h2 id="toc_130">11.6 Marking message has been read of a single device</h2>
 
 <div><pre><code class="language-none">【Description】
-    Mark a single device message all read
+    Marking message has been read of a single device
 
 【Function Call】
-    // Mark a single device message has been read
+    // Marking message has been read of a single device
     @param deviceID device ID
     @param success Successful callback
     @param failure failure callback

@@ -8,19 +8,19 @@
 ---
 Version number | Development team | Update date | Notes
 :-:|:-:|:-:|:-:
-2.2.0 | Towers Perrin Technical Team | 2020.03.03 | Optimization
+2.2.0 | Meari Technical Team | 2020.03.03 | Optimization
 
 <center>
 
 # 1. Function Overview
 
-The Towers Technology APP SDK provides interface packaging with hardware devices and Towers Perrin, and accelerates the application development process, including the following functions:
+The Meari SDK provides interface of communicating with hardware devices and Merai Cloud to accelerate the application development process, including the following functions:
 
-- Account system
-- Device addition
-- equipment control
-- Device settings
-- Device sharing
+- Account System
+- Add Decvice
+- Device Control
+- Device Settings
+- Share Device
 - Message Center
 
 --------------
@@ -28,7 +28,7 @@ The Towers Technology APP SDK provides interface packaging with hardware devices
 # 2. Integration preparation
 ## Create App ID and App Secert
 ```
-Towers Perrin Technology Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
+Meari Technology Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
 <meta-data
     Android:name="MEARI_APPKEY"
     Android:value="your MEARI_APPKEY" />
@@ -40,12 +40,12 @@ Towers Perrin Technology Cloud Platform provides webpages to automatically creat
 
 # 3. Integrated SDK
 ## 3.1 Integration Process
-### 3.1.1 Introducing the sdk package
+### 3.1.1 Import the sdk package
 ```
-The so files and aar files in the libs folder are imported into your own project, so files are imported in all or part of the types according to the needs of your project.
+Import the so files and aar files from libs directory into your own project, you can partialy or fully import so files base on your project.
 ```
 
-### 3.1.2 Configure build.gradle
+### 3.1.2 Configuring build.gradle
 ```
 Add the following configuration to the build.gradle file:
 
@@ -259,8 +259,8 @@ Public class MeariSmartApp extends Application {
 ```
 # 4. User Management
 ```
-Towers Perrin provides mobile phone/email password login, uid login, password reset, etc.
-After registration or login is successful, use the return information to connect to the mqtt service, initialize the Jpush and other operations.
+Meari SDK provides mobile/email login, uid login, password reset, etc.
+After registration or login is successful, use the response information to connect to the mqtt service, initialize the Jpush and other operations.
 ```
 
 UserInfo class
@@ -429,8 +429,8 @@ MeariUser.getInstance (). ResetPasswordWithAccount (countryCode, phoneCode, acco
 
 ```
 【description】
-If customers have their own user system, then they can log in via uid and access our SDK.
-The user uid logs in. The uid is required to be unique and defined by the access party itself. The uid system can log in directly without registration.
+If customers have their own user system, then you can use uid to login.
+The uid is required to be unique and defined by your own. You can login directly without registration.
 
 [Function call]
 
@@ -552,18 +552,17 @@ MeariUser.getInstance (). RenameNickname (name, new IResultCallback () {
 
 # 5. Add device
 ```
-Connect the device to WiFi and add the device to the user's account. It is recommended to use a QR code to accompany the network to add
+Connecting the device to WiFi and add the device to the user's account. It is recommended to add device via QR code
 ```
-## 5.1 Add equipment to QR code distribution network
+## 5.1 Add device via QR code
 ```
-After obtaining the token, a QR code is generated. The device scans the QR code and hears a tone, which turns into a blue light to indicate that the company has successfully accompany the network.
-Then search for device addition, support automatic addition and wait for device addition to complete.
+After obtaining the token, generating an QR code, let device scan the QR code, the network setting is successful if you hear a beep and the device turns to blue light.
+Then you can start searching and waiting for the device addition to complete.
 ```
 ### 5.1.1 Generate QR Code
 ```
 【description】
-After obtaining the token, a QR code is generated. The device scans the QR code and hears a tone, which turns into a blue light to indicate that the company has successfully accompany the network.
-Then search for device addition, support automatic addition and wait for device addition to complete.
+Using token to generate an QR code.
 
 [Function call]
 
@@ -608,12 +607,12 @@ MeariUser.getInstance (). CreateQRCode (wifiName, pwd, token, new ICreateQRCodeC
 });
 ```
 
-### 5.1.2 Search for add device
+### 5.1.2 Search and add device
 ```
 【description】
-After the device is found, the status of the device is detected. If automatic addition is not supported, the add interface is called.
-If auto-add is supported, wait for the mqtt message to add or fail successfully.
-There may be a delay in the mqtt message. In order to improve the experience, you can periodically call the getDeviceList () interface and check whether there are more new devices to determine whether the addition was successful.
+After the device is found, the status of the device is detected. If automatic addition is not supported, you should call interface to add device.
+If automatic addition is supported, waiting for the mqtt message to verify it's successful or fail.
+There may be a delay in the mqtt message. In order to improve the experience, you can periodically call the getDeviceList() and check whether there are more new devices to determine whether the addition was successful.
 
 [Function call]
 
@@ -714,7 +713,7 @@ public void addDeviceFailed (String message) {
 }
 ```
 
-## 5.2 AP Network Add Device
+## 5.2 Add device via AP
 
 # 6. Device Control
 
@@ -722,7 +721,7 @@ public void addDeviceFailed (String message) {
 
 ### 6.1.1 Introduction to device-related classes
 
-MeariDevice (manages the list of devices returned by management)
+MeariDevice (manages the list of devices)
 
 -List <NVRInfo> nvrs; NVR list
 -List <CameraInfo> ipcs; common cameras list
@@ -747,8 +746,8 @@ CameraInfo extends BaseDeviceInfo (device information class)
 ### 6.1.2 Get device information list
 ```
 【description】
-Mi Rui provides a rich interface for developers to achieve device information acquisition and management capabilities (removal, etc.). The device-related return data is notified to the recipient using an asynchronous message.
-We use the EventBus scheme to implement message notification. Therefore, the notification object needs to be registered and destroyed on each device operation page. For details, please refer to the demo implementation.
+Meari SDK provides multiple interface for developers to achieve device information acquisition and management capabilities (removal, etc.). The device data is notified to the recipient using an asynchronous message.
+We use the EventBus to implement message notification. Therefore, the notification object needs to be registered and destroyed on each device operation page. For details, please refer to the demo implementation.
 
 [Function call]
 / **
@@ -842,12 +841,12 @@ MeariUser.getInstance (). RenameDeviceNickName (cameraInfo.getDeviceID (), Devic
 ### 6.1.5 Get device alarm message time segment
 ```
 【description】
-Get device alarm message time slice
+Get time segment of device alarm message
 
 [Function call]
 
 / **
-  * Get device alarm message time segment
+  * Get time segment of devcie alarm message
   *
   * @param deviceID device ID
   * @param dayTime Time: "20200303"
@@ -989,7 +988,7 @@ deviceController.stopConnect (new MeariDeviceListener () {
 ### 6.2.2 Device SD card playback
 ```
 【description】
-After the device is inserted into SD, it will record the video and save it to the SD card, and then you can view the video in the SD card. The playback operation can only be performed after the device is successfully connected.
+After the SD is inserted into device, it will record the video and save it to the SD card, and then you can view the video from SD card. The playback operation can only be performed after the device is successfully connected.
 
 [Function call]
 
@@ -1227,14 +1226,14 @@ MeariUser.getInstance (). GetHistoryShare (cameraInfo.getDeviceID (), new IShare
 });
 ```
 
-## 7.4 Get sharing results for all devices
+## 7.4 Get shared results of all devices
 ```
 【description】
-Get sharing results for all devices
+Get sharing results of all devices
 
 [Function call]
 / **
- * Get sharing results for all devices
+ * Get sharing results of all devices
  *
  * @param callback Function callback
  * /
@@ -1305,14 +1304,14 @@ MeariUser.getInstance (). ShareDevice (account, deviceID, new IResultCallback ()
 });
 ```
 
-## 7.7 Cancel sharing device
+## 7.7 Cancel shared device
 ```
 【description】
-Cancel sharing device
+Cancel shared device
 
 [Function call]
 / **
- * Cancel sharing device
+ * Cancel shared device
  * @param account
  * @param deviceID device ID
  * @param callback Function callback
@@ -1331,14 +1330,14 @@ MeariUser.getInstance (). CancelShareDevice (account, cameraInfo.getDeviceID (),
 });
 ```
 
-## 7.8 Delete history sharing user
+## 7.8 Delete history shared user
 ```
 【description】
-Delete history sharing user
+Delete history shared user
 
 [Function call]
 / **
- * Delete history sharing users
+ * Delete history shared users
  *
  * @param accountArray user array
  * @param deviceID device ID
@@ -1386,16 +1385,16 @@ MeariUser.getInstance (). DealShareMessage (msgID, dealFlag, new IResultCallback
 ```
 
 # 8.Message Center
-## 8.1 Device sharing messages
+## 8.1 Device shared messages
 
-### 8.1.1 Get device share message list
+### 8.1.1 Get shared message list of device
 ```
 【description】
-Get device share message list
+Get shared message list of device
 
 [Function call]
 / **
- * Get device share message list
+ * Get share message list of devicw
  *
  * @param callback Function callback
  * /
@@ -1421,14 +1420,14 @@ MeariUser.getInstance (). GetShareMessage (new IShareMessageCallback () {
 });
 ```
 
-### 8.1.2 Delete device share messages
+### 8.1.2 Delete shared messages of device
 ```
 【description】
-Delete device share message
+Delete shared messages of device
 
 [Function call]
 / **
- * Delete device sharing messages
+ * Delete share messages of device
  *
  * @param msgIDList Message ID array
  * @param callback Function callback
@@ -1447,16 +1446,16 @@ MeariUser.getInstance (). DeleteShareMessage (msgIDList, new IResultCallback () 
     }
 });
 ```
-## 8.2 Device alarm message
+## 8.2 Alarm message of device
 
-### 8.2.1 Get all messages
+### 8.2.1 Get all devices whether have messages
 ```
 【description】
-Gets whether all devices have messages
+Gets all devices whether have messages
 
 [Function call]
 / **
- * Get alarm messages for all devices
+ * Get alarm messages of all devices
  *
  * @param callback function callback
  * /
@@ -1484,10 +1483,10 @@ MeariUser.getInstance (). GetDeviceMessageStatusList (new IDeviceMessageStatusCa
 });
 ```
 
-### 8.2.2 Get alarm messages for a single device
+### 8.2.2 Get alarm messages of a single device
 ```
 【description】
-Get alarm messages for a single device
+Get alarm messages of a single device
 
 [Function call]
 / **
@@ -1631,7 +1630,7 @@ device Capability
 
 - String firmwareCode; firmware code ppstrong-c2-neutral-1.0.0.20190617
 - String firmwareVersion; firmware version 1.0.0
-- String wifiName; WiFi name connected to the device
+- String wifiName; WiFi name to which the device is connected
 - int wifiStrength; WiFi strength to which the device is connected: 0 to 100;
 - int netMode; current network mode: 0-wireless; 1-wired; 2-4G; 3-unknown
 - int ledEnable; LED indicator status: 0-off; 1-on;
@@ -1639,23 +1638,23 @@ device Capability
 - int sdRecordType; SD card recording type: 0-event recording; 1-all day recording;
 - int sdRecordDuration; SD card recording time (seconds): 20, 30, 40, 60, 120, 180
 - int dayNightMode; day-night mode: 0-automatic; 1-day mode; 2-night mode;
-- int sleepMode; sleep mode: 0-not sleep; 1-sleep; 2-timed sleep; 3-geo fence sleep;
-- String sleepTimeList; List of timed sleep time: json array
-- String sleepWifi; Geo-fence sleep WiFi
-- int motionDetEnable; motion detection enable switch: 0-off; 1-on;
+- int sleepMode; sleep mode: 0-not sleep; 1-sleep; 2-timed sleep; 3-geo fencing sleep;
+- String sleepTimeList; List of sleep time: json array
+- String sleepWifi; Geo-fencing sleep WiFi
+- int motionDetEnable; motion detection switch: 0-off; 1-on;
 - int motionDetSensitivity; Motion detection sensitivity: 0-low; 1-medium; 2-high;
-- int PirDetEnable; human detection enable switch: 0-off; 1-on;
+- int PirDetEnable; human detection switch: 0-off; 1-on;
 - int PirDetSensitivity; human detection sensitivity: 0-low; 1-medium; 2-high;
-- int soundDetEnable; sound alarm enable switch: 0-off; 1-on;
-- int soundDetSensitivity; audible alarm sensitivity: 0-low; 1-medium; 2-high;
+- int soundDetEnable; sound alarm switch: 0-off; 1-on;
+- int soundDetSensitivity; sound alarm sensitivity: 0-low; 1-medium; 2-high;
 - int cryDetEnable; cry detection enable switch: 0-off; 1-on;
-- int humanDetEnable; human shape detection enable switch: 0-off; 1-on;
-- int humanFrameEnable; humanoid picture frame enable switch: 0-off; 1-on;
-- int humanTrackEnable; humanoid tracking enable switch: 0-off; 1-on;
-- int onvifEnable; Onvif enable switch: 0-off; 1-on;
+- int humanDetEnable; human shape detection switch: 0-off; 1-on;
+- int humanFrameEnable; humanoid picture frame swi: 0-tchoff; 1-on;
+- int humanTrackEnable; humanoid tracking switch: 0-off; 1-on;
+- int onvifEnable; Onvif switcher: 0-off; 1-on;
 - String onvifPwd; Onvif password
 - String onvifUrl; Onvif service network address
-- int h265Enable; H265 enable switch: 0-H264; 1-H265
+- int h265Enable; H265 switch: 0-H264; 1-H265
 - String alarmPlanList; list of alarm plan time: json array
 - int temperature;
 - int humidity;
@@ -1664,12 +1663,12 @@ device Capability
 - int batteryPercent; 0-100
 - int batteryRemaining; remaining battery life: minutes (inaccurate, not used for the time being)
 - int chargeStatus; battery charge status: 0-uncharged; 1-charging; 2-full
-- int wirelessChimeEnable; wireless bell enable switch: 0-off; 1-on
-- int wirelessChimeVolume; wireless bell volume: 0-100
-- String wirelessChimeSongs; wireless bell song list: ["song1", "song2", "song3"]
+- int wirelessChimeEnable; wireless bell switch: 0-off; 1-on
+- int wirelessChimeVolume; volume of wireless bell: 0-100
+- String wirelessChimeSongs; song list of wireless bell: ["song1", "song2", "song3"]
 
 
-## 9.3 Format Device SD Card
+## 9.3 Format SD Card of device
 ```
 【description】
 The device formats the SD card. After the formatting is successful, the formatting progress is obtained through the mqtt message.
@@ -1704,7 +1703,7 @@ SDCardInfo
 -sdCapacity SD card total capacity
 -sdRemainingCapacity SD card remaining capacity
 
-// Get device SD card information
+// Get SD card information of device
 MeariUser.getInstance (). GetSDCardInfo (new ISDCardInfoCallback () {
     @Override
     public void onSuccess (SDCardInfo sdCardInfo) {
@@ -1726,7 +1725,7 @@ MeariUser.getInstance (). StartSDCardFormat (new ISDCardFormatCallback () {
     }
 });
 
-// Get the format SD card progress
+// Get the process of formatting SD card
 MeariUser.getInstance (). GetSDCardFormatPercent (new ISDCardFormatPercentCallback () {
     @Override
     public void onSuccess (int percent) {
@@ -1805,7 +1804,7 @@ MeariUser.getInstance (). StartDeviceUpgrade (deviceUpgradeInfo.getUpgradeUrl ()
     }
 });
 
-// Get upgrade progress
+// Get the progress of upgrade
 MeariUser.getInstance (). GetDeviceUpgradePercent (new IDeviceUpgradePercentCallback () {
     @Override
     public void onSuccess (int percent) {
@@ -1822,14 +1821,14 @@ MeariUser.getInstance (). GetDeviceUpgradePercent (new IDeviceUpgradePercentCall
 
 ## 9.5 Basic parameter settings
 
-### 9.5.1 Get device parameters
+### 9.5.1 Get the parameters of the device
 ```
 【description】
 Get all parameters of the device
 
 [function call]
 /**
- * Get the params of the device
+ * Get the parameters of the device
  *
  * @param callback Function callback
  */
@@ -1873,7 +1872,7 @@ MeariUser.getInstance().setLED(ledEnable, new ISetDeviceParamsCallback() {
 });
 ```
 
-### 9.5.3 Device Preview Video Flip Control
+### 9.5.3 Flip control of device preview video
 ```
 【description】
 Device preview video flip control
@@ -1899,14 +1898,41 @@ MeariUser.getInstance().setMirror(mirrorEnable, new ISetDeviceParamsCallback() {
 });
 ```
 
-### 9.5.4 Device local recording settings
+### 9.5.4 Local recording settings of device
 ```
 【description】
-Device local recording type and event recording clip time setting
+Local recording type and the time of event recoding segment setting of device
 
 [function call]
 /**
- * Set day and night mode
+ * Local recording type and the time of event recoding segment setting of device
+ *
+ * @param type Recording type
+ * @param duration Event recording time
+ * @param callback Function callback
+ */
+public void setPlaybackRecordVideo(int type, int duration, ISetDeviceParamsCallback callback);
+
+[code example]
+MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.5 Day and night mode setting of device
+```
+【description】
+Day and night mode setting of device
+
+[function call]
+/**
+ * Day and night mode setting of device
  *
  * @param mode mode
  * @param callback Function callback
@@ -1925,40 +1951,14 @@ MeariUser.getInstance().setDayNightMode(mode, new ISetDeviceParamsCallback() {
 });
 ```
 
-### 9.5.5 Device day and night mode setting
+### 9.5.6 Sleep mode setting of device
 ```
 【description】
-Device day and night mode setting
-
-[function call]
-/**
- * Set day and night mode
- *
- * @param mode mode
- * @param callback Function callback
- */
-public void setDayNightMode(int mode, ISetDeviceParamsCallback callback);
-
-[code example]
-MeariUser.getInstance().setDayNightMode(mode, new ISetDeviceParamsCallback() {
-    @Override
-    public void onSuccess() {
-    }
-
-    @Override
-    public void onFailed(int errorCode, String errorMsg) {
-    }
-});
-```
-
-### 9.5.6 Device Sleep Mode Setting
-```
-【description】
-Device sleep mode settings
+Sleep mode setting of device
 
 [Function call]
 / **
-  * Set sleep mode
+  * Sleep mode setting of device
   *
   * @param mode mode
   * @param callback Function callback
@@ -1977,14 +1977,14 @@ MeariUser.getInstance (). SetSleepMode (sleepMode, new ISetDeviceParamsCallback 
 });
 ```
 
-### 9.5.7 Device scheduled sleep period setting
+### 9.5.7 Scheduled sleep period setting of device
 ```
 【description】
-Device scheduled sleep period setting
+Scheduled sleep period setting of device
 
 [Function call]
 / **
-  * Set the period of sleep
+  * Scheduled sleep period setting of device
   *
   * @param timeList the period of sleep
   * @param callback Function callback
@@ -2022,14 +2022,14 @@ MeariUser.getInstance (). SetSleepModeTimes (timeList, new ISetDeviceParamsCallb
 });
 ```
 
-### 9.5.8 Device motion detection settings
+### 9.5.8 Motion detection setting of device
 ```
 【description】
-Device motion detection settings
+Motion detection setting of device
 
 [Function call]
 / **
-  * Set motion detection
+  * Motion detection setting of device
   *
   * @param motionDetEnable motion detection enable
   * @param motionDetSensitivity motion detection sensitivity
@@ -2049,14 +2049,14 @@ MeariUser.getInstance (). SetMotionDetection (motionDetEnable, motionDetSensitiv
 });
 ```
 
-### 9.5.9 Device PIR Detection Settings
+### 9.5.9 PIR detection setting of device
 ```
 【description】
-Device PIR detection settings
+PIR detection setting of device
 
 [Function call]
 / **
-  * Set PIR detection
+  * PIR detection setting of device
   *
   * @param pirDetEnable PIR detection enable
   * @param pirDetSensitivity PIR detection sensitivity
@@ -2076,14 +2076,14 @@ MeariUser.getInstance (). SetPirDetection (pirDetEnable, pirDetSensitivity, new 
 });
 ```
 
-### 9.5.10 Device noise detection settings
+### 9.5.10 Noise detection setting of device
 ```
 【description】
-Device noise detection settings
+Noise detection setting of device
 
 [Function call]
 / **
-  * Set sound detection
+  * Noise detection setting of device
   *
   * @param soundDetEnable sound detection enable
   * @param soundDetSensitivity sound detection sensitivity
@@ -2103,14 +2103,14 @@ MeariUser.getInstance (). SetSoundDetection (soundDetEnable, soundDetSensitivity
 });
 ```
 
-### 9.5.11 Device cry alarm setting
+### 9.5.11 Cry alarm setting of device
 ```
 【description】
-Device cry alarm setting
+Cry alarm setting of device
 
 [Function call]
 / **
-  * Set up cry detection
+  * Cry alarm setting of device
   *
   * @param cryDetEnable cry detection
   * @param callback Function callback
@@ -2129,14 +2129,14 @@ MeariUser.getInstance (). SetCryDetection (cryDetEnable, new ISetDeviceParamsCal
 });
 ```
 
-### 9.5.12 Device human tracking settings
+### 9.5.12 Human tracking setting of Device
 ```
 【description】
-Device human tracking settings
+Human tracking setting of Device
 
 [Function call]
 / **
- * Set up human tracking
+ * Human tracking setting of Device
  *
  * @param humanTrackEnable human track enable
  * @param callback Function callback
@@ -2155,14 +2155,14 @@ MeariUser.getInstance (). SetHumanTrack (humanTrackEnable, new ISetDeviceParamsC
 });
 ```
 
-### 9.5.13 Device human detection alarm setting
+### 9.5.13 Human detection alarm setting of device
 ```
 【description】
-Device human detection alarm setting
+Human detection alarm setting of device
 
 [Function call]
 / **
- * Set up human detection
+ * Human detection alarm setting of device
  *
  * @param humanDetEnable human detection enable
  * @param callback Function callback
@@ -2181,14 +2181,14 @@ MeariUser.getInstance (). SetHumanDetection (humanDetEnable, new ISetDeviceParam
 });
 ```
 
-### 9.5.14 Device humanoid frame setting
+### 9.5.14 Humanoid frame setting of device
 ```
 【description】
-Device humanoid frame settings
+Humanoid frame setting of device
 
 [Function call]
 / **
- * Set up human frame
+ * Humanoid frame setting of device
  *
  * @param humanFrameEnable human frame enable
  * @param callback Function callback
@@ -2207,14 +2207,14 @@ MeariUser.getInstance (). SetHumanFrame (humanFrameEnable, new ISetDeviceParamsC
 });
 ```
 
-### 9.5.15 Device Onvif settings
+### 9.5.15 Onvif setting of device
 ```
 【description】
-Device Onvif settings
+Onvif setting of device
 
 [Function call]
 / **
-  * set onvif
+  * Onvif setting of device
   *
   * @param enable onvif enable
   * @param password onvif password
@@ -2234,14 +2234,14 @@ MeariUser.getInstance (). SetOnvif (enable, password, new ISetDeviceParamsCallba
 });
 ```
 
-### 9.5.16 Device video encoding format settings
+### 9.5.16 Video encoding format setting of device
 ```
 【description】
-Device video encoding format settings
+Video encoding format setting of device
 
 [Function call]
 / **
-  * Set video encoding type
+  * Video encoding format setting of device
   *
   * @param type encoding type
   * @param callback Function callback
@@ -2260,17 +2260,17 @@ MeariUser.getInstance (). SetVideoEncoding (type, new ISetDeviceParamsCallback (
 });
 ```
 
-## 9.6 NVR parameter settings
-## 9.7 BabyMonitor parameter settings
-## 9.8 Doorbell parameter setting
-### 9.8.1 Device Intercom Volume Settings
+## 9.6 Parameter setting of NVR
+## 9.7 Parameter setting of babymonitor
+## 9.8 Parameter setting of doorbell
+### 9.8.1 Intercom volume settings of device
 ```
 【description】
-Device intercom volume setting
+Intercom volume setting of Device
 
 [Function call]
 / **
- * Set device intercom volume
+ * Intercom volume setting of Device
  *
  * @param volume intercom volume
  * @param callback Function callback
@@ -2292,11 +2292,11 @@ MeariUser.getInstance (). SetSpeakVolume (volume, new ISetDeviceParamsCallback (
 ### 9.8.2 Unlocking the battery lock
 ```
 【description】
-Unlock battery lock
+Unlocking the battery lock
 
 [Function call]
 / **
- * Unlock battery lock
+ * Unlocking the battery lock
  *
  * @param callback Function callback
  * /
@@ -2317,11 +2317,11 @@ MeariUser.getInstance (). UnlockBattery (new ISetDeviceParamsCallback () {
 ### 9.8.3 Binding Wireless Chime
 ```
 【description】
-Bind wireless chime
+Binding Wireless Chime
 
 [Function call]
 / **
-  * Bind wireless chime
+  * Binding Wireless Chime
   *
   * @param callback Function callback
   * /
@@ -2342,11 +2342,11 @@ MeariUser.getInstance (). BindWirelessChime (new ISetDeviceParamsCallback () {
 ### 9.8.4 Unbinding Wireless Chime
 ```
 【description】
-Untie the wireless chime
+Unbinding Wireless Chime
 
 [Function call]
 / **
-  * unbind wireless chime
+  * Unbinding Wireless Chime
   *
   * @param callback Function callback
   * /
@@ -2371,7 +2371,7 @@ Whether the wireless chime works
 
 [Function call]
 / **
- * Set wireless chime enable
+ * Whether the wireless chime works
  *
  * @param enable wireless chime enable
  * @param callback Function callback
@@ -2391,16 +2391,16 @@ MeariUser.getInstance (). SetWirelessChimeEnable (enable, new ISetDeviceParamsCa
 ```
 
 
-### 9.8.6 Wireless Chime Volume Settings
+### 9.8.6 Volume setting of wireless chime
 ```
 【description】
-Wireless Chime Volume Settings
+Volume setting of wireless chime
 
 [Function call]
 / **
- * Set wireless chime volume
+ * Volume setting of wireless chime
  *
- * @param volume wireless chime volume
+ * @param volume volume of wireless chime
  * @param callback Function callback
  * /
 public void setWirelessChimeVolume (int volume, ISetDeviceParamsCallback callback);
@@ -2417,14 +2417,14 @@ MeariUser.getInstance (). SetWirelessChimeVolume (volume, new ISetDeviceParamsCa
 });
 ```
 
-### 9.8.7 Wireless Chime Ringtone Settings
+### 9.8.7 Ringtone setting of wireless chime
 ```
 【description】
-Wireless Chime Ringtone Settings
+Ringtone setting of wireless chime
 
 [Function call]
 / **
- * Set wireless chime ringtone
+ * Ringtone setting of wireless chime
  *
  * @param song wireless chime ringtone
  * @param callback Function callback
@@ -2450,7 +2450,7 @@ Whether the mechanical chime works
 
 [Function call]
 / **
- * Set mechanical chime on or off
+ * Whether the mechanical chime works
  *
  * @param status 0-off; 1-on
  * @param callback Function callback
@@ -2469,19 +2469,19 @@ MeariUser.getInstance (). SetMechanicalChimeEnable (enable, new ISetDeviceParams
 });
 ```
 
-## 9.9 Voice Doorbell Parameter Setting
-## 9.10 Floodlight Camera Parameter Setting
-## 9.11 Relay router parameter settings
+## 9.9 Parameter setting of voice bell
+## 9.10 Parameter setting of floodlight camera
+## 9.11 Parameter setting of relay router
 
-### 9.2.25 Device start rotation command
+### 9.2.25 Start rotation command of device
 ```
 【description】
-Device start rotation command
+Start rotation command of device
 
 [function call]
 
 /**
- * The device starts to rotate
+ * Start rotation command of device
  *
  * @param snNum device's sn number
  * @param timeList p: left-80; right 80. t: lower -20; upper 20. z: passed in 0
@@ -2502,54 +2502,17 @@ MeariUser.getInstance().startPTZ(cameraInfo.getSnNum(), -80, 0, 0, this, new ISt
     public void onError(int code, String error) {
     }
 });
-<h1><center> directory </center></h1>
-[TOC]
-
-<center>
----
-Version number | Development team | Update date | Notes
-:-:|:-:|:-:|:-:
-2.0.0 | Towers Perrin Technical Team | 2019.09.20 | Optimization
-
-</center>
-
-# 1. Function Overview
-
-The Towers Technology APP SDK provides interface packaging with hardware devices and Towers Perrin, and accelerates the application development process, including the following functions:
-
-- Hardware device related (with network, control, status reporting, firmware upgrade, preview playback, etc.)
-- Account system (mobile phone number, email registration, login, password reset, etc.)
-- Device sharing
-- Friends management
-- Message Center
-- Feedback
-- Meari cloud HTTPS API interface package (see Meari cloud api call)
-
---------------
-
-# 2. Integration preparation
-## Create App ID and App Secert
-```
-Towers Perrin Technology Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
-<meta-data
-    Android:name="MEARI_APPKEY"
-    Android:value="your MEARI_APPKEY" />
-<meta-data
-    Android:name="MEARI_SECRET"
-    Android:value="your MEARI_SECRET" />
 ```
 
-```
-
-### 9.2.26 Device stop rotation command
+### 9.2.26 Stop rotation command of device
 ```
 【description】
-Device stop rotation command
+Stop rotation command of device
 
 [function call]
 
 /**
- * Device stop rotation command
+ * Stop rotation command of device
  *
  * @param snNum device's sn number
  * @param timeList 0-off 1-open
@@ -2583,14 +2546,14 @@ Used to receive messages such as device add success message, doorbell call messa
 
 ### 10.1.1 Connect to MQTT Service
 
-// Called after the user logs in successfully
+// Called after the user login successfully
 if (! MeariUser.getInstance (). isMqttConnected ()) {
     MeariUser.getInstance (). ConnectMqttServer (application);
 }
 
 ### 11.1.2 Exit MQTT Service
 
-// Called after the user logs out successfully
+// Called after the user logout successfully
 if (MeariUser.getInstance (). isMqttConnected ()) {
     MeariUser.getInstance (). DisConnectMqttService ();
 }
@@ -2598,8 +2561,8 @@ if (MeariUser.getInstance (). isMqttConnected ()) {
 ### 11.1.3 MQTT message processing
 
 ```
-When the SDK is initialized, it needs to be passed into the implementation of the MqttMessageCallback interface, that is, MyMessageHandler in the demo.
-Handle MQTT in the implementation class of the MqttMessageCallback interface (see Demo MyMessageHandler)
+When the SDK is initialized, the implementation of the MqttMessageCallback interface should be passed into it, like MyMessageHandler in the demo.
+Handle MQTT in the implementation of the MqttMessageCallback interface (see Demo MyMessageHandler)
 
 / **
  * Other news
@@ -2673,17 +2636,17 @@ void requestShareDevice (String userName, String deviceName, String msgID);
 
 ### 10.2.1 Apply for an account
 ```
-Please apply for Aurora Push account and create application by yourself, refer to the official document to access Aurora Push. Contact us to configure the Aurora key and secret you applied for.
+Please apply for Aurora Push account and create application by yourself, refer to the official document to integrate Aurora Push. Contact us to configure the Aurora key and secret you applied for.
 ```
 ### 10.2.2 Setting User Alias
 ```
-UserInfo is obtained after successfully logging in to meati.
-After the aurora is successfully initialized, use the userInfo.getJpushAlias ​​() successfully obtained by login to set the aurora alias.
+UserInfo is obtained after successfully logging in to meari.
+After the aurora is successfully initialized, use the userInfo.getJpushAlias ​​() successfully from login to set the aurora alias.
 Initialize and set the alias refer to the official document or the MeariSDK demo
 ```
 ### 10.2.3 Message Handling
 ```
-Refer to the message processing in the MyReceiver file in the demo
+Refer to the message processing in the MyReceiver file from the demo
 ```
 
 ## 10.3 Integrated Google Push

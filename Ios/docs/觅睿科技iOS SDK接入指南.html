@@ -392,7 +392,7 @@ sup {
 <a href="#toc_21">4.3 用户上传头像</a>
 </li>
 <li>
-<a href="#toc_22">4.4 修改昵称</a>
+<a href="#toc_22">4.4 修改昵称</a>
 </li>
 <li>
 <a href="#toc_23">4.5 数据模型</a>
@@ -451,7 +451,7 @@ sup {
 <a href="#toc_38">(2) 二维码配网搜索设备</a>
 </li>
 <li>
-<a href="#toc_39">(3)  设备添加</a>
+<a href="#toc_39">(3)  设备添加</a>
 <ul>
 <li>
 <a href="#toc_40">&lt;1&gt; 添加摄像机</a>
@@ -492,7 +492,7 @@ sup {
 <a href="#toc_49">8.设备信息获取</a>
 <ul>
 <li>
-<a href="#toc_50">8.1 获取设备列类</a>
+<a href="#toc_50">8.1 获取设备列表</a>
 </li>
 <li>
 <a href="#toc_51">8.2 设备信息</a>
@@ -1123,7 +1123,7 @@ Meari SDK 支持全球服务，当选择不同的国家时需要重置访问地�
     
     }];</code></pre></div>
 
-<h2 id="toc_22">4.4 修改昵称</h2>
+<h2 id="toc_22">4.4 修改昵称</h2>
 
 <div><pre><code class="language-none">【描述】
     修改用户昵称。
@@ -1608,7 +1608,7 @@ smart wifi配网需要提供所连wifi的名称和密码
 <h2 id="toc_48">7.5 从NVR解绑设备</h2>
 
 <div><pre><code class="language-none">【描述】
-    从NVR绑定设备后，设备的录像文件将不会继续存储在NVR中
+    从NVR解绑设备后，设备的录像文件将不会继续存储在NVR中
 
 【函数调用】
     @param deviceID 设备ID
@@ -1783,10 +1783,10 @@ smart wifi配网需要提供所连wifi的名称和密码
 <h2 id="toc_56">8.7 查询设备在线状态</h2>
 
 <div><pre><code class="language-none">【描述】
-    查询设备是否有新版本
+    查询设备在线状态
 
 【函数调用】
-    //查询设备是否有新版本
+    //查询设备在线状态
     @param deviceID 设备ID
     @param success 成功回调：返回设备是否在线
     @param failure 失败回调
@@ -2297,7 +2297,7 @@ smart wifi配网需要提供所连wifi的名称和密码
 <h3 id="toc_72">(2) 双向对讲</h3>
 
 <div><pre><code class="language-none">【描述】
-    双向对讲是手机与设备**可以**同时讲话，手机端开始对讲调用startVoicetalk，不调用stopVoicetalkSuccess，不会影响设备端传来声音
+    双向对讲是手机与设备可以同时讲话，手机端开始对讲调用startVoicetalk，不调用stopVoicetalkSuccess，不会影响设备端传来声音
     
 【适用】
     subType:
@@ -2869,7 +2869,7 @@ smart wifi配网需要提供所连wifi的名称和密码
 
     }];
     
-    //设置WiFi信息
+    //设置地理围栏
     [[MeariUser sharedInstance] settingGeographyWithSSID:(NSString *)ssid BSSID:(NSString *)bssid deviceID:(NSInteger)deviceID success:^(NSString *str){
     
     } failure:^(NSError *error){
@@ -2893,7 +2893,7 @@ smart wifi配网需要提供所连wifi的名称和密码
     - (void)getTemperatureHumiditySuccesss:(MeariDeviceSucess_TRH)success failure:(MeariDeviceFailure)failure;
 
 【代码范例】
-    //设置休眠模式
+    // 获取温湿度
     [self.camera getTemperatureHumiditySuccesss:^(CGFloat temperature, CGFloat humidty) {
 
     } failure:^(NSError *error) {
