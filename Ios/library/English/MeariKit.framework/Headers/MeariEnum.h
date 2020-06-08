@@ -12,18 +12,19 @@
 
 /**
  Server environment
+  服务器环境
 
- - MearEnvironmentRelease: release
- - MearEnvironmentPrerelease: prerelease
+ - MearEnvironmentRelease: release (发布)
+ - MearEnvironmentPrerelease: prerelease (预发布)
  */
 typedef NS_ENUM(NSInteger, MearEnvironment) {
     MearEnvironmentRelease,
     MearEnvironmentPrerelease
 };
 
-
 /**
  Log flag
+ 日志等级 (从大到小)
 
  - MeariLogFlagError: error
  - MeariLogFlagWarning: warning
@@ -51,6 +52,7 @@ typedef NS_ENUM(NSInteger, MeariLogLevel) {
 
 /**
  Error code for User's interface
+ 用户界面的接口错误
 
  - MeariUserCodeUnKnown: unkown error
  - MeariUserCodeNetworkUnavailable : network is unavailable!
@@ -99,6 +101,7 @@ typedef NS_ENUM(NSInteger, MeariLogLevel) {
  - MeariUserCodeTuyaTokenError : tuya token error
  - MeariUserCodeUserChanged : the user changed
  - MeariUserCodeIotOffline : iot Device offline
+ - MeariUserCodeShareByYourself: share by yourself is not invalid
  */
 typedef NS_ENUM(NSInteger, MeariUserCode) {
     MeariUserCodeUnKnown                = 0,
@@ -161,6 +164,7 @@ typedef NS_ENUM(NSInteger, MeariUserCode) {
     MeariUserCodeIotOffline             = 1066,
     MeariUserCodeVerificationExpired    = 1067,
     MeariUserCodeVerificationError      = 1068,
+    MeariUserCodeShareByYourself        = 1069,
 };
 
 
@@ -201,6 +205,7 @@ typedef NS_ENUM(NSInteger, MeariDeviceCode) {
     MeariDeviceCodeNoTemperatureAndHumidityCantRead = -1044,
     MeariDeviceCodeVoiceTalkFail                  = -1045,
     MeariDeviceCodeVideoClipRecording             = -1050,
+    MeariDeviceCodeDeviceParamFail                = -10000
 };
 
 typedef NS_ENUM(NSInteger, MeariNetworkReachabilityStatus) {

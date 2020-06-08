@@ -14,39 +14,46 @@
 @class MeariDevice;
 @class MeariPlayView;
 @class MeariDeviceTime;
+@class MeariDeviceHostMessage;
+@class MeariChimeRingInfo;
 typedef void(^MeariDeviceFailure)(NSError *error);
 typedef void(^MeariDeviceFailure_Str)(NSString *error);
-typedef void(^MeariDeviceSucess)(void);
-typedef void(^MeariDeviceSucess_Online)(BOOL online);
-typedef void(^MeariDeviceSucess_SearchDevice)(MeariDevice *device);
-typedef void(^MeariDeviceSucess_ID)(id obj);
-typedef void(^MeariDeviceSucess_Str)(NSString *str);
-typedef void(^MeariDeviceSucess_Dict)(NSString *dict);
-typedef void(^MeariDeviceSucess_Result)(NSString *jsonString);
-typedef void(^MeariDeviceSucess_PlaybackTimes)(NSArray *times);
-typedef void(^MeariDeviceSucess_PlaybackDays)(NSArray *days);
-typedef void(^MeariDeviceSucess_HostMessages)(NSArray *systemsArray,NSArray *customArray);
-typedef void(^MeariDeviceSucess_MusicStateCurrent)(NSDictionary *currentMusicState);
-typedef void(^MeariDeviceSucess_MusicStateAll)(NSDictionary *allMusicState);
-typedef void(^MeariDeviceSucess_Mirror)(BOOL mirror);
-typedef void(^MeariDeviceSucess_LED)(BOOL on);
-typedef void(^MeariDeviceSucess_Motion)(MeariDeviceParamMotion *motion);
-typedef void(^MeariDeviceSucess_Storage)(MeariDeviceParamStorage *storage);
-typedef void(^MeariDeviceSucess_StoragePercent)(NSInteger percent);
-typedef void(^MeariDeviceSucess_UpgradeMode)(MROtaUpgradeMode otaUpgradeMode);
-typedef void(^MeariDeviceSucess_Version)(NSString *version);
-typedef void(^MeariDeviceSucess_VersionPercent)(NSInteger percent);
-typedef void(^MeariDeviceSucess_Param)(MeariDeviceParam *param);
-typedef void(^MeariDeviceSucess_TRH)(CGFloat temperature, CGFloat humidity);
-typedef void(^MeariDeviceSucess_Volume)(CGFloat volume);
-typedef void(^MeariDeviceSucess_RecordAutio)(NSString *filePath);
-typedef void(^MeariDeviceSucess_NetInfo)(MeariDeviceParamNetwork *info);
-typedef void(^MeariDeviceSucess_PlayBackLevel)(MeariDeviceLevel level);
-
+typedef void(^MeariDeviceSuccess)(void);
+typedef void(^MeariDeviceDisconnect)(void);
+typedef void(^MeariDeviceSuccess_Online)(BOOL online);
+typedef void(^MeariDeviceSuccess_SearchDevice)(MeariDevice *device);
+typedef void(^MeariDeviceSuccess_ID)(id obj);
+typedef void(^MeariDeviceSuccess_Str)(NSString *str);
+typedef void(^MeariDeviceSuccess_Dict)(NSString *dict);
+typedef void(^MeariDeviceSuccess_Result)(NSString *jsonString);
+typedef void(^MeariDeviceSuccess_PlaybackTimes)(NSArray *times);
+typedef void(^MeariDeviceSuccess_PlaybackDays)(NSArray *days);
+typedef void(^MeariDeviceSuccess_HostMessages)(NSArray *customArray);
+typedef void(^MeariDeviceSuccess_MusicStateCurrent)(NSDictionary *currentMusicState);
+typedef void(^MeariDeviceSuccess_MusicStateAll)(NSDictionary *allMusicState);
+typedef void(^MeariDeviceSuccess_Mirror)(BOOL mirror);
+typedef void(^MeariDeviceSuccess_LED)(BOOL on);
+typedef void(^MeariDeviceSuccess_Motion)(MeariDeviceParamMotion *motion);
+typedef void(^MeariDeviceSuccess_Storage)(MeariDeviceParamStorage *storage);
+typedef void(^MeariDeviceSuccess_StoragePercent)(NSInteger percent);
+typedef void(^MeariDeviceSuccess_UpgradeMode)(MeariDeviceOtaUpgradeMode otaUpgradeMode);
+typedef void(^MeariDeviceSuccess_Version)(NSString *version);
+typedef void(^MeariDeviceSuccess_VersionPercent)(NSInteger percent);
+typedef void(^MeariDeviceSuccess_LightState)(BOOL on);
+typedef void(^MeariDeviceSuccess_SirenTimeout)(NSInteger second);
+typedef void(^MeariDeviceSuccess_Param)(MeariDeviceParam *param);
+typedef void(^MeariDeviceSuccess_TRH)(CGFloat temperature, CGFloat humidity);
+typedef void(^MeariDeviceSuccess_Volume)(CGFloat volume);
+typedef void(^MeariDeviceSuccess_RecordAutio)(NSString *filePath);
+typedef void(^MeariDeviceSuccess_NetInfo)(MeariDeviceParamNetwork *info);
+typedef void(^MeariDeviceSuccess_ChimeSubDeviceList) (NSArray <MeariDevice *> *deviceList);
+typedef void(^MeariDeviceSuccess_ChimeRingList) (NSArray <MeariChimeRingInfo *> *chimeRingInfoList);
+typedef void(^MeariDeviceSuccess_PlayBackLevel)(MeariDeviceRecordDuration level);
+typedef void(^MeariDeviceSuccess_Dictionary)(NSDictionary *dic);
 
 /**
  search mode for searching device
- 
+
  - MeariSearchModeLan: only search in lan
  - MeariSearchModeCloud_Smartwifi: only search in cloud for smartwifi
  - MeariSearchModeCloud_AP: only search in cloud for ap
@@ -63,25 +70,11 @@ typedef NS_OPTIONS(NSInteger, MeariDeviceSearchMode) {
     MeariSearchModeAll = (MeariSearchModeLan | MeariSearchModeCloud),
 };
 
-/**
- VoiceTalk Type
- 
- - MeariVoiceTalkTypeOneWay: One-way speech
- - MeariVoiceTalkTypeFullDuplex: Two-way intercom
- */
 typedef NS_ENUM(NSInteger, MeariVoiceTalkType) {
     MeariVoiceTalkTypeOneWay,
     MeariVoiceTalkTypeFullDuplex,
 };
 
-/**
- Device lens movement direction
- 
- - MeariMoveDirectionUp: Move up
- - MeariMoveDirectionDown: Move down
- - MeariMoveDirectionLeft: Move left
- - MeariMoveDirectionRight: Move right
- */
 typedef NS_ENUM(NSInteger, MeariMoveDirection) {
     MeariMoveDirectionUp,
     MeariMoveDirectionDown,
@@ -97,6 +90,8 @@ typedef NS_ENUM (NSInteger, MeariDeviceVideoStream) {
     MeariDeviceVideoStream_1080,
     MeariDeviceVideoStream_1080_1_5,
     MeariDeviceVideoStream_1080_2_0,
+    MeariDeviceVideoStream_3MP_1_2,
+    MeariDeviceVideoStream_3MP_2_4,
     MeariDeviceVideoStreamNone,
 };
 typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
@@ -105,284 +100,322 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
     MeariDeviceConnectTypeRelay,
     MeariDeviceConnectTypeLan,
 };
+typedef NS_OPTIONS(NSInteger, MeariDeviceChimeAlert) {
+    MeariDeviceChimeAlertNone = 0,
+    MeariDeviceChimeAlertRing = 1 << 0,
+    MeariDeviceChimeAlertMotion = 1 <<1,
+    MeariDeviceChimeAlertAll = (MeariDeviceChimeAlertRing | MeariDeviceChimeAlertMotion),
+};
+typedef NS_ENUM(NSInteger, MeariDeviceSoundChangeType) {
+    MeariDeviceSoundChangeTypeBoy,
+    MeariDeviceSoundChangeTypeGirl,
+    MeariDeviceSoundChangeTypeMan,
+};
+
+typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAlertType);
 
 @protocol MeariDeviceControl <NSObject>
 
 #pragma mark - SDK
 
 /**
- Reset playback resources
-   */
+ Reset internal resources
+ 重置内部资源
+ */
 - (void)reset;
 /**
- Get the hole type
+ Get punch type
+ 获取打洞类型
  */
 - (MeariDeviceConnectType)getP2pMode;
-#pragma mark -- Query online
 
-/*
- @param completion whether is online
- */
-- (void)getOnlineStatus:(MeariDeviceSucess_Online)completion;
-
-#pragma mark -- Search & Config(Manual)
+#pragma mark -- 查询在线
 
 /**
- Start search: suitable for SmartWiFi distribution network and AP distribution network
- 
- @param success Successful callback: return to the search device
- @param failure return error
+ Get online status
+ 获取在线状态
+
+ @param completion Online (是否在线)
  */
-+ (void)startSearch:(MeariDeviceSucess_SearchDevice)success failure:(MeariDeviceFailure)failure;
+- (void)getOnlineStatus:(MeariDeviceSuccess_Online)completion;
+
+#pragma mark -- 搜索 & 配网
 
 /**
- Start search: only for QR code code distribution networks
+ Start search: for smartwifi distribution network and ap distribution network
+ 开始搜索：适用于smartwifi配网和ap配网
  
- @param token QR code token
- @param success Successful callback: return to the search device
- @param failure return error
+ @param success Successful callback (成功回调)：返回搜索到的设备
+ @param failure failure callback (失败回调)
  */
-+ (void)startSearchWithQRcodeToken:(NSString *)token success:(MeariDeviceSucess_SearchDevice)success failure:(MeariDeviceFailure)failure;
++ (void)startSearchSuccess:(MeariDeviceSuccess_SearchDevice)success failure:(MeariDeviceFailure)failure;
 
 /**
- Update token
+ Start search: only for QR code network(开始搜索：仅适用于二维码配网)
  
- @param token Distribution network token
- @param type Device search type
+ @param token QR code token(二维码token)
+ @param success Successful callback (成功回调)：返回搜索到的设备
+ @param failure failure callback (失败回调)
+ */
++ (void)startSearchWithQRcodeToken:(NSString *)token success:(MeariDeviceSuccess_SearchDevice)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Update Token
+ 更新Token
+ 
+ @param token 配网方式的token
+ @param type  配网方式
  */
 + (void)updatetoken:(NSString *)token type:(MeariDeviceTokenType)type ;
 
 /**
- Start search: search universal interfaces
- Ensure that the updatetoken method is invoked when using this interface.
- @param mode Distribution network mode
- @param success Successful callback: return to the search device
- @param failure return error
+ Start Search: Search for Universal Interface
+ Make sure to call the updatetoken method when using this interface
+ 
+ 开始搜索：搜索通用接口
+ 在使用此接口时要确保调用了updatetoken方法
+ @param mode 配网方式
+ @param success Successful callback (成功回调)：返回搜索到的设备
+ @param failure failure callback (失败回调)
  */
-+ (void)startSearch:(MeariDeviceSearchMode)mode success:(MeariDeviceSucess_SearchDevice)success failure:(MeariDeviceFailure)failure;
++ (void)startSearchWithMode:(MeariDeviceSearchMode)mode success:(MeariDeviceSuccess_SearchDevice)success failure:(MeariDeviceFailure)failure;
 
 /**
  Stop search
+ 停止搜索
  */
 + (void)stopSearch;
 
 
 /**
- Start smartwifi distribution networks
+ Start smartwifi distribution network(开始 smartwifi 配网)
  
- @param wifiSSID wifi name
- @param wifiPwd wifi password
- @param token   token
- @param success Successful callback
- @param failure return error
+ @param wifiSSID wifi name(wifi名称)
+ @param wifiPwd wifi password: no password, pass nil(wifi密码：没有密码，传nil)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-+ (void)startMonitorWifiSSID:(NSString *)wifiSSID wifiPwd:(NSString *)wifiPwd token:(NSString *)token success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure ;
++ (void)startMonitorWithWifiSSID:(NSString *)wifiSSID wifiPwd:(NSString *)wifiPwd token:(NSString *)token success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure ;
 
 
 /**
- Stop smartwifi distribution networks
+ Stop smartwifi distribution network
+ 停止 smartwifi 配网
  */
 + (void)stopMonitor;
 
 
 /**
- Start ap distribution networks
+ Start ap distribution network(开始 ap 配网)
  
- @param wifiSSID wifi name
- @param wifiPwd wifi password
- @param success Successful callback
- @param failure return error
+ @param wifiSSID wifi name(wifi名称)
+ @param wifiPwd wifi password(wifi密码)
+ @param relayDevice relay Device(是否为中继设备)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-+ (void)startAPConfigureWifiSSID:(NSString *)wifiSSID wifiPwd:(NSString *)wifiPwd success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
++ (void)startAPConfigureWithWifiSSID:(NSString *)wifiSSID wifiPwd:(NSString *)wifiPwd relay:(BOOL)relayDevice success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 #pragma mark --- Custom Setting
-- (void)setDeviceWithParams:(NSDictionary *)params success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure ;
+- (void)setDeviceWithParams:(NSDictionary *)params success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure ;
 
-#pragma mark -- Connect
+#pragma mark -- 打洞
 
 /**
- Conect device is the first step to control device.
+ Start connecting devices(开始连接设备)
  
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)startConnectSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
+- (void)startConnectSuccess:(MeariDeviceSuccess)success abnormalDisconnect:(MeariDeviceDisconnect)disconnect failure:(MeariDeviceFailure)failure;
 
 /**
- Disconnect device:If device need not using ,you should disconnect the device
+ Disconnect device(断开设备)
  
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)stopConnectSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)stopConnectSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark -- Get bitrate
+#pragma mark -- 获取参数：（码率、模式、静音）
 
 /**
- Get bitrate
- 
- @return bitrate
+ Get bit rate (获取码率)
+
+ @return Bit rate (码率)
  */
 - (NSString *)getBitrates;
 
-#pragma mark -- Preview
+#pragma mark -- 预览
 
 /**
- start Device Preview
+ Start previewing the device(开始预览设备)
  
- @param HD whether is HD or SD
- @param success
- @param failure return error
- @param close return sleepmode, see MeariDeviceSleepmode, device is in sleep
+ @param playView play view control(播放视图控件)
+ @param HD Whether to play HD(是否高清播放)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ @param close is in sleep mode, the lens is off, return value: sleep mode(close 处于休眠模式，镜头关闭，返回值：休眠模式)
  */
-- (void)startPreviewWithView:(MeariPlayView *)playView streamid:(BOOL)HD success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
+- (void)startPreviewWithPlayView:(MeariPlayView *)playView streamid:(BOOL)HD success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepMode sleepModeType))close;
 
 /**
- Start preview
+ Start previewing the device(开始预览设备)
  
- @param playView  play view
- @param videoStream Video quality
- @param success
- @param failure return error
- @param close In sleep mode, the lens is off, return value: sleep mode
+ @param playView play view control(播放视图控件)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ @param close is in sleep mode, the lens is off, return value: sleep mode(close 处于休眠模式，镜头关闭，返回值：休眠模式)
  */
-- (void)startPreviewWithView:(MeariPlayView *)playView videoStream: (MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepmode sleepmodeType))close;
+- (void)startPreviewWithPlayView:(MeariPlayView *)playView videoStream: (MeariDeviceVideoStream)videoStream success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepMode sleepModeType))close;
 
 /**
- Stop preview
+ stop preview
+ 停止预览设备
  
- @param success
- @param failure  return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)stopPreviewSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-
-/**
- Switch preview charity
- 
- @param playView play view
- @param videoStream stream
- @param success
- @param failure return error
- */
-- (void)switchPreviewWithView:(MeariPlayView *)playView videoStream:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-#pragma mark -- Playback
-
-/**
- Get video days
- 
- @param year year
- @param month month
- @param success return video days in json array:--[{"date" = "20171228"},...]
- @param failure return error
- */
-- (void)getPlaybackVideoDaysWithYear:(NSInteger)year month:(NSInteger)month success:(MeariDeviceSucess_PlaybackDays)success failure:(MeariDeviceFailure)failure;
+- (void)stopPreviewSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Get video times
+ change Video Resolution
+ 切换高清标清
  
- @param year year
- @param month month
- @param day day
- @param success return video times in json array--[{"endtime" = "20171228005958","starttime = 20171228000002"},...]
- @param failure return error
+ @param playView play view(播放视图)
+ @param videoStream (video type)播放类型
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)getPlaybackVideoTimesWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day success:(MeariDeviceSucess_PlaybackTimes)success failure:(MeariDeviceFailure)failure;
+- (void)changeVideoResolutionWithPlayView:(MeariPlayView *)playView videoStream:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+#pragma mark -- 回放
+
+/**
+ Get the number of video days in a month(获取某月的视频天数)
+ 
+ @param month 月
+ @param year 年
+ @param success Successful callback (成功回调)，  return value: json array --[{"date" = "20171228"},...]       (返回值：json数组--[{"date" = "20171228"},...])
+ @param failure failure callback (失败回调)
+ */
+- (void)getPlaybackVideoDaysInMonth:(NSInteger)month year:(NSInteger)year success:(MeariDeviceSuccess_PlaybackDays)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Start playback: one person only allowed at same time
+ Get a video clip of a day(获取某天的视频片段)
  
- @param playView play view
- @param startTime start time：--20171228102035
- @param success
- @param failure return error
+ @param year year(年)
+ @param month month(月)
+ @param day day(日)
+ @param success Successful callback (成功回调)：返回值：json数组--[{"endtime" = "20171228005958","starttime = 20171228000002"},...]
+ @param failure failure callback (失败回调)
  */
-- (void)startPlackbackWithView:(MeariPlayView *)playView startTime:(NSString *)startTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)getPlaybackVideoTimesInDay:(NSInteger)day month:(NSInteger)month year:(NSInteger)year success:(MeariDeviceSuccess_PlaybackTimes)success failure:(MeariDeviceFailure)failure;
+
+
+/**
+ Start playback of video: only one person can view playback video at the same time (开始回放录像：同一个设备同一时间只能一个人查看回放录像)
+ 
+ @param playView play view(播放视图)
+ @param startTime Start time: format is 20171228102035 (开始时间:格式为20171228102035)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)startPlackbackSDCardWithPlayView:(MeariPlayView *)playView startTime:(NSString *)startTime success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 
 /**
- Stop playback
+ Stop playback(停止回放)
  
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)stopPlackbackSDCardSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)stopPlackbackSDCardSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Seek playbck: only available after start playback success
+ Play from a certain time: This interface can only be used after the playback is successful, otherwise it will fail.
+ 从某时间开始播放：开始回放成功后才能使用此接口，否则会失败
  
- @param seekTime start time:20171228102035
- @param success
- @param failure return error
+ @param seekTime Start time: format is 20171228102035 (开始时间:格式为20171228102035)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)seekPlackbackSDCardToTime:(NSString *)seekTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)seekPlackbackSDCardWithSeekTime:(NSString *)seekTime success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Pause playback
+ Continue playback(继续回放)
  
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)pausePlackbackSDCardSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)pausePlackbackSDCardSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Resume playbck
+ Continue playback(继续回放)
  
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)resumePlackbackSDCardSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)resumePlackbackSDCardSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark -- cloud
+#pragma mark -- 云回放
 
 /**
  Get cloud playback video files
- 
- @param startTime startTime(NSDateComponents *)
- @param endTime endTime(NSDateComponents *)
- @param success success
- @param failure return error
+ 获取云回放录像文件
+
+ @param startTime startTime(NSDateComponents *) 开始时间
+ @param endTime endTime(NSDateComponents *) 结束时间
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)getCloudVideoWithBegin:(NSDateComponents *)startTime endTime:(NSDateComponents *)endTime success:(void(^)(NSURL *m3u8Url))success failure:(MeariDeviceFailure)failure;
+- (void)getCloudVideoWithStartTime:(NSDateComponents *)startTime endTime:(NSDateComponents *)endTime success:(void(^)(NSURL *m3u8Url))success failure:(MeariDeviceFailure)failure;
 /**
  Get the cloud play time of a day
+ 获取某天的云播放分钟
  
- @param dayComponents   time(NSDateComponents *),Used to get specific time
- @param success success
- @param failure failure
+ @param dayComponents   time(NSDateComponents *),Used to get specific time 具体日期
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)getCloudVideoMinutes:(NSDateComponents *)dayComponents success:(void(^)(NSArray <MeariDeviceTime *> *mins))success failure:(MeariDeviceFailure)failure;
+- (void)getCloudVideoMinutesWithDayComponents:(NSDateComponents *)dayComponents success:(void(^)(NSArray <MeariDeviceTime *> *mins))success failure:(MeariDeviceFailure)failure;
 
 /**
  Get the cloud play time of a month
+ 获取某月的云播放天数
  
- @param monthComponents  obtain month(NSDateComponents *)
- @param success success
- @param failure failure
- 
+ @param monthComponents  obtain month(NSDateComponents *) 具体某月
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)getCloudVideoDays:(NSDateComponents *)monthComponents success:(void(^)(NSArray <MeariDeviceTime *> *days))success failure:(MeariDeviceFailure)failure;
+- (void)getCloudVideoDaysWithMonthComponents:(NSDateComponents *)monthComponents success:(void(^)(NSArray <MeariDeviceTime *> *days))success failure:(MeariDeviceFailure)failure;
 
-#pragma mark -- muted
+#pragma mark -- 静音
 /**
- set mute
+ Set mute(设置静音)
  
- @param muted whether to mute
+ @param muted muted is mute?(是否静音)
  */
 - (void)setMute:(BOOL)muted;
 
-#pragma mark -- Voice speaking
+/**
+ Get mute(获取静音)
+ 
+ @param muted muted is mute?(是否静音)
+ */
+- (BOOL)getMute;
+
+
+#pragma mark -- 语音对讲
 
 /**
- Get real volume duaring voice speaking.
+ Get the real-time volume of the voice intercom(获取语音对讲的实时音量)
  
  @return 0-1.0
  */
@@ -390,782 +423,1040 @@ typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
 
 
 /**
- Set voicetalk type, see MeariVoiceTalkType
+ Set the voice intercom type / 设置语音对讲类型
  
- @param type voice talk type
+ @param type voice intercom type(语音对讲类型)
  */
 - (void)setVoiceTalkType:(MeariVoiceTalkType)type;
 
+
 /**
- return voiceType
-*/
+ return current voice talk type
+ 
+ 返回当前对讲类型
+ */
 - (MeariVoiceTalkType)getVoiceTalkType;
 
 /**
- Start voice talk
- @param success
- @param failure return error
+ Start voice intercom(开始语音对讲)
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)startVoiceTalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)startVoiceTalkSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Stop voice talk
+ Stop voice intercom / 停止语音对讲
  
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)stopVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)stopVoicetalkSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Enable full duplex speaker
- 
- @param enabled
+ Turn on two-way voice speakers
+ 开启双向语音扬声器
+
+ @param enabled 是否开启
  */
 - (void)enableLoudSpeaker:(BOOL)enabled;
 
-#pragma mark -- Snapshot
+#pragma mark -- 截图
 
 /**
- Snapshot
+ Screenshot  (截图)
  
- @param path picture's path for saving
- @param isPreviewing current is preview or playback
- @param success
- @param failure return error
+ @param savePath The path where the image is saved(图片保存的路径)
+ @param isPreviewing is previewing(是否正在预览)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)snapshotToPath:(NSString *)path isPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)snapshotWithSavePath:(NSString *)savePath isPreviewing:(BOOL)isPreviewing success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark -- Record
+#pragma mark -- 录像
 
 /**
- Start record
+ Start recording(开始录像)
  
- @param path video's path for saving
- @param isPreviewing current is preview or playback
- @param recordInterrputed  Interrputed
- @param success
- @param failure return error
+ @param path The path where the video is saved(录像保存的路径)
+ @param isPreviewing is previewing(是否正在预览)
+ @param Interrputed record Interrputed(录像中断)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)startRecordMP4ToPath:(NSString *)path isPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success recordInterrputed:(MeariDeviceSucess)Interrputed failure:(MeariDeviceFailure)failure;
-
-
-/**
- Stop record
- 
- @param isPreviewing current is preview or playback
- @param success
- @param failure return error
- */
-- (void)stopRecordMP4IsPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-#pragma mark -- PTZ
-
-/**
- Start move
- 
- @param direction direction
- @param success
- @param failure return error
- */
-- (void)startMoveToDirection:(MeariMoveDirection)direction success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)startRecordMP4WithSavePath:(NSString *)path isPreviewing:(BOOL)isPreviewing success:(MeariDeviceSuccess)success abnormalDisconnect:(MeariDeviceSuccess)Interrputed failure:(MeariDeviceFailure)failure;
 
 
 /**
- Stop move
+ Stop recording(停止录像)
  
- @param success
- @param failure return error
+ @param isPreviewing is previewing(是否正在预览)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)stopMoveSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)stopRecordMP4WithIsPreviewing:(BOOL)isPreviewing success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+#pragma mark --- 变声 (change sound)
+/**
+Start change sound(开始变声)
+
+@param type MeariDeviceSoundChangeType voice type (变声类型)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)startSoundChangeWithType:(MeariDeviceSoundChangeType)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+Stop change sound(停止变声)
+
+*/
+- (void)stopSoundChange;
+
+#pragma mark --- 录音(record sound)
+
+/**
+Start record sound(开始录音)
+
+@param savePath 路径(save path)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)startRecordSoundWithSavePath:(NSString *)savePath success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// 停止录音
+- (void)stopRecordSound;
+
+#pragma mark -- 云台
+
+/**
+ Start turning the camera (开始转动摄像机)
+ 
+ @param direction direction(转动方向)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)startPTZControlWithDirection:(MeariMoveDirection)direction success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+
+/**
+ Stop turning the camera (停止转动摄像机)
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)stopPTZControlSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 #pragma mark -- LED
-/**
- Get LED status
- 
- @param success success
- @param failure return error
- */
-- (void)getLEDSuccess:(MeariDeviceSucess_LED)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set LED
+  set LED (设置LED)
  
- @param on open LED
- @param success success
- @param failure return error
+ @param on 是否打开LED
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setLEDOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setLEDOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark -- Day night mode
+#pragma mark -- 日夜模式
 
 /**
- Set  Day night mode
- 
- @param type mode
- @param success success
- @param failure return error
+ // Set day and night mode, the camera will have color or grayscale
+ // 设置日夜模式, 摄像头会有彩色或灰度两种
+
+ @param type  MeariDeviceDayNightType(日夜模式)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDayNightMode:(MeariDeviceDayNightType)type success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-#pragma mark --  Noise detection
+- (void)setDayNightModeType:(MeariDeviceDayNightType)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+#pragma mark -- 噪声检测
 
 /**
- Set Noise detection
+ // Noise detection, alarm when sound exceeds a certain decibel
+ // 噪声检测, 当有声音超过一定分贝的时候报警
  
- @param level   Noise level
- @param success success
- @param failure return error
+ @param level  MeariDeviceLevel (噪声等级)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDBDetectionLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-#pragma mark -- NetInfo
+- (void)setSoundDetectionLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+#pragma mark -- 网络信息
 
 /**
- Get NetInfo
- 
- @param success  return MeariDeviceParamNetwork
- @param failure  return error
- */
-- (void)getNetInfoSuccess:(MeariDeviceSucess_NetInfo)success failure:(MeariDeviceFailure)failure;
+  Get network information
+  获取网络信息
 
-#pragma mark -- Mirror
+ @param success  成功回调 返回值：当前网络信息MeariDeviceParamNetwork
+ @param failure  失败回调
+ */
+- (void)getWifiStrengthSuccess:(MeariDeviceSuccess_NetInfo)success failure:(MeariDeviceFailure)failure;
+
+#pragma mark---  #pragma mark --- 码流H264-H265
 
 /**
- switch h265
+ // Whether to enable h265 encoding
+ // 开关h265编码
  
- @param isH265 enable h265
- @param success success
- @param failure return error
+ @param h265 Whether to enable h265 encoding(是否开启h265编码)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)switchVideoEncoding:(BOOL)isH265 success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setVideoEncodingWithH265:(BOOL)h265 success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark -- Get mirror status
+#pragma mark -- 画面翻转
 
 /**
- Get mirror status
+ Get mirror status (设置镜像)
  
- @param success return yes or no
- @param failure return error
+ @param open  whether to open mirror (是否打开镜像)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)getMirrorSuccess:(MeariDeviceSucess_Mirror)success failure:(MeariDeviceFailure)failure;
+- (void)setMirrorOpen:(BOOL)open success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
-
+#pragma mark -- 回放设置
 /**
- Set mirror
+ Set playback level
+ 设置回放等级
  
- @param open open mirror
- @param success success
- @param failure return error
+ @param level MeariDeviceRecordDuration  回放等级
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setMirrorOpen:(BOOL)open success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-#pragma mark -- playback set
-/**
- Playback level (the sdcard recording time)
- 
- @param level   playback level
- MeariDeviceLevelOff: open all-day-record
- MeariDeviceLevelLow: 1*60s
- MeariDeviceLevelMedium: 2*60s
- MeariDeviceLevelHigh: 3*60s
- @param success success
- @param failure return error
- 
- */
-- (void)setPlaybackRecordVideoLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-/**
- Get playback level
- @param success return playback level
- @param failure return error
- 
- */
-- (void)getPlaybackLevelSuccess:(MeariDeviceSucess_PlayBackLevel)success failure:(MeariDeviceFailure)failure;
+- (void)setPlaybackRecordVideoLevel:(MeariDeviceRecordDuration)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 #pragma mark -- Onvif
-
 /**
- Set Onvif
- @param enable  enable
- @param pwd     password
- @param success success
- @param failure return error
+  Set Onvif  / 设置Onvif
+ @param enable  Whether to open (是否开启)
+ @param pwd    Connect onvif password(连接密码)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
+- (void)setOnvifEnable:(BOOL)enable password:(NSString *)pwd success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure ;
 
-
-- (void)setOnvifEnable:(BOOL)enable password:(NSString *)pwd success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure ;
-
-#pragma mark -- alarm
+#pragma mark -- 报警
 
 /**
- Get alarm info
+ Get alarm information (获取报警级别)
  
- @param success return MeariDeviceParamMotion
- @param failure return error
+ @param level alarm level(报警级别)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)getAlarmSuccess:(MeariDeviceSucess_Motion)success failure:(MeariDeviceFailure)failure;
-
+- (void)setMotionDetectionLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess_ID)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set alarm level
+ // Setting up an alarm plan
+ // 设置报警计划
  
- @param level  Set alarm level
- @param success
- @param failure return error
+ @param times Array of MeariDeviceParamSleepTime (MeariDeviceParamSleepTime的数组)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setAlarmLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess_ID)success failure:(MeariDeviceFailure)failure;
+- (void)setAlarmTimes:(NSArray<MeariDeviceParamSleepTime *> *)times success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- PeopleDetect and  bnddrawEnable Enable
+ // Whether people detection  are on
+ // 人形检测是否开启
  
- @param enable detect Enable
- @param bnddrawEnable bnddraw enable
- @param success return success
- @param failure return error
+ @param enable Whether people detection is on(人形检测是否开启)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setPeopleDetectEnable:(BOOL)enable bnddrawEnable:(BOOL)bnddrawEnable success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setHumanDetectionEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
 
 /**
- Cry detect enable
+ 设置报警间隔级别
  
- @param enable set detect enable
- @param success return success
- @param failure return error
- */
-- (void)setCryDetectEnable:(BOOL)enable success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
+@param level 报警间隔级别
+@param success 成功回调
+@param failure 失败回调
+*/
+- (void)setAlarmInterval:(MeariDeviceCapabilityAFQ)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure ;
 /**
- People track
+ 设置报警计划
+
+ // Whether human borders  are on
+ // 人形边框是否开启
  
- @param enable set track enable
- @param success return success
- @param failure return error
+ @param enable Whether the human border is on(人形边框是否开启)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setPeopleTrackEnable:(BOOL)enable success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setHumanFrameEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
 /**
- Anti steal Alarm
+ 人形检测
+
+ @param enable 是否开启
+ @param type  开启的类型  MeariDevicePeopleDetectEnable (old)人形检测开关设置 MeariDevicePeopleDetectDay  // 白天人形开关设置 MeariDevicePeopleDetectNight  // 夜间人形开关设置
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setHumanDetectionEnable:(BOOL)enable detectType:(MeariDevicePeopleDetect)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+人形检测  和人形画框 (IPC 设备)
+
+@param detectEnable  人形检测是否开启
+@param bnddrawEnable 人形画框是否开启
+@param success 成功回调
+@param failure 失败回调
+*/
+- (void)setHumanDetectionEnable:(BOOL)detectEnable humanFrameEnable:(BOOL)bnddrawEnable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure ;
+/**
+ 哭声检测
+
+ @param enable 是否开启
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setCryDetectionEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ // Human tracking
+ // 人形跟踪
  
- @param enable set anti steal enable
- @param version version
- @param success return success
- @param failure return error
+ @param enable whether to open(是否开启)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)antiStealWithEnable:(BOOL)enable version:(NSInteger)version success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-#pragma mark -- Storage
+- (void)setHumanTrackEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 /**
- Get storage information
+ Tamper alarm
+ 防拆报警
+
+ @param enable whether to open( 是否开启)
+ @param version 影子设备版本
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)antiStealWithEnable:(BOOL)enable version:(NSInteger)version success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ 设置Roi功能
  
- @param success return storage information
- @param failure return error
- */
-- (void)getStorageInfoSuccess:(MeariDeviceSucess_Storage)success failure:(MeariDeviceFailure)failure;
+ @param enable 是否开启 设置enbale为NO时,width,height,bitmap参数不生效
+ @param width  宽度   使用roi.width
+ @param height  高度 使用 roi.height
+ @param bitmap 选择区域数组 个数为 width * height  [0,1,0,1,1,0,1]
+ @param success 成功回调
+ @param failure 失败回调
+*/
+- (void)setAlarmRoiWithEnable:(BOOL)enable width:(NSInteger)width height:(NSInteger)height bitmap:(NSArray *)bitmap success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
-
+#pragma mark -- 存储
 /**
- Get storage format percent
+ Get storage information(获取存储信息)
  
- @param success return format percent
- @param failure return error
+ @param success Successful callback (成功回调)，return storage information(返回存储信息)
+ @param failure failure callback (失败回调)
  */
-- (void)getFormatPercentSuccess:(MeariDeviceSucess_StoragePercent)success failure:(MeariDeviceFailure)failure;
+- (void)getSDCardInfoSuccess:(MeariDeviceSuccess_Storage)success failure:(MeariDeviceFailure)failure;
+
 
 /**
- Format storage
+ Get memory card formatting percentage(获取内存卡格式化百分比)
  
- @param success
- @param failure
+ @param success Successful callback (成功回调),return formatting percentage(返回格式化百分比)
+ @param failure failure callback (失败回调)
  */
-- (void)formatSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-
-#pragma mark -- Firmware
+- (void)getSDCardFormatPercentSuccess:(MeariDeviceSuccess_StoragePercent)success failure:(MeariDeviceFailure)failure;
 
 /**
- Get firmware information
+ Format memory card(格式化内存卡)
  
- @param success return firmware information
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure 失败回道
  */
-- (void)getVersionSuccess:(MeariDeviceSucess_Version)success failure:(MeariDeviceFailure)failure;
+- (void)startSDCardFormatSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+
+#pragma mark -- 固件版本
 
 /**
- Get firmware update percent
+ Get the firmware version(获取固件版本)
  
- @param success return update percent
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)getUpgradePercentSuccess:(MeariDeviceSucess_VersionPercent)success failure:(MeariDeviceFailure)failure;
+- (void)getFirmwareVersionSuccess:(MeariDeviceSuccess_Version)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Update firmware
+ Get firmware upgrade percentage(获取固件升级百分比)
  
- @param url firmware's url
- @param currentVersion current firmware
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)upgradeWithUrl:(NSString *)url currentVersion:(NSString *)currentVersion success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-#pragma mark -- device restart
+- (void)getDeviceUpgradePercentSuccess:(MeariDeviceSuccess_VersionPercent)success failure:(MeariDeviceFailure)failure;
+
 
 /**
- Device restart
+ Gets whether the device is being upgraded
+ 获取设备是否正在升级
+
+ @param success Successful callback MeariDeviceSuccess_UpgradeMode (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getWhetherDeviceOnUpgradeSuccess:(MeariDeviceSuccess_UpgradeMode)success failure:(MeariDeviceFailure)failure;
+
+
+/**
+ Upgrade firmware (升级固件)
  
- @param success
- @param failure return error
+ @param url firmware package address(固件包地址)
+ @param currentVersion Firmware current version number(固件当前版本号)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)rebootDeviceSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-#pragma mark --- Open cloud storage
+- (void)startDeviceUpgradeWithUrl:(NSString *)url currentVersion:(NSString *)currentVersion success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+#pragma mark -- 设备重启
 
 /**
- Open cloud storage
- @param open open
- @param success success
- @param failure failure
- */
-- (void)setCloudStorageOpen:(BOOL)open success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure ;
+ Device reboot
+ 设备重启
 
-#pragma mark -- Params info
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)rebootDeviceSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+#pragma mark --- 开通云存储
 
 /**
- Get all params
+ upload to  cloud storage
+ 上传云存储
  
- @param success return params
- @param failure return error
+ @param enable 是否开启
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)getParamsSuccess:(MeariDeviceSucess_Param)success failure:(MeariDeviceFailure)failure;
+- (void)setCloudUploadEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure ;
 
-#pragma mark -- Sleepmode
-/**
- Set sleepmode type
- 
- @param type sleepmode type
- @param success
- @param failure return error
- */
-- (void)setSleepmodeType:(MeariDeviceSleepmode)type success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+#pragma mark -- 参数信息
 
 /**
- set sleepmode
+ Get all parameters(获取所有参数)
  
- @param open  whether to open
- @param times Sleep time period: The array contains MeariDeviceParamSleepTime, for example, the format of MeariDeviceParamSleepTime is as follows
-                           {
-                           Enable = 1;
-                           Repeat = (
-                                   1,
-                                   2
-                                         );
-                           "start_time" = "00:00";
-                           "stop_time" = "10:00";
- },
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)，return value: device parameter information (返回值：设备参数信息)
+ @param failure failure callback (失败回调)
  */
-- (void)setSleepmodeTime:(BOOL)open times:(NSArray <MeariDeviceParamSleepTime *>*)times success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-#pragma mark -- Geofence
+- (void)getDeviceParamsSuccess:(MeariDeviceSuccess_Param)success failure:(MeariDeviceFailure)failure;
+
+#pragma mark -- 休眠模式
+/**
+ Set sleep mode(设置休眠模式)
+ 
+ @param type sleep mode(休眠模式)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setSleepModeType:(MeariDeviceSleepMode)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set Geofence to open sleep mode
- 
- @param radius radius
- @param longitude longitude
- @param latitude latitude
- @param open whether to open Geofence
- @param success success
- @param failure return error
+ set sleepMode
+ 设置休眠时间段
+
+ @param open Whether to enable sleep mode(是否开启休眠模式)
+ @param times 休眠时间段 : 数组里面存放MeariDeviceParamSleepTime, 例如MeariDeviceParamSleepTime格式如下
+                         {
+                         enable = 1;
+                         repeat =     (
+                                 1,
+                                 2
+                                       );
+                         "start_time" = "00:00";
+                         "stop_time" = "10:00";
+                          },
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setHomeLocationWithRadius:(double)radius longitude:(double)longitude latitude:(double)latitude openGeogSleepmode:(BOOL)open success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure __deprecated_msg("Use `MeariUser -> settingGeographyWithSSID: BSSID: deviceID: success: failure:`");
+- (void)setSleepModeTimesOpen:(BOOL)open times:(NSArray <MeariDeviceParamSleepTime *>*)times success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+#pragma mark -- 地理围栏
 
 /**
- upload Region
- 
- @param deviceType deviceType
- @param timeZone timeZone
- @param ID device's ID
- @param success success
- @param failure return error
- */
-- (void)uploadRegionWithDeviceType:(MeariDeviceType)deviceType timeZone:(NSTimeZone *)timeZone ID:(NSInteger)ID success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+ 设置地理围栏
 
-#pragma mark -- Machinery Bell
+ @param radius 半径
+ @param longitude 经度
+ @param latitude 纬度
+ @param open 是否开启地理围栏休眠模式
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setHomeLocationWithRadius:(double)radius longitude:(double)longitude latitude:(double)latitude openGeogSleepMode:(BOOL)open success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure __deprecated_msg("Use `MeariUser -> setGeofenceWithSSID: BSSID: deviceID: success: failure:`");
 
 /**
- open Machinery Bell
- 
- @param open open
- @param success success
- @param failure failure
- */
-- (void)setMachineryBellOpen:(BOOL)open success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+  upload Region
+ 上传区域
 
-#pragma mark -- Temperature Humidity
+ @param deviceType 设备类型
+ @param timeZone 时区
+ @param ID device's ID (设备ID)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)uploadRegionWithDeviceType:(MeariDeviceType)deviceType timeZone:(NSTimeZone *)timeZone ID:(NSInteger)ID success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+#pragma mark -- 机械铃铛
 
 /**
- Get temperature humidity
+ Turn on the mechanical chime( 开启机械铃铛)
  
- @param success return MeariDeviceSucess_TRH
- @param failure failure
+ @param enable Whether to open (是否开启)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)getTemperatureHumiditySuccess:(MeariDeviceSucess_TRH)success failure:(MeariDeviceFailure)failure;
+- (void)setMechanicalChimeEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+#pragma mark -- 温湿度
+
+/**
+ Get temperature and humidity(获取温湿度)
+ 
+ @param success Successful callback (成功回调)，返回值：温度和湿度
+ @param failure failure callback (失败回调)
+ */
+- (void)getTemperatureHumiditySuccess:(MeariDeviceSuccess_TRH)success failure:(MeariDeviceFailure)failure;
 
 
-#pragma mark -- music
+#pragma mark -- 音乐
 /**
  Set play mode
+ 设置播放模式
  
- @param mode play mode
- @param success success
- @param failure failure
+ @param mode play mode(播放模式)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setPlayMusicMode:(MRBabyMusicPlayMode)mode success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure __deprecated_msg("This method is unavailable temporarily");
+- (void)setPlayMusicMode:(MRBabyMusicPlayMode)mode success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure __deprecated_msg("This method is unavailable temporarily");
 /**
- Play music
+ play music(播放音乐)
  
- @param musicID song id
- @param success
- @param failure return error
+ @param musicID music ID(音乐ID)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)playMusic:(NSString *)musicID success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-
-/**
- Pause music
- 
- @param success
- @param failure return error
- */
-- (void)pauseMusicSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-/**
- Resume music
- 
- @param success
- @param failure return error
- */
-- (void)resumeMusicSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)playMusicWithMusicID:(NSString *)musicID success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Play next song
+ Pause music(暂停播放音乐)
  
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)playNextMusicSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)pauseMusicWithMusicID:(NSString *)musicID success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Play the next song(播放下一首)
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)playNextMusicWithMusicID:(NSString *)musicID success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Play previous song
+ Play the previous one(播放前一首)
  
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)playPreviousMusicSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)playPreviousMusicWithMusicID:(NSString *)musicID success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Get all songs's status, include download percent, whether is playing
+ Get music status: including play and download status
+ (获取音乐状态：包括播放和下载状态)
  
- @param success return json Dictionary
- @param failure return error
+ @param success Successful callback (成功回调), return value: json dictionary (返回值：json字典)
+ @param failure failure callback (失败回调)
  */
-- (void)getMusicStateSuccess:(MeariDeviceSucess_MusicStateAll)success failure:(MeariDeviceFailure)failure;
+- (void)getPlayMusicStatus:(MeariDeviceSuccess_MusicStateAll)success failure:(MeariDeviceFailure)failure;
 
 
-#pragma mark -- Volume
+#pragma mark -- 设备音量
 
 /**
- Get device's output volume
+ Get music device output volume (获取音乐摄像机输出音量)
  
- @param success return volume, 0-100
- @param failure return error
+ @param success Successful callback (成功回调)，return value: device output volume, 0-100 (返回值：设备输出音量，0-100)
+ @param failure failure callback (失败回调)
  */
-- (void)getOutputVolumeSuccess:(MeariDeviceSucess_Volume)success failure:(MeariDeviceFailure)failure;
+- (void)getMusicOutputVolumeSuccess:(MeariDeviceSuccess_Volume)success failure:(MeariDeviceFailure)failure;
 
 
 /**
- Set device's output volume
+ Set the music device output volume (设置babymonitor摄像机输出音量)
  
- @param volume 0-100
- @param success
- @param failure return error
+ @param volume volume(音量)，0-100
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setOutputVolume:(NSInteger)volume success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setMusicOutputVolume:(NSInteger)volume success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
-#pragma mark -- Bell
+#pragma mark -- 门铃
 /**
- Set bell's output volume
+ Set the doorbell output volume (设置门铃输出音量)
  
- @param volume volume, 0-100
- @param success
- @param failure return error
+ @param volume volume(音量)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDoorBellVolume:(NSInteger)volume success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setSpeakVolume:(NSInteger)volume success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set pir alarm level
+ Set the doorbell PIR (human body detection) alarm type (设置门铃PIR(人体侦测)报警类型)
  
- @param level alarm level
- @param success
- @param failure return error
+ @param level alarm level (报警级别)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDoorBellPIRLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setPirDetectionLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set lowpower mode
+ Set the doorbell low power consumption (设置门铃低功耗)
  
- @param open whether open lowpower mode or not
- @param success
- @param failure return error
+ @param open Whether to turn on low power mode (是否打开低功耗模式)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDoorBellLowPowerOpen:(BOOL)open success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setDoorBellLowPowerOpen:(BOOL)open success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set battery lock
+ Set the doorbell battery lock (设置门铃电池锁)
  
- @param open whether open battery lock or not
- @param success
- @param failure return error
+ @param open Whether to open the battery lock (是否打开电池锁)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDoorBellBatteryLockOpen:(BOOL)open success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)unlockBatterySuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 /**
- Set Doorbell enable
+ Whether to use a chime(设置铃铛使能)
  
- @param enable whether to open
- @param success
- @param failure return error
+ @param enable Whether to use a chime(设置铃铛使能)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDoorBellJingleBellVolumeEnable:(BOOL)enable success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setWirelessChimeEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Bell configuration
+ Set the wireless bell (设置无线铃铛)
  
- @param volumeType Bell sound level
- @param selectedSong Selected ringtone
- @param repeatTimes repeat times
- @param success
- @param failure return error
+ @param volumeLevel Bell sound level (铃铛声音等级)
+ @param selectedSong Selected ringtone (选中的铃声)
+ @param repeatTimes number of repetitions (重复次数)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDoorBellJingleBellVolumeType:(MeariDeviceLevel)volumeType selectedSong:(NSString *)selectedSong repeatTimes:(NSInteger)repeatTimes success:(MeariDeviceSucess_ID)success failure:(MeariDeviceFailure)failure;
+- (void)setWirelessChimeVolumeLevel:(MeariDeviceLevel)volumeLevel selectedSong:(NSString *)selectedSong repeatTimes:(NSInteger)repeatTimes success:(MeariDeviceSuccess_ID)success failure:(MeariDeviceFailure)failure;
 
 /**
- Doorbell pairing bell
+ Doorbell and chime pairing(门铃与铃铛配对)
  
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDoorBellJingleBellPairingSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)bindWirelessChime:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Doorbell untie the bell
+ Doorbell and chime unbound (门铃与铃铛解除绑定 )
  
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDoorebllJingleBellUnbindSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)unbindWirelessChime:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Open Doorbell
- @param success
- @param failure return error
+ 设置开门
  
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDoorBellDoorOpenSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setAssociatedDoorOpen:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 /**
- Lock Doorbell
+ 设置开锁
  
- @param success
- @param failure return error
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDoorBellLockOpenSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setAssociatedLockOpenSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set Doorbell Light On
- @param on whether to open
- @param success
- @param failure return error
+ 设置灯状态
+ @param on 灯开关使能
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setDoorBellLightOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setAssociatedLightOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Get Doorbell status
- 
- @param success
- @param failure return error
- */
-- (void)getDoorebllJingleBellStatusSuccess:(MeariDeviceSucess_ID)success failure:(MeariDeviceFailure)failure __deprecated_msg("This method is unavailable temporarily");
+ 获取铃铛状态
 
-#pragma mark -- Record
-/**
- start record hostmessage
- 
- @param path file must be .wav format e.g. /var/mobile/Containers/Data/Application/98C4EAB7-D2FF-4519-B732-BEC7DE19D1CE/Documents/audio.wav  
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)startRecordAudioToPath:(NSString *)path;
+- (void)getChimeStatusSuccess:(MeariDeviceSuccess_ID)success failure:(MeariDeviceFailure)failure __deprecated_msg("This method is unavailable temporarily");
+
+#pragma mark -- 录音
 
 /**
- Stop record audio
+ Get doorbell message list (获取门铃留言列表)
  
- @param success return voice's audio file path
+ @param success Successful callback, URL of the file containing the message (成功回调,包含留言的文件的URL地址)
+ @param failure failure callback (失败回调)
  */
-- (void)stopRecordAudioSuccess:(MeariDeviceSucess_RecordAutio)success;
+- (void)getVoiceMailListSuccess:(MeariDeviceSuccess_HostMessages)success failure:(MeariDeviceFailure)failure;
+
+/**
+  stop VoiceMail (开始留言)
+ 
+ @param path (path)录音文件路径 例如(likes): /var/mobile/Containers/Data/Application/98C4EAB7-D2FF-4519-B732-BEC7DE19D1CE/Documents/audio.wav  warning!!, it must be .wav format (注意!!! 文件必须是wav格式))
+ */
+- (void)startRecordVoiceMailWithPath:(NSString *)path;
+
+/**
+ Stop message (停止留言)
+ 
+ @param success Successful callback (成功回调)，return value: message file path (返回值：留言文件路径)
+ */
+- (void)stopRecordVoiceMailSuccess:(MeariDeviceSuccess_RecordAutio)success;
+
+/**
+ Start playing a message (开始播放留言)
+ 
+ @param filePath message file path(留言文件路径)
+ @param finished 完成回调
+ */
+- (void)startPlayVoiceMailWithFilePath:(NSString *)filePath finished:(MeariDeviceSuccess)finished;
+
+/**
+ Stop playing the message (停止播放留言)
+ */
+- (void)stopPlayVoiceMail;
+/**
+ Play message(播放留言)
+ 
+ @param success Successful callback (成功回调)
+ @param failure 成功回调
+ */
+- (void)makeDeivcePlayVoiceMail:(MeariDeviceHostMessage *)hostMessage success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+#pragma mark --- voiceBell(语音门铃)
 
 /**
  Start play audio
+ 开始播放客人留言
  
- @param filePath audio file path
- @param finished
+ @param filePath 本地语音文件路径
+ @param finished 完成回调
  */
-- (void)startPlayRecordedAudioWithFile:(NSString *)filePath finished:(MeariDeviceSucess)finished;
+- (void)startPlayVoiceMessageAudioWithFilePath:(NSString *)filePath finished:(MeariDeviceSuccess)finished;
 
 /**
  Stop play audio
- */
-- (void)stopPlayRecordedAudio;
-
-/**
- Play voice message
- 
- @param success
- @param failure return error
- */
-- (void)playMessageSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-
-#pragma mark -- Voice doorbell
-
-/**
- start play recored
- 
- @param filePath local path
- @param finished complete
- */
-- (void)startPlayVoiceMessageAudioWithFile:(NSString *)filePath finished:(MeariDeviceSucess)finished;
-
-/**
- Stop playing the doorbell message
+ 停止播放客人留言
  */
 - (void)stopPlayVoiceMessageAudio;
 
-
-#pragma mark -- voice bell
 /**
- Set the voice doorbell to pause the intercom
-  
- @param success Successful callback
- @param failure Successful callback
- */
-- (void)pauseVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-/**
- Set the voice doorbell to start the intercom
-  
- @param success Successful callback
- @param failure Successful callback
- */
-- (void)resumeVoicetalkSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-/**
- Upgrade firmware
-  
- @param url firmware package address
- @param latestVersion latest firmware version number
- @param success Successful callback
- @param failure failure callback
- */
-- (void)upgradeVoiceBellWithUrl:(NSString *)url latestVersion:(NSString *)latestVersion success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure ;
-
-
-/**
- Set the voice doorbell sound
-  
-  @param volume 0~100
-  @param success Successful callback
-  @param failure failure callback
- */
-- (void)setVoiceBellVolume:(NSInteger)volume success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-/**
- Set the bell properties
-  
-   @param volumeLevel
-      Mute = MeariDeviceLevelOff
-      Low = MeariDeviceLevelLow
-      Medium = MeariDeviceLevelMedium
-      High=MeariDeviceLevelHigh
-   @param durationLevel
-      Short = MeariDeviceLevelLow
-      Medium = MeariDeviceLevelMedium
-      Long = MeariDeviceLevelHigh
-   @param index 1~10
-   @param success Successful callback
-   @param failure failure callback
- */
-- (void)setVoiceBellCharmVolume:(MeariDeviceLevel)volumeLevel songDuration:(MeariDeviceLevel)durationLevel songIndex:(NSInteger)index success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-
-/**
- Set guest message
-  
- @param enterTime Press the doorbell to enter the message time 10/20/30...60s
-  @param durationTime Message length 10/20/30...60s
-  @param success Successful callback
-  @param failure failure callback
- */
-- (void)setVoiceBellEnterMessageTime:(NSInteger)enterTime messageDurationTime:(NSInteger)durationTime success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-#pragma mark -- FlightCamera/FloodCamera
-
-/**
- Open FlightCamera Light On
+ Turn off the phone side microphone(关闭手机端麦克)
  
- @param on whether to open
- @param success  Successful callback
- @param failure failure callback
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setFlightCameraLightOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-/**
- Open siren
- 
- @param on whether to open
- @param success Successful callback
- @param failure failure callback
- */
-- (void)setFlightCameraSiren:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)pauseVoicetalkSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set Schedule
+  Turn on the phone microphone(开启手机端麦克)
  
- @param on whether to open
- @param fromDateStr time like:  00:01
- @param toDateStr time like:  12:21
- @param success Successful callback
- @param failure failure callback
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setFlightCameraScheduleOn:(BOOL)on fromDate:(NSString *)fromDateStr toDate:(NSString *)toDateStr success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)resumeVoicetalkSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+  how long time the bell go sleep normal
+  睡眠超时时间
+
+@param sleepOverTimeLevel call waiting time (睡眠超时时间)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setVoiceBellSleepOverTimeLevel:(MeariDeviceLevel)sleepOverTimeLevel success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Set call waiting time
+ 设置呼叫等待时间
+ 
+ @param callWaitTimeLevel call waiting time (呼叫等待时间)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setVoiceBellCallWaitTimeLevel:(MeariDeviceLevel)callWaitTimeLevel success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ set doorbell message limit time
+ 设置门铃留言限制时间
+ 
+ @param messageLimitTimeLevel doorbell message limit time (门铃留言限制时间)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setVoiceBellMessageLimitTimeLevel:(MeariDeviceLevel)messageLimitTimeLevel success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Set whether to enable the tamper alarm
+ 设置是否开启防拆报警
+ 
+ @param enable  whether to enable the tamper alarm (是否开启防拆报警)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setVoiceBellTamperAlarmEnable:(NSInteger)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+#pragma mark -- 灯具摄像机
+
+/**
+ Setting the light switch (设置灯开关)
+ 
+ @param on light switch(灯开关)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setFlootCameraLampOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ Set the alarm switch (设置警报开关)
+ 
+ @param on alarm switch (警报开关)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setFlootCameraSirenOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Set up the lighting plan
+ 设置灯具开灯计划
+ 
+ @param on Is it enabled? (是否使能)
+ @param fromDateStr start time (开始时间)
+ @param toDateStr End time (结束时间)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setFlootCameraScheduleOn:(BOOL)on fromDate:(NSString *)fromDateStr toDate:(NSString *)toDateStr success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
  Set up the movement monitoring of the luminaire
- 
-   @param on Is it enabled?
-   @param level The lighting time for different levels MeariDeviceLevelLow : 20s , MeariDeviceLevelMedium : 40s, MeariDeviceLevelHigh: 60s
-   @param success Successful callback
-   @param failure failure callback
+ 设置灯具的移动监测是否亮灯时长
+
+ @param level 不同等级对应的亮灯时间  MeariDeviceLevelNone : 不开灯,MeariDeviceLevelLow : 20s , MeariDeviceLevelMedium : 40s, MeariDeviceLevelHigh: 60s
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setFlightCameraDurationLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setFlootCameraDurationLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 /**
- Switch h265 code stream
+ whether flight camera motion open
+ 设置灯具的移动监测开关
  
-   @param isH265 Whether to enable h265 stream
-   @param success Successful callback
-   @param failure failure callback
+ @param on Is it enabled? (是否使能)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
  */
-- (void)setFlightCameraMotionOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+- (void)setFlootCameraMotionOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+
+/**
+ Set the brightness of the fixture
+ 设置灯具的亮度调节
+
+ @param precent 当前亮度百分比
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setFlootCameraLightPercent:(NSInteger)precent success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// 获取开关灯状态
+/// whether the flight is open now
+/// @param success Successful callback (成功回调)
+/// @param failure  failure callback (失败回调)
+- (void)getFlootCameralightStateSuccess:(MeariDeviceSuccess_LightState)success failure:(MeariDeviceFailure)failure;
+
+/// 获取警报倒计时
+/// Get Siren countdown
+/// @param success Successful callback (成功回调)
+/// @param failure  failure callback (失败回调)
+- (void)getFlootCameraSirenTimeoutSuccess:(MeariDeviceSuccess_SirenTimeout)success failure:(MeariDeviceFailure)failure;
+
+#pragma mark --- chime (中继)
+/**
+ 删除中继
+ Delete Chime
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)deleteChimeSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Add child device through Chime (in-app binding)
+ 中继添加子设备(app内绑定)
+ 
+ @param subDeviceID 子设备deviceID
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)bindDeviceWithSubDeviceID:(NSInteger)subDeviceID success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Chime unbundling device (unbundling in app)
+ 中继解绑子设备(app内解绑)
+ 
+ @param subDeviceID 子设备deviceID
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)unbindDeviceWithSubDeviceID:(NSInteger)subDeviceID success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Child device list (added)
+ 子设备列表(已添加的)
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getAddedChimeDeviceListSuccess:(MeariDeviceSuccess_ChimeSubDeviceList)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Child device list (can be added)
+ 子设备列表(可以添加的)
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getCanAddChimeDeviceListSuccess:(MeariDeviceSuccess_ChimeSubDeviceList)success failure:(MeariDeviceFailure)failure;
+
+/**
+ List of ringtones
+ 铃声列表
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getChimeRingListSuccess:(MeariDeviceSuccess_ChimeRingList)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Rename chime
+ 重命名chime
+ 
+ @param nickname 昵称
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)renameChimeNickname:(NSString *)nickname success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Chime Do Not Disturb Interval
+ 
+ @param times [MeariDeviceParamSleepTime] 勿扰时间段
+                                        [{
+                                         enable = 1;
+                                             repeat =     (
+                                                1,
+                                                2
+                                               );
+                                         "start_time" = "00:00";
+                                         "stop_time" = "10:00";
+                                         }, ........]
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setChimeSnoozeTimes:(NSArray<MeariDeviceParamSleepTime *> *)times success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Set current ring uri
+ 设置当前响铃uri
+ 
+ @param currentRingUri the alarm uri used  when chime button is ring 当前响铃uri
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setChimeCurrentRingUri:(NSString *)currentRingUri success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Set the chime ringer volume
+ 设置铃铛响铃音量
+ 
+ @param ringVolume   the Volume used when chime button is ring 响铃音量
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setChimeRingVolume:(NSInteger)ringVolume success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Set chime motion detection alarm uri
+ 设置铃铛移动侦测报警uri
+ 
+ @param motionUri the alarm uri used  when motion event happen 移动侦测报警uri
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setChimeMotionUri:(NSString *)motionUri success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Set the ringtone size of the motion detection alarm chime
+ 设置移动侦测报警响铃的铃声大小
+ 
+ @param motionVolume the Volume when motion event happen (侦测报警响铃的铃声大小)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setChimeMotionVolume:(NSInteger)motionVolume success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Set the ring interval
+ 设置响铃间隔
+ 
+ @param snoozeTimes MeariDeviceSnoozeTime
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setRingSnoozeTimes:(MeariDeviceSnoozeTime)snoozeTimes success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ Playing Chime's Songs
+ 播放中继的歌曲
+ 
+ @param Uri song's uri(歌曲uri)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)playChimeUri:(NSString *)Uri success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Set chime sub-device alarm type
+ 设置中继子设备报警类型
+ 
+ @param ChimeAlertType 报警类型
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setChimeAlertType:(MeariDeviceChimeAlert)ChimeAlertType success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+
+/**
+ Get chime sub-device alarm type
+ 获取中继子设备报警类型
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getChimeAlertTypeSuccess:(MeariDeviceSuccess_ChimeAlertType)success failure:(MeariDeviceFailure)failure;
 
 @end
 #endif /* MeariDeviceControl_h */

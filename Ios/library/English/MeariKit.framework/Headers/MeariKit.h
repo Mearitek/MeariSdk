@@ -25,25 +25,19 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 #import <MeariKit/MeariDeviceInfo.h>
 #import <MeariKit/MeariDeviceParam.h>
 #import <MeariKit/MeariDeviceTime.h>
-#import <MeariKit/MeariDevice+Iot.h>
 #import <MeariKit/MeariDeviceFirmwareInfo.h>
+#import <MeariKit/MeariDeviceHostMessage.h>
 
 #import <MeariKit/MeariMusicInfo.h>
 
 #import <MeariKit/MeariUser.h>
 #import <MeariKit/MeariUserInfo.h>
+#import <MeariKit/MeariChimeRingInfo.h>
 #import <MeariKit/MeariMqttMessageInfo.h>
 #import <MeariKit/MeariMessageInfo.h>
 #import <MeariKit/MeariFriendInfo.h>
 #import <MeariKit/MeariShareInfo.h>
-
 #import <MeariKit/MeariDeviceControl.h>
 #import <MeariKit/MeariPlayView.h>
-
-#import <MeariKit/ppsplayer.h>
-#import <MeariKit/PPSGLView.h>
 #import <MeariKit/MeariCloudPlayer.h>
-#import <MeariKit/IJKMediaPlayback.h>
-#import <MeariKit/PPSVideoDrawable.h>
-
 #import <MeariKit/MeariDeviceActivator.h>

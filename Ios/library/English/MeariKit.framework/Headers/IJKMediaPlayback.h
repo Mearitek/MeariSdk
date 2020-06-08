@@ -66,9 +66,14 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
 
 @protocol IJKMediaPlayback <NSObject>
 
+//适用于一般的网络播放,http,rtmp,https,concat,本地m3u8播放，适合内容连续的播放
 - (void)prepareToPlay;
 - (void)play;
 
+//适用于特殊的卓壮自己的云存储网络播放，原因是设备上传的m3u8里面的内容可能是不一定连续的，从云上获取的半小时m3u8里面很可能存在片段缺失，所以一般的网络播放是不适用的，不能精确在手机APP端的刻度尺
+//比如手机获取20160722120000－201607221230000范围的m3u8，那么传入201607221215000，手机自动会在15分播放，如果15分没有视频，那么就近播放
+//播放过程中，手机端调用getcurrentPlaybackTime_mym3u8获取当前播放的绝对时间hhmmss的总s数，可以换算出当前的十分秒
+//!!!!!这个适合于本地的m3u8播放，兼容内部ts地址是http和https的播放，其他不适用
 - (void)prepareToPlay:(NSString*)seektime;
 - (void)play:(NSString*)seektime;
 - (BOOL)changeUrl:(NSURL *)aUrl withSeekTime:(NSString*)seektime;
@@ -79,6 +84,7 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
 - (void)shutdown;
 - (void)setPauseInBackground:(BOOL)pause;
 
+//录像，截图，静音功能
 - (int)snapshot:(NSString*)filepath;
 - (int)recordMp4Start:(NSString*)filepath;
 - (void)recordMp4Stop;

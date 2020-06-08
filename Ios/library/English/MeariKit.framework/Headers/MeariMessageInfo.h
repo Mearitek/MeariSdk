@@ -10,30 +10,37 @@
 //@class MeariDevice;
 typedef NS_ENUM(NSInteger, MeariSystemMessageType) {
     MeariSystemMessageTypeNone,
-    MeariSystemMessageTypeFriendAdd,           //request add friend
-    MeariSystemMessageTypeFriendAgree,         //agree add friend
-    MeariSystemMessageTypeFriendRefuse,        //refuse add friend
-    MeariSystemMessageTypeDeviceShare,         //request add device
-    MeariSystemMessageTypeDeviceAgree,         //agree add device
-    MeariSystemMessageTypeDeviceRefuse,        //refuse add device
-    MeariSystemMessageTypeDeviceLowBattery     //warning for bell's low power
+    MeariSystemMessageTypeFriendAdd,           // request add friend (请求添加好友)
+    MeariSystemMessageTypeFriendAgree,         // agree add friend (同意添加好友)
+    MeariSystemMessageTypeFriendRefuse,        // refuse add friend (拒绝添加好友)
+    MeariSystemMessageTypeDeviceShare,         // request add device (请求分享设备)
+    MeariSystemMessageTypeDeviceAgree,         // agree add device (同意分享设备)
+    MeariSystemMessageTypeDeviceRefuse,        // refuse add device (拒绝分享设备)
+    MeariSystemMessageTypeDeviceLowBattery     // warning for bell's low power (门铃低电量提示)
 };
 
 typedef NS_ENUM(NSInteger, MeariAlarmMessageType) {
     MeariAlarmMessageTypeNone,
-    MeariAlarmMessageTypeMotion = 1,                //motion alarm, alarm when device detect something has been moved
-    MeariAlarmMessageTypePir = 2,                   //pir alarm, alarm when device detect moved things in night mode
-    MeariAlarmMessageTypeVisitor = 3,               //visitor alarm, available on bell device, alarm when somebody tap the ring.
-    MeariAlarmMessageTypeNoise = 6,                 //Noise alarm
-    MeariAlarmMessageTypeCry = 7                    //Cry alarm
+    MeariAlarmMessageTypeMotion = 1,               // motion alarm, alarm when device detect something has been moved (移动侦测报警)
+    MeariAlarmMessageTypePir = 2,                  // pir alarm, alarm when device detect moved things in night mode (红外侦测报警)
+    MeariAlarmMessageTypeVisitor = 3,              // visitor alarm, available on bell device, alarm when somebody tap the ring.(访客报警)
+    MeariAlarmMessageTypeNoise = 6,                // Noise alarm (噪声报警 )
+    MeariAlarmMessageTypeCry = 7                   // Cry alarm (哭声报警)
 };
 
 typedef NS_ENUM(NSInteger, MeariVisitorMessageType) {
-    MeariVisitorMessageTypeNone,               //
-    MeariVisitorMessageTypeReceiveCall ,       // Answering visitor messages
-    MeariVisitorMessageTypeRejectCall ,        // Reject visitor messages
-    MeariVisitorMessageTypeUnreadMessage ,     // Unread visitor message
-    MeariVisitorMessageTypeHasReadMessage      // Has read visitor message
+    MeariVisitorMessageTypeNone,
+    MeariVisitorMessageTypeReceiveCall ,       // Answering visitor messages (已接听的访客消息)
+    MeariVisitorMessageTypeRejectCall ,        // Reject visitor messages (拒绝接听的访客消息)
+    MeariVisitorMessageTypeUnreadMessage ,     // Unread visitor message (未读的访客消息)
+    MeariVisitorMessageTypeHasReadMessage      // Has read visitor message (已读的访客消息)
+};
+
+typedef NS_ENUM(NSInteger, MeariShareMessageType) {
+    MeariShareMessageTypeReject,  // Reject 拒绝
+    MeariShareMessageTypeAcctpt,  // Acctpt 接受
+    MeariShareMessageTypeRequestToYou, // Request message: xxx request to share his device: xxx to you (请求消息: xxx 请求分享他的设备：xxx 给你)
+    MeariShareMessageTypeRequestToHim, // Request message: xxx Request to share your device: xxx to him (请求消息: xxx 请求分享你的设备：xxx 给他)
 };
 
 @interface MeariMessageInfo : MeariBaseModel
@@ -41,55 +48,68 @@ typedef NS_ENUM(NSInteger, MeariVisitorMessageType) {
 
 
 @interface MeariMessageInfoSystem : MeariMessageInfo
-@property (nonatomic, assign)MeariSystemMessageType msgType;  //message type
-@property (nonatomic, assign)NSInteger msgID;          //message id
-@property (nonatomic, assign)NSInteger deviceID;       //device id
-@property (nonatomic, copy)NSString *deviceName;       //device name
-@property (nonatomic, copy)NSString *deviceUUID;       //device uuid
-@property (nonatomic, assign)NSInteger friendID;       //friend id
-@property (nonatomic, copy)NSString *friendAccount;    //friend account
-@property (nonatomic, copy)NSString *friendNickname;   //friend nickname
-@property (nonatomic, copy)NSString *friendAvatarUrl;  //friend avatar
+@property (nonatomic, assign)MeariSystemMessageType msgType;  // message type (消息类型)
+@property (nonatomic, assign)NSInteger msgID;          // message id (消息ID)
+@property (nonatomic, assign)NSInteger deviceID;       // device id (设备ID)
+@property (nonatomic, copy)NSString *deviceName;       // device name (设备名称)
+@property (nonatomic, copy)NSString *deviceUUID;       // device uuid (设备UUID)
+@property (nonatomic, assign)NSInteger friendID;       // friend id (好友ID)
+@property (nonatomic, copy)NSString *friendAccount;    // friend account (好友账号)
+@property (nonatomic, copy)NSString *friendNickname;   // friend nickname (好友昵称)
+@property (nonatomic, copy)NSString *friendAvatarUrl;  // friend avatar (好友头像)
 @end
 
 @interface MeariMessageInfoAlarm : MeariMessageInfo
-@property (nonatomic, assign) NSInteger deviceID;       //device id
-@property (nonatomic, copy) NSString *deviceName;       //device name
-@property (nonatomic, copy) NSString *deviceSn;         //device sn
-@property (nonatomic, copy) NSString *deviceUUID;       //device uuid
-@property (nonatomic, copy) NSString *deviceIconUrl;    //device icon
-@property (nonatomic, assign) BOOL hasMsg;              //whether has alarm message or not
+@property (nonatomic, assign) NSInteger deviceID;       // device id (设备ID)
+@property (nonatomic, copy) NSString *deviceName;       // device name (设备名称)
+@property (nonatomic, copy) NSString *deviceSn;         // device sn (设备sn号)
+@property (nonatomic, copy) NSString *deviceUUID;       // device uuid (设备UUID)
+@property (nonatomic, copy) NSString *deviceIconUrl;    // device icon (设备缩略图)
+@property (nonatomic, assign) BOOL hasMsg;              // whether has alarm message or not (是否有消息)
 @end
 
 @interface MeariMessageInfoAlarmDevice : MeariMessageInfo
-@property (nonatomic, assign)MeariAlarmMessageType msgType;  //message type
-@property (nonatomic, assign) NSInteger deviceID;       //device id
-@property (nonatomic, copy) NSString *alarmTime;        //device alarm time
-@property (nonatomic, copy) NSString *alarmThumbImage;  //device alarm thumb image
-@property (nonatomic, copy) NSArray <NSString*> *alarmImages; //device alarm images
-@property (nonatomic, assign) BOOL isRead;              //message is whether readed or not
-@property (nonatomic, assign)NSInteger msgID;           //message id
-@property (nonatomic, assign) NSInteger decibel;        //Noise decibel (0-100)
-@property (nonatomic, assign) NSInteger state;        // whether to use OSS
+@property (nonatomic, assign)MeariAlarmMessageType msgType;  // message type (消息类型)
+@property (nonatomic, assign) NSInteger deviceID;       // device id (设备ID)
+@property (nonatomic, copy) NSString *alarmTime;        // device alarm time (设备报警时间)
+@property (nonatomic, copy) NSString *alarmThumbImage;  // device alarm thumb image (缩略图)
+@property (nonatomic, copy) NSArray <NSString*> *alarmImages; // device alarm images (设备报警图片)
+@property (nonatomic, assign) BOOL isRead;              // message is whether readed or not (是否已读)
+@property (nonatomic, assign)NSInteger msgID;           // message id (消息ID)
+@property (nonatomic, assign) NSInteger decibel;        // Noise decibel (0-100) (噪声分贝(db))
+@property (nonatomic, assign) NSInteger state;        // whether to use OSS (是否使用oss)
 
 /**
  userID/ownerID：
  Description:
  When the device belongs to the current user, the ownerID is the id of the current user, and the userID is 0.
  When the device is shared, the ownerID is the id of the device owner, and the userID is the current user id.
+
+ 描述: 当设备属于当前用户时，ownerID是当前用户的id,userID为0. 当设备是被分享过来的时候，ownerID是设备主人的id,userID是当前用户id.
  */
-@property (nonatomic, assign)NSInteger userID;          //user id
-@property (nonatomic, assign)NSInteger ownerID;         //owner id
+@property (nonatomic, assign)NSInteger userID; //user id (用户ID)
+@property (nonatomic, assign)NSInteger ownerID; // //owner id (设备所有人ID)
+
 @end
 
 @interface MeariMessageInfoVisitor : MeariMessageInfo
 @property (nonatomic, copy) NSNumber *createDate;
-@property (nonatomic, copy) NSNumber *voiceDuration; // Guest message duration
-@property (nonatomic, copy) NSString *voiceUrl; // Guest address
-@property (nonatomic, assign)MeariVisitorMessageType msgType; //Message type
-@property (nonatomic, assign)BOOL isRead; //whether read
-@property (nonatomic, assign)NSInteger msgID; //Message ID
-@property (nonatomic, assign)NSInteger userID; //User ID
-@property (nonatomic, assign)NSInteger deviceID; //Device ID
+@property (nonatomic, copy) NSNumber *voiceDuration;    // Guest message duration (客人留言时长)
+@property (nonatomic, copy) NSString *voiceUrl;         // Guest address (客人留言地址)
+@property (nonatomic, assign)MeariVisitorMessageType msgType;  // Message type (消息类型)
+@property (nonatomic, assign)BOOL isRead;              // whether read (是否已读)
+@property (nonatomic, assign)NSInteger msgID;           // Message ID (消息ID)
+@property (nonatomic, assign)NSInteger userID;          // User ID (用户ID)
+@property (nonatomic, assign)NSInteger deviceID;       // Device ID (设备ID)
 @end
 
+@interface MeariMessageInfoShare : MeariBaseModel
+@property (nonatomic,   copy) NSString *shareAccount; // share account (账号)
+@property (nonatomic,   copy) NSString *shareName;  // share name (用户昵称)
+@property (nonatomic,   copy) NSString *deviceName;  // device name (设备昵称)
+@property (nonatomic,   copy) NSString *date; // request time (请求的时间)
+@property (nonatomic,   copy) NSString *msgID; // message ID (消息ID)
+@property (nonatomic, assign) NSInteger deviceID;  // Device ID (设备ID)
+@property (nonatomic, assign) MeariShareMessageType msgType;  // Message type (消息类型)
+
+@end
