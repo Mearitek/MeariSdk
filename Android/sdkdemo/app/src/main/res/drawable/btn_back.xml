@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@mipmap/ic_back_p" android:state_pressed="true"></item>
-    <item android:drawable="@mipmap/ic_back_p" android:state_selected="true"></item>
-    <item android:drawable="@mipmap/ic_back_n"></item>
-</selector>

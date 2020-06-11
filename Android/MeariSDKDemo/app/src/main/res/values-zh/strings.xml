@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MeariSDKDemo</string>
+    <string name="com_user_name">账号</string>
+    <string name="toast_success">成功</string>
+    <string name="toast_fail">失败</string>
+</resources>
