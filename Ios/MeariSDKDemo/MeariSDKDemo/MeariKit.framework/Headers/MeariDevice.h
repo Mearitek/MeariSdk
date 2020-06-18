@@ -176,6 +176,11 @@
 @property (nonatomic, assign, readonly) BOOL supportAlarmInterval;
 /** 是否为支持roi区域报警 */
 @property (nonatomic, assign, readonly) BOOL supportAlarmRoi;
+/** 是否为支持roi区域报警 */
+@property (nonatomic, assign, readonly) BOOL supportVoiceLightAlarm;
+/** 视频显示的类型 */
+@property (nonatomic, assign, readonly) MeariDeviceVideoType displayVideoType;
+
 
 @end
 

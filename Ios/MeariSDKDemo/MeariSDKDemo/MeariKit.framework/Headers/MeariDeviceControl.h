@@ -645,7 +645,7 @@ Start record sound(开始录音)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setMotionDetectionLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess_ID)success failure:(MeariDeviceFailure)failure;
+- (void)setMotionDetectionLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
  // Setting up an alarm plan
@@ -1011,13 +1011,29 @@ Start record sound(开始录音)
 - (void)setSpeakVolume:(NSInteger)volume success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
- Set the doorbell PIR (human body detection) alarm type (设置门铃PIR(人体侦测)报警类型)
+ Set the doorbell PIR (human body detection) alarm type (设置门铃单PIR(人体侦测)报警类型) warning : level can contain MeariDeviceLevelOff
  
  @param level alarm level (报警级别)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
 - (void)setPirDetectionLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+Set the doorbell PIR  Sensitivity  (设置pir 灵敏度,无法设置MeariDeviceLevelOff )  ( warning : level cant contain MeariDeviceLevelOff)
+@param level  PirSensitivity (灵敏度)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+ */
+- (void)setPirDetSensitivityLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+  Set the switch for double pir (设置双pir 的开关)  ( warning : level cant contain MeariDeviceLevelOff)
+@param level  PirSensitivity (灵敏度)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+ */
+- (void)setDoublePirStatus:(MeariDeviceDoublePirStatus)doublePirStatus success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
  Set the doorbell low power consumption (设置门铃低功耗)
@@ -1293,6 +1309,20 @@ Start record sound(开始录音)
 /// @param success Successful callback (成功回调)
 /// @param failure  failure callback (失败回调)
 - (void)getFlootCameraSirenTimeoutSuccess:(MeariDeviceSuccess_SirenTimeout)success failure:(MeariDeviceFailure)failure;
+
+/// 设置声光报警使能开关
+/// Set sound and light alarm enable switch
+/// @param enable 是否开启
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setFloodCameraVoiceLightAlarmEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// 设置声光报警后的事件
+/// Set events after sound and light alarm
+/// @param type 类型
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setFloodCameraVoiceLightAlarmType:(MeariDeviceVoiceLightType)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 #pragma mark --- chime (中继)
 /**

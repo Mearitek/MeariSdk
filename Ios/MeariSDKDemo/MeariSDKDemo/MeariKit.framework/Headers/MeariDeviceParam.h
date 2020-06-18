@@ -26,6 +26,12 @@ typedef NS_ENUM(NSInteger, MeariDeviceLevel) {
     MeariDeviceLevelMedium, // medium (中)
     MeariDeviceLevelHigh // high (高)
 };
+typedef NS_ENUM(NSInteger, MeariDeviceDoublePirStatus) {
+    MeariDeviceDoublePirStatusClose, // close all
+    MeariDeviceDoublePirStatusOpenLeft, // open left pir
+    MeariDeviceDoublePirStatusOpenRight, // open left pir
+    MeariDeviceDoublePirStatusOpenAll, // open all
+};
 
 /** sdcard record duration*/
 /** 设备录像时长 */
@@ -92,6 +98,12 @@ typedef NS_ENUM(NSInteger, MeariDeviceSnoozeTime) {
     MeariDeviceSnoozeTimeTwoHours,
     MeariDeviceSnoozeTimeThreeHours,
     MeariDeviceSnoozeTimeFourHours,
+};
+
+typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
+    MeariDeviceVoiceLightTypeVoice = 0, // voice  (报警触发声音)
+    MeariDeviceVoiceLightTypeLight = 1, // Support light (报警触发亮灯)
+    MeariDeviceVoiceLightTypeAll = 2,  //Support all (报警触发声音和亮灯)
 };
 
 #pragma mark -- 设备固件信息
@@ -229,6 +241,15 @@ typedef NS_ENUM(NSInteger, MeariDeviceSnoozeTime) {
 @property (nonatomic, copy) NSString *radius;
 @end
 
+@interface MeariDeviceParamVoiceLightAlarm : NSObject
+/** Whether to turn off the voice light alarm */
+/** 是否开启 声光报警设置 */
+@property (nonatomic, assign)BOOL enable;
+// 触发报警 动作类型
+@property (nonatomic, assign) MeariDeviceVoiceLightType videoLightType;
+
+@end
+
 #pragma mark -- 人体侦测
 @interface MeariDeviceParamPIR : MeariBaseModel
 /** Whether to open PIR */
@@ -236,6 +257,9 @@ typedef NS_ENUM(NSInteger, MeariDeviceSnoozeTime) {
 @property (nonatomic, assign)NSInteger enable;
 /** MeariDeviceLevelLow|MeariDeviceLevelMedium|MeariDeviceLevelHigh */
 @property (nonatomic, assign) MeariDeviceLevel level; // pir sensitivity level
+/** double pir exist , doublePirStatus replace enable key  */
+@property (nonatomic, assign) MeariDeviceDoublePirStatus doublePirStatus; // 双pir的状态
+
 @end
 
 #pragma mark -- 设备电池信息
@@ -486,6 +510,7 @@ typedef NS_ENUM(NSInteger, MeariDeviceSnoozeTime) {
 
 @property (nonatomic, strong) MeariDeviceParamVoiceBell *voiceBell;
 @property (nonatomic, strong) MeariDeviceParamDBDetection *decibel_alarm;
+@property (nonatomic, strong) MeariDeviceParamVoiceLightAlarm *voiceLightAlarm; // 声光报警
 @property (nonatomic, strong) MeariDeviceParamNetwork *wlan;
 @property (nonatomic, strong) MeariDeviceParamNetwork *eth;
 @property (nonatomic, strong) MeariDeviceParamNetwork *net_4G;

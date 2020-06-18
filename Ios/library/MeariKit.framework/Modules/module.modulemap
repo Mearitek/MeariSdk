@@ -1,0 +1,6 @@
+framework module MeariKit {
+  umbrella header "MeariKit.h"
+
+  export *
+  module * { export * }
+}

@@ -100,6 +100,16 @@ typedef NS_ENUM (NSInteger, MeariDevicePirSensitivity) {
     MeariDevicePirSensitivityAll = 1, // Support all (支持PIR使能开关+设置选项(高中低))
     MeariDevicePirSensitivityOnlySwitch = 2,//Support enable (只支持PIR的使能开关)
     MeariDevicePirSensitivitySwitchAndHighLow= 4,//Support enable And high,low level (支持PIR使能开关+设置选项(高低))
+    MeariDevicePirSensitivityIpcDoublePir = 5, // Support dual PIR enable switch (left and right) + unified sensitivity setting options (high and low) (used in constant current equipment, such as Flight 4T) (支持双PIR的使能开关(左和右)+统一的灵敏度设置选项(高低)(用于常电设备，如Flight 4T))
+    
+    MeariDevicePirSensitivityLowPowerDoublePir = 6 // Support dual PIR enable switch (left and right) + unified sensitivity setting options (high and low) (for low power consumption devices, such as Flight 3T) 支持双PIR的使能开关(左和右)+统一的灵敏度设置选项(高低)(用于低功耗设备，如Flight 3T)
+};
+
+typedef NS_ENUM (NSInteger, MeariDeviceVideoType) {
+    // Wlh : width less height ， 宽大于高
+    MeariDeviceVideoTypeNoSupportWlh = 0, // 默认 16 : 9 , default
+    MeariDeviceVideoTypeSupportWlhSourceRight = 1, // // 9 : 16 , source also is 9 : 16
+    MeariDeviceVideoTypeSupportWlhSourceError = 2, // // 9 : 16 , but source also is 16 : 9, The decoder needs to flip by itself
 };
 
 @interface MeariDeviceInfoCapabilityFunc : MeariBaseModel
@@ -239,6 +249,11 @@ typedef NS_ENUM (NSInteger, MeariDevicePirSensitivity) {
 @property (nonatomic, assign) NSInteger roi;
 /** 报警频率*/
 @property (nonatomic, assign) NSInteger afq;
+// 16:9 还是 9:16
+@property (nonatomic, assign) NSInteger crm;
+/** 声光报警*/
+@property (nonatomic, assign) NSInteger sla;
+
 @end
 
 
