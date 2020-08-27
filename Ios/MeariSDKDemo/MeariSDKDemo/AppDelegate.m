@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <MeariKit/MeariKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import <Braintree/BTAppSwitch.h>
 static  NSString *app_key = @"8a48b2105058489aba0c08b79325ef3f";
 static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
 @interface AppDelegate ()
@@ -25,6 +26,8 @@ static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
      env = MearEnvironmentRelease;
      [[MeariSDK sharedInstance] configEnvironment:env];
      [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelVerbose];
+    
+     [BTAppSwitch setReturnURLScheme:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"]];
     return YES;
 }
 
@@ -46,17 +49,25 @@ static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
 #pragma mark - UISceneSession lifecycle
 
 
-- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
-    // Called when a new scene session is being created.
-    // Use this method to select a configuration to create the new scene with.
-    return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
+//- (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
+//    // Called when a new scene session is being created.
+//    // Use this method to select a configuration to create the new scene with.
+//    return [[UISceneConfiguration alloc] initWithName:@"Default Configuration" sessionRole:connectingSceneSession.role];
+//}
+//
+//
+//- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
+//    // Called when the user discards a scene session.
+//    // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
+//    // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+//}
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Notification_AlipayWeb_Call_Back" object:url];
+    return YES;
 }
-
-
-- (void)application:(UIApplication *)application didDiscardSceneSessions:(NSSet<UISceneSession *> *)sceneSessions {
-    // Called when the user discards a scene session.
-    // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-    // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Notification_AlipayWeb_Call_Back" object:url];
+    return YES;
 }
 
 

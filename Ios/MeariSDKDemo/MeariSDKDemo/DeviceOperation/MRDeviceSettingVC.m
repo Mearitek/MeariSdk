@@ -10,7 +10,7 @@
 
 #import "MRDeviceSDFormatVC.h"
 #import "MRDeviceUpgradeVC.h"
-
+#import "MRCloudServerVC.h"
 @interface MRDeviceSettingVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -48,7 +48,7 @@
 
 #pragma mark --- UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return 3;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:WY_ClassName([self class])];
@@ -59,6 +59,8 @@
         cell.textLabel.text = @"sd card format";
     } else if (indexPath.row == 1) {
         cell.textLabel.text = @"device upgrade";
+    } else if (indexPath.row == 2) {
+        cell.textLabel.text = @"cloud service buy";
     }
     return cell;
 }
@@ -73,6 +75,10 @@
         MRDeviceUpgradeVC *upgradeVC = [[MRDeviceUpgradeVC alloc] init];
         upgradeVC.camera = self.camera;
         [self.navigationController pushViewController:upgradeVC animated:YES];
+    } else if (indexPath.row == 2) {
+        MRCloudServerVC *cloudServerVC = [[MRCloudServerVC alloc] init];
+        cloudServerVC.camera = self.camera;
+        [self.navigationController pushViewController:cloudServerVC animated:YES];
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

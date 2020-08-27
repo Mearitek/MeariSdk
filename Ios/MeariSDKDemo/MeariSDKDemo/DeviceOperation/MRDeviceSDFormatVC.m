@@ -63,6 +63,14 @@
     } failure:^(NSError *error) {
         weakSelf.sdcardStatusTextView.text = @"Cannot get SD card info.";
     }];
+//
+//    [self.camera getDeviceParamsSuccess:^(MeariDeviceParam *param) {
+//
+//    } failure:^(NSError *error) {
+//
+//    }];
+    
+
 }
 // start format sd card
 - (IBAction)startFormatAction:(id)sender {
