@@ -15,7 +15,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".device.DeviceMonitorActivity"></activity>
+        <activity android:name=".user.BuyCloudServiceActivity"/>
+        <activity android:name=".user.CloudStatusActivity" />
+        <activity android:name=".device.DeviceCloudPlayActivity" />
+        <activity android:name=".device.DeviceMonitorActivity" />
         <activity android:name=".device.DeviceSettingActivity" />
         <activity android:name=".device.AddDeviceActivity" />
         <activity android:name=".device.DeviceListActivity" />

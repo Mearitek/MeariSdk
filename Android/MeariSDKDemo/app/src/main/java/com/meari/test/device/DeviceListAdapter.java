@@ -38,7 +38,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<DeviceListAdapter.De
     @Override
     public void onBindViewHolder(@NonNull DeviceHolder holder, int position) {
         CameraInfo cameraInfo = deviceList.get(position);
-        Glide.with(context).load(cameraInfo.getDeviceIcon()).asBitmap().into(holder.imgDeviceIcon);
+        Glide.with(context).load(cameraInfo.getDeviceIcon()).into(holder.imgDeviceIcon);
         holder.tvDeviceName.setText(cameraInfo.getDeviceName());
         holder.deviceView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DeviceMonitorActivity.class);

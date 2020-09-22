@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.meari.xtest"
         minSdkVersion 17
@@ -12,10 +12,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
 
-        ndk {
-            //选择要添加的对应 cpu 类型的 .so 库。还可以添加 'x86', 'x86_64', 'mips', 'mips64'
-            abiFilters 'armeabi', 'arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'
-        }
+//        ndk {
+//            //选择要添加的对应 cpu 类型的 .so 库。还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+//            abiFilters 'armeabi', 'arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'
+//        }
     }
     buildTypes {
         release {
@@ -24,11 +24,11 @@ android {
         }
     }
 
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
-    }
+//    sourceSets {
+//        main {
+//            jniLibs.srcDirs = ['libs']
+//        }
+//    }
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -43,24 +43,29 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // required
-    implementation(name: 'mearisdk-2.2.0-20200611', ext: 'aar')
-    implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
-    implementation 'com.alibaba:fastjson:1.2.57'
-    implementation 'com.google.zxing:core:3.3.3'
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    implementation 'com.bfcy.sdk:TesSdk:1.0.7'
+//    implementation 'com.meari.sdk:sdk-core:1.0.1-beta'
+//    implementation 'com.bfcy.mylibrary:test-lib:1.1.3'
+//    implementation(name: 'mearisdk-2.2.0-20200909', ext: 'aar')
+//    implementation 'androidx.multidex:multidex:2.0.1'
+//    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
+//    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+//    implementation 'com.alibaba:fastjson:1.2.57'
+//    implementation 'com.google.zxing:core:3.3.3'
+//    implementation 'com.google.code.gson:gson:2.8.6'
+//    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
 
     // others
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation(name: 'alipaySdk-15.6.8-20191021122514', ext: 'aar')
+    implementation 'com.braintreepayments.api:braintree:2.14.2'
 
 }
