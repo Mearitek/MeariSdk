@@ -49,7 +49,6 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
     private int mMonth;
     private int mDay;
 
-
     public static final String DOCUMENT_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xtest/media";
 
     @Override
@@ -129,42 +128,6 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
         postEventTime(2020, 9, 14);
 
     }
-
-//    private String mVideoPath;
-//    private Uri mVideoUri;
-//    private IjkVideoView mVideoView;
-//    private boolean mBackPressed = false;
-
-
-//    public void play(String Url, String startTime) {
-//        mVideoPath = Url;
-//        mVideoView.setMediaCallback(this);
-//        mVideoView.setStartTime(startTime);
-//        if (mVideoPath != null) {
-//            mVideoView.setVideoPath(mVideoPath);
-//        } else if (mVideoUri != null) {
-//            mVideoView.setVideoURI(mVideoUri);
-//        } else {
-//            finish();
-//            return;
-//        }
-//        mVideoView.start();
-//    }
-
-//    public void stop() {
-//        if (mVideoView != null) {
-//            if (mBackPressed || !mVideoView.isBackgroundPlayEnabled()) {
-//                Logger.i("CloudPlayerFragment", "cameraPlayer-停止云回放--释放资源");
-//                mVideoView.stopPlayback();
-//                mVideoView.release(true);
-//                mVideoView.stopBackgroundPlay();
-//            } else {
-//                Logger.i("CloudPlayerFragment", "cameraPlayer-停止云回放--enterBackground");
-//                mVideoView.enterBackground();
-//            }
-//            IjkMediaPlayer.native_profileEnd();
-//        }
-//    }
 
     private int mCurIndex;
 
@@ -249,7 +212,6 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
         cloudPlayerController.play(path, mSeekString);
     }
 
-
     private void postEventTime(int year, int month, int day) {
         String format = "%d%02d%02d";
         String deviceID = String.valueOf(cameraInfo.getDeviceID());
@@ -303,10 +265,6 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
     private void screenshot() {
         String path = DOCUMENT_PATH + "/" + System.currentTimeMillis() + ".jpg";
         cloudPlayerController.screenshot(path);
-//        if (this.mVideoView != null && mVideoView.getMediaPlayer() != null && mVideoView.getMediaPlayer().isPlaying()) {
-//            String path = DOCUMENT_PATH + "/" + System.currentTimeMillis() + ".jpg";
-//            mVideoView.getMediaPlayer().snapShotJepg(path);
-//        }
     }
 
     private boolean isRecording = false;
@@ -314,33 +272,22 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
     private void startRecordMP4() {
         String path = DOCUMENT_PATH + "/" + System.currentTimeMillis() + ".mp4";
         cloudPlayerController.startRecordMP4(path);
-//        if (mVideoView != null && mVideoView.getMediaPlayer() != null) {
-//            this.mVideoView.getMediaPlayer().recordMp4Start(path);
-//        }
+
         isRecording = true;
     }
 
     // Need to record more than 3 seconds, otherwise it is easy to fail
     private void stopRecordMP4() {
         cloudPlayerController.stopRecordMP4();
-//        if (mVideoView != null && mVideoView.getMediaPlayer() != null) {
-//            this.mVideoView.getMediaPlayer().recordMp4Stop();
-//        }
+
         isRecording = false;
     }
 
     private boolean isMute = false;
 
     private void setMute(boolean mute) {
-//        cloudPlayerController.setMute(mute);
+        cloudPlayerController.setMute(mute);
         isMute = mute;
-//        if (this.mVideoView != null) {
-//            this.mVideoView.audioMute(mute);
-//            if (this.mVideoView.getMediaPlayer() != null) {
-//                this.mVideoView.getMediaPlayer().audioMute(mute);
-//            }
-//            isMute = mute;
-//        }
     }
 
     @Override
