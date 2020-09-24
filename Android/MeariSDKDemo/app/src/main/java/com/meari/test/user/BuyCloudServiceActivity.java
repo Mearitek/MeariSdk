@@ -139,9 +139,9 @@ public class BuyCloudServiceActivity extends AppCompatActivity implements Config
             monthPrice7 = mEventCloudInfo.getSevenM();
             monthPrice30 = mEventCloudInfo.getThirtyM();
 
-//            quarterPrice3 = mEventCloudInfo.getThreeS();
-//            quarterPrice7 = mEventCloudInfo.getSevenS();
-//            quarterPrice30 = mEventCloudInfo.getThirtyS();
+            quarterPrice3 = mEventCloudInfo.getThreeS();
+            quarterPrice7 = mEventCloudInfo.getSevenS();
+            quarterPrice30 = mEventCloudInfo.getThirtyS();
 
             yearPrice3 = mEventCloudInfo.getThreeY();
             yearPrice7 = mEventCloudInfo.getSevenY();
@@ -151,9 +151,9 @@ public class BuyCloudServiceActivity extends AppCompatActivity implements Config
             monthPrice7 = mDayCloudInfo.getSevenM();
             monthPrice30 = mDayCloudInfo.getThirtyM();
 
-//            quarterPrice3 = mDayCloudInfo.getThreeS();
-//            quarterPrice7 = mDayCloudInfo.getSevenS();
-//            quarterPrice30 = mDayCloudInfo.getThirtyS();
+            quarterPrice3 = mDayCloudInfo.getThreeS();
+            quarterPrice7 = mDayCloudInfo.getSevenS();
+            quarterPrice30 = mDayCloudInfo.getThirtyS();
 
             yearPrice3 = mDayCloudInfo.getThreeY();
             yearPrice7 = mDayCloudInfo.getSevenY();
