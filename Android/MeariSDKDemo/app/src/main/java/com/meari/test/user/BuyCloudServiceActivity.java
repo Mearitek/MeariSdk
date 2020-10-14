@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import com.alipay.sdk.app.PayTask;
 import com.braintreepayments.api.BraintreeFragment;
 import com.braintreepayments.api.DataCollector;
 import com.braintreepayments.api.PayPal;
+import com.braintreepayments.api.exceptions.InvalidArgumentException;
 import com.braintreepayments.api.interfaces.BraintreeErrorListener;
 import com.braintreepayments.api.interfaces.BraintreeResponseListener;
 import com.braintreepayments.api.interfaces.ConfigurationListener;
@@ -28,6 +30,7 @@ import com.meari.sdk.bean.CameraInfo;
 import com.meari.sdk.bean.CloudPriceInfo;
 import com.meari.sdk.bean.OrderInfo;
 import com.meari.sdk.callback.IPayCallback;
+import com.meari.sdk.callback.IStringResultCallback;
 import com.meari.sdk.utils.Logger;
 import com.meari.test.R;
 import com.meari.test.alipay.PayResult;
@@ -113,6 +116,7 @@ public class BuyCloudServiceActivity extends AppCompatActivity implements Config
             mPayType = 2;
             findViewById(R.id.iv_alipay).setVisibility(View.GONE);
             findViewById(R.id.iv_paypal).setVisibility(View.VISIBLE);
+            postPaypalPayToken();
         }
 
         select();
@@ -268,6 +272,30 @@ public class BuyCloudServiceActivity extends AppCompatActivity implements Config
     private String mAuthorization = "";
     private String mDeviceData = "";
 
+    /**
+     * get PayPal Token
+     */
+    public void postPaypalPayToken() {
+        MeariUser.getInstance().getPayPalToken(new IStringResultCallback() {
+            @Override
+            public void onSuccess(String result) {
+                Log.i("tag","--->postPaypalPayToken--onSuccess: " + result);
+                mAuthorization = result;
+                try {
+                    mBraintreeFragment = BraintreeFragment.newInstance(BuyCloudServiceActivity.this, mAuthorization);
+                } catch (InvalidArgumentException e) {
+                    e.printStackTrace();
+                    Log.i("tag","--->postPaypalPayToken--onError: " + e.getLocalizedMessage());
+                }
+            }
+
+            @Override
+            public void onError(int code, String error) {
+                Log.i("tag","--->postPaypalPayToken--onError: " + error);
+            }
+        });
+    }
+
 
     /**
      * The specific process can refer to the official PayPal document
@@ -300,6 +328,7 @@ public class BuyCloudServiceActivity extends AppCompatActivity implements Config
     @Override
     public void onError(Exception e) {
         // Pay failure, please try again!
+        Log.i("tag","--->Pay failure--onError: " + e.getLocalizedMessage());
     }
 
     @Override

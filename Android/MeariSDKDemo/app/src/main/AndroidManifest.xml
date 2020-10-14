@@ -34,6 +34,19 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="${applicationId}.braintree" />
+            </intent-filter>
+        </activity>
+
         <meta-data
             android:name="MEARI_APPKEY"
             android:value="8a48b2105058489aba0c08b79325ef3f" />
