@@ -2260,6 +2260,114 @@ MeariUser.getInstance (). SetVideoEncoding (type, new ISetDeviceParamsCallback (
 });
 ```
 
+### 9.5.17 Device rotation control
+```
+【description】
+Device rotation control
+
+[Function call]
+
+/**
+ * Start turning
+ *
+ * @param direction Direction of rotation
+ */
+public void startPTZControl(String direction);
+
+/**
+ * Stop turning
+ *
+ */
+public void stopPTZControl();
+
+[Code example]
+
+MeariMoveDirection.LEFT
+MeariMoveDirection.RIGHT
+MeariMoveDirection.UP
+MeariMoveDirection.DOWN
+MeariUser.getInstance().startPTZControl(MeariMoveDirection.LEFT);
+MeariUser.getInstance().stopPTZControl();
+```
+
+### 9.5.18 Device alarm plan time period setting
+```
+【description】
+Device alarm plan time period setting
+
+[Function call]
+/**
+ * Set the time period of the alarm
+ *
+ * @param timeList he time period of the alarm
+ * @param callback Function callback
+ */
+public void setAlarmTimes(String timeList, ISetDeviceParamsCallback callback);
+
+[Code example]
+
+if (cameraInfo.getAlp() > 0) {
+    // support
+} else {
+    // not support
+}
+
+String listString = deviceParams.getAlarmPlanList();
+
+// Support up to 4 groups
+[{
+    "enable":   false,
+    "start_time":   "10:00",
+    "stop_time":    "21:00",
+    "repeat":   [1]
+}, {
+    "enable":   true,
+    "start_time":   "02:00",
+    "stop_time":    "14:00",
+    "repeat":   [1, 2, 3, 4, 5, 7]
+}]
+
+MeariUser.getInstance().setAlarmTimes(alarmPlanString, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.19 Device push message switch setting
+```
+【description】
+Device push message switch setting
+
+[Function call]
+/**
+ * Device push message switch setting
+ *
+ * @param deviceId device id
+ * @param status   0-on; 1-off
+ * @param callback callback
+ */
+public void closeDeviceAlarmPush(String deviceId, int status, IPushStatusCallback callback);
+
+[Code example]
+
+int status = cameraInfo.getClosePush();
+
+MeariUser.getInstance().closeDeviceAlarmPush(cameraInfo.getDeviceID(), status, new IPushStatusCallback() {
+    @Override
+    public void onSuccess(int status) {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
+
 ## 9.6 Parameter setting of NVR
 ## 9.7 Parameter setting of babymonitor
 ## 9.8 Parameter setting of doorbell

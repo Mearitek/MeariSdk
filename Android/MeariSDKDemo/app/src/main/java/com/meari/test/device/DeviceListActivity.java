@@ -1,22 +1,20 @@
 package com.meari.test.device;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.bean.CameraInfo;
 import com.meari.sdk.bean.MeariDevice;
 import com.meari.sdk.callback.IDevListCallback;
 import com.meari.test.R;
-import com.meari.test.user.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,13 +65,13 @@ public class DeviceListActivity extends AppCompatActivity {
         MeariUser.getInstance().getDeviceList(new IDevListCallback() {
             @Override
             public void onSuccess(MeariDevice meariDevice) {
-                Log.i("tag","--->i: ssss" );
+                Log.i("tag", "--->i: ssss");
                 initList(meariDevice);
             }
 
             @Override
             public void onError(int i, String s) {
-                Log.i("tag","--->i: " + i + "; s: " +s);
+                Log.i("tag", "--->i: " + i + "; s: " + s);
                 Toast.makeText(DeviceListActivity.this, R.string.toast_fail, Toast.LENGTH_LONG).show();
             }
         });

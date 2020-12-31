@@ -2292,7 +2292,83 @@ MeariUser.getInstance().startPTZControl(MeariMoveDirection.LEFT);
 MeariUser.getInstance().stopPTZControl();
 ```
 
-### 9.5.17 设备报警计划时间段设置
+### 9.5.18 设备报警计划时间段设置
+```
+【描述】
+设备报警计划时间段设置
+
+【函数调用】
+/**
+ * 设置报警的时间段
+ *
+ * @param timeList he time period of the alarm
+ * @param callback Function callback
+ */
+public void setAlarmTimes(String timeList, ISetDeviceParamsCallback callback);
+
+【代码范例】
+
+if (cameraInfo.getAlp() > 0) {
+    // 支持
+} else {
+    // 不支持
+}
+
+String listString = deviceParams.getAlarmPlanList();
+
+// 最多支持4组
+[{
+    "enable":   false,
+    "start_time":   "10:00",
+    "stop_time":    "21:00",
+    "repeat":   [1]
+}, {
+    "enable":   true,
+    "start_time":   "02:00",
+    "stop_time":    "14:00",
+    "repeat":   [1, 2, 3, 4, 5, 7]
+}]
+
+MeariUser.getInstance().setAlarmTimes(alarmPlanString, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.19 设备推送消息开关设置
+```
+【描述】
+设备推送消息开关设置
+
+【函数调用】
+/**
+ * 设备推送消息开关设置
+ *
+ * @param deviceId device id
+ * @param status   0-on; 1-off
+ * @param callback callback
+ */
+public void closeDeviceAlarmPush(String deviceId, int status, IPushStatusCallback callback);
+
+【代码范例】
+
+int status = cameraInfo.getClosePush();
+
+MeariUser.getInstance().closeDeviceAlarmPush(cameraInfo.getDeviceID(), status, new IPushStatusCallback() {
+    @Override
+    public void onSuccess(int status) {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
 
 
 

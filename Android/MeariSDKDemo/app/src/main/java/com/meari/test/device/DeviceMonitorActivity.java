@@ -1,13 +1,8 @@
 package com.meari.test.device;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Message;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -16,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.meari.sdk.MeariDeviceController;
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.bean.CameraInfo;
-import com.meari.sdk.bean.UserInfo;
 import com.meari.sdk.callback.IDeviceAlarmMessageTimeCallback;
 import com.meari.sdk.callback.IPlaybackDaysCallback;
 import com.meari.sdk.json.BaseJSONArray;
@@ -30,6 +27,7 @@ import com.meari.sdk.listener.MeariDeviceVideoStopListener;
 import com.meari.sdk.utils.Logger;
 import com.meari.sdk.utils.MeariDeviceUtil;
 import com.meari.test.R;
+import com.meari.test.user.CloudStatusActivity;
 import com.ppstrong.ppsplayer.PPSGLSurfaceView;
 import com.ppstrong.ppsplayer.VideoTimeRecord;
 
@@ -42,7 +40,7 @@ import java.util.Locale;
 
 public class DeviceMonitorActivity extends AppCompatActivity {
 
-    private Button btnPreview,btnPlayback,btnSetting,btnScreenshot,btnRecord;
+    private Button btnPreview, btnPlayback, btnCloudPlayback, btnCloudService, btnSetting, btnScreenshot, btnRecord;
     private boolean isReady = false;
     private PPSGLSurfaceView videoSurfaceView;
     private CameraInfo cameraInfo;
@@ -51,7 +49,8 @@ public class DeviceMonitorActivity extends AppCompatActivity {
 
     private int position = 0;// 0-preview; 1-playback;
 
-    public static final String DOCUMENT_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xtest/media" ;
+    public static final String DOCUMENT_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xtest/media";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +95,8 @@ public class DeviceMonitorActivity extends AppCompatActivity {
 
         btnPreview = findViewById(R.id.btn_preview);
         btnPlayback = findViewById(R.id.btn_playback);
+        btnCloudPlayback = findViewById(R.id.btn_cloud_playback);
+        btnCloudService = findViewById(R.id.btn_cloud_service);
         btnSetting = findViewById(R.id.btn_setting);
         btnScreenshot = findViewById(R.id.btn_screenshot);
         btnRecord = findViewById(R.id.btn_record);
@@ -126,6 +127,37 @@ public class DeviceMonitorActivity extends AppCompatActivity {
             }
         });
 
+        // Whether to support cloud storage service
+        if (cameraInfo.getCst() > 0) {
+            btnCloudPlayback.setVisibility(View.VISIBLE);
+            btnCloudService.setVisibility(View.VISIBLE);
+        } else {
+            btnCloudPlayback.setVisibility(View.GONE);
+            btnCloudService.setVisibility(View.GONE);
+        }
+
+        btnCloudPlayback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DeviceMonitorActivity.this, DeviceCloudPlayActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("cameraInfo", cameraInfo);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        btnCloudService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DeviceMonitorActivity.this, CloudStatusActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("cameraInfo", cameraInfo);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
         btnScreenshot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,11 +182,11 @@ public class DeviceMonitorActivity extends AppCompatActivity {
                 if (!isReady) {
                     return;
                 }
-                Intent intent  = new Intent(DeviceMonitorActivity.this, DeviceSettingActivity.class);
+                Intent intent = new Intent(DeviceMonitorActivity.this, DeviceSettingActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("cameraInfo", cameraInfo);
                 intent.putExtras(bundle);
-                startActivityForResult(intent,100);
+                startActivityForResult(intent, 100);
             }
         });
 
@@ -195,6 +227,10 @@ public class DeviceMonitorActivity extends AppCompatActivity {
     private void toastFailed() {
         runOnUiThread(() -> Toast.makeText(DeviceMonitorActivity.this, R.string.toast_fail, Toast.LENGTH_LONG).show());
 
+    }
+
+    private void showToast(String string) {
+        Toast.makeText(DeviceMonitorActivity.this, string, Toast.LENGTH_LONG).show();
     }
 
     private void connect() {
@@ -259,9 +295,9 @@ public class DeviceMonitorActivity extends AppCompatActivity {
     }
 
     private void playback() {
-        getDayOfMonth(2020,6);
-        getVideoRecordByDay(2020,6,8);
-        getEventTime(2020,6,8);
+        getDayOfMonth(2020, 6);
+        getVideoRecordByDay(2020, 6, 8);
+        getEventTime(2020, 6, 8);
     }
 
     private void getDayOfMonth(int year, int month) {
@@ -345,7 +381,6 @@ public class DeviceMonitorActivity extends AppCompatActivity {
     }
 
 
-
     private void startPlaybackSDCard() {
         VideoTimeRecord videoTime = mVideoList.get(0);
         String playtime = "";
@@ -382,7 +417,7 @@ public class DeviceMonitorActivity extends AppCompatActivity {
             int bps = cameraInfo.getBps();
             BigInteger bi = new BigInteger(String.valueOf(bps));
             String str = bi.toString(2);
-            for (int i = str.length() -1; i >= 0 ; i--) {
+            for (int i = str.length() - 1; i >= 0; i--) {
                 if (String.valueOf(str.charAt(i)).equals("1")) {
                     strings.add(str.length() - 1 - i);
                 }
@@ -392,8 +427,8 @@ public class DeviceMonitorActivity extends AppCompatActivity {
             strings.add(1);
         }
 
-        for (int i = 0; i <strings.size() ; i++) {
-            Log.i("tag","--bps: " + strings.get(i));
+        for (int i = 0; i < strings.size(); i++) {
+            Log.i("tag", "--bps: " + strings.get(i));
         }
 
 

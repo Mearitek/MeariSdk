@@ -1,18 +1,17 @@
 package com.meari.test.device;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.meari.sdk.MeariDeviceController;
 import com.meari.sdk.MeariUser;
@@ -28,15 +27,11 @@ import com.meari.sdk.callback.ISDCardFormatCallback;
 import com.meari.sdk.callback.ISDCardFormatPercentCallback;
 import com.meari.sdk.callback.ISDCardInfoCallback;
 import com.meari.sdk.callback.ISetDeviceParamsCallback;
-import com.meari.sdk.json.BaseJSONObject;
-import com.meari.sdk.utils.Logger;
 import com.meari.test.R;
-
-import org.json.JSONException;
 
 public class DeviceSettingActivity extends AppCompatActivity {
 
-    private Switch switchLed,switchMotion;
+    private Switch switchLed, switchMotion;
     private EditText edtMotionSensitivity;
     private TextView tvMotionSensitivity, tvFormatPercent, tvCapacity, tvRemainingCapacity, tvUpgradePercent;
     private Button btnMotionSensitivity, btnFormat, btnUpgrade;
@@ -68,7 +63,6 @@ public class DeviceSettingActivity extends AppCompatActivity {
         btnFormat = findViewById(R.id.btn_format);
         btnUpgrade = findViewById(R.id.btn_upgrade_firmware);
         tvUpgradePercent = findViewById(R.id.tv_upgrade_percent);
-
 
 
         switchLed.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -176,7 +170,7 @@ public class DeviceSettingActivity extends AppCompatActivity {
     });
 
     private void showFormatPercent(int percent) {
-        if (percent >=0 && percent < 100) {
+        if (percent >= 0 && percent < 100) {
             tvFormatPercent.setText(percent + "%");
             handler.postDelayed(new Runnable() {
                 @Override
@@ -190,7 +184,7 @@ public class DeviceSettingActivity extends AppCompatActivity {
     }
 
     private void showUpgradePercent(int percent) {
-        if (percent >=0 && percent < 100) {
+        if (percent >= 0 && percent < 100) {
             tvUpgradePercent.setText(percent + "%");
             handler.postDelayed(new Runnable() {
                 @Override
