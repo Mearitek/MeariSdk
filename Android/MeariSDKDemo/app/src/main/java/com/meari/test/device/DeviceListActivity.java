@@ -15,6 +15,7 @@ import com.meari.sdk.bean.CameraInfo;
 import com.meari.sdk.bean.MeariDevice;
 import com.meari.sdk.callback.IDevListCallback;
 import com.meari.test.R;
+import com.meari.test.app.MeariApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class DeviceListActivity extends AppCompatActivity {
         initView();
 
         // Connect mqtt service
-        if (MeariUser.getInstance().isMqttConnected()) {
+        if (!MeariUser.getInstance().isMqttConnected()) {
             MeariUser.getInstance().connectMqttServer(getApplication());
         }
     }

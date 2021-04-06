@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name=".app.MeariApplication"
         android:allowBackup="true"
@@ -53,6 +55,10 @@
         <meta-data
             android:name="MEARI_SECRET"
             android:value="f6c33593133c44f98372f67213568411" />
+
+        <service
+            android:name="org.eclipse.paho.android.service.MqttService"
+            android:priority="1000" />
     </application>
 
 </manifest>

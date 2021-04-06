@@ -17,6 +17,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://dl.bintray.com/mearitek2017/maven' }
     }
 }
 
