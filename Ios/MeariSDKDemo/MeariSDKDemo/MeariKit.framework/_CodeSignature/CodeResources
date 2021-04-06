@@ -50,7 +50,7 @@
 		</data>
 		<key>Headers/MeariDeviceParam.h</key>
 		<data>
-		clq+ScN7ifoDglzQPusgFC9hIeA=
+		qmERl/DOdufPJc+KxSQJLpp0O74=
 		</data>
 		<key>Headers/MeariDeviceTime.h</key>
 		<data>
@@ -102,7 +102,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		VoEuK2zxcus8m6XwNJOzsuvYucU=
+		kvCWYJMSNveDDzkenNYKg3/CQ6Q=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -236,11 +236,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			clq+ScN7ifoDglzQPusgFC9hIeA=
+			qmERl/DOdufPJc+KxSQJLpp0O74=
 			</data>
 			<key>hash2</key>
 			<data>
-			n6ODWTNnVKYZ9kdct9tjCHx6yF4bl5ZzYj2/1RrNwK8=
+			SAzHtuqPvsnT74dI83r6Anad3VFHAmOwJFL5HCS3oZ4=
 			</data>
 		</dict>
 		<key>Headers/MeariDeviceTime.h</key>

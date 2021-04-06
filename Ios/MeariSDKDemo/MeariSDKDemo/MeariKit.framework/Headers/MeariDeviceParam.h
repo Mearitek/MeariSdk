@@ -43,9 +43,10 @@ typedef NS_ENUM(NSInteger, MeariDeviceRecordDuration) {
     MeariDeviceRecordDurationThreeMin = 0b1000, //3min 三分钟
     MeariDeviceRecordDuration20Seconds = 0b10000, //20s
     MeariDeviceRecordDuration40Seconds = 0b100000, //40s
-    MeariDeviceRecordDurationOff = 0b1000000, // record is close 关闭录像
-    MeariDeviceRecordDurationOn = 0b10000000, // record is open(If you only want to open the record and use the previous value, this action will only open the record)  只开启录像
-    MeariDeviceRecordDuration24Hours = 0b100000000, // 全天录像
+    MeariDeviceRecordDuration10Seconds = 0b1000000, //10s
+    MeariDeviceRecordDurationOff = 0b10000000, // record is close 关闭录像
+    MeariDeviceRecordDurationOn = 0b100000000, // record is open(If you only want to open the record and use the previous value, this action will only open the record)  只开启录像
+    MeariDeviceRecordDuration24Hours = 0b1000000000, // 全天录像
 };
 /** alarm frequency interval*/
 /** 设备报警频率间隔时长 */
