@@ -10,6 +10,12 @@
 #import "MeariDeviceInfo.h"
 #import "MeariDeviceParam.h"
 #import "MeariDeviceControl.h"
+typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
+    MeariDevicePtzDirectionNone = 0,      //not support
+    MeariDevicePtzDirectionAll = 1,       //left/right/up/down
+    MeariDevicePtzDirectionUpDown = 2,    //up/down
+    MeariDevicePtzDirectionLeftRight = 3  //left/right
+};
 
 @interface MeariDevice : MeariBaseModel<MeariDeviceControl>
 #pragma mark - 信息
@@ -34,9 +40,9 @@
 /** voiceBell*/
 /** 语言门铃 */
 @property (nonatomic, assign, readonly, getter = isVoiceBell) BOOL voiceBell;
-/** flootCamera*/
+/** FloodCamera*/
 /** 灯具摄像机*/
-@property (nonatomic, assign, readonly, getter = isFlootCamera) BOOL flootCamera;
+@property (nonatomic, assign, readonly, getter = isFloodCamera) BOOL FloodCamera;
 /** nvr network storage*/
 /** 是否是网络存储器（NVR）*/
 @property (nonatomic, assign, readonly, getter = isNvr) BOOL nvr;
@@ -47,10 +53,16 @@
 /** 是否iOT设备*/
 @property (nonatomic, assign) BOOL iotDevice;
 
+@property (nonatomic, assign,readonly) BOOL supportAwsIot;
+@property (nonatomic, assign,readonly) BOOL supportMeariIot;
+
 #pragma mark -- 状态
 /** Whether the device has established a network connection*/
 /** 是否已经建立连接*/
 @property (nonatomic, assign, readonly) BOOL sdkLogined;
+/** Whether the MeariIot device has established a network connection*/
+/** meariIot是否已经建立连接*/
+@property (nonatomic, assign, readonly) BOOL meariIotLogined;
 /** Whether the device is establishing a network connection*/
 /** 是否正在建立连接*/
 @property (nonatomic, assign, readonly) BOOL sdkLogining;
@@ -83,6 +95,11 @@
 /** Get the stream type of device*/
 /** 获取支持的码流类型*/
 - (NSArray *)supportVideoStreams;
+/** 设备回放/云回放/报警图片视频比例 默认去bsp2的1字段*/
+/** Get the stream type of device*/
+- (CGFloat)defalutVideoRatio;
+/** 获取支持的视频比例 supportNewVideoStream 为YES 才启用*/
+- (CGFloat)videoRatioForVideoStream:(MeariDeviceVideoStream)stream;
 /** Get Supported SDK record type */
 /** 获取支持的SDK录像类型*/
 - (NSArray *)supportSdRecordLevels;
@@ -122,9 +139,25 @@
 /** Whether to support Wireless */
 /** 是否支持无线信号开关，用于控制无线铃铛 */
 @property (nonatomic, assign, readonly) BOOL supportWirelessEnable;
+/** Whether to support Wireless */
+/** 是否支持无线信号开关，用于开关无线铃铛 */
+@property (nonatomic, assign, readonly) BOOL supportWirelessSwitchEnable;
+/** Whether to support Wireless */
+/** 是否支持无线信号配对，用于控制配对铃铛 */
+@property (nonatomic, assign, readonly) BOOL supportWirelessPairEnable;
+/** Whether to support Wireless */
+/** 是否支持无线信号音量，用于控制无线铃铛音量 */
+@property (nonatomic, assign, readonly) BOOL supportWirelessVolumeEnable;
+/** Whether to support Wireless */
+/** 是否支持无线信号歌曲，用于控制无线铃铛歌曲选择 */
+@property (nonatomic, assign, readonly) BOOL supportWirelessSongsEnable;
+
 /** Whether to support local server */
 /** 是否支持ONVIF */
 @property (nonatomic, assign, readonly) BOOL supportOnvif;
+/** Whether to support local server */
+/** 是否支持新版本ONVIF */
+@property (nonatomic, assign, readonly) BOOL supportNewOnvif;
 /** Whether to support image flip */
 /** 是否支持镜头翻转 */
 @property (nonatomic, assign, readonly) BOOL supportFlip;
@@ -176,12 +209,40 @@
 @property (nonatomic, assign, readonly) BOOL supportAlarmInterval;
 /** 是否为支持roi区域报警 */
 @property (nonatomic, assign, readonly) BOOL supportAlarmRoi;
+/** 是否为支持人脸识别 */
+@property (nonatomic, assign, readonly) BOOL supportFaceRecognition;
 /** 是否为支持roi区域报警 */
 @property (nonatomic, assign, readonly) BOOL supportVoiceLightAlarm;
 /** 视频显示的类型 */
 @property (nonatomic, assign, readonly) MeariDeviceVideoType displayVideoType;
-
-
+/** 灯具摄像机类型 */
+@property (nonatomic, assign, readonly) MeariDeviceFloodCameraType floodCameraType;
+/** 是否支持时间风格设置 */
+@property (nonatomic, assign, readonly) BOOL supportTimeShowSetting;
+/** 是否支持babymonitor音乐播放 */
+@property (nonatomic, assign, readonly) BOOL supportPlayMusic;
+/** 是否支持babymonitor温湿度检测 */
+@property (nonatomic, assign, readonly) BOOL supportDetectTemperatureHumidity;
+/** 是否支持 报警计划跨天 */
+@property (nonatomic, assign, readonly) BOOL supportAlarmPlanCrossDays;
+/** pir等级设置，用于多级设置开关1-N档 返回最大支持等级， 0不支持*/
+@property (nonatomic, assign, readonly) NSInteger supportPirLevel;
+/** 是否支持视频预览出图 (语音门铃使用) */
+@property (nonatomic, assign, readonly) BOOL supportPreviewImage;
+/** 是否防拆报警 */
+@property (nonatomic, assign, readonly) BOOL supportTamperAlarmSetting;
+/** 支持的云台方向 */
+@property (nonatomic, assign, readonly) MeariDevicePtzDirection ptzDirection;
+/** 支持新版本的码率 */
+@property (nonatomic, assign, readonly) BOOL supportNewVideoStream;
+/** 是否支持pir显示 */
+@property (nonatomic, assign, readonly) BOOL supportPir;
+/** 是否支持灯具摄像机的联动亮灯*/
+@property (nonatomic, assign, readonly) BOOL supportLinkLight;
+/** 是否噪声异常巡查功能*/
+@property (nonatomic, assign, readonly) BOOL supportDbPatrol;
+/** baby是否支持上传用户预览信息功能*/
+@property (nonatomic, assign, readonly) BOOL supportUploadAccountInfo;
 @end
 
 @interface MeariDeviceList : MeariBaseModel

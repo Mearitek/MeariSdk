@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, MeariDeviceAddStatus) {
     MeariDeviceAddStatusSharing, // Sharing (已经分享中)
     MeariDeviceAddStatusFailure, // device abnormal (设备不正常)
     MeariDeviceAddStatusOverLimit,// device count over limit (设备超出限制)
+    MeariDeviceAddStatusByOther,  // device has been added by other 
 };
 typedef NS_ENUM(NSInteger, MeariDeviceLimitLevel) {
     MeariDeviceLimitLevelNone,
@@ -51,6 +52,10 @@ typedef NS_ENUM (NSUInteger, MeariDeviceSupportBellType) {
     MeariDeviceSupportBellTypeWireless,       //Wireless bell is supported by default (默认支持无线铃铛)
     MeariDeviceSupportBellTypeMachinery = 0b1,//mechanical bell (机械铃铛)
     MeariDeviceSupportBellTypeWirelessBell = 0b10,//Wireless Bell (无线铃铛)
+    MeariDeviceSupportBellTypeWirelessBellEnable = 0b100,//Wireless Bell (无线铃铛使能)
+    MeariDeviceSupportBellTypeWirelessBellPair = 0b1000,//Wireless Bell (无线铃铛配对)
+    MeariDeviceSupportBellTypeWirelessBellVolume = 0b10000,//Wireless Bell (无线铃铛音量)
+    MeariDeviceSupportBellTypeWirelessBellSongs = 0b100000,//Wireless Bell (无线铃铛铃声选择)
     MeariDeviceSupportBellTypeWirelessEnable = 0b10000000,//Wireless enable (无线使能)
 };
 typedef NS_ENUM(NSInteger, MeariDeviceSupportHostType) {
@@ -102,7 +107,9 @@ typedef NS_ENUM (NSInteger, MeariDevicePirSensitivity) {
     MeariDevicePirSensitivitySwitchAndHighLow= 4,//Support enable And high,low level (支持PIR使能开关+设置选项(高低))
     MeariDevicePirSensitivityIpcDoublePir = 5, // Support dual PIR enable switch (left and right) + unified sensitivity setting options (high and low) (used in constant current equipment, such as Flight 4T) (支持双PIR的使能开关(左和右)+统一的灵敏度设置选项(高低)(用于常电设备，如Flight 4T))
     
-    MeariDevicePirSensitivityLowPowerDoublePir = 6 // Support dual PIR enable switch (left and right) + unified sensitivity setting options (high and low) (for low power consumption devices, such as Flight 3T) 支持双PIR的使能开关(左和右)+统一的灵敏度设置选项(高低)(用于低功耗设备，如Flight 3T)
+    MeariDevicePirSensitivityLowPowerDoublePir = 6, // Support dual PIR enable switch (left and right) + unified sensitivity setting options (high and low) (for low power consumption devices, such as Flight 3T) 支持双PIR的使能开关(左和右)+统一的灵敏度设置选项(高低)(用于低功耗设备，如Flight 3T)
+    MeariDevicePirSensitivityFlight5s7s = 7, // 支持pir使能开关+pir灵敏度档位设置（10档）(用于常电设备，如flight5s,flight7s)
+    MeariDevicePirSensitivityFlight5s7sPic = 8, // 支持pir使能开关+pir灵敏度档位设置（10档）图形显示 (用于常电高级设备类型，如flight5s,flight7s)
 };
 
 typedef NS_ENUM (NSInteger, MeariDeviceVideoType) {
@@ -110,6 +117,13 @@ typedef NS_ENUM (NSInteger, MeariDeviceVideoType) {
     MeariDeviceVideoTypeNoSupportWlh = 0, // 默认 16 : 9 , default
     MeariDeviceVideoTypeSupportWlhSourceRight = 1, // // 9 : 16 , source also is 9 : 16
     MeariDeviceVideoTypeSupportWlhSourceError = 2, // // 9 : 16 , but source also is 16 : 9, The decoder needs to flip by itself
+};
+
+typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
+    MeariDeviceFloodCameraTypeNone, // not support FloodLight Camera
+    MeariDeviceFloodCameraTypeNormal, // support FloodLight Camera
+    MeariDeviceFloodCameraTypeLowPower,
+    // LowPower FloodLight Camera
 };
 
 @interface MeariDeviceInfoCapabilityFunc : MeariBaseModel
@@ -170,6 +184,9 @@ typedef NS_ENUM (NSInteger, MeariDeviceVideoType) {
 /** onvif function*/
 /** onvif功能*/
 @property (nonatomic, assign) NSInteger svc;
+/** onvif function*/
+/** onvif新版本*/
+@property (nonatomic, assign) NSInteger ovf;
 /** Support bell type*/
 /** 支持铃铛类型*/
 @property (nonatomic, assign) NSInteger rng;
@@ -249,10 +266,30 @@ typedef NS_ENUM (NSInteger, MeariDeviceVideoType) {
 @property (nonatomic, assign) NSInteger roi;
 /** 报警频率*/
 @property (nonatomic, assign) NSInteger afq;
+/** 人脸识别*/
+@property (nonatomic, assign) NSInteger fcd;
 // 16:9 还是 9:16
 @property (nonatomic, assign) NSInteger crm;
 /** 声光报警*/
 @property (nonatomic, assign) NSInteger sla;
+/** 时间风格设置*/
+@property (nonatomic, assign) NSInteger ttp;
+/** 音乐播放能力级*/
+@property (nonatomic, assign) NSInteger mpc;
+/** pir等级设置使能开关，，用于多级设置开关1-N档，0=不支持，10=支持10档（1-10）*/
+@property (nonatomic, assign) NSInteger plv;
+/** 视频能力级, 0=不支持， 1=支持 */
+@property (nonatomic, assign) NSInteger vid;
+/** 防拆报警*/
+@property (nonatomic, assign) NSInteger fcb;
+/** 新设备的分辨率 */
+@property (nonatomic, strong) NSString *bps2;
+/** 新增是否支持灯具摄像机的报警联动亮灯的能力级fld  0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger fld;
+/** 噪声异常巡查  0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger dbc;
+/** baby 上传用户预览信息  0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger uif;
 
 @end
 
@@ -283,6 +320,12 @@ typedef NS_ENUM (NSInteger, MeariDeviceVideoType) {
 /** Device auto-bind */
 /** 设备自动绑定 */
 @property (nonatomic, assign) BOOL autobind;
+/** Wire device */
+/** 是否为有线设备 */
+@property (nonatomic, assign) BOOL wireDevice;
+/** Wire device  ip*/
+/** 有线设备配网IP */
+@property (nonatomic, copy) NSString *wireConfigIp;
 /** Device was added  */
 /** 设备被添加过 */
 @property (nonatomic, assign) BOOL hasAdd;
@@ -375,10 +418,18 @@ typedef NS_ENUM (NSInteger, MeariDeviceVideoType) {
 @property (nonatomic, copy) NSString *latitude;
 @property (nonatomic, copy) NSString *longitude;
 @property (nonatomic, copy) NSString *radius;
+/** AWS iot thingName */
+@property (nonatomic, copy) NSString *awsThingName;
+@property (nonatomic, assign) NSInteger iotType;
+@property (nonatomic, assign) NSInteger cloudType;
+@property (nonatomic, assign) NSInteger awsCloudCompat;
 
 /** Whether device is shared by friends */
 /** 是否来自好友分享 */
 @property (nonatomic, assign) BOOL shared;
+/** Whether friends has device set  authority */
+/** 好友是否拥有分享设备设置权限 */
+@property (nonatomic, assign) NSInteger shareAccessSign;
 /** Whether there is a message from device  */
 /** 是否有报警消息 */
 @property (nonatomic, assign) BOOL hasMsg;

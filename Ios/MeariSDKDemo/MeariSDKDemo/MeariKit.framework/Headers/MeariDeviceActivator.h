@@ -80,6 +80,16 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  @param failure failure callback (失败回调)
  */
 - (void)configApModeWithSSID:(NSString *)ssid password:(NSString *)password token:(NSString *)token relay:(BOOL)relayDevice success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ 有线配网传递的参数
+
+ @param ip ip address  (设备ip地址)
+ @param token config token (获取的配网token)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)startConfigWireDevice:(NSString *)ip token:(NSString *)token success:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
     start config
  *  开始配网
@@ -96,7 +106,7 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
                 timeout:(NSTimeInterval)timeout;
 /**
  stop config
- 停止搜索
+ 停止配网
  */
 - (void)stopConfigWiFi;
 // Not recommended for use
@@ -133,6 +143,21 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  */
 - (void)startSearchDevice:(MeariDeviceSearchMode)mode success:(MeariDeviceSuccess_SearchDevice)success failure:(MeariDeviceFailure)failure;
 
+/**
+ stop search
+ 停止搜索
+ */
+- (void)stopSearchDevice;
+
+/**
+ check device status
+ 向服务器查阅设备的状态
+
+ @param devices device array 设备数组
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)checkDeviceStatus:(NSArray <MeariDevice *>*)devices success:(MeariSuccess_DeviceListForStatus)success failure:(MeariFailure)failure;
 /**
  Add Device Manual
  添加设备

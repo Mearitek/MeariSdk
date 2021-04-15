@@ -12,7 +12,8 @@ typedef NS_ENUM(NSInteger, MeariThirdLoginType) {
     MeariThirdLoginTypeAccount = 0,
     MeariThirdLoginTypeFacebook,
     MeariThirdLoginTypeTwitter,
-    MeariThirdLoginTypeWeChat
+    MeariThirdLoginTypeWeChat,
+    MeariThirdLoginTypeApple
 };
 
 @interface MeariUserInfo : MeariBaseModel
@@ -29,8 +30,16 @@ typedef NS_ENUM(NSInteger, MeariThirdLoginType) {
 @property (nonatomic, strong) NSString * countryCode;   // Registered country code (注册国家代号)
 @property (nonatomic, strong) NSString * phoneCode;     // Registered country phone code (注册国家手机代号)
 @property (nonatomic, assign) NSInteger loginType;      // Login type (登录类型)
+@property (nonatomic, strong) NSString * appleID;       // Login type (苹果apple id)
 
 @property (nonatomic, assign) BOOL notificationSound;   // Whether the message is pushed or not (消息推送是否有声音)
 @property (nonatomic, assign, readonly) MeariThirdLoginType thirdLoginType; // Login type (登录类型)
 @end
 
+@interface MeariUserFaceInfo : MeariBaseModel
+
+@property (nonatomic, strong) NSString * faceUrl;     // user's avatar (用户头像)
+@property (nonatomic, strong) NSString * userName;      // user's nickname (用户昵称)
+@property (nonatomic, strong) NSString * faceID;      // user's nickname (用户人脸ID)
+
+@end

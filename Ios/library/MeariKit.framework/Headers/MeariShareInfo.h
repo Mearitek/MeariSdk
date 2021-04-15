@@ -22,7 +22,8 @@ typedef NS_ENUM(NSInteger, MeariShareInfoType) {
 @property (nonatomic,   copy) NSString *shareName;     // Shared name (被分享者昵称)
 @property (nonatomic,   copy) NSString *shareImageUrl; // Shared person avatar (被分享者头像)
 @property (nonatomic, assign) MeariShareInfoType shareType; // Device sharing status (设备分享状态)
-
+@property (nonatomic, assign) NSInteger shareUserID;   // Shared UserID (被分享者ID)
+@property (nonatomic, assign) NSInteger shareAccessSign; //Shared Access Sign （分享权限标识）
 @end
 
 //  Shared information for all devices (所有设备的分享信息)

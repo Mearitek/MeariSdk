@@ -15,10 +15,12 @@
   服务器环境
 
  - MearEnvironmentRelease: release (发布)
+ - MearEnvironmentDeveloper: develop(开发环境)
  - MearEnvironmentPrerelease: prerelease (预发布)
  */
 typedef NS_ENUM(NSInteger, MearEnvironment) {
     MearEnvironmentRelease,
+    MearEnvironmentDeveloper,
     MearEnvironmentPrerelease
 };
 
