@@ -3,6 +3,7 @@ package com.meari.test.app;
 import android.app.Application;
 
 import com.meari.sdk.MeariSdk;
+import com.meari.sdk.common.ServerType;
 
 public class MeariApplication extends Application {
 
@@ -21,7 +22,7 @@ public class MeariApplication extends Application {
             MeariSdk.getInstance().setDebug(true);
             // 设置开发环境，正式发布时去除
             // Set up the development environment and remove it when it is officially released
-            MeariSdk.getInstance().setPrivateCloudUrl("http://develop.meari.com.cn");
+            MeariSdk.getInstance().setPrivateCloudUrl(ServerType.DEVELOPMENT);
 
 
         }).start();
