@@ -21,7 +21,7 @@
 
 - (void)render_yuv420p:(u_int8_t*)y U:(u_int8_t*)u V:(u_int8_t*)v width:(NSInteger)width height:(NSInteger)height;
 
-- (void)render_yuv420sp:(CVPixelBufferRef)pixelBuffer;
+- (BOOL)render_yuv420sp:(CVPixelBufferRef)pixelBuffer;
 
 -(void)move:(float)dpx dpy:(float)dpy;
 

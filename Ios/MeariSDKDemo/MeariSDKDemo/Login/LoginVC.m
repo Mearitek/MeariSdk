@@ -63,7 +63,7 @@
 
     // If you want to use our account system, please use this
     // warning!!!!!! warning!!!!  countryCode phoneCode, please user right code. check phoneCode file
-    [[MeariUser sharedInstance] loginWithAccount:_accountTF.text password:_passwordTF.text countryCode:@"CN" phoneCode:@"86" success:^{
+    [[MeariUser sharedInstance] loginWithAccount:_accountTF.text password:_passwordTF.text countryCode:@"CN" phoneCode:@"86" success:^(NSDictionary *dic){
         self.errorCodeTextView.text = @"login success";
         [self.loginInButton setTitle:@"you already login" forState:(UIControlStateNormal)];
     

@@ -7,5 +7,9 @@ target 'MeariSDKDemo' do
 
   # Pods for MeariSDKDemo
   pod 'Braintree/PayPal'
+  pod 'AFNetworking', '~>3.2.1'
+  pod 'MJExtension',  '~>3.0.17'
+  pod 'AliyunOSSiOS', '~>2.10.7'
+  pod 'AWSS3'
 
 end

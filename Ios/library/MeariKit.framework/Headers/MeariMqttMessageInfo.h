@@ -21,8 +21,10 @@
  - MeariMqttCodeTypeDeviceUnbundling:            Device unbind (设备解绑)
  - MeariMqttCodeTypeDeviceAutobundleSuccess:     Automatic binding succeeded (自动绑定成功)
  - MeariMqttCodeTypeDeviceAutobundleFailure:     Automatic binding failed (自动绑定失败)
+ - MeariMqttCodeTypeDeviceAutobundleByOtherFailure: device has been added by other(设备已经被绑定， 强绑定模式下)
  - MeariMqttCodeTypeDeviceShare:                 Receive the device share (收到别人的设备分享)
  - MeariMqttCodeTypeDeviceUpgradeFormat:         Firmware upgrade progress (固件升级进度)
+ - MeariMqttCodeTypeNotice:                            app reveive a notice message
  - MeariMqttCodeTypeSDCardFormat:                Sd card formatting progress (sd卡格式化进度)
  - MeariMqttCodeTypePropertyRefresh:             Get a property status in real time (实时获取某个属性状态 一发一答形式)
  */
@@ -36,11 +38,14 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
     MeariMqttCodeTypeDeviceUnbundling           = 140,
     MeariMqttCodeTypeDeviceAutobundleSuccess    = 170,
     MeariMqttCodeTypeDeviceAutobundleFailure    = 171,
+    MeariMqttCodeTypeDeviceAutobundleByOtherFailure = 172,
     MeariMqttCodeTypeDeviceAutobundleOverLimit  = 173,
     MeariMqttCodeTypeDeviceShare                = 180,
     MeariMqttCodeTypeNewDeviceShareToMeRequest  = 181,
     MeariMqttCodeTypeNewDeviceShareToHimRequest = 182,
     MeariMqttCodeTypeHasBeenAnswerCall          = 188,
+    MeariMqttCodeTypeNotice                     = 200,
+    MeariMqttCodeTypeSomebodyCall               = 201,
     MeariMqttCodeTypeDeviceUpgradeFormat        = 803,
     MeariMqttCodeTypeSDCardFormat               = 806,
     MeariMqttCodeTypePropertyRefresh            = 809,
@@ -74,7 +79,12 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, strong) NSString *version;
 @property (nonatomic, assign) BOOL relaySubDevice;
 @property (nonatomic, assign) BOOL relayDevice;
-@property (nonatomic, assign) NSString *relayLicenseID;
+@property (nonatomic, strong) NSString *relayLicenseID;
+@property (nonatomic, strong) NSString *faceName;
+@property (nonatomic, copy) NSString *content; // notice content (公告内容)
+@property (nonatomic, assign) NSInteger startTime; // notice begin time(公告开始时间)
+@property (nonatomic, assign) NSInteger endTime; // notice end time(公告结束时间)
+@property (nonatomic, assign) NSInteger noticeID; // notice end time(公告结束时间)
 @end
 
 @interface MeariEventInfo : MeariBaseModel
@@ -111,6 +121,7 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (assign, nonatomic) NSInteger msgid;          // Message ID (消息ID)
 @property (nonatomic, assign) MeariMqttCodeType type;   // Message type (消息类型)
 @property (nonatomic, copy) NSString *requestID;
+@property (nonatomic, assign) NSInteger iotType;
 @property (nonatomic, copy) MeariEventInfo *eventInfo; //Service incident reporting (服务事件上报)
 
 @property (nonatomic, copy) NSString *userName;

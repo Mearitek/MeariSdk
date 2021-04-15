@@ -16,10 +16,8 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <MeariKit/PublicHeader.h>
 
-
 #import <MeariKit/MeariEnum.h>
 #import <MeariKit/MeariSDK.h>
-
 #import <MeariKit/MeariBaseModel.h>
 #import <MeariKit/MeariDevice.h>
 #import <MeariKit/MeariDeviceInfo.h>
@@ -40,4 +38,9 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 #import <MeariKit/MeariDeviceControl.h>
 #import <MeariKit/MeariPlayView.h>
 #import <MeariKit/MeariCloudPlayer.h>
+#import <MeariKit/MeariAppModel.h>
 #import <MeariKit/MeariDeviceActivator.h>
+#import <MeariKit/MeariDDLog.h>
+#import <MeariKit/MeariDDLogMacros.h>
+#import <MeariKit/MeariUtilitiesVendor.h>
+#import <MeariKit/MeariCustomServerMsg.h>

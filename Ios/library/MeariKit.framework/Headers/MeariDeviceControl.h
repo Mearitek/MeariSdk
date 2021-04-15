@@ -38,7 +38,7 @@ typedef void(^MeariDeviceSuccess_Storage)(MeariDeviceParamStorage *storage);
 typedef void(^MeariDeviceSuccess_StoragePercent)(NSInteger percent);
 typedef void(^MeariDeviceSuccess_UpgradeMode)(MeariDeviceOtaUpgradeMode otaUpgradeMode);
 typedef void(^MeariDeviceSuccess_Version)(NSString *version);
-typedef void(^MeariDeviceSuccess_VersionPercent)(NSInteger percent);
+typedef void(^MeariDeviceSuccess_VersionPercent)(NSInteger totalPercent, NSInteger downloadPercent, NSInteger updatePercent);
 typedef void(^MeariDeviceSuccess_LightState)(BOOL on);
 typedef void(^MeariDeviceSuccess_SirenTimeout)(NSInteger second);
 typedef void(^MeariDeviceSuccess_Param)(MeariDeviceParam *param);
@@ -50,6 +50,7 @@ typedef void(^MeariDeviceSuccess_ChimeSubDeviceList) (NSArray <MeariDevice *> *d
 typedef void(^MeariDeviceSuccess_ChimeRingList) (NSArray <MeariChimeRingInfo *> *chimeRingInfoList);
 typedef void(^MeariDeviceSuccess_PlayBackLevel)(MeariDeviceRecordDuration level);
 typedef void(^MeariDeviceSuccess_Dictionary)(NSDictionary *dic);
+typedef void(^MeariDeviceSuccess_DetectFace)(int quality);
 
 /**
  search mode for searching device
@@ -83,16 +84,25 @@ typedef NS_ENUM(NSInteger, MeariMoveDirection) {
 };
 typedef NS_ENUM (NSInteger, MeariDeviceVideoStream) {
     MeariDeviceVideoStream_HD = 0,
-    MeariDeviceVideoStream_360,
-    MeariDeviceVideoStream_240,
-    MeariDeviceVideoStream_480,
-    MeariDeviceVideoStream_720,
-    MeariDeviceVideoStream_1080,
-    MeariDeviceVideoStream_1080_1_5,
-    MeariDeviceVideoStream_1080_2_0,
-    MeariDeviceVideoStream_3MP_1_2,
-    MeariDeviceVideoStream_3MP_2_4,
-    MeariDeviceVideoStreamNone,
+    MeariDeviceVideoStream_360 = 1,
+    MeariDeviceVideoStream_240 = 2,
+    MeariDeviceVideoStream_480 = 3,
+    MeariDeviceVideoStream_720 = 4,
+    MeariDeviceVideoStream_1080 = 5,
+    MeariDeviceVideoStream_1080_1_5 = 6,
+    MeariDeviceVideoStream_1080_2_0 = 7,
+    MeariDeviceVideoStream_3MP_1_2 = 8,
+    MeariDeviceVideoStream_3MP_2_4 = 9,
+    MeariDeviceVideoStream_NEW_SD = 100,
+    MeariDeviceVideoStream_NEW_HD = 101,
+    MeariDeviceVideoStream_NEW_FHD = 102,
+    MeariDeviceVideoStream_NEW_UHD = 103,
+    MeariDeviceVideoStreamNone = 999,
+};
+typedef NS_ENUM (NSInteger, MeariDeviceVideoRatio) {
+    MeariDeviceVideoRatio16_9,
+    MeariDeviceVideoRatio4_3,
+    MeariDeviceVideoRatio1_1,
 };
 typedef NS_ENUM (NSInteger, MeariDeviceConnectType) {
     MeariDeviceConnectTypeNone = -1,
@@ -110,6 +120,10 @@ typedef NS_ENUM(NSInteger, MeariDeviceSoundChangeType) {
     MeariDeviceSoundChangeTypeBoy,
     MeariDeviceSoundChangeTypeGirl,
     MeariDeviceSoundChangeTypeMan,
+};
+typedef NS_ENUM(NSInteger, MeariDeviceTimeShowType) {
+    MeariDeviceTimeShowType24 = 0,
+    MeariDeviceTimeShowType12,
 };
 
 typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAlertType);
@@ -443,7 +457,7 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)startVoiceTalkSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)startVoiceTalkWithIsVoiceBell:(BOOL)isVoiceBell success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
@@ -581,6 +595,14 @@ Start record sound(开始录音)
  @param failure failure callback (失败回调)
  */
 - (void)setSoundDetectionLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ 噪声巡回检查
+
+ @param enable 是否开启
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setSoundPatrolEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 #pragma mark -- 网络信息
 
 /**
@@ -785,6 +807,14 @@ Start record sound(开始录音)
  */
 - (void)getFirmwareVersionSuccess:(MeariDeviceSuccess_Version)success failure:(MeariDeviceFailure)failure;
 
+/**
+ Get the device latest version(获取固件最新版本)
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getDeviceLatestVersionSuccess:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
+
 
 /**
  Get firmware upgrade percentage(获取固件升级百分比)
@@ -922,6 +952,19 @@ Start record sound(开始录音)
  */
 - (void)getTemperatureHumiditySuccess:(MeariDeviceSuccess_TRH)success failure:(MeariDeviceFailure)failure;
 
+#pragma mark --- relay
+
+/**
+ 是否开启relay
+
+ @param enable 是否开启
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setRelayEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+// 发送relay
+- (void)setRelaySuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 #pragma mark -- 音乐
 /**
@@ -978,7 +1021,14 @@ Start record sound(开始录音)
  */
 - (void)getPlayMusicStatus:(MeariDeviceSuccess_MusicStateAll)success failure:(MeariDeviceFailure)failure;
 
-
+/**
+ upload userInfo to baby camera
+ 上传账户信息给baby设备
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setPreviewInformationSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 #pragma mark -- 设备音量
 
 /**
@@ -1020,20 +1070,24 @@ Start record sound(开始录音)
 - (void)setPirDetectionLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
-Set the doorbell PIR  Sensitivity  (设置pir 灵敏度,无法设置MeariDeviceLevelOff )  ( warning : level cant contain MeariDeviceLevelOff)
-@param level  PirSensitivity (灵敏度)
-@param success Successful callback (成功回调)
-@param failure failure callback (失败回调)
- */
-- (void)setPirDetSensitivityLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
-
-/**
   Set the switch for double pir (设置双pir 的开关)  ( warning : level cant contain MeariDeviceLevelOff)
 @param level  PirSensitivity (灵敏度)
 @param success Successful callback (成功回调)
 @param failure failure callback (失败回调)
  */
 - (void)setDoublePirStatus:(MeariDeviceDoublePirStatus)doublePirStatus success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// pir2 level       1-n
+/// @param level  1-n
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)setPirDetectionMutiLevel:(NSInteger)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// pir2 enable
+/// @param enable enable
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)setPirDetectionMutiEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
  Set the doorbell low power consumption (设置门铃低功耗)
@@ -1245,7 +1299,7 @@ Set the doorbell PIR  Sensitivity  (设置pir 灵敏度,无法设置MeariDeviceL
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setFlootCameraLampOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)setFloodCameraLampOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 /**
  Set the alarm switch (设置警报开关)
  
@@ -1253,7 +1307,7 @@ Set the doorbell PIR  Sensitivity  (设置pir 灵敏度,无法设置MeariDeviceL
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setFlootCameraSirenOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)setFloodCameraSirenOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
  Set up the lighting plan
@@ -1265,8 +1319,28 @@ Set the doorbell PIR  Sensitivity  (设置pir 灵敏度,无法设置MeariDeviceL
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setFlootCameraScheduleOn:(BOOL)on fromDate:(NSString *)fromDateStr toDate:(NSString *)toDateStr success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)setFloodCameraScheduleOn:(BOOL)on fromDate:(NSString *)fromDateStr toDate:(NSString *)toDateStr success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+/// 手动开灯时长，0-默认，10-60s（step：10s），5min-30min（step：5min）
+/// Manual lighting time, 0-default, 10-60s (step: 10s), 5min-30min (step: 5min)
+/// @param duration duration
+/// @param success Successful callback (成功回调)
+/// @param failure  failure callback (失败回调)
+- (void)setFloodCameraLampOnDuration:(NSInteger)duration success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// 警报器联动开关，时长默认10秒
+/// on Alarm linkage switch, the default time is 10 seconds
+/// @param on Is it open? (是否使能)
+/// @param success Successful callback (成功回调)
+/// @param failure  failure callback (失败回调)
+- (void)setFloodCameraPirSirenEnable:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure ;
+
+/// 亮灯计划，最大支持设置4组，每组支持设置每周循环天数，每组最大不超过30分钟
+/// Lighting plan, support up to 4 groups, each group supports setting the number of days per week, each group does not exceed 30 minutes
+/// @param scheduleArray MeariDeviceParamSleepTime data array
+/// @param success Successful callback (成功回调)
+/// @param failure  failure callback (失败回调)
+- (void)setLowPowerFloodCameraScheduleArray:(NSArray<MeariDeviceParamSleepTime *> *)scheduleArray success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
  Set up the movement monitoring of the luminaire
@@ -1276,7 +1350,7 @@ Set the doorbell PIR  Sensitivity  (设置pir 灵敏度,无法设置MeariDeviceL
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setFlootCameraDurationLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)setFloodCameraDurationLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 /**
  whether flight camera motion open
  设置灯具的移动监测开关
@@ -1285,7 +1359,7 @@ Set the doorbell PIR  Sensitivity  (设置pir 灵敏度,无法设置MeariDeviceL
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setFlootCameraMotionOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)setFloodCameraMotionOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 
 /**
@@ -1296,19 +1370,19 @@ Set the doorbell PIR  Sensitivity  (设置pir 灵敏度,无法设置MeariDeviceL
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setFlootCameraLightPercent:(NSInteger)precent success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)setFloodCameraLightPercent:(NSInteger)precent success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /// 获取开关灯状态
 /// whether the flight is open now
 /// @param success Successful callback (成功回调)
 /// @param failure  failure callback (失败回调)
-- (void)getFlootCameralightStateSuccess:(MeariDeviceSuccess_LightState)success failure:(MeariDeviceFailure)failure;
+- (void)getFloodCameralightStateSuccess:(MeariDeviceSuccess_LightState)success failure:(MeariDeviceFailure)failure;
 
 /// 获取警报倒计时
 /// Get Siren countdown
 /// @param success Successful callback (成功回调)
 /// @param failure  failure callback (失败回调)
-- (void)getFlootCameraSirenTimeoutSuccess:(MeariDeviceSuccess_SirenTimeout)success failure:(MeariDeviceFailure)failure;
+- (void)getFloodCameraSirenTimeoutSuccess:(MeariDeviceSuccess_SirenTimeout)success failure:(MeariDeviceFailure)failure;
 
 /// 设置声光报警使能开关
 /// Set sound and light alarm enable switch
@@ -1488,5 +1562,89 @@ Set the doorbell PIR  Sensitivity  (设置pir 灵敏度,无法设置MeariDeviceL
  */
 - (void)getChimeAlertTypeSuccess:(MeariDeviceSuccess_ChimeAlertType)success failure:(MeariDeviceFailure)failure;
 
+/**
+Set face recognition enable
+开启/关闭设备的人脸识别
+@param enable enable 是否开启
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setFaceRecognitionEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+update device  face recognition list
+更新设备的人脸列表
+@param faceIDArray faceIDArray 人脸ID数组 格式为  [faceID,faceID,faceID]
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setFaceRecognitionList:(NSArray *)faceIDArray success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ Face pictures converted to YUV format
+ @param originYUV yuv格式
+ @param width yuv的宽
+ @param height yuv的高
+ @param complete 成功回调 返回NV12和nv21的yuv数据
+ */
+- (void)yuvImageConversion:(char *)originYUV width:(int)width height:(int)height complete:(void(^)( char *yuv_nv12,char *yuv_nv21))complete;
+/**
+Face pictures converted to YUV format
+ @param buffer yuv的数据 yuv的格式为nv12
+ @param width yuv的宽
+ @param height yuv的高
+ @return return 指定宽高的图片
+*/
++ (UIImage *)YUVNV12toImageBuffer:(char *)buffer width:(int)width height:(int)height;
+
+/**
+Face pictures converted to YUV format
+ @param buffer yuv的数据 yuv的格式为nv12
+ @param width yuv的宽
+ @param height yuv的高
+ @return return 指定宽高的图片
+*/
++ (UIImage *)YUVNV21toImageBuffer:(char *)buffer width:(int)width height:(int)height;
+
+/**
+Determine whether it is a face
+ @param data yuv的数据 yuv的格式为nv12
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+*/
+- (void)detectFaceWithData:(char *)data success:(MeariDeviceSuccess_DetectFace)success failure:(MeariDeviceFailure)failure;
+
+/**
+ Set time show type
+ 设置时间显示格式
+ 
+ @param type 12 hour or 24 hour（12小时制还是24小时制）
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+*/
+- (void)setTimeShowType:(MeariDeviceTimeShowType)type
+                success:(MeariDeviceSuccess)success
+                failure:(MeariDeviceFailure)failure;
+
+/**
+ Set tamper alarm
+ 设置防拆报警
+ 
+ @param enable  Whether it is enable
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+*/
+- (void)setTamperAlarm:(BOOL)enable
+               success:(MeariDeviceSuccess)success
+               failure:(MeariDeviceFailure)failure;
+
+/**
+ Get device install guide video
+ 获取安装指引视频
+ 
+ @param tp  设备的tp值
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+*/
+-(void)getInstallGuideVideoUrlWithTp:(NSString *)tp                 success:(MeariDeviceSuccess_Dictionary)success
+                             failure:(MeariDeviceFailure)failure;
 @end
 #endif /* MeariDeviceControl_h */

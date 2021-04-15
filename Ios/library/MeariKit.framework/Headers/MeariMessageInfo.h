@@ -25,7 +25,10 @@ typedef NS_ENUM(NSInteger, MeariAlarmMessageType) {
     MeariAlarmMessageTypePir = 2,                  // pir alarm, alarm when device detect moved things in night mode (红外侦测报警)
     MeariAlarmMessageTypeVisitor = 3,              // visitor alarm, available on bell device, alarm when somebody tap the ring.(访客报警)
     MeariAlarmMessageTypeNoise = 6,                // Noise alarm (噪声报警 )
-    MeariAlarmMessageTypeCry = 7                   // Cry alarm (哭声报警)
+    MeariAlarmMessageTypeCry = 7,                   // Cry alarm (哭声报警)
+    MeariAlarmMessageTypeFace = 8 ,                 // face alarm (人脸报警)
+    MeariAlarmMessageTypeSomeoneCall = 9,           // visitor alarm, available on ipc device, alarm when somebody tap the ring.(有人来访)
+    MeariAlarmMessageTypeTear = 10                  //Tear device alarm (强行拆除报警)
 };
 
 typedef NS_ENUM(NSInteger, MeariVisitorMessageType) {
@@ -78,6 +81,10 @@ typedef NS_ENUM(NSInteger, MeariShareMessageType) {
 @property (nonatomic, assign)NSInteger msgID;           // message id (消息ID)
 @property (nonatomic, assign) NSInteger decibel;        // Noise decibel (0-100) (噪声分贝(db))
 @property (nonatomic, assign) NSInteger state;        // whether to use OSS (是否使用oss)
+@property (nonatomic, copy) NSString *faceName;        // face name (设备报警时间)
+@property (nonatomic, assign) NSInteger cloudType;     //cloud storage Type(AliOSS or AWSS3)
+@property (nonatomic, assign) NSInteger iotType;        // iot Type(Ali iOT or AWS iOT)
+@property (nonatomic, copy) NSString *day;      //alarm dat(报警日期，如:"20200804")
 
 /**
  userID/ownerID：

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class MeariDevice;
 
 /** Sleep mode status */
 /** 休眠模式状态 */
@@ -106,6 +107,16 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
     MeariDeviceVoiceLightTypeLight = 1, // Support light (报警触发亮灯)
     MeariDeviceVoiceLightTypeAll = 2,  //Support all (报警触发声音和亮灯)
 };
+
+#pragma mark -- 防拆报警
+@interface MeariDeviceParamTamperAlarm : MeariBaseModel
+@property (nonatomic, assign) NSInteger enable;
+@end
+
+#pragma mark -- 时间设置
+@interface MeariDeviceParamTimeShow : MeariBaseModel
+@property (nonatomic, assign) NSInteger timeShowFormat;
+@end
 
 #pragma mark -- 设备固件信息
 @interface MeariDeviceParamFirmInfo : MeariBaseModel
@@ -257,7 +268,7 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 /** 是否开启pir */
 @property (nonatomic, assign)NSInteger enable;
 /** MeariDeviceLevelLow|MeariDeviceLevelMedium|MeariDeviceLevelHigh */
-@property (nonatomic, assign) MeariDeviceLevel level; // pir sensitivity level
+@property (nonatomic, assign) NSInteger level; // pir sensitivity level
 /** double pir exist , doublePirStatus replace enable key  */
 @property (nonatomic, assign) MeariDeviceDoublePirStatus doublePirStatus; // 双pir的状态
 
@@ -303,12 +314,13 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 @property (nonatomic, assign) NSInteger threshold;
 /** MeariDeviceLevelLow|MeariDeviceLevelMedium|MeariDeviceLevelHigh */
 @property (nonatomic, assign) MeariDeviceLevel level;
+@property (nonatomic, assign) NSInteger patrolEnable;
 @end
 
 #pragma mark -- 回放录像设置
 @interface MeariDeviceParamPlaybackVideoRecord : NSObject
 /** enable 0:all day record 1:event record */
-/** enable: 1为报警时录像 0为全天录像 2不录像*/
+/** enable: 1为事件录像 0为全天录像 2不录像*/
 @property (nonatomic, assign) NSInteger enable;
 @property (nonatomic, assign) NSInteger duration;
 @property (nonatomic, assign) NSInteger continuity;
@@ -337,9 +349,11 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 
 #pragma mark -- 门铃参数
 @interface MeariDeviceParamBell : MeariBaseModel
+// if supportPirSensitivity > 0 。 use this pir
 @property (nonatomic, strong)MeariDeviceParamPIR *pir;
 @property (nonatomic, strong)MeariDeviceParamBellBattery *battery;
 @property (nonatomic, strong)MeariDeviceParamBellSound *charm;
+@property (nonatomic, assign) BOOL relayEnable;
 /** bell volume */
 /** 门铃音量 */
 @property (nonatomic, assign) NSInteger volume;
@@ -375,6 +389,10 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 /** end time */
 /** 结束时间 */
 @property (nonatomic, strong) NSString *to;
+/** whether repeat */
+/** 是否重复 */
+@property (nonatomic, copy)NSArray *repeat;
+
 @end
 
 #pragma mark -- 灯具摄像头
@@ -397,14 +415,21 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 /** 警报倒计时 */
 /** Alarm countdown */
 @property (nonatomic, assign) NSInteger sirenTimeout;
+// 报警器联动开关，报警时触发报警器
+@property (nonatomic, assign) NSInteger sirenEnable;
+// 0, // 手动开灯时长，0-默认，10-60s（step：10s），5min-30min（step：5min
+@property (nonatomic, assign) NSInteger alwaysOnDuration;
 /** Light brightness percentage */
 /** 灯光亮度百分比 */
 @property (nonatomic, assign) NSInteger lightPercent;
 
 @property (nonatomic, assign) MeariDeviceLevel level;
+/** Alarm time*/
+/** 报警时间 */
+@property (nonatomic, strong) MeariDeviceFlightSchedule *schedule;
 /** Alarm time period */
 /** 报警时间段 */
-@property (nonatomic, strong) MeariDeviceFlightSchedule *schedule;
+@property (nonatomic, copy) NSArray <MeariDeviceParamSleepTime *> *scheduleArray;
 @end
 
 @class MeariDeviceLEDAll;
@@ -552,6 +577,13 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 @property (nonatomic,   copy) NSString *mac;
 @property (nonatomic, assign) NSTimeInterval lastCheckTime; // 最后检查时间
 @property (nonatomic, assign) MeariDeviceOtaUpgradeMode otaUpgradeMode;
-- (instancetype)initWithIotDic:(NSDictionary *)dic;
+@property (nonatomic, assign) BOOL faceRecognitionEnable;
+/** 时间格式 */
+@property (nonatomic, strong) MeariDeviceParamTimeShow *timeShow;
+/** 防拆报警 */
+@property (nonatomic, strong) MeariDeviceParamTamperAlarm *tamperAlarm;
+@property (nonatomic, assign) BOOL recordEnable;
 
+- (instancetype)initWithIotDic:(NSDictionary *)dic device:(MeariDevice *)device;
+ 
 @end

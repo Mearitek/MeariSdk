@@ -100,9 +100,9 @@
 }
 - (void)timerToQueryPercent:(NSTimer *)sender {
     WY_WeakSelf
-   [self.camera getDeviceUpgradePercentSuccess:^(NSInteger percent) {
-       weakSelf.upgradeTextView.text = [NSString stringWithFormat:@"device updgrade, current : %li", percent];
-       if (percent == 100) {
+    [self.camera getDeviceUpgradePercentSuccess: ^(NSInteger totalPercent, NSInteger downloadPercent, NSInteger updatePercent) {
+       weakSelf.upgradeTextView.text = [NSString stringWithFormat:@"device updgrade, current : %li", totalPercent];
+       if (totalPercent == 100) {
            weakSelf.upgradeTextView.text = @"device updgrade success";
        }
    } failure:^(NSError *error) {

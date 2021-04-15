@@ -23,6 +23,10 @@
 @class MeariMessageInfoShare;
 @class MeariShareCameraInfo;
 @class MeariDeviceHostMessage;
+@class MeariNoticeModel;
+@class MeariCustomServerMsgContent;
+@class MeariCustomServerMsgAck;
+@class MeariCustomServerMsg;
 typedef void(^MeariSuccess)(void);
 typedef void(^MeariSuccess_Avatar)(NSString *avatarUrl);
 typedef void(^MeariSuccess_DeviceList)(MeariDeviceList *deviceList);
@@ -31,7 +35,7 @@ typedef void(^MeariSuccess_DeviceSoundPushStatus)(BOOL open);
 typedef void(^MeariSuccess_DeviceListForFriend)(NSArray <MeariDevice *>*devices);
 typedef void(^MeariSuccess_DeviceListForStatus)(NSArray <MeariDevice *> *devices);
 typedef void(^MeariSuccess_DeviceListForNVR)(NSArray <MeariDevice *> *bindedDevices, NSArray <MeariDevice *> *unbindedDevices);
-typedef void(^MeariSuccess_DeviceAlarmMsgTime)(NSArray <NSString *>*ipcTimes, NSArray <NSString *>*bellTimes, NSArray <NSString *>*cryTimes);
+typedef void(^MeariSuccess_DeviceAlarmMsgTime)(NSArray <NSString *>*ipcTimes, NSArray <NSString *>*bellTimes, NSArray <NSString *>*cryTimes,NSArray <NSString *>*someoneCallTimes,NSArray <NSString *>*tearTimes);
 typedef void(^MeariSuccess_DeviceFirmwareInfo)(MeariDeviceFirmwareInfo *info);
 typedef void(^MeariSuccess_DeviceOnlineStatus)(BOOL online);
 typedef void(^MeariSuccess_DeviceVoiceMsg)(MeariDeviceHostMessage *msg);
@@ -47,18 +51,20 @@ typedef void(^MeariSuccess_FriendListForDevice)(NSArray <MeariFriendInfo *>*frie
 typedef void(^MeariSuccess_FriendListForNVR)(NSArray <MeariFriendInfo *>*friends);
 typedef void(^MeariSuccess_MsgAlarmList)(NSArray <MeariMessageInfoAlarm *>*msgs);
 typedef void(^MeariSuccess_MsgSystemList)(NSArray <MeariMessageInfoSystem *>*msgs);
-typedef void(^MeariSuccess_MsgAlarmDeviceList)(NSArray <MeariMessageInfoAlarmDevice *>*msgs, MeariDevice *device);
+typedef void(^MeariSuccess_MsgAlarmDeviceList)(NSArray<MeariMessageInfoAlarmDevice *> *msgs, MeariDevice *device,BOOL msgFrequently);
 typedef void(^MeariSuccess_MsgVoiceDeviceList)(NSArray <MeariMessageInfoVisitor *>*msgs);
 typedef void(^MeariSuccess_MsgShareList)(NSArray <MeariMessageInfoShare *>*msgs);
 typedef void(^MeariSuccess_ShareCameraInfo)(NSArray <MeariShareCameraInfo *>*shareCameraList);
 typedef void(^MeariSuccess_payWebUrl)(NSString *payWebUrl, NSString *paySuccessUrl);
 typedef void(^MeariSuccess_Dictionary)(NSDictionary *dict);
+typedef void(^MeariSuccess_Notice)(MeariNoticeModel *noticeModel);
 typedef void(^MeariSuccess_Str)(NSString *str);
 typedef void(^MeariSuccess_OnlineHelp)(NSString *str,NSString *type);
 typedef void(^MeariSuccess_BOOL)(BOOL isSuccess);
 typedef void(^MeariFailure)(NSError *error);
 typedef void(^MeariSuccess_RequestAuthority)(NSInteger msgEffectTime,double serverTime);
 typedef void(^MeariSuccess_RedDot)(BOOL hasShare, BOOL hasAlarm);
+typedef void(^MeariSuccess_FaceList)(NSArray <MeariUserFaceInfo *>*list);
 
 typedef NS_ENUM(NSInteger, MeariUserAccountType) {
     MeariUserAccountTypeCommon,
@@ -89,7 +95,17 @@ UIKIT_EXTERN  NSString *const MeariDeviceBindToChimeNotification; // bind chime 
 UIKIT_EXTERN  NSString *const MeariDeviceNewShareToMeNotification; //New share notification (新版分享发送通知)
 UIKIT_EXTERN  NSString *const MeariDeviceNewShareToHimNotification; //New share notification (新版分享发送通知)
 UIKIT_EXTERN  NSString *const MeariDeviceFloodCameraStatusNotification; // the status of the floot camera (灯具摄像机的开关状态)
+UIKIT_EXTERN  NSString *const MeariUserNoticeNotification; // app receive a notice message (接收到通知公告消息)
+UIKIT_EXTERN  NSString *const MeariUserMqttAliConnectedNotification; // Ali mqtt connected
+UIKIT_EXTERN  NSString *const MeariUserMqttAliDisconnectedNotification ; // Ali mqtt disconnected
+UIKIT_EXTERN  NSString *const MeariUserMqttAWSConnectedNotification; // Amazon mqtt connected
+UIKIT_EXTERN  NSString *const MeariUserMqttAWSDisconnectedNotification ; // Amazon mqtt disconnected disconnected
+UIKIT_EXTERN NSString *const MeariIotLoginNotification; // Meari Iot 登录
+UIKIT_EXTERN NSString *const MeariIotLogoutNotification ; // Meari Iot 登出
+UIKIT_EXTERN NSString *const MeariIotDeviceOnlineNotification; //Meari iot device online 设备iot上下线通知
 
+UIKIT_EXTERN NSString *const MeariIotCustomerServerMessageAccept ; //Customer Service Message Accept new message （客服消息接收）
+UIKIT_EXTERN NSString *const MeariIotCustomerServerMessageRead ; //Customer Service Message read（客服消息已读）
 @interface MeariUser : NSObject
  
 + (instancetype)sharedInstance;
@@ -131,6 +147,7 @@ Whether mqtt is connected (mqtt是否已连接)
  */
 @property (nonatomic, assign) BOOL supportLog;
 
+@property (nonatomic, strong) NSDictionary *logConfig;
 /**
     重新定向访问地址
  
@@ -150,7 +167,15 @@ Whether mqtt is connected (mqtt是否已连接)
  @param failure failure callback (失败回调)
  */
 - (void)registerPushWithDeviceToken:(NSData *)deviceToken success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
-
+/**
+ register Message notification
+ 注册Voip推送
+ 
+ @param deviceToken Phone Token (手机Token)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)registerVoipPushWithDeviceToken:(NSData *)deviceToken success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 /**
  用户获取验证码
 
@@ -186,7 +211,7 @@ Whether mqtt is connected (mqtt是否已连接)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)loginWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)loginWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
 /**
  third type login
@@ -239,7 +264,10 @@ Whether mqtt is connected (mqtt是否已连接)
  */
 - (void)logoutSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
 
-
+/// recycle the account (注销回收账号)
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)deleteAccountSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  上传头像
@@ -366,6 +394,10 @@ Whether mqtt is connected (mqtt是否已连接)
  */
 - (void)getWeChatAccessTokenWithAppID:(NSString *)appID secret:(NSString *)secret code:(NSString *)code success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
+/// 获取公告
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)getNoticeSuccess:(MeariSuccess_Notice)success failure:(MeariFailure)failure;
 
 #pragma mark -- Cloud
 
@@ -408,7 +440,7 @@ Whether mqtt is connected (mqtt是否已连接)
  @param deviceID  device ID (设备ID)
  @param serverTime Service period (month/year) Example: 11 (服务期限(月/年) 例 : 11)
  @param payMoney 支付金额
- @param mealType Year or month Example: @"Y" @"M"  (年还是月 例 : @"Y" @"M")
+ @param mealType month, Quarter or Year  Example: @"M" @"S" @"Y"  (月、季还是年 例 : @"M" @"S" @"Y" )
  @param storageTime Number of days Example : 30  ( 天数 例 : 30)
  @param storageType 0: Event recording 1: All day recording  (0:事件录像 1:全天录像)
  @param payType 1: Alipay 2 PayPal (1: 支付宝 2贝宝)
@@ -451,9 +483,63 @@ Whether mqtt is connected (mqtt是否已连接)
  @param failure failure callback (失败回调)
  */
 - (void)cloudGetPayPalTokenSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+get face  data from OSS
+从OSS获取人脸数据
+@param deviceID  device ID (设备ID)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)getOssFaceImageDataWithDeviceID:(NSInteger)deviceID url:(NSString *)url success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
+-(void)getOssFileDataWithUrl:(NSString *)url success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+Upload face  data to OSS
+上传人脸数据到阿里云
+@param deviceID  device ID (设备ID)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)uploadFaceImageDataToOSS:(NSData *)imageData deviceID:(NSInteger)deviceID success:(MeariSuccess_Str)success failure:(MeariFailure)failure;
+/**
+Upload face  data
+上传人脸数据
+@param deviceID  device ID (设备ID)
+@param url  aliyun oss path (阿里云OSS 路径)
+@param userName  userName  (人脸名称)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)uploadFaceWithDeviceID:(NSInteger)deviceID faceImageUrl:(NSString *)url userName:(NSString *)userName success:(MeariSuccess_Str)success failure:(MeariFailure)failure;
 
+/**
+Update face  name
+修改人脸名称
+@param deviceID  device ID (设备ID)
+@param faceID  face ID (设备ID)
+@param userName  userName  (人脸名称)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)updateFaceNameWithDeviceID:(NSInteger)deviceID faceID:(NSString *)faceID userName:(NSString *)userName success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+Get face  list
+获取设备人脸列表
+@param deviceID  device ID (设备ID)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)getFaceListWithDeviceID:(NSInteger)deviceID success:(MeariSuccess_FaceList)success failure:(MeariFailure)failure;
 
+/**
+delete face list
+批量删除设备人脸
+@param deviceID  device ID (设备ID)
+@param array MeariUserFaceInfo Array (设备人脸数组)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)deleteFacesWithDeviceID:(NSInteger)deviceID faceArray:(NSArray *)array success:(MeariSuccess)success failure:(MeariFailure)failure;
 #pragma mark - Device
 
 /**
@@ -465,6 +551,13 @@ Whether mqtt is connected (mqtt是否已连接)
  */
 - (void)getDeviceListSuccess:(MeariSuccess_DeviceList)success failure:(MeariFailure)failure;
 
+/**
+Getting device online status for Meari iot device
+返回meari iot 设备的在线状态
+
+@return 返回是否在线 0为查询不到 1为在线 2为不在线 3为休眠
+*/
+- (NSInteger)checkMeariIotDeviceOnlineStatus:(NSString *)deviceSN;
 /**
  Get all your own device
  获取当前用户下的自己的设备
@@ -564,6 +657,15 @@ Whether mqtt is connected (mqtt是否已连接)
 - (void)remoteWakeUpWithDeviceID:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
+Remote wake-up doorbell
+(远程唤醒门铃)
+
+@param device device (设备)
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)remoteWakeUpWithDevice:(MeariDevice *)device success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
  Is the doorbell still answering
  发送心跳
 When you are in the answering process, please use the timer to loop this call to call the answer in 10s, and inform the doorbell answering status.
@@ -601,7 +703,7 @@ deviceList.count must  ==  modeList.count
 @param failure failure callback (失败回调)
  
 */
-- (void)settingGeographyLocationWithIotDeviceList:(NSArray *)arrays sleepAction:(NSArray *)actions success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)settingGeographyLocationWithIotDeviceList:(NSArray *)deviceList sleepAction:(NSArray *)sleepAction success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  设置地理围栏
@@ -803,15 +905,27 @@ deviceList.count must  ==  modeList.count
 - (void)cancelShareDeviceWithDeviceID:(NSInteger)deviceID shareAccount:(NSString *)shareAccount success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
- cancel share devie
- (取消分享设备)
- 
+ share devie request
+ (分享设备请求)
  @param deviceID 设备ID
  @param shareAccount 分享账号
+ @param authSign 分享权限标识
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)shareDeviceWithDeviceID:(NSInteger)deviceID shareAccount:(NSString *)shareAccount success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)shareDeviceWithDeviceID:(NSInteger)deviceID shareAccount:(NSString *)shareAccount authSign:(NSInteger)authSign success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ change share devie Authority
+ (修改分享设备权限)
+ @param deviceID 设备ID
+ @param shareUserID 分享用户ID
+ @param authSign 分享权限标识
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)changeShareDeviceWithDeviceID:(NSInteger)deviceID shareUserID:(NSInteger)shareUserID authSign:(NSInteger)authSign success:(MeariSuccess)success failure:(MeariFailure)failure;
+
 
 /**
  Search user
@@ -908,6 +1022,28 @@ deviceList.count must  ==  modeList.count
 - (void)getAlarmMessageListForDeviceWithDeviceID:(NSInteger)deviceID success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
 
 /**
+get recent 7 days for alarm messages
+(获取报警消息最近7天的天数)
+
+@param deviceID 设备ID
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)getAlarmMessageRecentDaysWithDeviceID:(NSInteger)deviceID  success:(void (^)(NSArray *msgHas))success failure:(MeariFailure)failure;
+
+/**
+get all the alarm messgae of one device  by day
+(获取某个设备某天的报警消息)
+
+@param deviceID 设备ID
+@param day 天，如："20200804"
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)getAlarmMessageListForDeviceWithDeviceID:(NSInteger)deviceID
+                                             day:(NSString *)day success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
+
+/**
  Delete system messages in bulk
  批量删除系统消息
  
@@ -1000,7 +1136,7 @@ deviceList.count must  ==  modeList.count
  获取oss图片url地址
  Get oss image URL
  
- // Get the alarm message picture address, Note: The valid period of the url is 1 hour, it will expire after one hour, please pay attention to save the original data of the picture
+ // Get the alarm message picture address from AliOSS, Note: The valid period of the url is 1 hour, it will expire after one hour, please pay attention to save the original data of the picture
  // 获取报警消息图片地址, 注意: url的有效期为1个小时, 一个小时后失效,  请注意保存图片原数据 
  
  @param url  image url (图片url)
@@ -1011,7 +1147,7 @@ deviceList.count must  ==  modeList.count
 - (void)getOssImageUrlWithUrl:(NSString *)url deviceID:(NSInteger)deviceID success:(MeariSuccess_Str)success failure:(MeariFailure)failure;
 
 /**
- // Obtain image source data, which can be saved locally, resources are always valid
+ // Obtain image source data  from AliOSS, which can be saved locally, resources are always valid
  // 获取图片源数据, 可以保存之本地, 资源一直有效
  
  @param url 图片url (image url)
@@ -1019,7 +1155,34 @@ deviceList.count must  ==  modeList.count
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)getOssImageDataWithUrl:(NSString *)url deviceID:(NSInteger)deviceID  success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+- (void)getOssAlarmImageDataWithUrl:(NSString *)url deviceID:(NSInteger)deviceID  success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ 获取oss图片url地址
+ Get oss image URL
+ 
+ // Get the alarm message picture address from  AWS S3, Note: The valid period of the url is 1 hour, it will expire after one hour, please pay attention to save the original data of the picture
+ // 获取报警消息图片地址, 注意: url的有效期为1个小时, 一个小时后失效,  请注意保存图片原数据
+ 
+ @param url  image url (图片url)
+ @param deviceID 设备ID
+ @param userID 用户ID
+ @param userID
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getAwsS3ImageUrlWithUrl:(NSString *)url deviceID:(NSInteger)deviceID userID:(NSInteger)userID userIDS:(NSInteger)userIDs success:(MeariSuccess_Str)success failure:(MeariFailure)failure;
+
+/**
+// Obtain image source data  from AWS S3, which can be saved locally, resources are always valid
+// 获取图片源数据, 可以保存之本地, 资源一直有效
+
+@param url 图片url (image url)
+@param deviceID 设备ID
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)getAwsS3ImageDataWithUrl:(NSString *)url deviceID:(NSInteger)deviceID userID:(NSInteger)userID userIDS:(NSInteger)userIDs success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
 
 /**
  Get list of shared messages
@@ -1045,11 +1208,12 @@ deviceList.count must  ==  modeList.count
  处理分享消息
  
  @param msgID (message ID)消息ID
+ @param sign (message ID)分享权限标识
  @param accept whether to accept (是否接受)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)dealShareMsgWithMsgID:(NSString *)msgID accept:(BOOL)accept success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)dealShareMsgWithMsgID:(NSString *)msgID shareAccessSign:(NSInteger)sign accept:(BOOL)accept success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 #pragma mark - VoiceBell
 /**
@@ -1132,6 +1296,47 @@ deviceList.count must  ==  modeList.count
  @param failure failure callback (失败回调)
  */
 - (void)getClientServerWithDeviceSns:(NSArray *)sns success:(MeariSuccess_OnlineHelp)success failure:(MeariFailure)failure;
+
+#pragma mark --- Tuya
+
+/// 获取情景列表
+/// @param deviceID 设备ID
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)getTuyaSceneListWithDeviceID:(NSString *)deviceID success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/// 重置情景
+/// @param sceneID 情景ID
+/// @param deviceID 设备ID
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)resetTuyaSceneWithSceneID:(NSString *)sceneID deviceID:(NSString *)deviceID success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/// 添加 / 更新 情景
+/// @param sceneJson 情景json
+/// @param isUpdate 是否更新
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)customizeTuyaSceneWithDeviceID:(NSString *)deviceID sceneJson:(NSString *)sceneJson isUpdate:(BOOL)isUpdate success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/// 上传涂鸦场景图片
+/// @param image 涂鸦场景图片
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)uploadTuyaSceneImage:(UIImage *)image success:(MeariSuccess_Str)success failure:(MeariFailure)failure;
+
+/// 私有的url 去获取正常的图片二进制
+/// @param url 图片url
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)getOssNormalImageDataWithUrl:(NSString *)url success:(MeariSuccess_Str)success failure:(MeariFailure)failure;
+
+/// 私有的url 去获取安装指引的视频url
+/// @param tp 设备的tp值
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)getInstallGuideVideoWithTp:(NSString *)tp success:(MeariSuccess_Str)success failure:(MeariFailure)failure;
+
 #pragma mark - Monitor
 /**
  Listening to the network
@@ -1172,24 +1377,207 @@ deviceList.count must  ==  modeList.count
  停止监听
  */
 + (void)HttpStopMonitor;
-
+/**
+ user session valid
+ 用户是否退出被异地登录
+*/
+- (void)checkUserLoginOutSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ service iot token  update
+ 服务器的iot token 更新
+*/
+- (void)refreshIotTokenSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 #pragma mark --- html
 
 /**
 获取帮助文档链接
 
  @param helpType 帮助类型
- @param isChinese 是否是中文
+ @param lng  语言类型 支持"zh","en","it"
  @return 链接
  */
-- (NSString *)getHelpLinkWithHelpType:(MeariHelpType)helpType isChinese:(BOOL)isChinese;
+- (NSString *)getHelpLinkWithHelpType:(MeariHelpType)helpType languageString:(NSString *)lng;
 
+
+#pragma mark - Other
+/**
+Get User product
+获取用户配网产品列表
+*/
+- (void)getProductList:(MeariSuccess_Dictionary) success failure:(MeariFailure)failure;
+/**
+Get User product
+获取配网产品图片
+ @param kindType 类型
+*/
+- (NSString *)getProductImageUrl:(NSString *)kindType;
+
+/**
+ Set User TimeType(12/24) Ability
+ 设置用户12/24小时制
+ @param timeType 12/24
+ */
+-(void)setUserTimeType:(NSString *)timeType success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+Get User Preference
+获取用户偏好设置信息
+*/
+-(void)getUserPreference:(NSInteger)appCloudCode success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+Set User PushRingSwitch
+设置用户来电铃响开关
+*/
+-(void)setUserPushRingSwitch:(BOOL)pushRingSwitch success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+获取用户AppIot
+get app iot
+*/
+- (void)getAppIotInfo:(NSArray *)dps success:(void (^)(NSDictionary *dic))success failure:(void (^)(NSError *error))failure;
+/**
+上传用户AppIot
+ upload app iot
+*/
+- (void)uploadAppIotInfo:(NSDictionary *)dic success:(void (^)(NSDictionary *dic))success failure:(MeariFailure)failure;
+#pragma mark - Custom Server Message
+/**
+ Get unfinished work orders from customer service
+ 从服务器获取未结束的客服工单
+*/
+- (void)getCustomServerAllOdersSuccess:(void(^)(NSArray *orderList))success failure:(MeariFailure)failure;
+/**
+ get custom server from sever
+ 从服务器获取客服工单
+ @param sn  device sn
+ @param tp device tp
+ @param success 成功回调 clientID 客服ID orderID 工单ID cloudType: 1 阿里OSS  2 亚马逊S3
+*/
+- (void)getCustomServerOrderIDWith:(NSString *)sn tp:(NSString *)tp success:(void(^)(NSString *serverID,NSString *serverBrand,NSString *orderID,NSInteger cloudType))success failure:(MeariFailure)failure;
+/**
+get message from server
+ 从服务器拉取消息
+*/
+- (void)customServerGetMessagesWithID:(NSString *)orderID startTime:(long long)start endTime:(long long)end page:(NSInteger)page count:(NSInteger)count success:(void (^)(NSArray <MeariCustomServerMsg *>*msgs))success failure:(MeariFailure)failure;
+/**
+get message id from server
+ 从服务器拉取消息id
+*/
+- (void)customServerGetMsgIDsDurationWith:(NSString *)orderID startTime:(long long)start endTime:(long long)end page:(NSInteger)page count:(NSInteger)count success:(void (^)(NSArray <MeariCustomServerMsgAck *>*msgs))success failure:(MeariFailure)failure;
+/**
+get message from server with msgID
+ 从服务器对应消息id的详情
+*/
+- (void)customServerGetMessagesWithID:(NSString *)orderID msgIDArray:(NSArray *)msgIDArray success:(void (^)(NSArray <MeariCustomServerMsg *>*msgs))success failure:(MeariFailure)failure;
+/**
+send message to server
+ 向服务器发送消息
+*/
+- (void)customServerSendMessage:(NSArray <MeariCustomServerMsgContent *> *)msgArray from:(NSString *)fromID fromBrand:(NSString *)fromBrand to:(NSString *)toID toBrand:(NSString *)toBrand success:(void (^)(NSArray <MeariCustomServerMsgAck *>* ackArray))success failure:(MeariFailure)failure;
+
+/**
+send message ack  to server
+ 向服务器发送消息已读
+*/
+- (void)customServerSendMessageAck:(NSArray <MeariCustomServerMsgAck *> *)ackArray from:(NSString *)fromID fromBrand:(NSString *)fromBrand to:(NSString *)toID toBrand:(NSString *)toBrand success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+send file to server
+ 向服务器传输文件
+ @param cloudType 区分服务器 1 aliyun  2 awss3
+*/
+- (void)customServerUploadFile:(NSData *)fileData fileName:(NSString *)fileName cloudType:(NSInteger)cloudType success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+download file from server
+ 向服务器下载文件
+ @param cloudType 区分服务器 1 aliyun  2 awss3
+*/
+- (void)customServerDownloadFile:(NSString *)filePath cloudType:(NSInteger)cloudType progress:(void (^)(CGFloat percent))progress success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ get file url  from server
+ 向服务获取文件的url链接  (半个小时有效)
+ @param filePath 文件路径
+ @param cloudType 区分服务器 1 aliyun  2 awss3
+*/
+- (void)customServerPublicMediaFileUrl:(NSString *)filePath cloudType:(NSInteger)cloudType success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ check client online status
+ @param clientID  服务器端ID
+ @param clientBrand  服务器端brand
+*/
+- (void)customServerCheckClientOnline:(NSString *)clientID  brand:(NSString *)clientBrand success:(void (^)(BOOL online))success failure:(void (^)(NSError *error))failure;
+#pragma mark - Custom Server
+/**
+ custon server feed back send (客服反馈发送)
+ @param topic 留言topic
+ @param content 内容
+ @param files  图片URL字符串 以,分隔
+*/
+- (void)customServerFeedbackSend:(NSString *)topic content:(NSString *)content imageFiles:(NSString *)files  success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ custon server feed back detai List  (客服反馈详情列表)
+ @param topic 留言topic
+ @param page 页数
+ @param size 大小
+*/
+- (void)customServerFeedbackDetailList:(NSString *)topic currentPage:(NSInteger)page pageSize:(NSInteger)size success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ custon server feed back  List  (客服反馈列表)
+ @param licenseId 设备SN
+ @param tp 设备TP值
+ @param page 页数
+ @param size 大小
+*/
+- (void)customServerFeedbackList:(NSString *)licenseId tp:(NSString *)tp currentPage:(NSInteger)page pageSize:(NSInteger)size success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ Can customer service feedback be created  (是否能创建客服反馈)
+ @param licenseId 设备SN
+ @param tp 设备TP值
+*/
+- (void)customServerFeedbackJudge:(NSString *)licenseId tp:(NSString *)tp  success:(MeariSuccess_BOOL)success failure:(MeariFailure)failure;
+/**
+ custon server feed back  create  (客服反馈列表)
+ @param licenseId 设备SN
+ @param tp 设备TP值
+ @param content 文本内容
+ @param files 图片URL字符串 以,分隔
+ @param type 问题类型
+*/
+- (void)customServerFeedbackCreate:(NSString *)licenseId tp:(NSString *)tp content:(NSString *)content imageFiles:(NSString *)files type:(NSInteger)type success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ custon server feed back  create  (客服反馈列表)
+ @param topic 客服反馈ID
+*/
+- (void)customServerFeedbackFinish:(NSString *)topic success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 #pragma mark - Cancel
-
+/**
+Clean user info
+清除用户信息
+*/
+- (void)cleanUserSession;
 /**
  Cancel all network requests
  取消所有的用户请求
  */
 - (void)cancelAllRequest;
+
+
+#pragma mark -Debug Config
+/**
+Get User Preference
+获取用户偏好设置信息
+*/
+-(void)getUserCloudConfigSuccess:(void(^)(NSDictionary *dic))success failure:(MeariFailure)failure;
+
+
+/**
+Get User Preference
+获取用户偏好设置信息
+*/
+-(void)setUserCloudConfig:(NSDictionary *)dic success:(void(^)(NSDictionary *dic))success failure:(MeariFailure)failure;
 
 @end

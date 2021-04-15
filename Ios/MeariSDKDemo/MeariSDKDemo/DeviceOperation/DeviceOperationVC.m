@@ -199,7 +199,7 @@
         MeariVoiceTalkType type = self.camera.supportFullDuplex ? MeariVoiceTalkTypeFullDuplex : MeariVoiceTalkTypeOneWay;
         [self.camera setVoiceTalkType:type];
         [self.camera enableLoudSpeaker:YES];
-        [self.camera startVoiceTalkSuccess:^{
+        [self.camera startVoiceTalkWithIsVoiceBell:NO success:^{
             NSLog(@"start voice talk success");
         } failure:^(NSError *error) {
             NSLog(@"start voice talk failure --- %@",error);

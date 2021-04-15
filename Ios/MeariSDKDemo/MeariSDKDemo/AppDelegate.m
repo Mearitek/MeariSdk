@@ -23,7 +23,8 @@ static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
     // Override point for customization after application launch.
      [[MeariSDK sharedInstance] startWithAppKey:app_key secretKey:app_secret];
      MearEnvironment env;
-     env = MearEnvironmentRelease;
+//     env = MearEnvironmentRelease;
+     env = MearEnvironmentDeveloper;
      [[MeariSDK sharedInstance] configEnvironment:env];
      [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelVerbose];
     
