@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // required
-    implementation 'com.bfcy.sdk:TesSdk:3.1.0-beta5'// test version
+    implementation 'com.bfcy.sdk:TesSdk:3.1.0-beta6'// test version
 //    implementation 'com.meari.sdk:sdk-core:2.0.1'
 
 
