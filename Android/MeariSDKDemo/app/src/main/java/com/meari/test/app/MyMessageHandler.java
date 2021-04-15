@@ -17,9 +17,7 @@ public class MyMessageHandler implements MqttMessageCallback {
         // Must handle account login on other devices
         // An account can only log in on one device at a time
 
-        if (MeariUser.getInstance().isMqttConnected()) {
-            MeariUser.getInstance().disConnectMqttService();
-        }
+        MeariUser.getInstance().disConnectMqttService();
         MeariUser.getInstance().removeUserInfo();
 
         MeariDeviceController controller = MeariUser.getInstance().getController();

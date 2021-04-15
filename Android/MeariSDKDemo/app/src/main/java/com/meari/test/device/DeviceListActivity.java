@@ -2,6 +2,7 @@ package com.meari.test.device;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -35,9 +36,7 @@ public class DeviceListActivity extends AppCompatActivity {
         initView();
 
         // Connect mqtt service
-        if (!MeariUser.getInstance().isMqttConnected()) {
-            MeariUser.getInstance().connectMqttServer(getApplication());
-        }
+        MeariUser.getInstance().connectMqttServer(MeariApplication.getInstance());
     }
 
     @Override

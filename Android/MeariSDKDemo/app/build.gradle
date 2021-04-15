@@ -12,10 +12,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
 
-//        ndk {
-//            //选择要添加的对应 cpu 类型的 .so 库。还可以添加 'x86', 'x86_64', 'mips', 'mips64'
-//            abiFilters 'armeabi', 'arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'
-//        }
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。还可以添加 'x86', 'x86_64', 'mips', 'mips64', 'armeabi-v7a', 'x86_64', 'x86'
+            abiFilters 'armeabi', 'arm64-v8a'
+        }
     }
     buildTypes {
         release {
@@ -50,9 +50,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // required
-    implementation 'com.meari.sdk:sdk-core:2.0.1'
-//    implementation 'com.bfcy.sdk:TesSdk:1.0.12'
-//    implementation(name: 'mearisdk-2.2.0-20200909', ext: 'aar')
+    implementation 'com.bfcy.sdk:TesSdk:3.1.0-beta4'// test version
+//    implementation 'com.meari.sdk:sdk-core:2.0.1'
+
+
 //    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
 //    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
 //    implementation 'com.alibaba:fastjson:1.2.57'
