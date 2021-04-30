@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // required
-    implementation 'com.meari.sdk:sdk-core:2.0.1'
+    implementation 'com.meari.sdk:sdk-core:2.0.2'
 //    implementation 'com.bfcy.sdk:TesSdk:1.0.12'
 //    implementation(name: 'mearisdk-2.2.0-20200909', ext: 'aar')
 //    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
