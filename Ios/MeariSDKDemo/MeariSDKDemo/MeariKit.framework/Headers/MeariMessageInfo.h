@@ -16,7 +16,10 @@ typedef NS_ENUM(NSInteger, MeariSystemMessageType) {
     MeariSystemMessageTypeDeviceShare,         // request add device (请求分享设备)
     MeariSystemMessageTypeDeviceAgree,         // agree add device (同意分享设备)
     MeariSystemMessageTypeDeviceRefuse,        // refuse add device (拒绝分享设备)
-    MeariSystemMessageTypeDeviceLowBattery     // warning for bell's low power (门铃低电量提示)
+    MeariSystemMessageTypeDeviceLowBattery,    // warning for bell's low power (门铃低电量提示)
+    MeariSystemMessageTypeDeviceWeakSignal,    // warning for weak network signla (设备网络信号不好)
+    MeariSystemMessageTypeDeviceAlarmFrequent,  // warning for alarm frequent (设备报警频繁)
+    MeariSystemMessageTypeDeviceAlarmUseless,  // warning for alarm useless (设备报警误报)
 };
 
 typedef NS_ENUM(NSInteger, MeariAlarmMessageType) {
@@ -28,7 +31,8 @@ typedef NS_ENUM(NSInteger, MeariAlarmMessageType) {
     MeariAlarmMessageTypeCry = 7,                   // Cry alarm (哭声报警)
     MeariAlarmMessageTypeFace = 8 ,                 // face alarm (人脸报警)
     MeariAlarmMessageTypeSomeoneCall = 9,           // visitor alarm, available on ipc device, alarm when somebody tap the ring.(有人来访)
-    MeariAlarmMessageTypeTear = 10                  //Tear device alarm (强行拆除报警)
+    MeariAlarmMessageTypeTear = 10,                  //Tear device alarm (强行拆除报警)
+    MeariAlarmMessageTypeHuman = 11                  //Person detected (人形过滤检测到人)
 };
 
 typedef NS_ENUM(NSInteger, MeariVisitorMessageType) {

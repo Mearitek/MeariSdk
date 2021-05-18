@@ -71,6 +71,19 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
 - (void)getTokenSuccess:(MeariSuccess_Token2)success failure:(MeariFailure)failure;
 
 /**
+ Generate QR code
+ 生成二维码
+
+ @param ssid wifi name(wifi名称)
+ @param password wifi password(wifi密码)
+ @param token code token(二维码token)
+ @param size QR code size(二维码大小)
+ @param subDevice Sub device (是否为添加子设备)
+ @return QR code image(二维码图片)
+ */
+- (UIImage *)createQRCodeWithSSID:(NSString *)ssid pasword:(NSString *)password token:(NSString *)token addSubDevice:(BOOL)subDevice size:(CGSize)size;
+
+/**
  AP配网传递的参数
 
  @param ssid wifi name (wifi名称)

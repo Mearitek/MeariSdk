@@ -28,7 +28,8 @@
     // !!!!!!! make sure wifissid and password are right!!!!!!!!
     
     // use this qrcode to configure network
-    UIImage *image = [[MeariUser sharedInstance] createQRCodeWithSSID:_wifissidTF.text pasword:_passwordTF.text token:MR_UserM.configToken size:CGSizeMake(300, 300)];
+//    UIImage *image = [[MeariDeviceActivator sharedInstance] createQRCodeWithSSID:_wifissidTF.text pasword:_passwordTF.text token:MR_UserM.configToken size:CGSizeMake(300, 300)];
+    UIImage *image = [[MeariDeviceActivator sharedInstance] createQRCodeWithSSID:_wifissidTF.text pasword:_passwordTF.text token:MR_UserM.configToken addSubDevice:NO size:CGSizeMake(300, 300)];
     _qrcodeImageView.image = image;
 }
 
