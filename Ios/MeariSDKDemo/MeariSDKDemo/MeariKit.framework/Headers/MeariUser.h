@@ -35,7 +35,7 @@ typedef void(^MeariSuccess_DeviceSoundPushStatus)(BOOL open);
 typedef void(^MeariSuccess_DeviceListForFriend)(NSArray <MeariDevice *>*devices);
 typedef void(^MeariSuccess_DeviceListForStatus)(NSArray <MeariDevice *> *devices);
 typedef void(^MeariSuccess_DeviceListForNVR)(NSArray <MeariDevice *> *bindedDevices, NSArray <MeariDevice *> *unbindedDevices);
-typedef void(^MeariSuccess_DeviceAlarmMsgTime)(NSArray <NSString *>*ipcTimes, NSArray <NSString *>*bellTimes, NSArray <NSString *>*cryTimes,NSArray <NSString *>*someoneCallTimes,NSArray <NSString *>*tearTimes);
+typedef void(^MeariSuccess_DeviceAlarmMsgTime)(NSArray <NSString *>*ipcTimes, NSArray <NSString *>*bellTimes, NSArray <NSString *>*cryTimes,NSArray <NSString *>*someoneCallTimes,NSArray <NSString *>*tearTimes,NSArray <NSString *>*humanTimes);
 typedef void(^MeariSuccess_DeviceFirmwareInfo)(MeariDeviceFirmwareInfo *info);
 typedef void(^MeariSuccess_DeviceOnlineStatus)(BOOL online);
 typedef void(^MeariSuccess_DeviceVoiceMsg)(MeariDeviceHostMessage *msg);
@@ -72,9 +72,14 @@ typedef NS_ENUM(NSInteger, MeariUserAccountType) {
 };
 
 typedef NS_ENUM(NSInteger, MeariHelpType) {
-    MeariHelpTypeCantReset,
-    MeariHelpTypeLightError,
-    MeariHelpTypeAll
+    MeariHelpTypeCamera = 1,
+    MeariHelpTypeDoorBell = 2,
+    MeariHelpTypeBateryCamera = 3,
+    MeariHelpTypeApp = 4,
+    MeariHelpTypeUser = 5,
+    MeariHelpTypeCantReset = 6,
+    MeariHelpTypeLightError = 7,
+    MeariHelpTypeAll = 8
 };
 
 /**
@@ -130,6 +135,10 @@ UIKIT_EXTERN NSString *const MeariIotCustomerServerMessageRead ; //Customer Serv
 Whether mqtt is connected (mqtt是否已连接)
  */
 @property (nonatomic, assign, getter=isConnected, readonly) BOOL connected;
+/**
+Whether has meari iot info   (是否有自研iot信息)
+ */
+@property (nonatomic, assign, getter=isConnected, readonly) BOOL hasMeariIotInfo;
 /**
  Whether data migration (是否数据迁移)
  */
@@ -819,32 +828,6 @@ deviceList.count must  ==  modeList.count
  */
 - (void)getMusicListSuccess:(MeariSuccess_Music)success failure:(MeariFailure)failure;
 
-#pragma mark -- Configure
-
-/**
- Get the distribution network token
- (获取配网token)
- 
- @param tokenType Different distribution modes correspond to different Tokens(不同配网模式对应不同的Token)
- @param success Successful callback (成功回调)：
- token: for distribution network(用于配网)
- validTime: The length of time the token is valid. If it exceeds the length, you need to reacquire the new token.(token有效时长，超过时长需要重新获取新的token)
- @param failure failure callback (失败回调)
- */
-- (void)getTokenWithTokenType:(MeariDeviceTokenType)tokenType success:(MeariSuccess_Token2)success failure:(MeariFailure)failure;
-/**
- Generate QR code
- 生成二维码
-
- @param ssid wifi name(wifi名称)
- @param password wifi password(wifi密码)
- @param token code token(二维码token)
- @param size QR code size(二维码大小)
- @return QR code image(二维码图片)
- */
-- (UIImage *)createQRCodeWithSSID:(NSString *)ssid pasword:(NSString *)password token:(NSString *)token size:(CGSize)size;
-
-
 #pragma mark - Share
 
 /**
@@ -1525,28 +1508,29 @@ download file from server
 
 /**
  custon server feed back  List  (客服反馈列表)
- @param licenseId 设备SN
- @param tp 设备TP值
+ @param status 0 进行中 1 已完成
  @param page 页数
  @param size 大小
 */
-- (void)customServerFeedbackList:(NSString *)licenseId tp:(NSString *)tp currentPage:(NSInteger)page pageSize:(NSInteger)size success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+- (void)customServerFeedbackListStatus:(NSInteger)status currentPage:(NSInteger)page pageSize:(NSInteger)size success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
 /**
  Can customer service feedback be created  (是否能创建客服反馈)
  @param licenseId 设备SN
  @param tp 设备TP值
 */
-- (void)customServerFeedbackJudge:(NSString *)licenseId tp:(NSString *)tp  success:(MeariSuccess_BOOL)success failure:(MeariFailure)failure;
+- (void)customServerFeedbackJudge:(NSString *)licenseId tp:(NSString *)tp  success:(void(^)(BOOL,NSString *))success failure:(MeariFailure)failure;
 /**
  custon server feed back  create  (客服反馈列表)
  @param licenseId 设备SN
- @param tp 设备TP值
+ @param tp 设备TP值 可以为空
+ @param deviceName 设备名称 可以为空
+ @param contact 联系方式 可以为空
  @param content 文本内容
  @param files 图片URL字符串 以,分隔
  @param type 问题类型
 */
-- (void)customServerFeedbackCreate:(NSString *)licenseId tp:(NSString *)tp content:(NSString *)content imageFiles:(NSString *)files type:(NSInteger)type success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+- (void)customServerFeedbackCreate:(NSString *)licenseId tp:(NSString *)tp content:(NSString *)content imageFiles:(NSString *)files deviceName:(NSString *)name contact:(NSString *)contact type:(NSInteger)type success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
 /**
  custon server feed back  create  (客服反馈列表)
