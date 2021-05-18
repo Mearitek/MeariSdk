@@ -26,6 +26,7 @@ import com.meari.sdk.listener.MeariDeviceTalkVolumeListener;
 import com.meari.sdk.listener.MeariDeviceVideoStopListener;
 import com.meari.sdk.utils.Logger;
 import com.meari.sdk.utils.MeariDeviceUtil;
+import com.meari.test.CommonUtils;
 import com.meari.test.R;
 import com.meari.test.user.CloudStatusActivity;
 import com.ppstrong.ppsplayer.PPSGLSurfaceView;
@@ -257,7 +258,8 @@ public class DeviceMonitorActivity extends AppCompatActivity {
 
     private void startPreview() {
         if (deviceController.isConnected()) {
-            deviceController.startPreview(videoSurfaceView, 0, new MeariDeviceListener() {
+            String defaultStreamId = CommonUtils.getDefaultStreamId(cameraInfo);
+            deviceController.startPreview(videoSurfaceView, Integer.parseInt(defaultStreamId), new MeariDeviceListener() {
                 @Override
                 public void onSuccess(String successMsg) {
                     toastSuccess();
