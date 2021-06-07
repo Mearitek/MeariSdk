@@ -33,20 +33,19 @@
 		CD3CDE782488C1E600F1B940 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3CDE772488C1E600F1B940 /* main.m */; };
 		CD3CDE802488C40400F1B940 /* AddDeviceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3CDE7F2488C40400F1B940 /* AddDeviceVC.m */; };
 		CD3CDE832488C44B00F1B940 /* DeviceListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3CDE822488C44B00F1B940 /* DeviceListVC.m */; };
-		CD3CDE852488C5F000F1B940 /* MeariKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3CDE842488C5F000F1B940 /* MeariKit.framework */; };
-		CD3CDE8C2488C6CD00F1B940 /* MeariKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD3CDE842488C5F000F1B940 /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CDE129672488EBB80081EAFD /* DeviceOperationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = CDE129652488EBB80081EAFD /* DeviceOperationVC.m */; };
 		CDE129682488EBB80081EAFD /* DeviceOperationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDE129662488EBB80081EAFD /* DeviceOperationVC.xib */; };
+		DD2FFAF9266E49A200A1CC21 /* MeariKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD3CDE842488C5F000F1B940 /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		CD3CDE8B2488C6AB00F1B940 /* CopyFiles */ = {
+		DD2FFAF8266E499700A1CC21 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CD3CDE8C2488C6CD00F1B940 /* MeariKit.framework in CopyFiles */,
+				DD2FFAF9266E49A200A1CC21 /* MeariKit.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +109,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD3CDE852488C5F000F1B940 /* MeariKit.framework in Frameworks */,
 				765101E5AAE701816F81572C /* Pods_MeariSDKDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,8 +239,8 @@
 				CD3CDE5E2488C1E000F1B940 /* Sources */,
 				CD3CDE5F2488C1E000F1B940 /* Frameworks */,
 				CD3CDE602488C1E000F1B940 /* Resources */,
-				CD3CDE8B2488C6AB00F1B940 /* CopyFiles */,
 				722C685B387EBCEAF0B29A67 /* [CP] Embed Pods Frameworks */,
+				DD2FFAF8266E499700A1CC21 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -260,7 +258,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = MR;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Meari;
 				TargetAttributes = {
 					CD3CDE612488C1E000F1B940 = {
@@ -366,8 +364,6 @@
 				CD3CDE782488C1E600F1B940 /* main.m in Sources */,
 				CD3CDE832488C44B00F1B940 /* DeviceListVC.m in Sources */,
 				2808063A2488ECFE002104B1 /* registerVC.m in Sources */,
-				CD3CDE832488C44B00F1B940 /* DeviceListVC.m in Sources */,
-				CD3CDE832488C44B00F1B940 /* DeviceListVC.m in Sources */,
 				285FA1E02489F01A005C62B9 /* MRDeviceUpgradeVC.m in Sources */,
 				8C90AEF024F6088100E156CF /* MRCloudServerVC.m in Sources */,
 				285FA1D82489E7F7005C62B9 /* MRDeviceSDFormatVC.m in Sources */,
@@ -423,6 +419,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -481,6 +478,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -513,7 +511,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = QC6H8VWAGL;
+				DEVELOPMENT_TEAM = TY3K943UWQ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -522,12 +520,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/MeariSDKDemo/PrefixHeader.pch";
 				INFOPLIST_FILE = MeariSDKDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.meari.sdk.demo.MeariSDKDemo.ORANGE;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meari.sdk.demo.MeariSDKDemo.TEST;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -548,7 +546,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/MeariSDKDemo/PrefixHeader.pch";
 				INFOPLIST_FILE = MeariSDKDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

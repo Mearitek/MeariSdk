@@ -126,11 +126,14 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, assign) double answerTime;
+ 
 @property (nonatomic, copy) NSString *deviceName;
 @property (nonatomic, assign) NSInteger deviceID;
 @property (nonatomic, copy) NSString *shareMsgID;
 @property (nonatomic, copy) NSString *shareName;
 
+@property (nonatomic, assign) NSInteger iotSignID;
+@property (nonatomic, copy) NSString *pfCompatID;
 @end
 
 

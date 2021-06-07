@@ -1,18 +1,18 @@
 PODS:
-  - AFNetworking (3.2.1):
-    - AFNetworking/NSURLSession (= 3.2.1)
-    - AFNetworking/Reachability (= 3.2.1)
-    - AFNetworking/Security (= 3.2.1)
-    - AFNetworking/Serialization (= 3.2.1)
-    - AFNetworking/UIKit (= 3.2.1)
-  - AFNetworking/NSURLSession (3.2.1):
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.2.1)
-  - AFNetworking/Security (3.2.1)
-  - AFNetworking/Serialization (3.2.1)
-  - AFNetworking/UIKit (3.2.1):
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
   - AliyunOSSiOS (2.10.8)
   - AWSCore (2.15.0)
@@ -33,15 +33,16 @@ PODS:
   - MJExtension (3.0.17)
 
 DEPENDENCIES:
-  - AFNetworking (~> 3.2.1)
+  - AFNetworking (= 4.0.1)
   - AliyunOSSiOS (~> 2.10.7)
   - AWSS3
   - Braintree/PayPal
   - MJExtension (~> 3.0.17)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - AFNetworking
+  trunk:
     - AliyunOSSiOS
     - AWSCore
     - AWSS3
@@ -49,13 +50,13 @@ SPEC REPOS:
     - MJExtension
 
 SPEC CHECKSUMS:
-  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   AliyunOSSiOS: 8db92936545593b9e5c66d680ef2ac0738946651
   AWSCore: b732e43f2afaef25c3a7dd9408b8c594213397bd
   AWSS3: e54ce8e29744663f0e5f3e90d610880974fc59fa
   Braintree: 7ff6755ba50506e403dc03779ae68c5ccf6b9808
   MJExtension: 74ec83124a68891619fb7ba9c5c811bbf1691076
 
-PODFILE CHECKSUM: d0c990e88804c5b9413302006d82f4e2eb8e7e55
+PODFILE CHECKSUM: c96ef6638b0972fc562f50ef179b49af52f15ae0
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.1

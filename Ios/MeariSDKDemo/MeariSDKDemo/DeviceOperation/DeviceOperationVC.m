@@ -245,6 +245,14 @@
             [videoStream addObject:@(MeariDeviceVideoStream_HD)];
         }else if ([streamString isEqualToString:@"SD"]) {
             [videoStream addObject:@(MeariDeviceVideoStream_360)];
+        }else if ([streamString containsString:@"NEW_SD"]) {
+            [videoStream addObject:@(MeariDeviceVideoStream_NEW_SD)];
+        }else if ([streamString containsString:@"NEW_HD"]) {
+            [videoStream addObject:@(MeariDeviceVideoStream_NEW_HD)];
+        }else if ([streamString containsString:@"NEW_FHD"]) {
+            [videoStream addObject:@(MeariDeviceVideoStream_NEW_FHD)];
+        }else if ([streamString containsString:@"NEW_UHD"]) {
+            [videoStream addObject:@(MeariDeviceVideoStream_NEW_UHD)];
         }
     }
     return videoStream.copy;

@@ -1,15 +1,17 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
-
+source 'https://github.com/aliyun/aliyun-specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
 target 'MeariSDKDemo' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for MeariSDKDemo
   pod 'Braintree/PayPal'
-  pod 'AFNetworking', '~>3.2.1'
+  pod 'AFNetworking', '4.0.1'
   pod 'MJExtension',  '~>3.0.17'
   pod 'AliyunOSSiOS', '~>2.10.7'
   pod 'AWSS3'
+#  pod 'IMSIotSmart'
 
 end
