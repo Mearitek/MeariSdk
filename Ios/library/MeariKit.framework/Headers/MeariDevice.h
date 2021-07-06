@@ -243,6 +243,10 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 @property (nonatomic, assign, readonly) BOOL supportDbPatrol;
 /** baby是否支持上传用户预览信息功能*/
 @property (nonatomic, assign, readonly) BOOL supportUploadAccountInfo;
+/**是否支持 ptz 巡逻*/
+@property (nonatomic, assign, readonly) BOOL supportPtzPatrol;
+
+@property (nonatomic, assign, readonly) BOOL supportMotionMode;
 @end
 
 @interface MeariDeviceList : MeariBaseModel

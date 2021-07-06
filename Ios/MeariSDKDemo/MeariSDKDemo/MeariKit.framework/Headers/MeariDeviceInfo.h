@@ -77,6 +77,11 @@ typedef NS_OPTIONS(NSUInteger, MeariDevicePeopleDetect) {
     MeariDevicePeopleDetectDay = 0b100, // 白天人形开关设置
     MeariDevicePeopleDetectNight = 0b1000, // 夜间人形开关设置
 };
+typedef NS_OPTIONS(NSUInteger, MeariDevicePtzAdvanceType) {
+    MeariDevicePtzPoint = 0b1, // ptz高级功能 内置预置点（pre point）
+    MeariDevicePtzCruise = 0b10, // ptz高级功能 多点巡航 (Cruise between multiple points)
+    MeariDevicePtzPatrol = 0b100, // ptz高级功能 巡逻一周 （Patrol for a week）
+};
 typedef NS_ENUM (NSUInteger, MeariDeviceDayNightType) {
     MeariDeviceDayNightTypeAuto, // auto mode (自动改变)
     MeariDeviceDayNightTypeDay, // day mode (白天)
@@ -290,6 +295,10 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
 @property (nonatomic, assign) NSInteger dbc;
 /** baby 上传用户预览信息  0-不支持，1-支持*/
 @property (nonatomic, assign) NSInteger uif;
+/**PTZ的高级功能 0x1 预置点 0x2  巡航  0x4 巡视 */
+@property (nonatomic, assign) NSInteger pcr;
+/**低功耗的报警工作模式设置*/
+@property (nonatomic, assign) NSInteger lwm;
 
 @end
 

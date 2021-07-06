@@ -459,6 +459,15 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  */
 - (void)startVoiceTalkWithIsVoiceBell:(BOOL)isVoiceBell success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+/**
+ Start voice intercom(开始语音对讲)
+  
+ @param isHeadPhone 是否插入耳机
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)startVoiceTalkWithIsVoiceBell:(BOOL)isVoiceBell isHeadPhone:(BOOL)isHeadPhone success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
 
 /**
  Stop voice intercom / 停止语音对讲
@@ -769,7 +778,15 @@ Start record sound(开始录音)
  @param failure 失败回调
 */
 - (void)setAlarmRoiWithEnable:(BOOL)enable width:(NSInteger)width height:(NSInteger)height bitmap:(NSArray *)bitmap success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
-
+/**
+ // camera work mode
+ // 工作模式
+ 
+ @param mode 0 : power saving mode  1: performance mode 2:custom mode
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setAlarmWorkMode:(NSInteger)mode success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 #pragma mark -- 存储
 /**
  Get storage information(获取存储信息)
@@ -1397,6 +1414,17 @@ Start record sound(开始录音)
 /// @param success 成功回调
 /// @param failure 失败回调
 - (void)setFloodCameraVoiceLightAlarmType:(MeariDeviceVoiceLightType)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+#pragma mark --- Ptz 高级功能
+/// 触发ptz 巡逻功能
+/// Trigger device patrol function
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setPtzPatrolSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/// 设置ptz 定时巡逻功能
+/// Trigger device patrol function
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setPtzPatrolTime:(NSArray <MeariDeviceParamPtzTime *>*)times success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 #pragma mark --- chime (中继)
 /**
@@ -1646,5 +1674,14 @@ Determine whether it is a face
 */
 -(void)getInstallGuideVideoUrlWithTp:(NSString *)tp                 success:(MeariDeviceSuccess_Dictionary)success
                              failure:(MeariDeviceFailure)failure;
+
+#pragma mark - 耳机
+/**
+  Whether current phone is using head device or bluetooth device.
+  当前手机是否使用耳机
+    
+  @return YES/NO
+ */
+-(BOOL)isHeadPhone;
 @end
 #endif /* MeariDeviceControl_h */

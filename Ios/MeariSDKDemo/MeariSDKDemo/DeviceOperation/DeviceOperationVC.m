@@ -225,7 +225,7 @@
     for (NSString *streamString in streamStringArray) {
         if ([streamString isEqualToString:@"3MP@4M"]) {
             [videoStream addObject:@(MeariDeviceVideoStream_3MP_2_4)];
-        }else if ([streamString isEqualToString:@"3MP@4M"]) {
+        }else if ([streamString isEqualToString:@"3MP@2M"]) {
             [videoStream addObject:@(MeariDeviceVideoStream_3MP_1_2)];
         }else if ([streamString isEqualToString:@"1080P@2M"]) {
             [videoStream addObject:@(MeariDeviceVideoStream_1080_2_0)];

@@ -138,7 +138,7 @@ Whether mqtt is connected (mqtt是否已连接)
 /**
 Whether has meari iot info   (是否有自研iot信息)
  */
-@property (nonatomic, assign, getter=isConnected, readonly) BOOL hasMeariIotInfo;
+@property (nonatomic, assign, readonly) BOOL hasMeariIotInfo;
 /**
  Whether data migration (是否数据迁移)
  */
@@ -1521,7 +1521,7 @@ download file from server
 */
 - (void)customServerFeedbackJudge:(NSString *)licenseId tp:(NSString *)tp  success:(void(^)(BOOL,NSString *))success failure:(MeariFailure)failure;
 /**
- custon server feed back  create  (客服反馈列表)
+ custon server feed back  create  (创建客服反馈)
  @param licenseId 设备SN
  @param tp 设备TP值 可以为空
  @param deviceName 设备名称 可以为空
@@ -1530,7 +1530,7 @@ download file from server
  @param files 图片URL字符串 以,分隔
  @param type 问题类型
 */
-- (void)customServerFeedbackCreate:(NSString *)licenseId tp:(NSString *)tp content:(NSString *)content imageFiles:(NSString *)files deviceName:(NSString *)name contact:(NSString *)contact type:(NSInteger)type success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+- (void)customServerFeedbackCreate:(NSString *)licenseId tp:(NSString *)tp content:(NSString *)content imageFiles:(NSString *)files deviceName:(NSString *)name contact:(NSString *)contact type:(NSInteger)type defaultServer:(BOOL)server success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
 /**
  custon server feed back  create  (客服反馈列表)

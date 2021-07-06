@@ -369,6 +369,9 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 /** use mechanical Bell:  0: use  1 not use */
 /** 默认:0 使用机械铃铛:2 不使用机械铃铛:1 */
 @property (nonatomic, assign)NSInteger mechanicalBell;
+/** bell alarm work mode */
+/** 0 :  Power saving mode (省电模式) 1: Performance mode（性能模式）  2;Custom mode （自定义模式） */
+@property (nonatomic, assign)NSInteger workmode;
 @end
 
 #pragma mark -- 上报录像至云端
@@ -447,6 +450,15 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 @property (nonatomic, assign) NSInteger height;
 @property (nonatomic, strong) NSString  *bitmap;
 @property (nonatomic, strong) NSArray  *maps;
+@end
+
+@interface MeariDeviceParamPtzTime : MeariBaseModel
+/** Whether to turn off the timed sleep */
+/** 是否开启 该时间断的休眠 */
+@property (nonatomic, assign)NSInteger enable;
+/**  Start ptz time */
+/** 开始时间  01:00 格式 24小时制 */
+@property (nonatomic, copy)NSString *time;
 @end
 
 #pragma mark -- 语音门铃
@@ -533,6 +545,9 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 /** motion alert time array */
 /** 移动侦测报警时间段 */
 @property (nonatomic, strong) NSArray <MeariDeviceParamSleepTime *>*alarm_time;
+/**  ptz patrol time */
+/** ptz 巡航时间点 */
+@property (nonatomic, strong) NSArray <MeariDeviceParamPtzTime *>*ptz_time;
 
 @property (nonatomic, strong) MeariDeviceParamVoiceBell *voiceBell;
 @property (nonatomic, strong) MeariDeviceParamDBDetection *decibel_alarm;

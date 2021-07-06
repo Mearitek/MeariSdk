@@ -83,7 +83,7 @@
 
 - (void)addDevice {
     [MeariDeviceActivator sharedInstance].delegate = self;
-    [[MeariDeviceActivator sharedInstance] startConfigWiFi:MeariSearchModeAll token:MR_UserM.configToken type:MeariDeviceTokenTypeQRCode nvr:NO timeout:100];
+    [[MeariDeviceActivator sharedInstance] startConfigWiFi:MeariSearchModeAll token:MR_UserM.configToken type:MeariDeviceTokenTypeAP nvr:NO timeout:100];
 }
 
 @end

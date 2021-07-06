@@ -43,6 +43,9 @@
 #pragma mark ---- MeariDeviceActivatorDelegate
 - (void)activator:(MeariDeviceActivator *)activator didReceiveDevice:(MeariDevice *)deviceModel error:(NSError *)error {
     NSLog(@"返回的设备SN--- netConnect  ------ %@ 设备添加状态 -------- %ld 设备的TP ------- %@",deviceModel.info.nickname,(long)deviceModel.info.addStatus,deviceModel.info.tp);
+    if (deviceModel.info.addStatus == MeariDeviceAddStatusSelf) {
+        NSLog(@"设备配网成功");
+    }
     
     // suggest !!!! ,
     // Exclude the condition that mqtt is disconnected, the callback cannot be added, it is recommended to check the device list locally。
