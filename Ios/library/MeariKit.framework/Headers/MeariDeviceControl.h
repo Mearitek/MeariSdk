@@ -787,6 +787,16 @@ Start record sound(开始录音)
  @param failure failure callback (失败回调)
  */
 - (void)setAlarmWorkMode:(NSInteger)mode success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ // alarm whole
+ // 报警总开关
+ 
+ @param enable 是否开启
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setAlarmWholeEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 #pragma mark -- 存储
 /**
  Get storage information(获取存储信息)

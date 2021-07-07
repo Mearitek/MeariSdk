@@ -530,6 +530,11 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 /** sdcard parameters */
 /** sd卡参数 */
 @property (nonatomic, strong) MeariDeviceParamStorage *sdcard;
+
+/** Alarm whole switch  */
+/** 报警总开关 */
+@property (nonatomic, assign) NSInteger alarmWhole;
+
 /** Motion Detection parameters */
 /** 移动侦测参数 */
 @property (nonatomic, strong) MeariDeviceParamMotion *motion_detect;

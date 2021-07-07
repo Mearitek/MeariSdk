@@ -299,6 +299,8 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
 @property (nonatomic, assign) NSInteger pcr;
 /**低功耗的报警工作模式设置*/
 @property (nonatomic, assign) NSInteger lwm;
+/**是否支持报警总开关 */
+@property (nonatomic, assign) NSInteger gal;
 
 @end
 
