@@ -4,11 +4,10 @@
 [TOC]
 
 <center>
-
 ---
 Version number | Development team | Update date | Notes
 :-:|:-:|:-:|:-:
-2.2.0 | Meari Technical Team | 2020.03.03 | Optimization
+3.1.0 | Meari Technical Team | 2021.07.02 | Optimization
 
 <center>
 
@@ -54,7 +53,7 @@ android {
          ...
          ndk {
          // Select the .so library corresponding to the cpu type to be added.
-         abiFilters 'armeabi', 'arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'
+         abiFilters arm64-v7a', 'armeabi-v8a'
          }
      }
       sourceSets {
@@ -72,7 +71,7 @@ repositories {
 
 dependencies {
      // Required libraries
-    implementation(name: 'mearisdk-2.2.0-20200313', ext: 'aar')
+    implementation(name: 'sdk-core-3.1.0-beta6', ext: 'aar')
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
     implementation 'com.alibaba:fastjson:1.2.57'
@@ -95,11 +94,6 @@ Configure appkey and appSecret in the AndroidManifest.xml file, configure the co
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
-    <permission
-        Android:name="${applicationId}.permission.JPUSH_MESSAGE"
-        Android:protectionLevel="signature" />
-
-    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -116,116 +110,6 @@ Configure appkey and appSecret in the AndroidManifest.xml file, configure the co
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-
-Jpush push configuration
- <!-- Rich push core function since 2.0.6-->
-        <activity
-            Android:name="cn.jpush.android.ui.PopWinActivity"
-            Android:theme="@style/MyDialogStyle"
-            Android:exported="false">
-        </activity>
-
-        <!-- Required SDK core features -->
-        <activity
-            Android:name="cn.jpush.android.ui.PushActivity"
-            Android:configChanges="orientation|keyboardHidden"
-            Android:theme="@android:style/Theme.NoTitleBar"
-            Android:exported="false">
-            <intent-filter>
-                <action android:name="cn.jpush.android.ui.PushActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.meari.test" />
-            </intent-filter>
-        </activity>
-
-        <!-- Required SDK Core Features -->
-        <!-- Configurable android: process parameter will put PushService in other processes -->
-        <service
-            Android:name="cn.jpush.android.service.PushService"
-            Android:process=":mult"
-            Android:exported="false">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTER" />
-                <action android:name="cn.jpush.android.intent.REPORT" />
-                <action android:name="cn.jpush.android.intent.PushService" />
-                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
-            </intent-filter>
-        </service>
-        <!-- since 3.0.9 Required SDK Core Features -->
-        <provider
-            Android:authorities="com.meari.test.DataProvider"
-            Android:name="cn.jpush.android.service.DataProvider"
-            Android:exported="false"
-            />
-
-        <!-- since 1.8.0 option is optional. The function of the JPush service for different applications in the same device to pull each other up. -->
-        <!-- If you do not enable this feature to delete the component, it will not pull up other applications and can not be pulled up by other applications -->
-        <service
-            Android:name="cn.jpush.android.service.DaemonService"
-            Android:enabled="true"
-            Android:exported="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService" />
-                <category android:name="com.meari.test" />
-            </intent-filter>
-
-        </service>
-        <!-- since 3.1.0 Required SDK Core Features -->
-        <provider
-            Android:authorities="com.meari.test.DownloadProvider"
-            Android:name="cn.jpush.android.service.DownloadProvider"
-            Android:exported="true"
-            />
-        <!-- Required SDK core features -->
-        <receiver
-            Android:name="cn.jpush.android.service.PushReceiver"
-            Android:enabled="true"
-            Android:exported="false">
-            <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!--Required Display notification bar -->
-                <category android:name="com.meari.test" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <!-- Optional -->
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
-        <!-- Required SDK core features -->
-        <receiver android:name="cn.jpush.android.service.AlarmReceiver" android:exported="false"/>
-
-        <!-- User defined. For test only User-defined broadcast receiver -->
-        <receiver
-            Android:name=".receiver.MyReceiver"
-            Android:exported="false"
-            Android:enabled="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required User registration SDK intent-->
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required User receives the intent of the SDK message-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required The user receives the intent of the SDK notification bar information-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required user opens the intent of the custom notification bar-->
-                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- Receive network changes Connection/disconnection since 1.6.3 -->
-                <category android:name="com.meari.test" />
-            </intent-filter>
-        </receiver>
-
-        <!-- User defined. For test only User-defined receiving message, 3.0.7 starts to support, the current tag/alias interface setting result will be called back in the corresponding method of the broadcast receiver -->
-        <receiver android:name=".receiver.MyJPushMessageReceiver">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-                <category android:name="com.meari.test"></category>
-            </intent-filter>
-        </receiver>
-        <!-- Required . Enable it you can get statistics data with channel -->
-        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
-        <meta-data android:name="JPUSH_APPKEY" android:value="" />
 ```
 
 
@@ -260,14 +144,12 @@ Public class MeariSmartApp extends Application {
 # 4. User Management
 ```
 Meari SDK provides mobile/email login, uid login, password reset, etc.
-After registration or login is successful, use the response information to connect to the mqtt service, initialize the Jpush and other operations.
+After registration or login is successful, use the response information to connect to the mqtt service.
 ```
 
 UserInfo class
-- jpushAlias ​​Jpush Push Alias
 - userID user ID
 - nickName nickname
-- phoneCode country code
 - userAccount user
 - token unique identifier when the user logs in
 - headPic user avatar path
@@ -283,7 +165,7 @@ UserInfo class
 ## 4.1 Mobile / Email Registration
 ```
 【description】
-Mobile or email registration (Mobile registration is only supported in Mainland China).
+Mobile or email registration.
 
 [Function call]
 
@@ -358,13 +240,9 @@ public void loginWithAccount (String countryCode, String phoneCode, String userA
 MeariUser.getInstance (). LoginWithAccount (countryCode, phoneCode, userAccount, password, new ILoginCallback () {
     @Override
     public void onSuccess (UserInfo user) {
-        // It is recommended to initialize the Aurora and connect to the mqtt service in MainActivity, save the user information after the first login, and do not have to log in every time you start the app.
-        // If you need to receive push messages, contact us to configure related parameters, use our alias to initialize Aurora Push, and refer to the Aurora official document for the access process.
-        initJPushAlias ​​(user.getJpushAlias ​​());
+        // It is recommended to connect to the mqtt service in MainActivity, save the user information after the first login, and do not have to log in every time you start the app.
         // connect mqtt service
-        if (! MeariUser.getInstance (). isMqttConnected ()) {
-            MeariUser.getInstance (). ConnectMqttServer (getApplication ());
-        }
+        MeariUser.getInstance (). ConnectMqttServer (getApplication ());
     }
 
     @Override
@@ -448,13 +326,9 @@ public void loginWithUid (String countryCode, String phoneCode, String uuid, ILo
 MeariUser.getInstance (). LoginWithUid (countryCode, phoneCode, uid, new ILoginCallback () {
     @Override
     public void onSuccess (UserInfo user) {
-        // It is recommended to initialize the Aurora and connect to the mqtt service in MainActivity, save the user information after the first login, and do not have to log in every time you start the app.
-        // If you need to receive push messages, contact us to configure related parameters, use our alias to initialize Aurora Push, and refer to the Aurora official document for the access process.
-        initJPushAlias ​​(user.getJpushAlias ​​());
+        // It is recommended to the mqtt service in MainActivity, save the user information after the first login, and do not have to log in every time you start the app.
         // connect mqtt service
-        if (! MeariUser.getInstance (). isMqttConnected ()) {
-            MeariUser.getInstance (). ConnectMqttServer (getApplication ());
-        }
+        MeariUser.getInstance (). ConnectMqttServer (getApplication ());
     }
     @Override
     public void onError (String code, String error) {
@@ -591,6 +465,7 @@ MeariUser.getInstance (). GetToken (new IGetTokenCallback () {
     public void onSuccess (String token, int leftTime, int smart_switch) {
         // token distribution token
         // leftTime remaining valid time
+        // smart_switch smartWifi switch
     }
 
     @Override
@@ -621,7 +496,7 @@ There may be a delay in the mqtt message. In order to improve the experience, yo
  *
  * @param ssid wifi name
  * @param pwd wifi password
- * @param wifiMode wifi encryption type
+ * @param wifiMode wifi encryption type 0:no password, 1:WPA_PSK, 2:WPA_EAP
  * @param scanningResultActivity search result callback
  * @param status status
  * /
@@ -631,6 +506,7 @@ public MangerCameraScanUtils (String ssid, String pwd, int wifiMode, CameraSearc
  * Query device status list
  *
  * @paramList <CameraInfo> cameraInfos device list
+ * @param deviceTypeID device type id
  * @param callback network request callback
  * /
 public void checkDeviceStatus (List <CameraInfo> cameraInfos, IDeviceStatusCallback callback);
@@ -639,6 +515,7 @@ public void checkDeviceStatus (List <CameraInfo> cameraInfos, IDeviceStatusCallb
  * Add device
  *
  * @paramList <CameraInfo> cameraInfos device list
+ * @param deviceTypeID device type id
  * @param callback network request callback
  * /
 public void addDevice (CameraInfo cameraInfo, int deviceTypeID, IAddDeviceCallback callback);
@@ -671,7 +548,7 @@ mangerCameraScan.startSearchDevice (false, -1, 100, ActivityType.ACTIVITY_SEARCH
 MeariUser.getInstance (). CheckDeviceStatus (cameraInfos, deviceTypeID, new IDeviceStatusCallback () {
     @Override
     public void onSuccess (ArrayList <CameraInfo> deviceList) {
-        // 1 means your own device, 2 means someone else ’s micro share to the device, 3 means the device can be added to 4, others' devices have been shared to themselves
+        // 1 means your own device, 2 means others' device has not been shared, 3 means the device can be added 4 means others' device have been shared to you
         if (cameraInfo.getAddStatus () == 3) {
             // Add device
             if (cameraInfo.getAutoBinding () == 1) {
@@ -715,6 +592,65 @@ public void addDeviceFailed (String message) {
 
 ## 5.2 Add device via AP
 
+```
+Turning device to the AP mode, connet to the AP of the device, send configuration to device, connect to the original network, setting is successful if you hear a beep and the device turns to blue light.
+Then you can start searching and waiting for the device addition to complete.
+```
+### 5.1.1 Connect to AP
+```
+【description】
+Turning device to the AP mode, connet to the AP of the device, send configuration to device, connect to the original network, setting is successful if you hear a beep and the device turns to blue light.
+Then you can start searching and waiting for the device addition to complete.
+
+[Function call]
+
+/**
+ * create device controller
+ *
+ */
+public MeariDeviceController();
+
+/**
+ * update token
+ *
+ * token distribution token
+ */
+public void updateToken(String token);
+
+/**
+ * send configuration information
+ *
+ * @param wifiName wifi name
+ * @param password wifi password
+ * @param deviceListener callback
+ */
+public void setAp(String wifiName, String password, MeariDeviceListener deviceListener);
+
+【Code example】
+
+if (deviceController == null) {
+    deviceController = new MeariDeviceController();
+}
+deviceController.updateToken(getToken());  // getToken() get distribution token
+deviceController.setAp(mSsid, mPwd, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+        // connect to original wifi，start searching and adding device
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+        
+    }
+});
+```
+### 5.2.2 Search and add device
+
+```
+see 5.1.2
+```
+
+
 # 6. Device Control
 
 ## 6.1 Basic Device operation
@@ -723,7 +659,6 @@ public void addDeviceFailed (String message) {
 
 MeariDevice (manages the list of devices)
 
--List <NVRInfo> nvrs; NVR list
 -List <CameraInfo> ipcs; common cameras list
 -List <CameraInfo> doorBells; doorBell list
 -List <CameraInfo> batteryCameras; batteryCamera list
@@ -738,7 +673,7 @@ CameraInfo extends BaseDeviceInfo (device information class)
 -String snNum // Device SN
 -String deviceName // device name
 -String deviceIcon // device icon gray icon
--int addStatus // device status 1 means own device, 2 means others have not shared to the device, 3 means device can be added 4, others' devices have been shared to themselves
+-int addStatus // device status 1 means own device, 2 means others' device has not been shared, 3 means device can be added 4, others' device have been shared to you
 -int devTypeID; // device type
 -String userAccount; // Has an account
 -boolean asFriend // Whether to share to your device as a friend
@@ -1262,12 +1197,13 @@ Search users
  *
  * @param account
  * @param deviceID device ID
+ * @param phoneCode country phone code
  * @param callback Function callback
  * /
-public void searchUser (String account, String deviceID, ISearchUserCallback callback)
+public void searchUser (String account, String deviceID, String phoneCode, ISearchUserCallback callback)
 
 [Code example]
-MeariUser.getInstance (). SearchUser (account, deviceID, new ISearchUserCallback () {
+MeariUser.getInstance (). SearchUser (account, deviceID, phoneCode, new ISearchUserCallback () {
     @Override
     public void onSuccess (ShareUserInfo shareUserInfo) {
     }
@@ -1288,12 +1224,13 @@ Share device
  * Share device
  * @param account
  * @param deviceID device ID
+ * @param phoneCode country phone code
  * @param callback Function callback
  * /
-public void shareDevice (String account, String deviceID, IResultCallback callback);
+public void shareDevice (String account, String deviceID, String phoneCode, IResultCallback callback);
 
 [Code example]
-MeariUser.getInstance (). ShareDevice (account, deviceID, new IResultCallback () {
+MeariUser.getInstance (). ShareDevice (account, deviceID, phoneCode, new IResultCallback () {
     @Override
     public void onSuccess () {
     }
@@ -1314,12 +1251,13 @@ Cancel shared device
  * Cancel shared device
  * @param account
  * @param deviceID device ID
+ * @param phoneCode country phone code
  * @param callback Function callback
  * /
-public void cancelShareDevice (String account, String deviceID, IResultCallback callback);
+public void cancelShareDevice (String account, String deviceID, String phoneCode, IResultCallback callback);
 
 [Code example]
-MeariUser.getInstance (). CancelShareDevice (account, cameraInfo.getDeviceID (), new IResultCallback () {
+MeariUser.getInstance (). CancelShareDevice (account, cameraInfo.getDeviceID (), phoneCode, new IResultCallback () {
     @Override
     public void onSuccess () {
     }
@@ -1490,13 +1428,13 @@ Get alarm messages of a single device
 
 [Function call]
 / **
- * refuse friend share device
  * Get the alarm message of a single device (get the latest 20 at a time, after the device owner pulls it, the server deletes the data, pay attention to save the data)
  *
  * @param deviceId device id
+ * @param day date yyyyMMdd
  * @param callback function callback
  * /
-public void getAlarmMessagesForDev (long deviceId, IGetAlarmMessagesCallback callback);
+public void getAlertMsg (long deviceId, String day, IGetAlarmMessagesCallback callback);
 
 [Method call]
 
@@ -1507,7 +1445,7 @@ class DeviceAlarmMessage:
 -int imageAlertType; // Alarm type (PIR and Motion)
 -int msgTypeID; // message type
 -long userID; // User Id
--long userIDS;
+-long userIDS;// if it's a shared device, the value is 0, or it will be user id
 -String createDate; // wear time
 -String isRead; // whether read
 -String tumbnailPic; // Thumbnails
@@ -1515,7 +1453,7 @@ class DeviceAlarmMessage:
 -long msgID; // Message Id
 
 
-MeariUser.getInstance (). GetAlarmMessagesForDev (getMsgInfo (). GetDeviceID (), new IDeviceAlarmMessagesCallback () {
+MeariUser.getInstance().getAlertMsg(getMsgInfo().GetDeviceID(), day, new IDeviceAlarmMessagesCallback () {
     @Override
     public void onSuccess (List <DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
 
@@ -1616,7 +1554,8 @@ If (cameraInfo.getLed() == 1) {
 device Capability
 
 - int dcb; noise alarm: 0-not supported; 1-support
-- int pir; human detection: 0-not supported; 1-support
+- int pir; human detection: 0-not supported; 1-support pir switch and high/medium/low setting; 2-support pir switch only; 3-reserved; 4-support pir switch and high/low setting; 5-support double pir(left/right) switch and global sensitivity setting(high/low)(for normal power device); 6-support double pir(left/right) switch and global sensitivity setting(high/low)(for low power consumption device); 7- support pir switch and pir sensitivity setting(10 levels); 8-support pir switch and pir sensitivity setting(refer to plv), defalut is 10
+- int plv; pir level: 0-not supported; 10-support level 10(1-10)
 - int md; motion detection: 0-not supported; 1-support
 - int cst; cloud storage : 0 - not supported; 1 - support
 - int dnm; day and night mode: 0-not supported; 1-support
@@ -1624,7 +1563,8 @@ device Capability
 - int flp; video flip: 0-not supported; 1-support
 - int bcd; crying detection: 0-not supported; 1-support
 - int ptr; humanoid tracking: 0-not supported; 1-support
-- int pdt; humanoid detection: 0-not supported; 1-support
+- int pdt; humanoid detection: 0-not supported; bit0-support switch setting; bit1-support picture frame setting; bit2-support night filter switch setting; bit3-support day filter switch setting
+- int ptz; pan-tilt: 0-not supported; 1-support left/right; 2-support top/bottom; 3-support left/top/right/bottom
 
 ## 9.2 device parameters
 
@@ -2243,13 +2183,13 @@ Video encoding format setting of device
 / **
   * Video encoding format setting of device
   *
-  * @param type encoding type
+  * @param enable H265 enable
   * @param callback Function callback
   * /
-public void setVideoEncoding (int type, ISetDeviceParamsCallback callback);
+public void setVideoEncoding (int enable, ISetDeviceParamsCallback callback);
 
 [Code example]
-MeariUser.getInstance (). SetVideoEncoding (type, new ISetDeviceParamsCallback () {
+MeariUser.getInstance (). SetVideoEncoding (enable, new ISetDeviceParamsCallback () {
      @Override
      public void onSuccess () {
      }
@@ -2368,10 +2308,8 @@ MeariUser.getInstance().closeDeviceAlarmPush(cameraInfo.getDeviceID(), status, n
 });
 ```
 
-## 9.6 Parameter setting of NVR
-## 9.7 Parameter setting of babymonitor
-## 9.8 Parameter setting of doorbell
-### 9.8.1 Intercom volume settings of device
+## 9.6 Parameter setting of doorbell
+### 9.6.1 Intercom volume settings of device
 ```
 【description】
 Intercom volume setting of Device
@@ -2397,7 +2335,7 @@ MeariUser.getInstance (). SetSpeakVolume (volume, new ISetDeviceParamsCallback (
 });
 ```
 
-### 9.8.2 Unlocking the battery lock
+### 9.6.2 Unlocking the battery lock
 ```
 【description】
 Unlocking the battery lock
@@ -2422,7 +2360,7 @@ MeariUser.getInstance (). UnlockBattery (new ISetDeviceParamsCallback () {
 });
 ```
 
-### 9.8.3 Binding Wireless Chime
+### 9.6.3 Binding Wireless Chime
 ```
 【description】
 Binding Wireless Chime
@@ -2447,7 +2385,7 @@ MeariUser.getInstance (). BindWirelessChime (new ISetDeviceParamsCallback () {
 });
 ```
 
-### 9.8.4 Unbinding Wireless Chime
+### 9.6.4 Unbinding Wireless Chime
 ```
 【description】
 Unbinding Wireless Chime
@@ -2472,7 +2410,7 @@ MeariUser.getInstance (). UnbindWirelessChime (new ISetDeviceParamsCallback () {
 });
 ```
 
-### 9.8.5 Whether the wireless chime works
+### 9.6.5 Whether the wireless chime works
 ```
 【description】
 Whether the wireless chime works
@@ -2499,7 +2437,7 @@ MeariUser.getInstance (). SetWirelessChimeEnable (enable, new ISetDeviceParamsCa
 ```
 
 
-### 9.8.6 Volume setting of wireless chime
+### 9.6.6 Volume setting of wireless chime
 ```
 【description】
 Volume setting of wireless chime
@@ -2525,7 +2463,7 @@ MeariUser.getInstance (). SetWirelessChimeVolume (volume, new ISetDeviceParamsCa
 });
 ```
 
-### 9.8.7 Ringtone setting of wireless chime
+### 9.6.7 Ringtone setting of wireless chime
 ```
 【description】
 Ringtone setting of wireless chime
@@ -2551,7 +2489,7 @@ MeariUser.getInstance (). SetWirelessChimeSong (song, new ISetDeviceParamsCallba
 });
 ```
 
-### 9.8.8 Whether the mechanical chime works
+### 9.6.8 Whether the mechanical chime works
 ```
 【description】
 Whether the mechanical chime works
@@ -2576,75 +2514,213 @@ MeariUser.getInstance (). SetMechanicalChimeEnable (enable, new ISetDeviceParams
     }
 });
 ```
-
-## 9.9 Parameter setting of voice bell
-## 9.10 Parameter setting of floodlight camera
-## 9.11 Parameter setting of relay router
-
-### 9.2.25 Start rotation command of device
+## 9.7 Flight camera parameter setting
+### 9.7.1 light switch
 ```
 【description】
-Start rotation command of device
+Light switch
 
-[function call]
-
+【Function call】
 /**
- * Start rotation command of device
+ * Light switch
  *
- * @param snNum device's sn number
- * @param timeList p: left-80; right 80. t: lower -20; upper 20. z: passed in 0
- * @param tag request tag
- * @param callback request callback
+ * @param status  0-off; 1-on
+ * @param callback Function callback
  */
-Public void startPTZ(String snNum, int p, int t, int z, Object tag, IStringResultCallback callback);
+public void setFlightLightStatus(int status, ISetDeviceParamsCallback callback);
 
-[code example]
-
-//move to the left
-MeariUser.getInstance().startPTZ(cameraInfo.getSnNum(), -80, 0, 0, this, new IStringResultCallback() {
+【Code example】
+MeariUser.getInstance().setFlightLightStatus(enable, new ISetDeviceParamsCallback() {
     @Override
-    Public void onSuccess(String result) {
+    public void onSuccess() {
     }
 
     @Override
-    public void onError(int code, String error) {
+    public void onFailed(int errorCode, String errorMsg) {
     }
 });
 ```
-
-### 9.2.26 Stop rotation command of device
+### 9.7.2 Alarm switch
 ```
 【description】
-Stop rotation command of device
+Alarm switch
 
-[function call]
-
+【Function call】
 /**
- * Stop rotation command of device
+ * Alarm switch
  *
- * @param snNum device's sn number
- * @param timeList 0-off 1-open
- * @param tag request tag
- * @param callback request callback
+ * @param status  0-off; 1-on
+ * @param callback Function callback
  */
-Public void stopPTZ(String snNum, Object tag, IStringResultCallback callback);
+public void setFlightSirenEnable(int status, ISetDeviceParamsCallback callback);
 
-[code example]
-
-MeariUser.getInstance().stopPTZ(cameraInfo.getSnNum(), this, new IStringResultCallback() {
+【Code example】
+MeariUser.getInstance().setFlightSirenEnable(status, new ISetDeviceParamsCallback() {
     @Override
-    Public void onSuccess(String result) {
+    public void onSuccess() {
     }
 
     @Override
-    Public void onError(int code, String error) {
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.3 Linkage lighting
+```
+【description】
+Linkage lighting
+
+【Function call】
+/**
+ * Linkage lighting
+ *
+ * @param status  0-off; 1-on
+ * @param callback Function callback
+ */
+public void setFlightLinkLightingEnable(int status, ISetDeviceParamsCallback callback);
+
+【Code example】
+MeariUser.getInstance().setFlightLinkLightingEnable(status, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.4 Linkage lighting duration
+```
+【description】
+Linkage lighting duration
+
+【Function call】
+/**
+ * Linkage lighting duration
+ *
+ * @param duration duration
+ * @param callback Function callback
+ */
+public void setFlightPirDuration(int duration, ISetDeviceParamsCallback callback);
+
+【Code example】
+MeariUser.getInstance().setFlightPirDuration(duration, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.5 Lighting schedule
+```
+【description】
+Lighting schedule
+
+【Function call】
+/**
+ * Lighting schedule
+ *
+ * @param enable lighting schedule switch
+ * @param from   lighting schedule start time
+ * @param to     lighting schedule end time
+ * @param callback Function callback
+ */
+public void setFlightSchedule(int enable, String from, String to, ISetDeviceParamsCallback callback);
+
+【Code example】
+MeariUser.getInstance().setFlightSchedule(enable, from, to, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.6 Lighting brightness
+```
+【description】
+Lighting brightness
+
+【Function call】
+/**
+ * Lighting brightness
+ *
+ * @param brightness brightness
+ * @param callback Function callback
+ */
+public void setFlightBrightness(int brightness, ISetDeviceParamsCallback callback);
+
+【Code example】
+MeariUser.getInstance().setFlightBrightness(brightness, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.7 Manual lighting duration
+```
+【description】
+Manual lighting duration
+
+【Function call】
+/**
+ * Manual lighting duration
+ *
+ * @param duration duration
+ * @param callback Function callback
+ */
+public void setFlightManualLightingDuration(int duration, ISetDeviceParamsCallback callback);
+
+【Code example】
+MeariUser.getInstance().setFlightManualLightingDuration(duration, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.8 Linkage Alarm
+```
+【description】
+Linkage Alarm
+
+【Function call】
+/**
+ * Linkage Alarm
+ *
+ * @param status  0-off; 1-on
+ * @param callback Function callback
+ */
+public void setFlightLinkSirenEnable(int status, ISetDeviceParamsCallback callback);
+
+【Code example】
+MeariUser.getInstance().setFlightLinkSirenEnable(status, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
     }
 });
 ```
 
 # 10.MQTT and push
 ```
-The meari SDK supports internal MQTT push messages, as well as Aurora, FCM and other vendors (supported in future)
+The meari SDK supports internal MQTT push messages, as well as FCM and other vendors (supported in future)
 ```
 
 ## 10.1 MQTT messages
@@ -2655,16 +2731,12 @@ Used to receive messages such as device add success message, doorbell call messa
 ### 10.1.1 Connect to MQTT Service
 
 // Called after the user login successfully
-if (! MeariUser.getInstance (). isMqttConnected ()) {
-    MeariUser.getInstance (). ConnectMqttServer (application);
-}
+MeariUser.getInstance (). ConnectMqttServer (application);
 
 ### 11.1.2 Exit MQTT Service
 
 // Called after the user logout successfully
-if (MeariUser.getInstance (). isMqttConnected ()) {
-    MeariUser.getInstance (). DisConnectMqttService ();
-}
+MeariUser.getInstance (). DisConnectMqttService ();
 
 ### 11.1.3 MQTT message processing
 
@@ -2740,27 +2812,8 @@ void requestReceivingDevice (String userName, String deviceName, String msgID);
 void requestShareDevice (String userName, String deviceName, String msgID);
 ```
 
-## 10.2 Integrated Aurora Push
-
-### 10.2.1 Apply for an account
-```
-Please apply for Aurora Push account and create application by yourself, refer to the official document to integrate Aurora Push. Contact us to configure the Aurora key and secret you applied for.
-```
-### 10.2.2 Setting User Alias
-```
-UserInfo is obtained after successfully logging in to meari.
-After the aurora is successfully initialized, use the userInfo.getJpushAlias ​​() successfully from login to set the aurora alias.
-Initialize and set the alias refer to the official document or the MeariSDK demo
-```
-### 10.2.3 Message Handling
-```
-Refer to the message processing in the MyReceiver file from the demo
-```
-
-## 10.3 Integrated Google Push
-```
-Not currently supported
-```
+## 10.2 Integrated FCM Push
+First, You can follow these guides: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) and [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), then Ask meari for Configuring Sender ID and Server Key and uploading the google-services.json file in the Push (Google FCM) section of App SDK on the Meari IoT Platform.
 
 ## 10.3 Integration with other pushes
 ```

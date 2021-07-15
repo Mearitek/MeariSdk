@@ -4,11 +4,10 @@
 [TOC]
 
 <center>
-    
 ---
 版本号 | 制定团队 | 更新日期 | 备注
 :-:|:-:|:-:|:-:
-2.2.0 | 觅睿技术团队 | 2020.03.13 | 优化
+3.1.0 | 觅睿技术团队 | 2020.07.02 | 优化
 
 </center>
 
@@ -54,7 +53,7 @@ android {
         ...
         ndk {
         //选择要添加的对应 cpu 类型的 .so 库。
-        abiFilters  'armeabi','arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'
+        abiFilters  arm64-v7a', 'armeabi-v8a'
         }
     }
      sourceSets {
@@ -72,7 +71,7 @@ repositories {
 
 dependencies {
     // 必需依赖库
-    implementation(name: 'mearisdk-2.2.0-20200313', ext: 'aar')
+    implementation(name: 'sdk-core-3.1.0-beta6', ext: 'aar')
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
     implementation 'com.alibaba:fastjson:1.2.57'
@@ -95,11 +94,6 @@ dependencies {
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
-    <permission
-        android:name="${applicationId}.permission.JPUSH_MESSAGE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -116,116 +110,6 @@ dependencies {
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-
-极光推送配置
- <!-- Rich push 核心功能 since 2.0.6-->
-        <activity
-            android:name="cn.jpush.android.ui.PopWinActivity"
-            android:theme="@style/MyDialogStyle"
-            android:exported="false">
-        </activity>
-
-        <!-- Required SDK核心功能-->
-        <activity
-            android:name="cn.jpush.android.ui.PushActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="cn.jpush.android.ui.PushActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.meari.test" />
-            </intent-filter>
-        </activity>
-
-        <!-- Required SDK 核心功能-->
-        <!-- 可配置android:process参数将PushService放在其他进程中 -->
-        <service
-            android:name="cn.jpush.android.service.PushService"
-            android:process=":mult"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTER" />
-                <action android:name="cn.jpush.android.intent.REPORT" />
-                <action android:name="cn.jpush.android.intent.PushService" />
-                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
-            </intent-filter>
-        </service>
-        <!-- since 3.0.9 Required SDK 核心功能-->
-        <provider
-            android:authorities="com.meari.test.DataProvider"
-            android:name="cn.jpush.android.service.DataProvider"
-            android:exported="false"
-            />
-
-        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
-        <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
-        <service
-            android:name="cn.jpush.android.service.DaemonService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService" />
-                <category android:name="com.meari.test" />
-            </intent-filter>
-
-        </service>
-        <!-- since 3.1.0 Required SDK 核心功能-->
-        <provider
-            android:authorities="com.meari.test.DownloadProvider"
-            android:name="cn.jpush.android.service.DownloadProvider"
-            android:exported="true"
-            />
-        <!-- Required SDK核心功能-->
-        <receiver
-            android:name="cn.jpush.android.service.PushReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
-                <category android:name="com.meari.test" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-            <!-- Optional -->
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
-        <!-- Required SDK核心功能-->
-        <receiver android:name="cn.jpush.android.service.AlarmReceiver" android:exported="false"/>
-
-        <!-- User defined.  For test only  用户自定义的广播接收器-->
-        <receiver
-            android:name=".receiver.MyReceiver"
-            android:exported="false"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
-                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <category android:name="com.meari.test" />
-            </intent-filter>
-        </receiver>
-
-        <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调-->
-        <receiver android:name=".receiver.MyJPushMessageReceiver">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-                <category android:name="com.meari.test"></category>
-            </intent-filter>
-        </receiver>
-        <!-- Required  . Enable it you can get statistics data with channel -->
-        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
-        <meta-data android:name="JPUSH_APPKEY" android:value="" /> 
 ```
 
 
@@ -260,14 +144,12 @@ public class MeariSmartApp extends Application {
 # 4.用户管理
 ```
 觅睿科技提供手机/邮箱密码登陆，uid登录，重置密码等操作，
-在注册或登录成功后，使用返回信息，去连接mqtt服务，初始化极光等操作。
+在注册或登录成功后，使用返回信息，连接mqtt服务。
 ```
 
 UserInfo类
-- jpushAlias  极光推送的别名
 - userID      用户ID
 - nickName    昵称
-- phoneCode   国家区号
 - userAccount 用户
 - token       用户登陆的时候的唯一标识
 - headPic     用户头像路径
@@ -283,7 +165,7 @@ UserInfo类
 ## 4.1 手机/邮箱注册
 ```
 【描述】
-手机或邮箱注册(手机注册仅支持中国大陆)。
+手机或邮箱注册。
 
 【函数调用】
 
@@ -358,13 +240,9 @@ public void loginWithAccount(String countryCode, String phoneCode, String userAc
 MeariUser.getInstance().loginWithAccount(countryCode,phoneCode, userAccount, password, new ILoginCallback() {
     @Override
     public void onSuccess(UserInfo user) {
-        // 建议在MainActivity中初始化极光和连接mqtt服务，第一次登陆完保存用户信息，不必每次启动app都去登录。
-        //如果需要接收推送消息，联系我们配置相关参数，使用我们的别名初始化极光推送，接入流程参考极光官方文档。
-        initJPushAlias(user.getJpushAlias());
+        // 建议在MainActivity中连接mqtt服务，第一次登陆完保存用户信息，不必每次启动app都去登录。
         // 连接mqtt服务
-        if (!MeariUser.getInstance().isMqttConnected()) {
-            MeariUser.getInstance().connectMqttServer(getApplication());
-        }
+        MeariUser.getInstance().connectMqttServer(getApplication());
     }
 
     @Override
@@ -448,13 +326,9 @@ public void loginWithUid(String countryCode, String phoneCode, String uuid, ILog
 MeariUser.getInstance().loginWithUid(countryCode, phoneCode,uid, new ILoginCallback() {
     @Override
     public void onSuccess(UserInfo user) {
-        // 建议在MainActivity中初始化极光和连接mqtt服务，第一次登陆完保存用户信息，不必每次启动app都去登录。
-        //如果需要接收推送消息，联系我们配置相关参数，使用我们的别名初始化极光推送，接入流程参考极光官方文档。
-        initJPushAlias(user.getJpushAlias());
+        // 建议在MainActivity中连接mqtt服务，第一次登陆完保存用户信息，不必每次启动app都去登录。
         // 连接mqtt服务
-        if (!MeariUser.getInstance().isMqttConnected()) {
-            MeariUser.getInstance().connectMqttServer(getApplication());
-        }
+        MeariUser.getInstance().connectMqttServer(getApplication());
     }
     @Override
     public void onError(String code, String error) {
@@ -552,18 +426,18 @@ MeariUser.getInstance().renameNickname(name, new IResultCallback() {
 
 # 5.添加设备
 ```
-让设备连接上WiFi，并将设备添加到用户的的账号下。推荐使用二维码陪网添加
+让设备连接上WiFi，并将设备添加到用户的的账号下。推荐使用二维码配网添加
 ```
 ## 5.1 二维码配网添加设备
 ```
-获取token后，生成二维码，设备扫描二维码听到提示音，并变成蓝灯后表示陪网成功。
-然后搜索设备添加，支持自动添加的等待设备添加完成。
+获取token后，生成二维码，设备扫描二维码听到提示音，并变成蓝灯后表示配网成功。
+然后搜索设备添加，等待添加完成。
 ```
 ### 5.1.1 生成二维码
 ```
 【描述】
-获取token后，生成二维码，设备扫描二维码听到提示音，并变成蓝灯后表示陪网成功。
-然后搜索设备添加，支持自动添加的等待设备添加完成。
+获取token后，生成二维码，设备扫描二维码听到提示音，并变成蓝灯后表示配网成功。
+然后搜索设备添加，等待设备添加完成。
 
 【函数调用】
 
@@ -592,6 +466,7 @@ MeariUser.getInstance().getToken(new IGetTokenCallback() {
     public void onSuccess(String token, int leftTime, int smart_switch) {
         // token 配网令牌
         // leftTime 剩余有效时间
+        // smart_switch smartWifi开关
     }
 
     @Override
@@ -622,7 +497,7 @@ mqtt消息可能有延时，为了提高体验，可以定时调用getDeviceList
  *
  * @param ssid      wifi名称
  * @param pwd       wifi密码
- * @param wifiMode  wifi加密类型
+ * @param wifiMode  wifi加密类型 0:无密码, 1:WPA_PSK加密, 2:WPA_EAP加密
  * @param scanningResultActivity 搜索结果回调
  * @param status    状态
  */
@@ -632,14 +507,16 @@ public MangerCameraScanUtils(String ssid, String pwd, int wifiMode, CameraSearch
  * 查询设备状态列表
  *
  * @paramList<CameraInfo>cameraInfos 设备列表
+ * @param deviceTypeID 设备类型ID
  * @param callback 网络请求回调
  */
-public void checkDeviceStatus(List<CameraInfo>cameraInfos,IDeviceStatusCallback callback);
+public void checkDeviceStatus(List<CameraInfo> deviceList, int deviceTypeID, IDeviceStatusCallback callback);
 
 /**
  * 添加设备
  *
  * @paramList<CameraInfo>cameraInfos 设备列表
+ * @param deviceTypeID 设备类型ID
  * @param callback 网络请求回调
  */
 public void addDevice(CameraInfo cameraInfo, int deviceTypeID, IAddDeviceCallback callback);
@@ -672,7 +549,7 @@ mangerCameraScan.startSearchDevice(false, -1, 100, ActivityType.ACTIVITY_SEARCHC
 MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
     @Override
     public void onSuccess(ArrayList<CameraInfo> deviceList) {
-        // 1代表是自己的设备，2代表别人的微分享给设备,3代表设备可添加 4,别人的设备已分享给自己
+        // 1代表是自己的设备，2代表别人的分享给设备,3代表设备可添加 4,别人的设备已分享给自己
         if (cameraInfo.getAddStatus() == 3) {
             //添加设备
             if (cameraInfo.getAutoBinding() == 1) {
@@ -691,7 +568,7 @@ MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDevice
 });
 
 MeariUser.getInstance().addDevice(info, this.mDeviceTypeID, new IAddDeviceCallback() {
-    @Override
+@Override
     public void onSuccess(String sn) {
        
     }
@@ -716,6 +593,66 @@ public void addDeviceFailed(String message) {
 
 ## 5.2 AP配网添加设备
 
+```
+让设备处于AP配网模式，连接设备热点，更新token后，发送配置信息后连回之前的wifi听到提示音，并变成蓝灯后表示配网成功。
+然后搜索设备添加，等待设备添加完成。
+```
+
+## 5.2.1 连接设备热点
+
+```
+【描述】
+让设备处于AP配网模式，连接设备热点，更新token后，发送配置信息后连回之前的wifi听到提示音，并变成蓝灯后表示配网成功。
+然后搜索设备添加，等待设备添加完成。
+
+【函数调用】
+/**
+ * 创建设备控制类
+ *
+ */
+public MeariDeviceController();
+
+/**
+ * 更新token
+ *
+ * token 配网令牌
+ */
+public void updateToken(String token);
+
+/**
+ * 发送配置信息
+ *
+ * @param wifiName wifi名称
+ * @param password wifi密码
+ * @param deviceListener 回调
+ */
+public void setAp(String wifiName, String password, MeariDeviceListener deviceListener);
+
+【代码范例】
+
+if (deviceController == null) {
+    deviceController = new MeariDeviceController();
+}
+deviceController.updateToken(getToken());  // getToken() 获取配网token
+deviceController.setAp(mSsid, mPwd, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+        // 连回原来的wifi，开始搜索添加设备
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+        
+    }
+});
+```
+
+### 5.2.2 搜索添加设备
+
+```
+见5.1.2
+```
+
 # 6.设备控制
 
 ## 6.1 设备基本操作
@@ -724,7 +661,6 @@ public void addDeviceFailed(String message) {
 
 MeariDevice（管理获取返回的设备列表）
 
-- List<NVRInfo> nvrs; NVR列表
 - List<CameraInfo> ipcs; 普通摄像机列表
 - List<CameraInfo> doorBells; 门铃列表
 - List<CameraInfo> batteryCameras; 电池摄像机列表
@@ -739,7 +675,7 @@ CameraInfo extends BaseDeviceInfo（设备信息类）
 - String snNum//设备SN
 - String deviceName//设备呢称
 - String deviceIcon//设备图标灰色图标
-- int addStatus//设备状态 1代表是自己的设备，2代表别人的未分享给设备,3代表设备可添加 4,别人的设备已分享给自己
+- int addStatus//设备状态 1代表是自己的设备, 2代表别人的未分享设备, 3代表设备可添加, 4别人的设备已分享给自己
 - int devTypeID;//设备类型
 - String userAccount;//拥有着账号
 - boolean asFriend//是否为好友分享给自己的设备
@@ -764,7 +700,6 @@ MeariUser.getInstance().getDeviceList(new IDevListCallback() {
     public void onSuccess(MeariDevice dev) {
         //根据自己接入的设备选择
         ArrayList<CameraInfo> cameraInfos = new ArrayList<>();
-        cameraInfos.addAll(dev.getNvrs());
         cameraInfos.addAll(dev.getIpcs());
         cameraInfos.addAll(dev.getDoorBells());
         cameraInfos.addAll(dev.getBatteryCameras());
@@ -1264,12 +1199,13 @@ MeariUser.getInstance().getAllDeviceShare(new IShareDeviceListCallback() {
  * 
  * @param account 账号
  * @param deviceID device ID
+ * @param phoneCode 国家电话号码区号
  * @param callback Function callback
  */
-public void searchUser(String account, String deviceID, ISearchUserCallback callback)
+public void searchUser(String account, String deviceID, String phoneCode, ISearchUserCallback callback)
 
 【代码范例】
-MeariUser.getInstance().searchUser(account, deviceID, new ISearchUserCallback() {
+MeariUser.getInstance().searchUser(account, deviceID, phoneCode, new ISearchUserCallback() {
     @Override
     public void onSuccess(ShareUserInfo shareUserInfo) {
     }
@@ -1290,12 +1226,13 @@ MeariUser.getInstance().searchUser(account, deviceID, new ISearchUserCallback() 
  * 分享设备
  * @param account 账号
  * @param deviceID device ID
+ * @param phoneCode 国家电话号码区号
  * @param callback Function callback
  */
-public void shareDevice(String account, String deviceID, IResultCallback callback);
+public void shareDevice(String account, String deviceID, String phoneCode, IResultCallback callback);
 
 【代码范例】
-MeariUser.getInstance().shareDevice(account, deviceID, new IResultCallback() {
+MeariUser.getInstance().shareDevice(account, deviceID, phoneCode, new IResultCallback() {
     @Override
     public void onSuccess() {
     }
@@ -1316,12 +1253,13 @@ MeariUser.getInstance().shareDevice(account, deviceID, new IResultCallback() {
  * 取消分享设备
  * @param account 账号
  * @param deviceID device ID
+ * @param phoneCode 国家电话号码区号
  * @param callback Function callback
  */
-public void cancelShareDevice(String account, String deviceID, IResultCallback callback);
+public void cancelShareDevice(String account, String deviceID, String phoneCode, IResultCallback callback);
 
 【代码范例】
-MeariUser.getInstance().cancelShareDevice(account, cameraInfo.getDeviceID(), new IResultCallback() {
+MeariUser.getInstance().cancelShareDevice(account, cameraInfo.getDeviceID(), phoneCode, new IResultCallback() {
     @Override
     public void onSuccess() {
     }
@@ -1492,13 +1430,13 @@ MeariUser.getInstance().getDeviceMessageStatusList(new IDeviceMessageStatusCallb
 
 【函数调用】
 /**
- * refuse friend share device
  * 获取单个设备的报警消息（一次获取最新的20条，设备主人拉取后，服务器删除数据，注意保存数据）
  *
  * @param deviceId device id
+ * @param day 日期 yyyyMMdd
  * @param callback function callback
  */
-public void getAlarmMessagesForDev(long deviceId, IGetAlarmMessagesCallback callback);
+public void getAlertMsg(long deviceID, String day, IDeviceAlarmMessagesCallback callback);
 
 【方法调用】
 
@@ -1509,15 +1447,15 @@ class DeviceAlarmMessage:
 - int imageAlertType;//报警类型（PIR和Motion）
 - int msgTypeID;//消息类型
 - long userID;//用户Id
-- long userIDS;
-- String createDate;//穿时间
+- long userIDS;//分享设备时为0，否则为用户Id
+- String createDate;//上传时间
 - String isRead;//是否已读
 - String tumbnailPic;//缩略图
 - String decibel;//分贝
 - long msgID;//消息Id
 
 
-MeariUser.getInstance().getAlarmMessagesForDev(getMsgInfo().getDeviceID(), new IDeviceAlarmMessagesCallback() {
+MeariUser.getInstance().getAlertMsg(getMsgInfo().getDeviceID(), day, new IDeviceAlarmMessagesCallback() {
     @Override
     public void onSuccess(List<DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
 
@@ -1616,7 +1554,8 @@ if (cameraInfo.getLed() == 1) {
 设备能力集
 
 - int dcb; 噪声报警：0-不支持；1-支持
-- int pir; 人体侦测：0-不支持；1-支持
+- int pir; 人体侦测：0-不支持；1-支持PIR使能开关+设置选项(高中低),；2-只支持PIR的使能开关；3-预留；4-支持PIR使能开关+设置选项(高低), 5-支持双PIR的使能开关(左和右)+统一的灵敏度设置选项(高低)(用于常电设备，如Flight 4T)；6-支持双PIR的使能开关(左和右)+统一的灵敏度设置选项(高低)(用于低功耗设备，如Flight 3T)；7-支持pir使能开关+pir灵敏度档位设置（10档）； 8-支持pir使能开关+pir灵敏度档位设置，支持图形档位显示，具体档位有多少可以参照plv字段，默认10档
+- int plv；pir等级设置使能开关，用于多级设置开关1-N档，0-不支持，10-支持10档（1-10）
 - int md;  移动侦测：0-不支持；1-支持
 - int cst; 云存储  ：0-不支持；1-支持
 - int dnm; 日夜模式：0-不支持；1-支持
@@ -1624,7 +1563,8 @@ if (cameraInfo.getLed() == 1) {
 - int flp; 视频翻转：0-不支持；1-支持
 - int bcd; 哭声检测：0-不支持；1-支持
 - int ptr; 人形跟踪：0-不支持；1-支持
-- int pdt; 人形检测：0-不支持；1-支持
+- int pdt; 人形检测：0-不支持；bit0=支持开关设置；bit1=支持画框开关设置；bit2=支持夜间过滤开关设置；bit3=支持白天过滤开关设置
+- int ptz; 云台：0-不支持；1-支持左右；2-支持上下；3.支持上下左右
 
 
 ## 9.2 设备参数
@@ -2245,13 +2185,13 @@ MeariUser.getInstance().setOnvif(enable, password, new ISetDeviceParamsCallback(
 /**
  * 设置视频编码类型
  *
- * @param type encoding type
+ * @param enable H265 enable
  * @param callback Function callback
  */
-public void setVideoEncoding(int type, ISetDeviceParamsCallback callback);
+public void setVideoEncoding(int enable, ISetDeviceParamsCallback callback);
 
 【代码范例】
-MeariUser.getInstance().setVideoEncoding(type, new ISetDeviceParamsCallback() {
+MeariUser.getInstance().setVideoEncoding(enable, new ISetDeviceParamsCallback() {
     @Override
     public void onSuccess() {
     }
@@ -2370,12 +2310,8 @@ MeariUser.getInstance().closeDeviceAlarmPush(cameraInfo.getDeviceID(), status, n
 });
 ```
 
-
-
-## 9.6 NVR参数设置
-## 9.7 BabyMonitor参数设置
-## 9.8 门铃参数设置
-### 9.8.1 设备对讲音量设置
+## 9.6 门铃参数设置
+### 9.6.1 设备对讲音量设置
 ```
 【描述】
 设备对讲音量设置
@@ -2401,7 +2337,7 @@ MeariUser.getInstance().setSpeakVolume(volume, new ISetDeviceParamsCallback() {
 });
 ```
 
-### 9.8.2 解锁电池锁
+### 9.6.2 解锁电池锁
 ```
 【描述】
 解锁电池锁
@@ -2426,7 +2362,7 @@ MeariUser.getInstance().unlockBattery(new ISetDeviceParamsCallback() {
 });
 ```
 
-### 9.8.3 绑定无线铃铛
+### 9.6.3 绑定无线铃铛
 ```
 【描述】
 绑定无线铃铛
@@ -2451,7 +2387,7 @@ MeariUser.getInstance().bindWirelessChime(new ISetDeviceParamsCallback() {
 });
 ```
 
-### 9.8.4 解绑无线铃铛
+### 9.6.4 解绑无线铃铛
 ```
 【描述】
 解绑无线铃铛
@@ -2476,7 +2412,7 @@ MeariUser.getInstance().unbindWirelessChime(new ISetDeviceParamsCallback() {
 });
 ```
 
-### 9.8.5 无线铃铛是否工作设置
+### 9.6.5 无线铃铛是否工作设置
 ```
 【描述】
 无线铃铛是否工作设置
@@ -2503,7 +2439,7 @@ MeariUser.getInstance().setWirelessChimeEnable(enable, new ISetDeviceParamsCallb
 ```
 
 
-### 9.8.6 无线铃铛音量设置
+### 9.6.6 无线铃铛音量设置
 ```
 【描述】
 无线铃铛音量设置
@@ -2529,7 +2465,7 @@ MeariUser.getInstance().setWirelessChimeVolume(volume, new ISetDeviceParamsCallb
 });
 ```
 
-### 9.8.7 无线铃铛铃声设置
+### 9.6.7 无线铃铛铃声设置
 ```
 【描述】
 无线铃铛铃声设置
@@ -2555,7 +2491,7 @@ MeariUser.getInstance().setWirelessChimeSong(song, new ISetDeviceParamsCallback(
 });
 ```
 
-### 9.8.8 机械铃铛是否工作设置
+### 9.6.8 机械铃铛是否工作设置
 ```
 【描述】
 机械铃铛是否工作设置
@@ -2581,13 +2517,214 @@ MeariUser.getInstance().setMechanicalChimeEnable(enable, new ISetDeviceParamsCal
 });
 ```
 
-## 9.9 语音门铃参数设置
-## 9.10 泛光灯摄像机参数设置
-## 9.11 中继路由器参数设置
+## 9.7 泛光灯摄像机参数设置
+### 9.7.1 灯具摄像机开关灯设置
+```
+【描述】
+灯具摄像机开关灯设置
+
+【函数调用】
+/**
+ * 设置灯具摄像机开关灯
+ *
+ * @param status  0-off; 1-on
+ * @param callback Function callback
+ */
+public void setFlightLightStatus(int status, ISetDeviceParamsCallback callback);
+
+【代码范例】
+MeariUser.getInstance().setFlightLightStatus(enable, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.2 灯具摄像机报警开关设置
+```
+【描述】
+灯具摄像机报警开关设置
+
+【函数调用】
+/**
+ * 设置灯具摄像机报警开关
+ *
+ * @param status  0-off; 1-on
+ * @param callback Function callback
+ */
+public void setFlightSirenEnable(int status, ISetDeviceParamsCallback callback);
+
+【代码范例】
+MeariUser.getInstance().setFlightSirenEnable(status, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.3 灯具摄像机联动照明开关设置
+```
+【描述】
+灯具摄像机联动照明开关设置
+
+【函数调用】
+/**
+ * 设置灯具摄像机联动照明开关
+ *
+ * @param status  0-off; 1-on
+ * @param callback Function callback
+ */
+public void setFlightLinkLightingEnable(int status, ISetDeviceParamsCallback callback);
+
+【代码范例】
+MeariUser.getInstance().setFlightLinkLightingEnable(status, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.4 灯具摄像机联动照明持续时间设置
+```
+【描述】
+灯具摄像机联动照明持续时间设置
+
+【函数调用】
+/**
+ * 设置灯具摄像机联动照明持续时间
+ *
+ * @param duration 持续时间
+ * @param callback Function callback
+ */
+public void setFlightPirDuration(int duration, ISetDeviceParamsCallback callback);
+
+【代码范例】
+MeariUser.getInstance().setFlightPirDuration(duration, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.5 灯具摄像机照明计划设置
+```
+【描述】
+灯具摄像机照明计划设置
+
+【函数调用】
+/**
+ * 设置灯具摄像机照明计划
+ *
+ * @param enable 照明计划开关
+ * @param from   照明计划开始时间
+ * @param to     照明计划结束时间
+ * @param callback Function callback
+ */
+public void setFlightSchedule(int enable, String from, String to, ISetDeviceParamsCallback callback);
+
+【代码范例】
+MeariUser.getInstance().setFlightSchedule(enable, from, to, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.6 灯具摄像机亮度设置
+```
+【描述】
+灯具摄像机亮度设置
+
+【函数调用】
+/**
+ * 设置灯具摄像机亮度
+ *
+ * @param brightness 亮度
+ * @param callback Function callback
+ */
+public void setFlightBrightness(int brightness, ISetDeviceParamsCallback callback);
+
+【代码范例】
+MeariUser.getInstance().setFlightBrightness(brightness, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.7 灯具摄像机手动亮灯时长设置
+```
+【描述】
+手动亮灯时长设置
+
+【函数调用】
+/**
+ * 设置手动亮灯时长
+ *
+ * @param duration  持续时间
+ * @param callback Function callback
+ */
+public void setFlightManualLightingDuration(int duration, ISetDeviceParamsCallback callback);
+
+【代码范例】
+MeariUser.getInstance().setFlightManualLightingDuration(duration, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+### 9.7.8 灯具摄像机联动报警开关设置
+```
+【描述】
+灯具摄像机联动报警设置
+
+【函数调用】
+/**
+ * 设置灯具摄像机联动报警
+ *
+ * @param status  0-off; 1-on
+ * @param callback Function callback
+ */
+public void setFlightLinkSirenEnable(int status, ISetDeviceParamsCallback callback);
+
+【代码范例】
+MeariUser.getInstance().setFlightLinkSirenEnable(status, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
 
 # 10.MQTT和推送
+
 ```
-meari SDK 支持内部的MQTT推送消息，也支持极光、FCM等厂商推送（后续会陆续支持）
+meari SDK 支持内部的MQTT推送消息，也支持FCM等厂商推送（后续会陆续支持）
 ```
 
 ## 10.1 MQTT消息
@@ -2598,16 +2735,12 @@ meari SDK 支持内部的MQTT推送消息，也支持极光、FCM等厂商推送
 ### 10.1.1 连接MQTT服务
 
 // 用户登录成功后调用
-if (!MeariUser.getInstance().isMqttConnected()) {
-    MeariUser.getInstance().connectMqttServer(application);
-}
+MeariUser.getInstance().connectMqttServer(application);
 
 ### 11.1.2 退出MQTT服务
 
 // 用户登出登录成功后调用
-if (MeariUser.getInstance().isMqttConnected()) {
-    MeariUser.getInstance().disConnectMqttService();
-}
+MeariUser.getInstance().disConnectMqttService();
 
 ### 11.1.3 MQTT消息处理
 
@@ -2683,24 +2816,7 @@ void requestReceivingDevice(String userName, String deviceName, String msgID);
 void requestShareDevice(String userName, String deviceName, String msgID);
 ```
 
-## 10.2 集成极光推送
-
-### 10.2.1 申请账号
-```
-请自行申请极光推送账号和创建应用，参考官方文档接入极光推送。联系我们配置您申请的极光key和secret。
-```
-### 10.2.2 设置用户别名
-```
-登录meari成功后获取到 UserInfo。
-初始化极光成功后，使用登录成功获取的 userInfo.getJpushAlias() 来设置极光的别名。
-初始化和设置别名参考官方文档或MeariSDK demo
-```
-### 10.2.3 消息处理
-```
-参考demo中MyReceiver文件中对消息的处理
-```
-
-## 10.3 集成谷歌推送
+## 10.2 集成谷歌推送
 ```
 暂不支持
 ```
