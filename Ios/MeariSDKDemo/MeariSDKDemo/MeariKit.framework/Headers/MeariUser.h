@@ -1020,6 +1020,15 @@ deviceList.count must  ==  modeList.count
  @param failure failure callback (失败回调)
  */
 - (void)getOssImageDataWithUrl:(NSString *)url deviceID:(NSInteger)deviceID  success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+// Determine whether the picture ends with jepx1. If it is in the format ending with jepx1, it needs to be decrypted.
+// 判断图片是否是以jepx1结尾 如果是以jepx1结尾的格式 需要进行解密操作
+
+@param deviceSN 设备的SN(device.info.sn)
+@param imageData  图片的二进制数据 (image data)
+@return 解密完成的数据 (image data)
+*/
+- (NSData *)decryptImageDataWith:(NSString *)deviceSN imageData:(NSData *)imageData;
 
 /**
  Get list of shared messages
