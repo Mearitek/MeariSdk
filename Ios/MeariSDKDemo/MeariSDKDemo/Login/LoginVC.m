@@ -7,7 +7,7 @@
 //
 
 #import "LoginVC.h"
-
+#import <MJExtension/MJExtension.h>
 @interface LoginVC ()
 @property (weak, nonatomic) IBOutlet UITextField *accountTF;
 @property (weak, nonatomic) IBOutlet UIButton *loginInButton;
@@ -58,29 +58,22 @@
         [self presentViewController:alert animated:YES completion:nil];
         return;
     }
-    
-    // Choose one of the methods below
-
     // If you want to use our account system, please use this
     // warning!!!!!! warning!!!!  countryCode phoneCode, please user right code. check phoneCode file
-    [[MeariUser sharedInstance] loginWithAccount:_accountTF.text password:_passwordTF.text countryCode:@"CN" phoneCode:@"86" success:^(NSDictionary *dic){
-        self.errorCodeTextView.text = @"login success";
-        [self.loginInButton setTitle:@"you already login" forState:(UIControlStateNormal)];
     
-    } failure:^(NSError *error) {
-        self.errorCodeTextView.text = error.domain;
-    }];
+    //You must first connect to the cloud through your own server and interact with the Meari server to log in before you can use the login interface
+    //Pass the data obtained from Meari server to App
     
-    return;
-    
-    // If you have your own account system, please use this. Account use arbitrary string, not need register
-    // warning!!!!!! warning!!!!  countryCode phoneCode, please user right code. check phoneCode file
-    [[MeariUser sharedInstance] loginWithUid:_accountTF.text countryCode:@"CN" phoneCode:@"86" success:^{
-        self.errorCodeTextView.text = @"login success";
-        [self.loginInButton setTitle:@"you already login" forState:(UIControlStateNormal)];
-        
-    } failure:^(NSError *error) {
-        self.errorCodeTextView.text = error.domain;
+
+    //必须先通过云云对接 通过自己的服务器和Meari服务器交互 登录之后 才能使用登录接口
+    //将从Meari服务器获取的数据传递给App
+
+    [[MeariUser sharedInstance] loginUidWithExtraParamInfo:@{} complete:^(NSError *error) {
+        if (!error) {
+            NSLog(@"login Success");
+        }else {
+            NSLog(@"login error --- %@",error.description);
+        }
     }];
 }
 

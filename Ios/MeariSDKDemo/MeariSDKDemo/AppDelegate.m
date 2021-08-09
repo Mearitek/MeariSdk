@@ -10,6 +10,7 @@
 #import <MeariKit/MeariKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Braintree/BTAppSwitch.h>
+#import <MJExtension/MJExtension.h>
 static  NSString *app_key = @"8a48b2105058489aba0c08b79325ef3f";
 static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
 @interface AppDelegate ()
@@ -21,14 +22,18 @@ static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-     [[MeariSDK sharedInstance] startWithAppKey:app_key secretKey:app_secret];
-     MearEnvironment env;
-     env = MearEnvironmentRelease;
-//     env = MearEnvironmentDeveloper;
-     [[MeariSDK sharedInstance] configEnvironment:env];
-     [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelVerbose];
     
-     [BTAppSwitch setReturnURLScheme:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"]];
+    //You must first connect through the cloud to obtain the redirection information through your own server and Meari server interaction
+    //Pass the data obtained from Meari server to App
+    
+    //必须先通过云云对接 通过自己的服务器和Meari服务器交互 获取到重定向信息
+    //将从Meari服务器获取的数据传递给App
+    
+    [[MeariSDK sharedInstance] startSDKWithRedirectInfo:@{}];
+    
+    [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelVerbose];
+    
+    [BTAppSwitch setReturnURLScheme:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"]];
     return YES;
 }
 

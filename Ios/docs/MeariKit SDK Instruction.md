@@ -24,9 +24,9 @@ Meari Technology APP SDK provides the interface package for communication with h
 
 #2. Integration preparation
 
-**App Key & App Secert**
+**Prepare for cloud-to-cloud docking**
 
-Meari Technology Cloud Platform provides App Key and App Secert for users to access SDK and quickly access camera equipment
+You need to connect to the cloud, request data from the Meari server through your own server, and then transfer the data to the corresponding interface of the SDK. For the specific interface process, please refer to the Server directory at work.
 
 #3. Integrated SDK
 
@@ -55,47 +55,12 @@ Belong to: MeariSdk tools
 ### (1) Initialize the SDK configuration in Application
 
 ```
-【Description 】
-    Mainly used to initialize internal resources, communication services and other functions.
- 
+【Describe】
+       After connecting through the cloud, the data obtained from the server v2/third/sdk/redirect is transferred and the SDK is initialized.
 【Function】
-    /**
-     Start SDK
-     @param appKey appKey
-     @param secretKey secret
-    */
-    - (void)startWithAppKey:(NSString *)appKey secretKey:(NSString *)secretKey;
-    
-    /**
-     Set debug printing level
-     @param logLevel print level
-    */
-     - (void)setLogLevel:(MeariLogLevel)logLevel;
-    
-    
-    /**
-     Configure the server environment
-     @param environment Release: MearEnvironmentRelease Prrelease: MearEnvironmentPrerelease developer: MearEnvironmentDeveloper
-     */
-    - (void)configEnvironment:(MearEnvironment)environment;
-
+       -(void)startSDKWithRedirectInfo:(NSDictionary *)info;
 【Code】
-    [[MeariSDK sharedInstance] startWithAppKey:@"appKey" secretKey:@"secretKey"];
-    
-    [[MeariSDK sharedInstance] configEnvironment:MearEnvironmentPrerelease];
-    
-    //Set the debug log level, the input and output information of the internal interface will be printed for troubleshooting
-    [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelVerbose];
-    
-    /**
-    The language of the push is optional. The default is the same as the local language of the mobile phone and changes dynamically. After setting, the push language will be forced to the set language
-    @property sdkPushLanguage 
-	 
-    Currently the language supported by the server is :  zh,de,en,fr,pl,br,it,pt,es,ko,ja 
-    */
-【Code】
-    [MeariSDK sharedInstance].sdkPushLanguage = @"en";
-
+       [[MeariSDK sharedInstance] startSDKWithRedirectInfo:dic];
 ```
 
 
@@ -105,12 +70,8 @@ Belong to: MeariSdk tools
 Belong to: MeariUser tool class
 ```
 ```
-Meari Technology SDK provides two user management systems: ordinary user system and UID user system.
-
-There is a phoneCode file in the Demo project that stores the corresponding country code and phone code.
-
-Ordinary user system: account login, registration, change password, retrieve password, obtain verification code
-UID user system: uid login (maximum 64 bits), no need to register, no password system, please keep it safe
+Meari Technology SDK provides a user management system: UID user system
+There is a phoneCode file in the Demo project that stores the corresponding country code and phone code
 ```
 
 ##4.1 User uid login system 
@@ -120,36 +81,23 @@ Meari Technology provides uid login system. If the customer has their own user s
 ```
 
 ### (1) Redirect 
-
 ```
 【Description 】
-      Meari SDK supports global services. When you select a different country, you need to reset the access address, and access the corresponding server according to the country code passed in when logging in.
+         After the cloud-to-cloud connection, the data obtained from the server v2/third/sdk/login is transferred to the SDK to realize the login operation.
+         Note: Before calling loginUidWithExtraParamInfo each time, you need to call the startSDKWithRedirectInfo method first
 【Function】
-	  //Called when switching accounts and changing countries
-	  - (void)resetRedirect;    
-```
-### (2) User uid login 
-
-```
-【Description 】
-     The user uid is registered, and the uid must be unique.
-【Function】
-     /**
-      @param uid User ID, need to ensure uniqueness, <=32 bits
-      @param countryCode E.g. CN
-      @param phoneCode E.g. 86
-      @param success 
-      @param failure 
-     */
-    - (void)loginWithUid:(NSString *)uid countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode  success:(MeariSuccess)success  failure:(MeariFailure)failure
-
+          /**
+          @param info User login information Obtained from the server after cloud-to-cloud docking
+          */
+         - (void)loginUidWithExtraParamInfo:(NSDictionary *)info complete:(void(^)(NSError *error))complete 
 【Code】
-      [[MeariUser sharedInstance] loginWithUid:@"abcdefghijklmn" countryCode:@"CN" phoneCode:@"86" success:^{
-
-      } failure:^(NSError *error) {
-
+      [[MeariUser sharedInstance] loginUidWithExtraParamInfo:dic complete:^(NSError *error) {
+          if (!error) {
+              NSLog(@"login Success");
+          }else {
+              NSLog(@"login error --- %@",error.description);
+          }
       }];
-
 ```
 
 ### (3) User logout 
@@ -170,182 +118,7 @@ Meari Technology provides uid login system. If the customer has their own user s
 
      }];
 ```
-
-## 4.2 Ordinary user system management 
-
-### (1) Redirect 
-
-```
-【Description 】
-     MMeari SDK supports global services. When you select a different country, you need to reset the access address, and access the corresponding server according to the country code passed in when logging in.
-【Function】
-    //Called when switching accounts and changing countries
-    - (void)resetRedirect;    
-```
-### (2) Register an account 
-
-```
-【Description 】
-     You need to obtain a verification code before registering an account
- 
-【Function】
-     //get verification code
-     @param userAccount User account: email or mobile phone
-     @param countryCode E.g. CN
-     @param phoneCode E.g. 86
-     @param success return the remaining valid time of the verification code, in seconds
-     @param failure 
-	 - (void)getValidateCodeWithAccount:(NSString *)userAccount countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(void(^)(NSInteger seconds))success failure:(MeariFailure)failure;
-
-     //Register an account
-     @param userAccount User account: email or mobile phone number (only in mainland China)
-     @param password 
-     @param countryCode E.g. CN
-     @param phoneCode E.g. 86
-     @param verificationCode 
-     @param nickname 
-     @param success
-     @param failure 
-     - (void)registerAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode nickname:(NSString *)nickname success:(MeariSuccess)success failure:(MeariFailure)failure;
-    
-【Code】
-     //Get the verification code of the account
-     [[MeariUser sharedInstance] getValidateCodeWithAccount:@"john@163.com" countryCode:@"CN" phoneCode:@"86" success:^(NSInteger seconds) {
-   
-     } failure:^(NSError *error) {
-
-     }];
-     
-     //Register an account
-     [[MeariUser sharedInstance] registerAccount:@"john@163.com" password:@"123456" countryCode:@"CN" phoneCode:@"86" verificationCode:@"7234" nickname:@"coder man" success:^{
-    
-     } failure:^(NSError *error) {
-    
-     }];
-```
-
-### (3) Account login
-
-```
-【Description 】
-     Support email login, mobile phone (only in mainland China) login
-【Function】
-     /**
-      @param userAccount User account: email or mobile phone
-      @param password
-      @param countryCode E.g. CN
-      @param phoneCode  E.g. 86
-      @param success 
-      @param failure 
-     */
-     - (void)loginAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(MeariSuccess)success failure:(MeariFailure)failure;
-    
-【Code】
-     [[MeariUser sharedInstance] loginAccount:@"john@163.com" password:@"123456" countryCode:@"CN" phoneCode:@"86" success:^{
-    
-     } failure:^(NSError *error) {
-    
-     }];
-```
-
-### (4) Retrieve password
-
-```
-【Description 】
-     You need to get the verification code before retrieving the password
- 
-【Function】
-     //get verification code
-     @param userAccount User account: email or mobile phone
-     @param countryCode E.g. CN
-     @param phoneCode E.g. 86
-     @param success Successful callback, return the remaining valid time of the verification code, in seconds
-     @param failure 
-     - (void)getValidateCodeWithAccount:(NSString *)userAccount countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(void(^)(NSInteger seconds))success failure:(MeariFailure)failure;
-
-     //Retrieve password
-     @param userAccount User account: email or mobile phone number (only in mainland China)
-     @param password New password
-     @param countryCode E.g. CN
-     @param phoneCode E.g. 86
-     @param verificationCode Verification code
-     @param success 
-     @param failure 
-     - (void)findPasswordWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode success:(MeariSuccess)success failure:(MeariFailure)failure;
-
-【Code】
-     //Get the verification code of the account
-     [[MeariUser sharedInstance] getValidateCodeWithAccount:@"john@163.com" countryCode:@"CN" phoneCode:@"86" success:^(NSInteger seconds) {
-        //success
-     } failure:^(NSError *error) {
-        //failure
-     }];
-     
-     //Retrieve password
-     [[MeariUser sharedInstance] findPasswordWithAccount:@"john@163.com" password:@"123123" countryCode:@"CN" phoneCode:@"86" verificationCode:@"6322" success:^{
-     } failure:^(NSError *error) {
-    
-     }];
-```
-
-
-### (5) Change Password 
-
-```
-【Description 】
-     Change the password after login, you need to get the verification code before changing the password
-
-【Function】
-     @param userAccount 
-     @param countryCode 
-     @param phoneCode 
-     @param success 
-     @param failure 
-     - (void)getValidateCodeWithAccount:(NSString *)userAccount countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(void(^)(NSInteger seconds))success failure:(MeariFailure)failure;
-
-     //change Password
-     @param userAccount 
-     @param password 
-     @param verificationCode 
-     @param success 
-     @param failure 
-     - (void)changePasswordWithAccount:(NSString *)userAccount password:(NSString *)password verificationCode:(NSString *)verificationCode success:(MeariSuccess)success failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariUser sharedInstance] getValidateCodeWithAccount:@"john@163.com" countryCode:@"CN" phoneCode:@"86" success:^(NSInteger seconds) {
-        //success
-     } failure:^(NSError *error) {
-        //failure
-     }];
-     
-     //Retrieve password
-     [[MeariUser sharedInstance] changePasswordWithAccount:@"john@163.com" password:@"234567" verificationCode:@"8902" success:^{
-    
-     } failure:^(NSError *error) {
-    
-     }];
-```
-### (6) User logout 
-
-```
-【Description 】
-     Log out, log out of account
-
-【Function】
-     @param success 
-     @param failure 
-     - (void)logoutSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
-
-
-【Code】
-     [[MeariUser sharedInstance] logoutSuccess:^{
-     
-     } failure:^(NSError *error) {
-    
-     }];
-```
-
-##4.3 User upload avatar 
+##4.2 User upload avatar 
 
 ```
 【Description 】
@@ -366,7 +139,7 @@ Meari Technology provides uid login system. If the customer has their own user s
     
      }];
 ```
-##4.4 Modify nickname 
+##4.3 Modify nickname 
 
 ```
 【Description 】
@@ -387,7 +160,7 @@ Meari Technology provides uid login system. If the customer has their own user s
     
      }];
 ```
-##4.5 APNS Message Push
+##4.4 APNS Message Push
 
 ```
 【Description 】
@@ -447,7 +220,7 @@ Meari Technology provides uid login system. If the customer has their own user s
 
 ```
 
-##4.6 Data model 
+##4.5 Data model 
 
 User-related data model.
 

@@ -27,9 +27,6 @@ typedef void(^Failure)(NSString *failure);
  */
 - (NSString *)sdkVersion;
 
-/* Notes: The following interfaces need to be configured when the app starts. */
-/* Notes: 下列接口均需在app启动时，进行配置 */
-
 /**
  Start SDK
  启动SDK
@@ -37,8 +34,16 @@ typedef void(^Failure)(NSString *failure);
  @param appKey appKey
  @param secretKey secret
  */
-- (void)startWithAppKey:(NSString *)appKey secretKey:(NSString *)secretKey;
+- (void)startWithAppKey:(NSString *)appKey secretKey:(NSString *)secretKey __deprecated_msg("Not recommended for use");
 
+/**
+ App configuration information is obtained through cloud-cloud docking. It needs to be passed in to the SDK for initialization every time
+ 
+ App的配置信息 通过云云对接获取 每次都需要传入SDK 做初始化操作
+ 
+ @param info App的重定向信息 通过云云对接获取
+ */
+- (void)startSDKWithRedirectInfo:(NSDictionary *)info;
 
 /**
  Set debug print level
@@ -56,7 +61,7 @@ typedef void(^Failure)(NSString *failure);
 
  @param environment MearEnvironmentPrerelease or MearEnvironmentRelease (预发或正式)
  */
-- (void)configEnvironment:(MearEnvironment)environment;
+- (void)configEnvironment:(MearEnvironment)environment __deprecated_msg("Not recommended for use");
 
 
 /* 访问指定服务器域名 */
@@ -65,6 +70,6 @@ typedef void(^Failure)(NSString *failure);
 
  @param url 服务器域名
  */
-- (void)setPrivateCloudUrl:(NSString*)url success:(Success)success failure:(Failure)failure;
+- (void)setPrivateCloudUrl:(NSString*)url success:(Success)success failure:(Failure)failure __deprecated_msg("Not recommended for use");
 
 @end
