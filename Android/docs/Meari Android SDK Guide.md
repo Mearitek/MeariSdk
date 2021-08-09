@@ -25,15 +25,9 @@ The Meari SDK provides interface of communicating with hardware devices and Mera
 --------------
 
 # 2. Integration preparation
-## Create App ID and App Secert
+## Server to Server implementation
 ```
-Meari Technology Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
-<meta-data
-    Android:name="MEARI_APPKEY"
-    Android:value="your MEARI_APPKEY" />
-<meta-data
-    Android:name="MEARI_SECRET"
-    Android:value="your MEARI_SECRET" />
+Please Read the server doc first, then get the Authorization data of redirect and login.
 ```
 --------------
 
@@ -217,38 +211,30 @@ MeariUser.getInstance (). RegisterWithAccount (countryCode, phoneCode, account, 
 });
 ```
 
-## 4.2 Mobile / Email Login
+## 4.2 Login with authorization info form sever
 ```
 【description】
-Mobile / email login
+Login with authorization info form sever
 
 [Function call]
 
-/ **
- * Login Account
- *
- * @param countryCode country code
- * @param phoneCode area code
- * @param userAccount domestic phone / email
- * @param password user password
- * @param callback network request callback
- * /
-public void loginWithAccount (String countryCode, String phoneCode, String userAccount, String password, ILoginCallback callback);
+Call redirectWithAuthInfo first，then call loginWIthAuthInfo
+/**
+ * redirect with info from server
+ * @param redirect json string form server
+ */
+public void redirectWithAuthInfo(String redirectStr)
+
+/**
+ * login with info from server
+ * @param login json string form server
+ */
+public void loginWithAuthInfo(String loginStr)
     
 [Code example]
 
-MeariUser.getInstance (). LoginWithAccount (countryCode, phoneCode, userAccount, password, new ILoginCallback () {
-    @Override
-    public void onSuccess (UserInfo user) {
-        // It is recommended to connect to the mqtt service in MainActivity, save the user information after the first login, and do not have to log in every time you start the app.
-        // connect mqtt service
-        MeariUser.getInstance (). ConnectMqttServer (getApplication ());
-    }
-
-    @Override
-    public void onError (int code, String error) {
-    }
-});
+MeariUser.getInstance().RedirectWithAuthInfo(String loginStr)
+MeariUser.getInstance().loginWithAuthInfo(String loginStr)
 ```
 
 ## 4.3 Reset password
@@ -1090,6 +1076,83 @@ deviceController.stopPlaybackSDCard (new MeariDeviceListener () {
     public void onFailed (String errorMsg) {
 
     }
+});
+```
+### 6.2.3 device cloud playback
+
+```
+【description】
+If the device support cloud playback and the cloud status is open, the video will be stored in the cloud.
+
+【Function call】
+
+/**
+ * Get a month with a video date
+ * @param deviceID device id
+ * @param year year
+ * @param month month
+ * @param callback callback
+ */
+public void getCloudHaveVideoDaysInMonthRubetek(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
+
+/**
+ * Get all video clips of the day
+ * @param deviceID device id
+ * @param year year
+ * @param month month
+ * @param callback callback
+ */
+public void getCloudVideoTimeRecordInDayRubetek(String deviceID, int year, int month, int day, ICloudVideoTimeRecordCallback callback);
+
+/**
+ * Get the video detail of the day
+ * @param deviceID device id
+ * @param year year
+ * @param month month
+ * @param month day
+ * @param callback callback
+ */
+public void getCloudVideoRubetek(String deviceID, int index, int year, int month, int day, ICloudGetVideoCallback callback);
+
+【Code example】
+
+// Get a month with a video date
+MeariUser.getInstance().getCloudHaveVideoDaysInMonthRubetek(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
+    @Override
+    public void onSuccess(String yearAndMonth, ArrayList<Integer> haveVideoDays) {
+               
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+
+// Get all video clips of the day
+MeariUser.getInstance().getCloudVideoTimeRecordInDayRubetek(deviceId,year, month, day, new ICloudVideoTimeRecordCallback(){
+    @Override
+    public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+
+// Get the video detail of the day
+MeariUser.getInstance().getCloudVideoRubetek(deviceid, index, year, month, day, new ICloudGetVideoCallback() {
+    @Override
+    public void onSuccess(String videoInfo, String startTime, String endTime) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
 });
 ```
 
@@ -2813,11 +2876,40 @@ void requestShareDevice (String userName, String deviceName, String msgID);
 ```
 
 ## 10.2 Integrated FCM Push
-First, You can follow these guides: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) and [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), then Ask meari for Configuring Sender ID and Server Key and uploading the google-services.json file in the Push (Google FCM) section of App SDK on the Meari IoT Platform.
+First, You can follow these guides: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) and [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), then provide the firebase admin sdk file to meari for Configuring Sender ID and Server Key
+
+```
+If you finish it, call MeariUser.getInstance().postPushToken(1, pushToken, IResultCallback) to upload the fcm token to our server.
+```
 
 ## 10.3 Integration with other pushes
 ```
 Not currently supported
+```
+# 11.Sign cloud storage file
+```
+If you get the object key of file and image from sdk, you need to sign it first.
+/**
+ * get the info of cloud storage after signed
+ * @param objectKeyList  object key list of cloud storage
+ * @param callback callback
+ */
+public void signCloudStorageFile(String[] objectKeyList, ISignCloudStorageFileCallback callback) 
+
+MeariUser.getInstance().singnCloudStorageFile(objectKeyList, new ISignCloudStorageFileCallback() {
+    @Override
+    public void onSuccess(CloudStorageSign sign) {
+                
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+CloudStorageSign:
+private String[] signUrlList;  the singned url
+private int expireTime;        expire time
 ```
 
 # Release Notes:

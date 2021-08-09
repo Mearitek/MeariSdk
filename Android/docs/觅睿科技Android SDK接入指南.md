@@ -25,15 +25,9 @@
 --------------
 
 # 2.集成准备
-## 创建App ID和App Secert
+## 服务端接入代码
 ```
-觅睿科技云平台提供网页自动创建App ID和App Secert，用于用户SDK开发,AndroidManifest中配置
-<meta-data
-    android:name="MEARI_APPKEY"
-    android:value="您的MEARI_APPKEY" />
-<meta-data
-    android:name="MEARI_SECRET"
-    android:value="您的MEARI_SECRET" />
+请先阅读服务端文档，获取重定向和登录的认证信息
 ```
 --------------
 
@@ -217,38 +211,28 @@ MeariUser.getInstance().registerWithAccount(countryCode,phoneCode,account,pwd,ni
 });
 ```
 
-## 4.2 手机/邮箱登陆
+## 4.2 服务端认证信息登陆
 ```
 【描述】
-手机/邮箱登陆
+服务端认证信息登陆
 
 【函数调用】
+先调用redirectWithAuthInfo，再调用loginWIthAuthInfo
+/**
+ * 用从服务器获取的重定向信息重定向
+ * @param 从服务端获取的重定向信息的json字符串
+ */
+public void redirectWithAuthInfo(String redirectStr)
 
 /**
- * 登陆账户
- *
- * @param countryCode 国家代号
- * @param phoneCode   国家电话号码区号
- * @param userAccount 国内电话/邮箱
- * @param password    用户密码
- * @param callback    网络请求回调
+ * 用从服务器获取的登录信息登录
+ * @param 从服务器获取的登录信息的json字符串
  */
-public void loginWithAccount(String countryCode, String phoneCode, String userAccount, String password, ILoginCallback callback);
+public void loginWithAuthInfo(String loginStr)
     
 【代码范例】
-
-MeariUser.getInstance().loginWithAccount(countryCode,phoneCode, userAccount, password, new ILoginCallback() {
-    @Override
-    public void onSuccess(UserInfo user) {
-        // 建议在MainActivity中连接mqtt服务，第一次登陆完保存用户信息，不必每次启动app都去登录。
-        // 连接mqtt服务
-        MeariUser.getInstance().connectMqttServer(getApplication());
-    }
-
-    @Override
-    public void onError(int code, String error) {
-    }
-});
+MeariUser.getInstance().RedirectWithAuthInfo(String loginStr)
+MeariUser.getInstance().loginWithAuthInfo(String loginStr)
 ```
 
 ## 4.3 重置密码
@@ -1090,6 +1074,83 @@ deviceController.stopPlaybackSDCard(new MeariDeviceListener() {
 
     @Override
     public void onFailed(String errorMsg) {
+
+    }
+});
+```
+### 6.2.3 设备云回放
+
+```
+【描述】
+设备开通云存储后，可以进行云回放
+
+【函数调用】
+
+/**
+ * 获取一个月有视频的日期
+ * @param deviceID 设备ID
+ * @param year 年
+ * @param month 月
+ * @param callback 回调
+ */
+public void getCloudHaveVideoDaysInMonthRubetek(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
+
+/**
+ * 获取一天中所有的视频片段
+ * @param deviceID 设备ID
+ * @param year 年
+ * @param month 月
+ * @param callback 回调
+ */
+public void getCloudVideoTimeRecordInDayRubetek(String deviceID, int year, int month, int day, ICloudVideoTimeRecordCallback callback);
+
+/**
+ * 获取云回放的视频信息
+ * @param deviceID 设备ID
+ * @param year 年
+ * @param month 月
+ * @param month 日
+ * @param callback 回调
+ */
+public void getCloudVideoRubetek(String deviceID, int index, int year, int month, int day, ICloudGetVideoCallback callback);
+
+【代码范例】
+
+// 获取一个月有视频的日期
+MeariUser.getInstance().getCloudHaveVideoDaysInMonthRubetek(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
+    @Override
+    public void onSuccess(String yearAndMonth, ArrayList<Integer> haveVideoDays) {
+               
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+
+// 获取一天中所有的视频片段
+MeariUser.getInstance().getCloudVideoTimeRecordInDayRubetek(deviceId,year, month, day, new ICloudVideoTimeRecordCallback(){
+    @Override
+    public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+
+// 获取云回放的视频信息
+MeariUser.getInstance().getCloudVideoRubetek(deviceid, index, year, month, day, new ICloudGetVideoCallback() {
+    @Override
+    public void onSuccess(String videoInfo, String startTime, String endTime) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
 
     }
 });
@@ -2824,6 +2885,31 @@ void requestShareDevice(String userName, String deviceName, String msgID);
 ## 10.3 集成其他推送
 ```
 暂不支持
+```
+# 11.签名云存储文件
+```
+如果从sdk中获取了图片和文件，要先签名才能使用
+/**
+ * 获取签名后的图片和文件url
+ * @param objectKeyList  云存储文件的object key
+ * @param callback 回调
+ */
+public void signCloudStorageFile(String[] objectKeyList, ISignCloudStorageFileCallback callback) 
+
+MeariUser.getInstance().singnCloudStorageFile(objectKeyList, new ISignCloudStorageFileCallback() {
+    @Override
+    public void onSuccess(CloudStorageSign sign) {
+                
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+CloudStorageSign:
+private String[] signUrlList;  签名后的url
+private int expireTime;        过期时间
 ```
 
 # 更新说明：
