@@ -194,7 +194,7 @@ Whether has meari iot info   (是否有自研iot信息)
  @param success Successful callback (成功回调)，返回验证码剩余有效时间，单位秒
  @param failure failure callback (失败回调)
  */
-- (void)getValidateCodeWithAccount:(NSString *)userAccount countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(void(^)(NSInteger seconds))success failure:(MeariFailure)failure;
+- (void)getValidateCodeWithAccount:(NSString *)userAccount countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(void(^)(NSInteger seconds))success failure:(MeariFailure)failure __deprecated_msg("Not recommended for use");
 
 /**
  注册账号
@@ -208,7 +208,7 @@ Whether has meari iot info   (是否有自研iot信息)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)registerWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode nickname:(NSString *)nickname success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)registerWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode nickname:(NSString *)nickname success:(MeariSuccess)success failure:(MeariFailure)failure __deprecated_msg("Not recommended for use");
 
 /**
  登录账号
@@ -220,7 +220,7 @@ Whether has meari iot info   (是否有自研iot信息)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)loginWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+- (void)loginWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure __deprecated_msg("Not recommended for use");
 
 /**
  third type login
@@ -236,7 +236,7 @@ Whether has meari iot info   (是否有自研iot信息)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)loginThirdWithUserId:(NSString *)userId thirdToken:(NSString *)thirdToken countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode thirdUserName:(NSString *)thirdUserName thirdImageUrl:(NSString *)thirdImageUrl loginType:(MeariThirdLoginType)loginType success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)loginThirdWithUserId:(NSString *)userId thirdToken:(NSString *)thirdToken countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode thirdUserName:(NSString *)thirdUserName thirdImageUrl:(NSString *)thirdImageUrl loginType:(MeariThirdLoginType)loginType success:(MeariSuccess)success failure:(MeariFailure)failure __deprecated_msg("Not recommended for use");
 
 /**
  Change-find password
@@ -250,7 +250,7 @@ Whether has meari iot info   (是否有自研iot信息)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)resetPasswordWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)resetPasswordWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode success:(MeariSuccess)success failure:(MeariFailure)failure __deprecated_msg("Not recommended for use");
 
 /**
  Log in via Uid / 通过Uid登录
@@ -261,9 +261,18 @@ Whether has meari iot info   (是否有自研iot信息)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)loginWithUid:(NSString *)uid countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode  success:(MeariSuccess)success  failure:(MeariFailure)failure;
+- (void)loginWithUid:(NSString *)uid countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode  success:(MeariSuccess)success  failure:(MeariFailure)failure __deprecated_msg("Not recommended for use");
 
 
+/**
+ After cloud-cloud docking and cloud login, the data obtained by the cloud server is transferred to the App side
+ 在云云对接,云端登录之后， 将云端服务器获取的数据传入App端
+ Note: call startSDKWithRedirectInfo before each call, that is, call [MeariSDK startSDKWithRedirectInfo: @{data}]; method
+ 注意:每次调用之前先要调用startSDKWithRedirectInfo 即要先调用 [MeariSDK startSDKWithRedirectInfo: @{data}];方法
+ 
+ @param info 登录数据(Login data)
+ */
+- (void)loginUidWithExtraParamInfo:(NSDictionary *)info complete:(void(^)(NSError *error))complete;
 
 /**
  Log out of the account (登出账号)
