@@ -17,18 +17,18 @@
     
 - Request parameter
 
-   | name | type of data | instruction |
-   | ------ | ------ | ------ |
-   | userAccount | string | account |
-   | sourceApp | int | Customer Number |
-   | lngType | string | Language type |
-   | phoneType | string | cellphone type |
-   | phoneCode | string | Phone number |
-   | countryCode | string | Country code |
-   | iotType | string | iot type |
-   | partnerKey | string | Key (public key) |
-   | signatureVersion | string | Signed version, the default version is 1.0|
-   | signature | string | Signature, signature rules: HmacSHA1 encryption is performed on the request parameters (in alphabetical order) according to the private key, and the signature is generated.|
+   | name | type of data | instruction | for example |
+   | ------ | ------ | ------ | ------ |
+   | userAccount | string | account(Preferably uuid) |  |
+   | sourceApp | int | Customer Number |  |
+   | lngType | string | Language type | en |
+   | phoneType | string | cellphone type(android is 'a',ios is 'i') | a |
+   | phoneCode | string | Phone number | 86 |
+   | countryCode | string | Country code | CN |
+   | iotType | string | iot type(the default is 3) | 3 |
+   | partnerKey | string | Key (public key) |  |
+   | signatureVersion | string | Signed version(the default version is 1.0) | 1.0 |
+   | signature | string | Signature, signature rules: HmacSHA1 encryption is performed on the request parameters (in alphabetical order) according to the private key, and the signature is generated.| |
    
 - Response example
     ```
@@ -97,13 +97,13 @@
      
  - Support format
 
-    | name | type of data | instruction |
-    | ------ | ------ | ------ |
-    | sourceApp | int | Customer Number |
-    | countryCode | string | Country code |
-    | partnerKey | string | Key (public key) |
-    | signatureVersion | string | Signed version, the default version is 1.0|
-    | signature | string | Signature, signature rules: HmacSHA1 encryption is performed on the request parameters (in alphabetical order) according to the private key, and the signature is generated.|
+    | name | type of data | instruction | for example |
+    | ------ | ------ | ------ | ------ |
+    | sourceApp | int | Customer Number |  |
+    | countryCode | string | Country code | CN |
+    | partnerKey | string | Key (public key) |  |
+    | signatureVersion | string | Signed version(the default version is 1.0) | 1.0 |
+    | signature | string | Signature, signature rules: HmacSHA1 encryption is performed on the request parameters (in alphabetical order) according to the private key, and the signature is generated.| |
     
  - Response example
      ```
