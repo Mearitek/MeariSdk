@@ -221,7 +221,7 @@ Login with authorization info form sever
 Call redirectWithAuthInfo first，then call loginWIthAuthInfo
 /**
  * redirect with info from server
- * @param redirect json string form server
+ * @param redirect json string form server(result)
  */
 public void redirectWithAuthInfo(String redirectStr)
 

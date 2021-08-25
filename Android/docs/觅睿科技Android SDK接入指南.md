@@ -220,7 +220,7 @@ MeariUser.getInstance().registerWithAccount(countryCode,phoneCode,account,pwd,ni
 先调用redirectWithAuthInfo，再调用loginWIthAuthInfo
 /**
  * 用从服务器获取的重定向信息重定向
- * @param 从服务端获取的重定向信息的json字符串
+ * @param 从服务端获取的重定向信息的json字符串(result)
  */
 public void redirectWithAuthInfo(String redirectStr)
 
