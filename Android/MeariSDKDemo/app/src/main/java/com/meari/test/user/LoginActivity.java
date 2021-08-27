@@ -84,6 +84,21 @@ public class LoginActivity extends AppCompatActivity {
 //                tvInfo.setText(i + s);
 //            }
 //        });
+
+        // 云云对接登录
+//        String redirectionJson = "";//云云对接获取
+//        String loginJson = "";//云云对接获取
+//        MeariUser.getInstance().loginWithExternalData(redirectionJson, loginJson, new ILoginCallback() {
+//            @Override
+//            public void onSuccess(UserInfo userInfo) {
+//
+//            }
+//
+//            @Override
+//            public void onError(int i, String s) {
+//
+//            }
+//        });
     }
 
     private void goToMain() {

@@ -14,7 +14,7 @@ android {
 
         ndk {
             //选择要添加的对应 cpu 类型的 .so 库。还可以添加 'x86', 'x86_64', 'mips', 'mips64', 'armeabi-v7a', 'x86_64', 'x86'
-            abiFilters 'armeabi', 'arm64-v8a'
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
     }
     buildTypes {
@@ -54,7 +54,7 @@ dependencies {
 //    implementation 'com.meari.sdk:sdk-core:2.0.1'
 
     // aar required
-    implementation(name: 'sdk-core-3.1.0-20210701', ext: 'aar')
+    implementation(name: 'sdk-core-3.1.0-20210810', ext: 'aar')
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
