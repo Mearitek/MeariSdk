@@ -221,7 +221,7 @@ Login with authorization info form sever
 Call redirectWithAuthInfo first，then call loginWIthAuthInfo
 /**
  * redirect with info from server
- * @param redirect json string form server(result)
+ * @param redirect json string form server
  */
 public void redirectWithAuthInfo(String redirectStr)
 
@@ -1093,7 +1093,7 @@ If the device support cloud playback and the cloud status is open, the video wil
  * @param month month
  * @param callback callback
  */
-public void getCloudHaveVideoDaysInMonthRubetek(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
+public void getCloudHaveVideoDaysInMonth(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
 
 /**
  * Get all video clips of the day
@@ -1102,7 +1102,7 @@ public void getCloudHaveVideoDaysInMonthRubetek(String deviceID, int year, int m
  * @param month month
  * @param callback callback
  */
-public void getCloudVideoTimeRecordInDayRubetek(String deviceID, int year, int month, int day, ICloudVideoTimeRecordCallback callback);
+public void getCloudVideoTimeRecordInDay(String deviceID, int year, int month, int day, ICloudVideoTimeRecordCallback callback);
 
 /**
  * Get the video detail of the day
@@ -1112,12 +1112,12 @@ public void getCloudVideoTimeRecordInDayRubetek(String deviceID, int year, int m
  * @param month day
  * @param callback callback
  */
-public void getCloudVideoRubetek(String deviceID, int index, int year, int month, int day, ICloudGetVideoCallback callback);
+public void getCloudVideo(String deviceID, int index, int year, int month, int day, ICloudGetVideoCallback callback);
 
 【Code example】
 
 // Get a month with a video date
-MeariUser.getInstance().getCloudHaveVideoDaysInMonthRubetek(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
+MeariUser.getInstance().getCloudHaveVideoDaysInMonth(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
     @Override
     public void onSuccess(String yearAndMonth, ArrayList<Integer> haveVideoDays) {
                
@@ -1130,7 +1130,7 @@ MeariUser.getInstance().getCloudHaveVideoDaysInMonthRubetek(deviceId, year, mont
 });
 
 // Get all video clips of the day
-MeariUser.getInstance().getCloudVideoTimeRecordInDayRubetek(deviceId,year, month, day, new ICloudVideoTimeRecordCallback(){
+MeariUser.getInstance().getCloudVideoTimeRecordInDay(deviceId,year, month, day, new ICloudVideoTimeRecordCallback(){
     @Override
     public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
         
@@ -1143,7 +1143,7 @@ MeariUser.getInstance().getCloudVideoTimeRecordInDayRubetek(deviceId,year, month
 });
 
 // Get the video detail of the day
-MeariUser.getInstance().getCloudVideoRubetek(deviceid, index, year, month, day, new ICloudGetVideoCallback() {
+MeariUser.getInstance().getCloudVideo(deviceid, index, year, month, day, new ICloudGetVideoCallback() {
     @Override
     public void onSuccess(String videoInfo, String startTime, String endTime) {
         

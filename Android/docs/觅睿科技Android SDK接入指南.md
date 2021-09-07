@@ -220,7 +220,7 @@ MeariUser.getInstance().registerWithAccount(countryCode,phoneCode,account,pwd,ni
 先调用redirectWithAuthInfo，再调用loginWIthAuthInfo
 /**
  * 用从服务器获取的重定向信息重定向
- * @param 从服务端获取的重定向信息的json字符串(result)
+ * @param 从服务端获取的重定向信息的json字符串
  */
 public void redirectWithAuthInfo(String redirectStr)
 
@@ -1093,7 +1093,7 @@ deviceController.stopPlaybackSDCard(new MeariDeviceListener() {
  * @param month 月
  * @param callback 回调
  */
-public void getCloudHaveVideoDaysInMonthRubetek(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
+public void getCloudHaveVideoDaysInMonth(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
 
 /**
  * 获取一天中所有的视频片段
@@ -1102,7 +1102,7 @@ public void getCloudHaveVideoDaysInMonthRubetek(String deviceID, int year, int m
  * @param month 月
  * @param callback 回调
  */
-public void getCloudVideoTimeRecordInDayRubetek(String deviceID, int year, int month, int day, ICloudVideoTimeRecordCallback callback);
+public void getCloudVideoTimeRecordInDay(String deviceID, int year, int month, int day, ICloudVideoTimeRecordCallback callback);
 
 /**
  * 获取云回放的视频信息
@@ -1112,12 +1112,12 @@ public void getCloudVideoTimeRecordInDayRubetek(String deviceID, int year, int m
  * @param month 日
  * @param callback 回调
  */
-public void getCloudVideoRubetek(String deviceID, int index, int year, int month, int day, ICloudGetVideoCallback callback);
+public void getCloudVideo(String deviceID, int index, int year, int month, int day, ICloudGetVideoCallback callback);
 
 【代码范例】
 
 // 获取一个月有视频的日期
-MeariUser.getInstance().getCloudHaveVideoDaysInMonthRubetek(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
+MeariUser.getInstance().getCloudHaveVideoDaysInMonth(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
     @Override
     public void onSuccess(String yearAndMonth, ArrayList<Integer> haveVideoDays) {
                
@@ -1130,7 +1130,7 @@ MeariUser.getInstance().getCloudHaveVideoDaysInMonthRubetek(deviceId, year, mont
 });
 
 // 获取一天中所有的视频片段
-MeariUser.getInstance().getCloudVideoTimeRecordInDayRubetek(deviceId,year, month, day, new ICloudVideoTimeRecordCallback(){
+MeariUser.getInstance().getCloudVideoTimeRecordInDay(deviceId,year, month, day, new ICloudVideoTimeRecordCallback(){
     @Override
     public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
         
@@ -1143,7 +1143,7 @@ MeariUser.getInstance().getCloudVideoTimeRecordInDayRubetek(deviceId,year, month
 });
 
 // 获取云回放的视频信息
-MeariUser.getInstance().getCloudVideoRubetek(deviceid, index, year, month, day, new ICloudGetVideoCallback() {
+MeariUser.getInstance().getCloudVideo(deviceid, index, year, month, day, new ICloudGetVideoCallback() {
     @Override
     public void onSuccess(String videoInfo, String startTime, String endTime) {
         
