@@ -136,7 +136,7 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
         mMonth = month;
         mDay = day;
         MeariUser.getInstance().getCloudVideoTimeRecordInDay(String.valueOf(cameraInfo.getDeviceID()),
-                year, month, day, "", new ICloudVideoTimeRecordCallback() {
+                year, month, day, new ICloudVideoTimeRecordCallback() {
                     @Override
                     public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
                         if (recordList == null || recordList.size() <= 0) {
@@ -165,7 +165,7 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
     }
 
     private void getCloudVideo(int index) {
-        MeariUser.getInstance().getCloudVideo(String.valueOf(cameraInfo.getDeviceID()), index, mYear, mMonth, mDay, "",
+        MeariUser.getInstance().getCloudVideo(String.valueOf(cameraInfo.getDeviceID()), index, mYear, mMonth, mDay,
                 new ICloudGetVideoCallback() {
                     @Override
                     public void onSuccess(String videoInfo, String startTime, String endTime) {
