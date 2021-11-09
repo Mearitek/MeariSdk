@@ -1760,10 +1760,11 @@ DeviceUpgradeInfo
  * 查询设备是否有新版本
  *
  * @param devVersion 设备版本
- * @param lanType    语言类型（"zh"）
+ * @param licenseID  设备sn
+ * @param tp         设备tp
  * @param callback   callback
  */
-public void checkNewFirmwareForDev(String devVersion, String lanType, ICheckNewFirmwareForDevCallback callback);
+public void checkNewFirmwareForDev(String devVersion, String licenseID, String tp, ICheckNewFirmwareForDevCallback callback)
 
 /**
  * 开始升级设备固件
@@ -1781,13 +1782,21 @@ public void startDeviceUpgrade(String upgradeUrl, String upgradeVersion, IDevice
  */
 public void getDeviceUpgradePercent(IDeviceUpgradePercentCallback callback);
 
+/ **
+ * @param deviceID 设备id
+ * @param callback Function callback
+ * /
+public void getDeviceFirmwareVersion(String deviceID, IStringResultCallback callback)
+
 
 【代码范例】
-
-MeariUser.getInstance().checkNewFirmwareForDev(firmware_version, "zh", new ICheckNewFirmwareForDevCallback() {
+如果没有获取设备参数，先调用MeariUser.getInstance().getDeviceParams()
+DeviceParams deviceParams = getCachedDeviceParams()
+String firmwareVersion = deviceParams.getFirmwareCode()
+MeariUser.getInstance().checkNewFirmwareForDev(firmwareVersion, cameraInfo.getSnNum, cameraInfo.getTp(), new ICheckNewFirmwareForDevCallback() {
     @Override
     public void onSuccess(DeviceUpgradeInfo info) {
-        mDeviceUpgradeInfo = info;
+        // 如果info.getUpgradeStatus() != 0, 有新版本
     }
 
     @Override
@@ -1820,6 +1829,33 @@ MeariUser.getInstance().getDeviceUpgradePercent(new IDeviceUpgradePercentCallbac
 
     }
 });
+
+// 获取设备当前固件版本
+MeariUser.getInstance().getDeviceFirmwareVersion(cameraInfo.getDeviceID(), new IStringResultCallback() {
+
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    BaseJSONObject object = new BaseJSONObject(result);
+                    BaseJSONObject resultObject = object.optBaseJSONObject("result");
+                    String currentVersion = resultObject.optString("devVersion");
+                    int protocolVersion = resultObject.optInt("protocolVersion");
+                    if (currentVersion.equals(deviceUpgradeInfo.getNewVersion())) {
+                        // 重启结束
+                        CameraInfo cameraInfo = MeariUser.getInstance().getCameraInfo();
+                        // 更新cameraInfo
+                        cameraInfo.setProtocolVersion(protocolVersion);
+                        JsonUtil.getCameraCapability(cameraInfo,resultObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                
+            }
+        })
 ```
 
 

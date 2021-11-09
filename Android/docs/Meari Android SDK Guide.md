@@ -1760,10 +1760,11 @@ DeviceUpgradeInfo
  * Check if the device has a new version
  *
  * @param devVersion device version
- * @param lanType language type ("en")
+ * @param licenseID device sn
+ * @param tp device tp
  * @param callback callback
  * /
-public void checkNewFirmwareForDev (String devVersion, String lanType, ICheckNewFirmwareForDevCallback callback);
+public void checkNewFirmwareForDev(String devVersion, String licenseID, String tp, ICheckNewFirmwareForDevCallback callback)
 
 / **
  * Start to upgrade device firmware
@@ -1776,23 +1777,32 @@ public void startDeviceUpgrade (String upgradeUrl, String upgradeVersion, IDevic
 
 / **
  * Get progress of firmware upgrade
- *
  * @param callback Function callback
  * /
 public void getDeviceUpgradePercent (IDeviceUpgradePercentCallback callback);
 
+/ **
+ * Get the firmware version of device
+ * @param deviceID device id
+ * @param callback Function callback
+ * /
+public void getDeviceFirmwareVersion(String deviceID, IStringResultCallback callback)
+
 
 [Code example]
 
-MeariUser.getInstance (). CheckNewFirmwareForDev (firmware_version, "en", new ICheckNewFirmwareForDevCallback () {
-    @Override
-    public void onSuccess (DeviceUpgradeInfo info) {
-        mDeviceUpgradeInfo = info;
-    }
+If you not get the deviceParams，call MeariUser.getInstance().getDeviceParams() first.
+DeviceParams deviceParams = getCachedDeviceParams()
+String firmwareVersion = deviceParams.getFirmwareCode()
+MeariUser.getInstance().checkNewFirmwareForDev(firmwareVersion, cameraInfo.getSnNum, cameraInfo.getTp(), new ICheckNewFirmwareForDevCallback() {
+    @Override
+    public void onSuccess(DeviceUpgradeInfo info) {
+        // 如果info.yougetUpgradeStatus() != 0, 有新版本
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError(int code, String error) {
+    }
 });
 
 // If you can upgrade, start the upgrade
@@ -1820,6 +1830,33 @@ MeariUser.getInstance (). GetDeviceUpgradePercent (new IDeviceUpgradePercentCall
 
     }
 });
+
+// Get the firmware verion of device
+MeariUser.getInstance().getDeviceFirmwareVersion(cameraInfo.getDeviceID(), new IStringResultCallback() {
+
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    BaseJSONObject object = new BaseJSONObject(result);
+                    BaseJSONObject resultObject = object.optBaseJSONObject("result");
+                    String currentVersion = resultObject.optString("devVersion");
+                    int protocolVersion = resultObject.optInt("protocolVersion");
+                    if (currentVersion.equals(deviceUpgradeInfo.getNewVersion())) {
+                        // finish reboot
+                        CameraInfo cameraInfo = MeariUser.getInstance().getCameraInfo();
+                        // update the cameraInfo
+                        cameraInfo.setProtocolVersion(protocolVersion);
+                        JsonUtil.getCameraCapability(cameraInfo,resultObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                
+            }
+        })
 ```
 
 
