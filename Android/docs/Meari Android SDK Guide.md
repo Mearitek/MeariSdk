@@ -217,38 +217,22 @@ MeariUser.getInstance (). RegisterWithAccount (countryCode, phoneCode, account, 
 });
 ```
 
-## 4.2 Mobile / Email Login
+## 4.2 Login with authorization info from sever
 ```
 【description】
-Mobile / email login
+Login with authorization info from sever
 
 [Function call]
-
-/ **
- * Login Account
- *
- * @param countryCode country code
- * @param phoneCode area code
- * @param userAccount domestic phone / email
- * @param password user password
- * @param callback network request callback
- * /
-public void loginWithAccount (String countryCode, String phoneCode, String userAccount, String password, ILoginCallback callback);
-    
+/**
+ * login with redirect and login info from server
+ * @param redirectionJson redirect json string from server
+ * @param loginJson redirect login string from server
+ */
+public void loginWithExternalData(String redirectionJson, String loginJson, ILoginCallback callback)
+    
 [Code example]
 
-MeariUser.getInstance (). LoginWithAccount (countryCode, phoneCode, userAccount, password, new ILoginCallback () {
-    @Override
-    public void onSuccess (UserInfo user) {
-        // It is recommended to connect to the mqtt service in MainActivity, save the user information after the first login, and do not have to log in every time you start the app.
-        // connect mqtt service
-        MeariUser.getInstance (). ConnectMqttServer (getApplication ());
-    }
-
-    @Override
-    public void onError (int code, String error) {
-    }
-});
+MeariUser.getInstance().loginWithExternalData(String redirectionJson, String loginJson, ILoginCallback callbak)
 ```
 
 ## 4.3 Reset password
@@ -1696,10 +1680,11 @@ DeviceUpgradeInfo
  * Check if the device has a new version
  *
  * @param devVersion device version
- * @param lanType language type ("en")
+ * @param licenseID device sn
+ * @param tp device tp
  * @param callback callback
  * /
-public void checkNewFirmwareForDev (String devVersion, String lanType, ICheckNewFirmwareForDevCallback callback);
+public void checkNewFirmwareForDev(String devVersion, String licenseID, String tp, ICheckNewFirmwareForDevCallback callback)
 
 / **
  * Start to upgrade device firmware
@@ -1712,23 +1697,32 @@ public void startDeviceUpgrade (String upgradeUrl, String upgradeVersion, IDevic
 
 / **
  * Get progress of firmware upgrade
- *
  * @param callback Function callback
  * /
 public void getDeviceUpgradePercent (IDeviceUpgradePercentCallback callback);
 
+/ **
+ * Get the firmware version of device
+ * @param deviceID device id
+ * @param callback Function callback
+ * /
+public void getDeviceFirmwareVersion(String deviceID, IStringResultCallback callback)
+
 
 [Code example]
 
-MeariUser.getInstance (). CheckNewFirmwareForDev (firmware_version, "en", new ICheckNewFirmwareForDevCallback () {
-    @Override
-    public void onSuccess (DeviceUpgradeInfo info) {
-        mDeviceUpgradeInfo = info;
-    }
+If you not get the deviceParams，call MeariUser.getInstance().getDeviceParams() first.
+DeviceParams deviceParams = getCachedDeviceParams()
+String firmwareVersion = deviceParams.getFirmwareCode()
+MeariUser.getInstance().checkNewFirmwareForDev(firmwareVersion, cameraInfo.getSnNum, cameraInfo.getTp(), new ICheckNewFirmwareForDevCallback() {
+    @Override
+    public void onSuccess(DeviceUpgradeInfo info) {
+        // if info.yougetUpgradeStatus() != 0, it has new version
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError(int code, String error) {
+    }
 });
 
 // If you can upgrade, start the upgrade
@@ -1756,6 +1750,33 @@ MeariUser.getInstance (). GetDeviceUpgradePercent (new IDeviceUpgradePercentCall
 
     }
 });
+
+// Get the firmware verion of device
+MeariUser.getInstance().getDeviceFirmwareVersion(cameraInfo.getDeviceID(), new IStringResultCallback() {
+
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    BaseJSONObject object = new BaseJSONObject(result);
+                    BaseJSONObject resultObject = object.optBaseJSONObject("result");
+                    String currentVersion = resultObject.optString("devVersion");
+                    int protocolVersion = resultObject.optInt("protocolVersion");
+                    if (currentVersion.equals(deviceUpgradeInfo.getNewVersion())) {
+                        // finish reboot
+                        CameraInfo cameraInfo = MeariUser.getInstance().getCameraInfo();
+                        // update the cameraInfo
+                        cameraInfo.setProtocolVersion(protocolVersion);
+                        JsonUtil.getCameraCapability(cameraInfo,resultObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                
+            }
+        })
 ```
 
 
@@ -2813,7 +2834,8 @@ void requestShareDevice (String userName, String deviceName, String msgID);
 ```
 
 ## 10.2 Integrated FCM Push
-First, You can follow these guides: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) and [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), then Ask meari for Configuring Sender ID and Server Key and uploading the google-services.json file in the Push (Google FCM) section of App SDK on the Meari IoT Platform.
+First, You can follow these guides: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) and [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), then go to firebase setting page, geneating the admin sdk file，provide the file to meari,
+call MeariUser.getInstance().uploadToken(1, token, callback) to upload your fcm token to meari server.
 
 ## 10.3 Integration with other pushes
 ```

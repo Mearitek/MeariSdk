@@ -25,15 +25,9 @@
 --------------
 
 # 2.集成准备
-## 创建App ID和App Secert
+## 服务端接入代码
 ```
-觅睿科技云平台提供网页自动创建App ID和App Secert，用于用户SDK开发,AndroidManifest中配置
-<meta-data
-    android:name="MEARI_APPKEY"
-    android:value="您的MEARI_APPKEY" />
-<meta-data
-    android:name="MEARI_SECRET"
-    android:value="您的MEARI_SECRET" />
+请先阅读服务端文档，获取重定向和登录的认证信息
 ```
 --------------
 
@@ -73,7 +67,8 @@ dependencies {
     // 必需依赖库
     implementation(name: 'sdk-core-3.1.0-beta6', ext: 'aar')
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
     implementation 'com.alibaba:fastjson:1.2.57'
     implementation 'com.google.zxing:core:3.3.3'
 }
@@ -217,38 +212,21 @@ MeariUser.getInstance().registerWithAccount(countryCode,phoneCode,account,pwd,ni
 });
 ```
 
-## 4.2 手机/邮箱登陆
+## 4.2 服务端认证信息登录
 ```
 【描述】
-手机/邮箱登陆
+服务端认证信息登陆
 
 【函数调用】
-
 /**
- * 登陆账户
- *
- * @param countryCode 国家代号
- * @param phoneCode   国家电话号码区号
- * @param userAccount 国内电话/邮箱
- * @param password    用户密码
- * @param callback    网络请求回调
+ * 用从服务器获取的重定向信息和登录信息登录
+ * @param redirectionJson 从服务端获取的重定向信息的json字符串
+ * @param loginJson 从服务端获取的登录信息的json字符串
  */
-public void loginWithAccount(String countryCode, String phoneCode, String userAccount, String password, ILoginCallback callback);
-    
+public void loginWithExternalData(String redirectionJson, String loginJson, ILoginCallback callback)
+
 【代码范例】
-
-MeariUser.getInstance().loginWithAccount(countryCode,phoneCode, userAccount, password, new ILoginCallback() {
-    @Override
-    public void onSuccess(UserInfo user) {
-        // 建议在MainActivity中连接mqtt服务，第一次登陆完保存用户信息，不必每次启动app都去登录。
-        // 连接mqtt服务
-        MeariUser.getInstance().connectMqttServer(getApplication());
-    }
-
-    @Override
-    public void onError(int code, String error) {
-    }
-});
+MeariUser.getInstance().public void loginWithExternalData(String redirectionJson, String loginJson, ILoginCallback callback)
 ```
 
 ## 4.3 重置密码
@@ -1094,6 +1072,83 @@ deviceController.stopPlaybackSDCard(new MeariDeviceListener() {
     }
 });
 ```
+### 6.2.3 设备云回放
+
+```
+【描述】
+设备开通云存储后，可以进行云回放
+
+【函数调用】
+
+/**
+ * 获取一个月有视频的日期
+ * @param deviceID 设备ID
+ * @param year 年
+ * @param month 月
+ * @param callback 回调
+ */
+public void getCloudHaveVideoDaysInMonth(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
+
+/**
+ * 获取一天中所有的视频片段
+ * @param deviceID 设备ID
+ * @param year 年
+ * @param month 月
+ * @param callback 回调
+ */
+public void getCloudVideoTimeRecordInDay(String deviceID, int year, int month, int day, ICloudVideoTimeRecordCallback callback);
+
+/**
+ * 获取云回放的视频信息
+ * @param deviceID 设备ID
+ * @param year 年
+ * @param month 月
+ * @param month 日
+ * @param callback 回调
+ */
+public void getCloudVideo(String deviceID, int index, int year, int month, int day, ICloudGetVideoCallback callback);
+
+【代码范例】
+
+// 获取一个月有视频的日期
+MeariUser.getInstance().getCloudHaveVideoDaysInMonth(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
+    @Override
+    public void onSuccess(String yearAndMonth, ArrayList<Integer> haveVideoDays) {
+               
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+
+// 获取一天中所有的视频片段
+MeariUser.getInstance().getCloudVideoTimeRecordInDay(deviceId,year, month, day, new ICloudVideoTimeRecordCallback(){
+    @Override
+    public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+
+// 获取云回放的视频信息
+MeariUser.getInstance().getCloudVideo(deviceid, index, year, month, day, new ICloudGetVideoCallback() {
+    @Override
+    public void onSuccess(String videoInfo, String startTime, String endTime) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+```
 
 # 7.分享设备
 
@@ -1698,10 +1753,11 @@ DeviceUpgradeInfo
  * 查询设备是否有新版本
  *
  * @param devVersion 设备版本
- * @param lanType    语言类型（"zh"）
+ * @param licenseID  设备sn
+ * @param tp         设备tp
  * @param callback   callback
  */
-public void checkNewFirmwareForDev(String devVersion, String lanType, ICheckNewFirmwareForDevCallback callback);
+public void checkNewFirmwareForDev(String devVersion, String licenseID, String tp, ICheckNewFirmwareForDevCallback callback)
 
 /**
  * 开始升级设备固件
@@ -1719,13 +1775,21 @@ public void startDeviceUpgrade(String upgradeUrl, String upgradeVersion, IDevice
  */
 public void getDeviceUpgradePercent(IDeviceUpgradePercentCallback callback);
 
+/ **
+ * @param deviceID 设备id
+ * @param callback Function callback
+ * /
+public void getDeviceFirmwareVersion(String deviceID, IStringResultCallback callback)
+
 
 【代码范例】
-
-MeariUser.getInstance().checkNewFirmwareForDev(firmware_version, "zh", new ICheckNewFirmwareForDevCallback() {
+如果没有获取设备参数，先调用MeariUser.getInstance().getDeviceParams()
+DeviceParams deviceParams = getCachedDeviceParams()
+String firmwareVersion = deviceParams.getFirmwareCode()
+MeariUser.getInstance().checkNewFirmwareForDev(firmwareVersion, cameraInfo.getSnNum, cameraInfo.getTp(), new ICheckNewFirmwareForDevCallback() {
     @Override
     public void onSuccess(DeviceUpgradeInfo info) {
-        mDeviceUpgradeInfo = info;
+        // 如果info.getUpgradeStatus() != 0, 有新版本
     }
 
     @Override
@@ -1758,6 +1822,33 @@ MeariUser.getInstance().getDeviceUpgradePercent(new IDeviceUpgradePercentCallbac
 
     }
 });
+
+// 获取设备当前固件版本
+MeariUser.getInstance().getDeviceFirmwareVersion(cameraInfo.getDeviceID(), new IStringResultCallback() {
+
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    BaseJSONObject object = new BaseJSONObject(result);
+                    BaseJSONObject resultObject = object.optBaseJSONObject("result");
+                    String currentVersion = resultObject.optString("devVersion");
+                    int protocolVersion = resultObject.optInt("protocolVersion");
+                    if (currentVersion.equals(deviceUpgradeInfo.getNewVersion())) {
+                        // 重启结束
+                        CameraInfo cameraInfo = MeariUser.getInstance().getCameraInfo();
+                        // 更新cameraInfo
+                        cameraInfo.setProtocolVersion(protocolVersion);
+                        JsonUtil.getCameraCapability(cameraInfo,resultObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                
+            }
+        })
 ```
 
 
@@ -2817,9 +2908,7 @@ void requestShareDevice(String userName, String deviceName, String msgID);
 ```
 
 ## 10.2 集成谷歌推送
-```
-暂不支持
-```
+首先, 参考教程: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) 和 [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), 把firebase设置界面生成的admin sdk文件发送给meari服务器配置，在app中获取fcm token并调用MeariUser.getInstance().upload(1, token, callback)上传token
 
 ## 10.3 集成其他推送
 ```
