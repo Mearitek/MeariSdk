@@ -1797,7 +1797,7 @@ String firmwareVersion = deviceParams.getFirmwareCode()
 MeariUser.getInstance().checkNewFirmwareForDev(firmwareVersion, cameraInfo.getSnNum, cameraInfo.getTp(), new ICheckNewFirmwareForDevCallback() {
     @Override
     public void onSuccess(DeviceUpgradeInfo info) {
-        // 如果info.yougetUpgradeStatus() != 0, 有新版本
+        // if info.yougetUpgradeStatus() != 0, it has new version
     }
 
     @Override
