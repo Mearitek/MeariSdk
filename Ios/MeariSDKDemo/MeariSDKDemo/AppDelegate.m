@@ -21,15 +21,12 @@ static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    //You must first connect through the cloud to obtain the redirection information through your own server and Meari server interaction
-    //Pass the data obtained from Meari server to App
-    
-    //必须先通过云云对接 通过自己的服务器和Meari服务器交互 获取到重定向信息
-    //将从Meari服务器获取的数据传递给App
-    
-    [[MeariSDK sharedInstance] startSDKWithRedirectInfo:@{}];
-    
-    [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelVerbose];
+     [[MeariSDK sharedInstance] startWithAppKey:app_key secretKey:app_secret];
+     MearEnvironment env;
+     env = MearEnvironmentRelease;
+//     env = MearEnvironmentDeveloper;
+     [[MeariSDK sharedInstance] configEnvironment:env];
+     [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelVerbose];
     
      [BTAppSwitch setReturnURLScheme:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"]];
     return YES;

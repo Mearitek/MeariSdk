@@ -265,16 +265,6 @@ Whether has meari iot info   (是否有自研iot信息)
 
 
 /**
- After cloud-cloud docking and cloud login, the data obtained by the cloud server is transferred to the App side
- 在云云对接,云端登录之后， 将云端服务器获取的数据传入App端
- Note: call startSDKWithRedirectInfo before each call, that is, call [MeariSDK startSDKWithRedirectInfo: @{data}]; method
- 注意:每次调用之前先要调用startSDKWithRedirectInfo 即要先调用 [MeariSDK startSDKWithRedirectInfo: @{data}];方法
- 
- @param info 登录数据(Login data)
- */
-- (void)loginUidWithExtraParamInfo:(NSDictionary *)info complete:(void(^)(NSError *error))complete;
-
-/**
  Log out of the account (登出账号)
  
  @param success Successful callback (成功回调)

@@ -24,10 +24,9 @@
 
 #2. 集成准备
 
-**准备云云对接**
-需要云云对接，通过自己服务器向Meari服务器请求数据，然后将数据传入SDK对应接口中。具体接口流程请参考工作中的Server目录。
+**准备App Key和App Secert**
 
-
+觅睿科技云平台提供App ID和App Secert，用于用户接入SDK快速接入摄像机设备
 
 #3. 集成SDK 
 
@@ -57,10 +56,51 @@
 
 ```
 【描述】
-      通过云云对接后，从服务器 v2/third/sdk/redirect 中获取的数据传入并初始化SDK.
+    主要用于初始化内部资源、通信服务等功能。
+ 
 【函数调用】
+    /**
+    启动SDK
 
-- (void)startSDKWithRedirectInfo:(NSDictionary *)info;    
+    @param appKey appKey
+    @param secretKey secret
+    */
+    - (void)startWithAppKey:(NSString *)appKey secretKey:(NSString *)secretKey;
+    
+    /**
+    设置调试打印级别
+    
+    @param logLevel 打印级别
+    */
+    - (void)setLogLevel:(MeariLogLevel)logLevel;
+    
+    
+    /**
+    配置服务器环境
+    
+    @param environment 正式 MearEnvironmentRelease 预发 MearEnvironmentPrerelease 开发 MearEnvironmentDeveloper
+    */
+    - (void)configEnvironment:(MearEnvironment)environment;
+
+【代码范例】
+    //启动SDK
+    [[MeariSDK sharedInstance] startWithAppKey:@"appKey" secretKey:@"secretKey"];
+    
+    //配置服务器环境：预发或正式，当前是预发版本，只支持预发环境上运行
+    [[MeariSDK sharedInstance] configEnvironment:MearEnvironmentPrerelease];
+    
+    //设置调试log级别，会打印内部接口的输入输出信息，以便排查问题
+    [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelVerbose];
+    
+    /**
+    推送的语言, 可不传,默认和手机本地语言一致,动态改变 . 设置之后,推送语言将强制为设置的 语言
+    @property sdkPushLanguage 
+	 
+    目前服务器支持的语言为  zh,de,en,fr,pl,br,it,pt,es,ko,ja 
+    */
+【代码范例】
+    [MeariSDK sharedInstance].sdkPushLanguage = @"en";
+
 ```
 
 
@@ -70,8 +110,10 @@
 所属：MeariUser工具类
 ```
 ```
-觅睿科技SDK提供一种用户管理体系：UID用户体系 
+觅睿科技SDK提供两种用户管理体系：普通用户体系、UID用户体系
 Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话代码
+普通用户体系：账号登录、注册、修改密码、找回密码、获取验证码
+UID用户体系：uid登录 (最长64位) ，无需注册没有密码系统，请妥善保管
 ```
 
 ##4.1 用户uid登录体系 
@@ -80,30 +122,40 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 觅睿科技提供uid登陆体系。如果客户自有用户体系，那么可以通过uid登陆体系，接入我们的sdk。
 ```
 
-### (1) 用户uid登录 
+### (1) 重定向 
 
 ```
 【描述】
-     通过云云对接后，从服务器v2/third/sdk/login 中获取的数据传入SDK，实现登录操作。
-     注意：在每次调用loginUidWithExtraParamInfo之前，需要先调用 startSDKWithRedirectInfo 方法
+      Meari SDK 支持全球服务，当选择不同的国家时需要重置访问地址，根据登录时传入国家代号，访问对应的服务器
+【函数调用】
+//切换账号、修改国家时调用
+- (void)resetRedirect;    
+```
+### (2) 用户uid登录 
+
+```
+【描述】
+     用户uid注册，uid要求唯一。
 【函数调用】
      /**
-      @param info 用户登录信息 有云云对接之后 从服务器端获取
+      @param uid 用户ID，需要保证唯一性，<=32位
+      @param countryCode 国家代号
+      @param phoneCode 国家区号
+      @param success 成功回调
+      @param failure 失败回调
      */
-     - (void)loginUidWithExtraParamInfo:(NSDictionary *)info complete:(void(^)(NSError *error))complete 
+    - (void)loginWithUid:(NSString *)uid countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode  success:(MeariSuccess)success  failure:(MeariFailure)failure
 
 【代码范例】
-    [[MeariUser sharedInstance] loginUidWithExtraParamInfo:dic complete:^(NSError *error) {
-        if (!error) {
-            NSLog(@"login Success");
-        }else {
-            NSLog(@"login error --- %@",error.description);
-        }
-    }];
+      [[MeariUser sharedInstance] loginWithUid:@"abcdefghijklmn" countryCode:@"CN" phoneCode:@"86" success:^{
+
+      } failure:^(NSError *error) {
+
+      }];
 
 ```
 
-### (2)  用户登出 
+### (3)  用户登出 
 
 ```
 【描述】
@@ -121,7 +173,183 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 
      }];
 ```
-##4.2 用户上传头像 
+
+## 4.2 普通用户体系管理 
+
+### (1) 重定向 
+
+```
+【描述】
+     Meari SDK 支持全球服务，当选择不同的国家时需要重置访问地址，根据登录时传入国家代号，访问对应的服务器
+【函数调用】
+    //切换账号、修改国家时调用
+    - (void)resetRedirect;    
+```
+### (2) 注册账号 
+
+```
+【描述】
+     注册账号前需要获取验证码
+ 
+【函数调用】
+     //获取验证码
+     @param userAccount 用户账号：邮箱或手机
+     @param countryCode 国家代号
+     @param phoneCode 国家区号
+     @param success 成功回调，返回验证码剩余有效时间，单位秒
+     @param failure 失败回调
+	 - (void)getValidateCodeWithAccount:(NSString *)userAccount countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(void(^)(NSInteger seconds))success failure:(MeariFailure)failure;
+
+     //注册账号
+     @param userAccount 用户账号：邮箱或手机号(仅限中国大陆地区)
+     @param password 用户密码
+     @param countryCode 国家代号
+     @param phoneCode 国家区号
+     @param verificationCode 验证码
+     @param nickname 用户昵称，登录后可修改
+     @param success 成功回调
+     @param failure 失败回调
+     - (void)registerAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode nickname:(NSString *)nickname success:(MeariSuccess)success failure:(MeariFailure)failure;
+    
+【代码范例】
+     //获取账号的验证码
+     [[MeariUser sharedInstance] getValidateCodeWithAccount:@"john@163.com" countryCode:@"CN" phoneCode:@"86" success:^(NSInteger seconds) {
+        //成功
+     } failure:^(NSError *error) {
+        //失败
+     }];
+     //注册账号
+     [[MeariUser sharedInstance] registerAccount:@"john@163.com" password:@"123456" countryCode:@"CN" phoneCode:@"86" verificationCode:@"7234" nickname:@"coder man" success:^{
+    
+     } failure:^(NSError *error) {
+    
+     }];
+```
+
+### (3) 账号登陆 
+
+```
+【描述】
+     支持邮箱登录、手机(仅限中国大陆地区)登录
+ 
+【函数调用】
+     //登陆
+     @param userAccount 用户账号：邮箱或手机
+     @param password 用户密码
+     @param countryCode 国家代号
+     @param phoneCode 国家区号
+     @param success 成功回调
+     @param failure 失败回调
+     - (void)loginAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(MeariSuccess)success failure:(MeariFailure)failure;
+    
+【代码范例】
+     [[MeariUser sharedInstance] loginAccount:@"john@163.com" password:@"123456" countryCode:@"CN" phoneCode:@"86" success:^{
+    
+     } failure:^(NSError *error) {
+    
+     }];
+```
+
+### (4) 找回密码 
+
+```
+【描述】
+     找回密码前需要先获取验证码
+ 
+【函数调用】
+     //获取验证码
+     @param userAccount 用户账号：邮箱或手机
+     @param countryCode 国家代号
+     @param phoneCode 国家区号
+     @param success 成功回调，返回验证码剩余有效时间，单位秒
+     @param failure 失败回调
+     - (void)getValidateCodeWithAccount:(NSString *)userAccount countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(void(^)(NSInteger seconds))success failure:(MeariFailure)failure;
+
+     //找回密码
+     @param userAccount 用户账号：邮箱或手机号(仅限中国大陆地区)
+     @param password 新的密码
+     @param countryCode 国家代号
+     @param phoneCode 国家区号
+     @param verificationCode 验证码
+     @param success 成功回调
+     @param failure 失败回调
+     - (void)findPasswordWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+     //获取账号的验证码
+     [[MeariUser sharedInstance] getValidateCodeWithAccount:@"john@163.com" countryCode:@"CN" phoneCode:@"86" success:^(NSInteger seconds) {
+        //成功
+     } failure:^(NSError *error) {
+        //失败
+     }];
+     //找回密码
+     [[MeariUser sharedInstance] findPasswordWithAccount:@"john@163.com" password:@"123123" countryCode:@"CN" phoneCode:@"86" verificationCode:@"6322" success:^{
+     } failure:^(NSError *error) {
+    
+     }];
+```
+
+
+### (5) 修改密码 
+
+```
+【描述】
+     登录后修改密码，修改密码前需要先获取验证码
+
+【函数调用】
+     //获取验证码
+     @param userAccount 用户账号：邮箱或手机
+     @param countryCode 国家代号
+     @param phoneCode 国家区号
+     @param success 成功回调，返回验证码剩余有效时间，单位秒
+     @param failure 失败回调
+     - (void)getValidateCodeWithAccount:(NSString *)userAccount countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(void(^)(NSInteger seconds))success failure:(MeariFailure)failure;
+
+     //修改密码
+     @param userAccount 用户账号：邮箱或手机号(仅限中国大陆地区)
+     @param password 用户密码
+     @param verificationCode 验证码
+     @param success 成功回调
+     @param failure 势必啊回调
+     - (void)changePasswordWithAccount:(NSString *)userAccount password:(NSString *)password verificationCode:(NSString *)verificationCode success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+     //获取账号的验证码
+     [[MeariUser sharedInstance] getValidateCodeWithAccount:@"john@163.com" countryCode:@"CN" phoneCode:@"86" success:^(NSInteger seconds) {
+        //成功
+     } failure:^(NSError *error) {
+        //失败
+     }];
+     //找回密码
+     [[MeariUser sharedInstance] changePasswordWithAccount:@"john@163.com" password:@"234567" verificationCode:@"8902" success:^{
+    
+     } failure:^(NSError *error) {
+    
+     }];
+```
+### (6) 用户登出 
+
+```
+【描述】
+     登出，退出账号
+
+【函数调用】
+     //登出账号
+     @param success 成功回调
+     @param failure 失败回调
+     - (void)logoutSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+
+【代码范例】
+     //登出账号
+     [[MeariUser sharedInstance] logoutSuccess:^{
+     
+     } failure:^(NSError *error) {
+    
+     }];
+```
+
+##4.3 用户上传头像 
 
 ```
 【描述】
@@ -142,7 +370,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     
      }];
 ```
-##4.3 修改昵称 
+##4.4 修改昵称 
 
 ```
 【描述】
@@ -163,7 +391,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     
      }];
 ```
-##4.4 注册消息推送
+##4.5 注册消息推送
 
 ```
 【描述】
@@ -220,7 +448,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 
 ```
 
-##4.5 数据模型 
+##4.6 数据模型 
 
 用户相关的数据模型。
 
