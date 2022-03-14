@@ -14,16 +14,16 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.meari.sdk.CloudPlayerController;
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.bean.CameraInfo;
+import com.meari.sdk.bean.VideoTimeRecord;
 import com.meari.sdk.callback.ICloudAlarmMessageTimeCallback;
 import com.meari.sdk.callback.ICloudGetVideoCallback;
 import com.meari.sdk.callback.ICloudPlayerCallback;
 import com.meari.sdk.callback.ICloudVideoTimeRecordCallback;
 import com.meari.sdk.utils.Logger;
 import com.meari.test.R;
-import com.ppstrong.ppsplayer.VideoTimeRecord;
-import com.ppstrong.weeye.widget.media.CloudPlayerController;
 import com.ppstrong.weeye.widget.media.IjkVideoView;
 
 import java.io.File;

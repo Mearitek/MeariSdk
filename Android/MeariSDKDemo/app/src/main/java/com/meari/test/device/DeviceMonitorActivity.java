@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.meari.sdk.MeariDeviceController;
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.bean.CameraInfo;
+import com.meari.sdk.bean.VideoTimeRecord;
 import com.meari.sdk.callback.IDeviceAlarmMessageTimeCallback;
 import com.meari.sdk.callback.IPlaybackDaysCallback;
 import com.meari.sdk.json.BaseJSONArray;
@@ -30,7 +31,6 @@ import com.meari.test.CommonUtils;
 import com.meari.test.R;
 import com.meari.test.user.CloudStatusActivity;
 import com.ppstrong.ppsplayer.PPSGLSurfaceView;
-import com.ppstrong.ppsplayer.VideoTimeRecord;
 
 import org.json.JSONException;
 

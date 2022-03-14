@@ -2,6 +2,7 @@ package com.meari.test.app;
 
 import com.meari.sdk.MeariDeviceController;
 import com.meari.sdk.MeariUser;
+import com.meari.sdk.bean.FamilyMqttMsg;
 import com.meari.sdk.listener.MeariDeviceListener;
 import com.meari.sdk.mqtt.MqttMessageCallback;
 
@@ -87,7 +88,22 @@ public class MyMessageHandler implements MqttMessageCallback {
     }
 
     @Override
+    public void requestReceivingDevice(String s, String s1, String s2, String s3) {
+
+    }
+
+    @Override
     public void requestShareDevice(String s, String s1, String s2) {
+
+    }
+
+    @Override
+    public void requestShareDevice(String s, String s1, String s2, String s3) {
+
+    }
+
+    @Override
+    public void onFamilyMessage(FamilyMqttMsg familyMqttMsg) {
 
     }
 }
