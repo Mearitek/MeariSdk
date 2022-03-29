@@ -226,7 +226,17 @@ MeariUser.getInstance().registerWithAccount(countryCode,phoneCode,account,pwd,ni
 public void loginWithExternalData(String redirectionJson, String loginJson, ILoginCallback callback)
 
 【代码范例】
-MeariUser.getInstance().public void loginWithExternalData(String redirectionJson, String loginJson, ILoginCallback callback)
+MeariUser.getInstance().loginWithExternalData(redirectionJson, loginJson, new ILoginCallback() {
+    @Override
+    public void onSuccess(UserInfo userInfo) {
+
+    }
+
+    @Override
+    public void onError(int i, String s) {
+
+    }
+});
 ```
 
 ## 4.3 重置密码
@@ -2811,19 +2821,547 @@ MeariUser.getInstance().setFlightLinkSirenEnable(status, new ISetDeviceParamsCal
     }
 });
 ```
+# 10.家庭
 
-# 10.MQTT和推送
+## 10.1 家庭操作
+
+### 10.1.1 获取家庭列表
+```
+【描述】
+获取家庭列表
+
+【函数调用】
+/**
+ * 获取家庭列表
+ *
+ * @param callback callback
+ */
+public void getFamilyList(IFamilyListCallback callback)
+
+【代码范例】
+MeariUser.getInstance().getFamilyList(new IFamilyListCallback() {
+    @Override
+    public void onSuccess(List<MeariFamily> familyList) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.1.2 创建家庭
+```
+【描述】
+创建家庭，最多10个房间
+
+【函数调用】
+/**
+ * 创建家庭，最多10个房间
+ *
+ * @param callback callback
+ */
+public void createFamily(String familyName, String familyLocation, List<MeariRoom> roomList, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().createFamily(familyName, familyLocation, roomList, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.1.3 更新家庭信息
+```
+【描述】
+更新家庭信息
+
+【函数调用】
+/**
+ * 更新家庭信息
+ *
+ * @param callback callback
+ */
+public void updateFamily(String familyId, String familyName, String familyLocation, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().updateFamily(familyId, familyName, familyLocation, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.1.4 删除家庭
+```
+【描述】
+删除家庭
+
+【函数调用】
+/**
+ * 删除家庭
+ *
+ * @param callback callback
+ */
+public void deleteFamily(String familyId, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().deleteFamily(familyId, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+## 10.2 家庭分享
+
+### 10.2.1 搜索要添加的成员账号
+```
+【描述】
+搜索要添加的成员账号
+
+【函数调用】
+/**
+ * 搜索要添加的成员账号
+ *
+ * @param account account
+ * @param familyId  familyId
+ */
+public void searchContactForAddFamilyMember(String account, String familyId, IBaseModelCallback<FamilyMemberToAdd> callback)
+
+【代码范例】
+MeariUser.getInstance().searchContactForAddFamilyMember(account, familyId, new IBaseModelCallback<FamilyMemberToAdd>() {
+    @Override
+    public void onSuccess(FamilyMemberToAdd familyMemberToAdd) {
+    }
+
+    @Override
+    public void onFailed(int code, String errorMsg) {
+    }
+});
+```
+
+### 10.2.2 搜索要加入的家庭账号
+```
+【描述】
+搜索要加入的家庭账号
+
+【函数调用】
+/**
+ * 搜索要加入的家庭账号
+ *
+ * @param account account
+ */
+public void searchContactForJoinFamily(String account, IBaseModelCallback<MeariFamilyToJoin> callback)
+
+【代码范例】
+MeariUser.getInstance().searchContactForJoinFamily(account, new IBaseModelCallback<MeariFamilyToJoin>() {
+    @Override
+    public void onSuccess(MeariFamilyToJoin meariFamilyToJoin) {
+    }
+
+    @Override
+    public void onFailed(int code, String errorMsg) {
+    }
+});
+```
+
+### 10.2.3 获取家庭分享消息
+```
+【描述】
+获取家庭分享消息
+
+【函数调用】
+/**
+ * 获取家庭分享消息
+ */
+public void getFamilyShareMessages(IBaseModelCallback<List<FamilyShareMsg>> callback)
+
+【代码范例】
+MeariUser.getInstance().getFamilyShareMessages(new IBaseModelCallback<List<FamilyShareMsg>>() {
+    @Override
+    public void onSuccess(List<FamilyShareMsg> familyShareMsgs) {
+    }
+
+    @Override
+    public void onFailed(int code, String errorMsg) {
+    }
+});
+```
+
+### 10.2.4 添加成员到家庭中
+```
+【描述】
+添加成员到家庭中
+
+【函数调用】
+/**
+ * 添加成员到家庭中
+ *
+ * @param familyId    family id
+ * @param memberId    member user id
+ * @param permissions List of permissions for device control
+ * @param callback    callback
+ */
+public void addMemberToFamily(String familyId, String memberId, List<DevicePermission> permissions, IResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().addMemberToFamily(familyId, memberId, permissions, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.5 加入一个家庭
+```
+【描述】
+加入一个家庭
+
+【函数调用】
+/**
+ * 加入一个家庭
+ *
+ * @param familyIdList family id list to join
+ * @param callback     callback
+ */
+public void joinFamily(List<String> familyIdList, IResultCallback callback) {
+
+【代码范例】
+MeariUser.getInstance().joinFamily(familyIdList, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.6 获取家庭成员列表
+```
+【描述】
+获取家庭成员列表
+
+【函数调用】
+/**
+ * 获取家庭成员列表
+ *
+ * @param callback callback
+ */
+public void getFamilyMemberList(String familyId, IFamilyMemberListCallback callback)
+
+【代码范例】
+MeariUser.getInstance().getFamilyMemberList(familyId, new IFamilyMemberListCallback() {
+    @Override
+    public void onSuccess(List<FamilyMember> familyMemberList) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.7 修改家庭成员设备权限
+```
+【描述】
+修改家庭成员设备权限
+
+【函数调用】
+/**
+ * 修改家庭成员设备权限
+ *
+ * @param callback callback
+ */
+public void modifyMemberDevicePermission(String familyId, String memberID, List<DevicePermission> permissions, IResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().modifyMemberDevicePermission(familyId, memberID, permissions, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.8 从家庭移除成员
+```
+【描述】
+从家庭移除成员
+
+【函数调用】
+/**
+ * 从家庭移除成员
+ *
+ * @param callback callback
+ */
+public void removeMemberFromFamily(String familyId, String memberID, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().removeMemberFromFamily(familyId, memberID, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.9 撤销成员邀请
+```
+【描述】
+撤销成员邀请
+
+【函数调用】
+/**
+ * 撤销成员邀请
+ */
+public void revokeMemberInvitation(String familyId, String msgId, IResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().revokeMemberInvitation(familyId, msgId, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.10 离开家庭
+```
+【描述】
+离开家庭
+
+【函数调用】
+/**
+ * 离开家庭
+ *
+ * @param callback callback
+ */
+public void leaveFamily(String familyId, IResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().leaveFamily(familyId, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+## 10.3 房间操作
+
+### 10.3.1 添加房间
+```
+【描述】
+添加房间
+
+【函数调用】
+/**
+ * 添加房间
+ *
+ * @param callback callback
+ */
+public void addRoom(String familyId, String roomName, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().addRoom(familyId, roomName, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.3.2 修改房间信息
+```
+【描述】
+修改房间信息
+
+【函数调用】
+/**
+ * 修改房间信息
+ */
+public void updateRoom(String familyId, String roomId, String roomName, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().updateRoom(familyId, roomId, roomName, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.3.3 删除房间
+```
+【描述】
+删除房间
+
+【函数调用】
+/**
+ * 删除房间
+ *
+ * @param callback callback
+ */
+public void deleteRoom(String familyId, List<String> roomIdList, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().deleteRoom(familyId, roomIdList, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.3.4 添加设备到房间
+```
+【描述】
+添加设备到房间
+
+【函数调用】
+/**
+ * 添加设备到房间
+ *
+ * @param callback callback
+ */
+public void addDeviceToRoom(String familyId, String roomId, List<CameraInfo> deviceList, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().addDeviceToRoom(familyId, roomId, deviceList, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.3.5 从房间移除设备
+```
+【描述】
+从房间移除设备
+
+【函数调用】
+/**
+ * 从房间移除设备
+ *
+ * @param callback callback
+ */
+public void removeDeviceFromRoom(String familyId, String roomId, List<CameraInfo> deviceList, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().removeDeviceFromRoom(familyId, roomId, deviceList, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.3.6 批量删除设备
+```
+【描述】
+批量删除设备
+
+【函数调用】
+/**
+ * 批量删除设备
+ */
+public void deleteDeviceBatch(List<String> deviceIDList, IResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().deleteDeviceBatch(deviceIDList, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+## 10.4 家庭相关类
+
+### 10.4.1 MeariFamily
+```
+private String familyId; 家庭ID
+// 默认家庭的名称为空，可以根据"userName"确定名称，或自定义名称
+String familyName; 家庭名称
+boolean owner; 是否是自己的家庭
+boolean isDefault; 是否是默认家庭
+String userName; 用户名称
+String location; 家庭地址
+List<MeariRoom> roomList; 家庭房间列表
+List<CameraInfo> familyDeviceList; 家庭设备列表
+```
+### 10.4.1 MeariRoom
+```
+private String roomId; 房间ID
+// 默认家庭的默认房间名称为空，可以根据"roomTarget"，自己确定名称
+private String roomName; 房间名称
+private int roomTarget; 房间标志位
+private List<CameraInfo> roomDeviceList; 房间设备聊表
+```
+
+
+
+# 11.MQTT和推送
 
 ```
 meari SDK 支持内部的MQTT推送消息，也支持FCM等厂商推送（后续会陆续支持）
 ```
 
-## 10.1 MQTT消息
+## 11.1 MQTT消息
 ```
 用于接收设备添加成功消息、门铃呼叫消息、语音门铃呼叫消息、异地登录等消息
 ```
 
-### 10.1.1 连接MQTT服务
+### 11.1.1 连接MQTT服务
 
 // 用户登录成功后调用
 MeariUser.getInstance().connectMqttServer(application);
@@ -2907,10 +3445,10 @@ void requestReceivingDevice(String userName, String deviceName, String msgID);
 void requestShareDevice(String userName, String deviceName, String msgID);
 ```
 
-## 10.2 集成谷歌推送
+## 11.2 集成谷歌推送
 首先, 参考教程: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) 和 [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), 把firebase设置界面生成的admin sdk文件发送给meari服务器配置，在app中获取fcm token并调用MeariUser.getInstance().upload(1, token, callback)上传token
 
-## 10.3 集成其他推送
+## 11.3 集成其他推送
 ```
 暂不支持
 ```

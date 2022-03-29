@@ -232,7 +232,17 @@ public void loginWithExternalData(String redirectionJson, String loginJson, ILog
     
 [Code example]
 
-MeariUser.getInstance().loginWithExternalData(String redirectionJson, String loginJson, ILoginCallback callbak)
+MeariUser.getInstance().loginWithExternalData(redirectionJson, loginJson, new ILoginCallback() {
+    @Override
+    public void onSuccess(UserInfo userInfo) {
+
+    }
+
+    @Override
+    public void onError(int i, String s) {
+
+    }
+});
 ```
 
 ## 4.3 Reset password
@@ -2738,18 +2748,545 @@ MeariUser.getInstance().setFlightLinkSirenEnable(status, new ISetDeviceParamsCal
     }
 });
 ```
+# 10.Family
 
-# 10.MQTT and push
+## 10.1 Family Operation 
+
+### 10.1.1 Get family list 
+```
+【description】
+Get family list 
+
+【Function call】
+/**
+ * Get family list
+ *
+ * @param callback callback
+ */
+public void getFamilyList(IFamilyListCallback callback)
+
+【Code example】
+MeariUser.getInstance().getFamilyList(new IFamilyListCallback() {
+    @Override
+    public void onSuccess(List<MeariFamily> familyList) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.1.2 Create Family
+```
+【description】
+Create a home with up to 10 rooms 
+
+【Function call】
+/**
+ * Create a home with up to 10 rooms 
+ *
+ * @param callback callback
+ */
+public void createFamily(String familyName, String familyLocation, List<MeariRoom> roomList, IStringResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().createFamily(familyName, familyLocation, roomList, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.1.3 Update Family Information 
+```
+【description】
+Update family information 
+
+【Function call】
+/**
+ * Update family information 
+ *
+ * @param callback callback
+ */
+public void updateFamily(String familyId, String familyName, String familyLocation, IStringResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().updateFamily(familyId, familyName, familyLocation, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.1.4 Delete Family 
+```
+【description】
+delete family from account
+
+【Function call】
+/**
+ * delete family from account
+ *
+ * @param callback callback
+ */
+public void deleteFamily(String familyId, IStringResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().deleteFamily(familyId, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+## 10.2 Family Sharing
+
+### 10.2.1 Search for member accounts to add 
+```
+【description】
+Search for member accounts to add 
+
+【Function call】
+/**
+ * Search for member accounts to add 
+ *
+ * @param account account
+ * @param familyId  familyId
+ */
+public void searchContactForAddFamilyMember(String account, String familyId, IBaseModelCallback<FamilyMemberToAdd> callback)
+
+【Code example】
+MeariUser.getInstance().searchContactForAddFamilyMember(account, familyId, new IBaseModelCallback<FamilyMemberToAdd>() {
+    @Override
+    public void onSuccess(FamilyMemberToAdd familyMemberToAdd) {
+    }
+
+    @Override
+    public void onFailed(int code, String errorMsg) {
+    }
+});
+```
+
+### 10.2.2 Search for a family account to join 
+```
+【description】
+Search for a family account to join 
+
+【Function call】
+/**
+ * Search for a family account to join 
+ *
+ * @param account account
+ */
+public void searchContactForJoinFamily(String account, IBaseModelCallback<MeariFamilyToJoin> callback)
+
+【Code example】
+MeariUser.getInstance().searchContactForJoinFamily(account, new IBaseModelCallback<MeariFamilyToJoin>() {
+    @Override
+    public void onSuccess(MeariFamilyToJoin meariFamilyToJoin) {
+    }
+
+    @Override
+    public void onFailed(int code, String errorMsg) {
+    }
+});
+```
+
+### 10.2.3 Get family sharing Messages
+```
+【description】
+Get family sharing Messages
+
+【Function call】
+/**
+ * Get family sharing Messages
+ */
+public void getFamilyShareMessages(IBaseModelCallback<List<FamilyShareMsg>> callback)
+
+【Code example】
+MeariUser.getInstance().getFamilyShareMessages(new IBaseModelCallback<List<FamilyShareMsg>>() {
+    @Override
+    public void onSuccess(List<FamilyShareMsg> familyShareMsgs) {
+    }
+
+    @Override
+    public void onFailed(int code, String errorMsg) {
+    }
+});
+```
+
+### 10.2.4 Add member to the family
+```
+【description】
+Add member to the family
+
+【Function call】
+/**
+ * Add member to the family
+ *
+ * @param familyId    family id
+ * @param memberId    member user id
+ * @param permissions List of permissions for device control
+ * @param callback    callback
+ */
+public void addMemberToFamily(String familyId, String memberId, List<DevicePermission> permissions, IResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().addMemberToFamily(familyId, memberId, permissions, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.5 Join a family
+```
+【description】
+Join a family
+
+【Function call】
+/**
+ * Join a family
+ *
+ * @param familyIdList family id list to join
+ * @param callback     callback
+ */
+public void joinFamily(List<String> familyIdList, IResultCallback callback) {
+
+【Code example】
+MeariUser.getInstance().joinFamily(familyIdList, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.6 Get a list of family members
+```
+【description】
+Get a list of family members 
+
+【Function call】
+/**
+ * Get a list of family members 
+ *
+ * @param callback callback
+ */
+public void getFamilyMemberList(String familyId, IFamilyMemberListCallback callback)
+
+【Code example】
+MeariUser.getInstance().getFamilyMemberList(familyId, new IFamilyMemberListCallback() {
+    @Override
+    public void onSuccess(List<FamilyMember> familyMemberList) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.7 Modify device permissions of the family member
+```
+【description】
+Modify device permissions of the family member
+
+【Function call】
+/**
+ * Modify device permissions of the family member
+ *
+ * @param callback callback
+ */
+public void modifyMemberDevicePermission(String familyId, String memberID, List<DevicePermission> permissions, IResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().modifyMemberDevicePermission(familyId, memberID, permissions, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.8 Remove a member from the family 
+```
+【description】
+Remove a member from the family 
+
+【Function call】
+/**
+ * Remove a member from the family 
+ *
+ * @param callback callback
+ */
+public void removeMemberFromFamily(String familyId, String memberID, IStringResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().removeMemberFromFamily(familyId, memberID, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.9 Revoke member invitation 
+```
+【description】
+Revoke member invitation 
+
+【Function call】
+/**
+ * Revoke member invitation 
+ */
+public void revokeMemberInvitation(String familyId, String msgId, IResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().revokeMemberInvitation(familyId, msgId, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.10 Leave family
+```
+【description】
+Leave family
+
+【Function call】
+/**
+ * Leave family
+ *
+ * @param callback callback
+ */
+public void leaveFamily(String familyId, IResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().leaveFamily(familyId, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+## 10.3 Room Operation
+
+### 10.3.1 Add room to the family
+```
+【description】
+Add room to the family
+
+【Function call】
+/**
+ * Add room to the family
+ *
+ * @param callback callback
+ */
+public void addRoom(String familyId, String roomName, IStringResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().addRoom(familyId, roomName, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.3.2 Modify room information
+```
+【description】
+Modify room information
+
+【Function call】
+/**
+ * Modify room information
+ */
+public void updateRoom(String familyId, String roomId, String roomName, IStringResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().updateRoom(familyId, roomId, roomName, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.3.3 Delete room from the family
+```
+【description】
+Delete room from the family
+
+【Function call】
+/**
+ * Delete room from the family
+ *
+ * @param callback callback
+ */
+public void deleteRoom(String familyId, List<String> roomIdList, IStringResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().deleteRoom(familyId, roomIdList, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.3.4 Add device to the room
+```
+【description】
+Add device to the room
+
+【Function call】
+/**
+ * Add device to the room
+ *
+ * @param callback callback
+ */
+public void addDeviceToRoom(String familyId, String roomId, List<CameraInfo> deviceList, IStringResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().addDeviceToRoom(familyId, roomId, deviceList, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.3.5 Remove device from the room
+```
+【description】
+Remove device from the room
+
+【Function call】
+/**
+ * Remove device from the room
+ *
+ * @param callback callback
+ */
+public void removeDeviceFromRoom(String familyId, String roomId, List<CameraInfo> deviceList, IStringResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().removeDeviceFromRoom(familyId, roomId, deviceList, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.3.6 Batch delete devices
+```
+【description】
+Batch delete devices
+
+【Function call】
+/**
+ * Batch delete devices
+ */
+public void deleteDeviceBatch(List<String> deviceIDList, IResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().deleteDeviceBatch(deviceIDList, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+## 10.4 Family Related Classes 
+
+### 10.4.1 MeariFamily
+```
+private String familyId; family ID
+// The default family name is empty, you can determine the name according to "userName", or customize the name
+String familyName; family name
+boolean owner; Is the owner of the family 
+boolean isDefault; Is it the default family 
+String userName; user name
+String location; family address 
+List<MeariRoom> roomList; room list in family
+List<CameraInfo> familyDeviceList; all camera in family
+```
+### 10.4.1 MeariRoom
+```
+private String roomId; room ID
+// The default room name of the default family is empty, you can determine the name yourself according to "roomTarget"
+private String roomName; room name
+private int roomTarget; room room target
+private List<CameraInfo> roomDeviceList; device list in room
+```
+
+
+# 11.MQTT and push
 ```
 The meari SDK supports internal MQTT push messages, as well as FCM and other vendors (supported in future)
 ```
 
-## 10.1 MQTT messages
+## 11.1 MQTT messages
 ```
 Used to receive messages such as device add success message, doorbell call message, voice doorbell call message, remote login, etc.
 ```
 
-### 10.1.1 Connect to MQTT Service
+### 11.1.1 Connect to MQTT Service
 
 // Called after the user login successfully
 MeariUser.getInstance (). ConnectMqttServer (application);
@@ -2833,11 +3370,11 @@ void requestReceivingDevice (String userName, String deviceName, String msgID);
 void requestShareDevice (String userName, String deviceName, String msgID);
 ```
 
-## 10.2 Integrated FCM Push
+## 11.2 Integrated FCM Push
 First, You can follow these guides: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) and [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), then go to firebase setting page, geneating the admin sdk file，provide the file to meari,
 call MeariUser.getInstance().uploadToken(1, token, callback) to upload your fcm token to meari server.
 
-## 10.3 Integration with other pushes
+## 11.3 Integration with other pushes
 ```
 Not currently supported
 ```
