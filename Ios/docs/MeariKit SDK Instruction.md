@@ -17,9 +17,8 @@
 # 1. Functional Overview 
 
 Meari Technology APP SDK provides the interface package for communication with hardware devices and Meari Cloud to accelerate the application development process. It mainly includes the following functions:
-
+- Account system (login, logout, modification of user information, registration push, etc.)
 - Hardware equipment related (network distribution, control, status reporting, firmware upgrade, preview playback, etc.)
-- Account system (general account functions such as mobile phone number, email registration, login, password reset, etc.)
 - Family group related (functions such as creating a family group, creating a new room, assigning a room, inviting members, etc.)
 - Message center (alarm message, device sharing message, family sharing message, system message)
 
@@ -47,14 +46,11 @@ Drag the downloaded MeariKit.framework to the project
 3. Add files that support C++: change any .m file to .mm file, for example, change AppDelegate.m to AppDelegate.mm format
 ```
 
-## 3.2 Integrated SDK function 
+## 3.2 Initialize the SDK 
 
 ```
 Belong to: MeariSdk tools
 ```
-
-### (1) Initialize the SDK configuration in Application
-
 ```
 【Describe】
        After connecting through the cloud, the data obtained from the server v2/third/sdk/redirect is transferred and the SDK is initialized.
@@ -245,7 +241,7 @@ User-related data model.
 @property (nonatomic, assign, readonly) MeariThirdLoginType thirdLoginType; 
 ```
 
-#5.User message notification 
+## 4.6 User message notification 
 
 ```
 Timely message notification means MeariSDK notifies the current user on the App side and some status of the device under the user account in time to facilitate the App side to achieve a better user experience
@@ -265,7 +261,7 @@ Timely message notification means MeariSDK notifies the current user on the App 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoginInvalidNotification:) name:MeariUserLoginInvalidNotification object:nil];
 ```
 
-#6.Device distribution network
+# 5.Device distribution network
 
 ```
 Belong to: MeariDeviceActivator tool class
@@ -274,7 +270,7 @@ The hardware module of Meari Technology supports three network distribution mode
 The general process is-get the network tokon-give the token and wifi information to the device-wait for the device to be added successfully. The main difference between each mode is how to send the network distribution information to the device, the QR code is scanned by the camera, the hotspot mode is transmitted through the WIFI link, and the wired distribution network is searched through the LAN.
 
 ```
-## 6.1 Get distribution network token
+## 5.1 Get distribution network token
 ```
 【Description 】
      Obtain the distribution network token on the server, which needs to be passed to the device
@@ -297,7 +293,7 @@ The general process is-get the network tokon-give the token and wifi information
     }];
 
 ```
-## 6.2 QR code distribution network
+## 5.2 QR code distribution network
 ```
 【Description 】
      Generate a QR code with WIFI information and network distribution token and scan it for the device.
@@ -348,7 +344,7 @@ The general process is-get the network tokon-give the token and wifi information
     [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
 
 ```
-## 6.3 Hotspot distribution network (Ap distribution network)
+## 5.3 Hotspot distribution network (Ap distribution network)
 ```
 【Description 】
      Generate a QR code with WIFI information and network distribution token, and transparently transmit it to the device through the hotspot WIFI.
@@ -404,7 +400,7 @@ The general process is-get the network tokon-give the token and wifi information
     [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
 
 ```
-## 6.4 Wired distribution network
+## 5.4 Wired distribution network
 ```
 【Description 】
      Make sure the device is plugged into the network cable, and the phone and device are in the same local area network
@@ -491,412 +487,11 @@ The general process is-get the network tokon-give the token and wifi information
 
     }];
 ```
-# 7.Family
-```
-Belong to：MeariFamily
-```
-
-## 7.1 Family Management
-### 7.1.1 Get family room list(Without device Info)
-```
-Return：MeariFamilyModel
-```
-```
-【Description】
-     After the user logs in, obtain the family room list through the interface of the MeariFamily tool class and return it in the form of a model Family Information Array (MeariFamilyModel)
-
-【Function】
-    //Get all family room information (only return family information without devices)
-    - (void)getFamilyListSuccess:(MeariSuccess_FamilyList)success failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] getFamilyListSuccess:^(NSArray<MeariFamilyModel *> *familyList) {
-      
-      } failure:^(NSError *error) {
-
-      }];
-```
-
-MeariFamilyModel property：
-
-```
-@property (nonatomic, assign) BOOL isDefault; // Whether the default family
-@property (nonatomic, assign) BOOL owner; // Whether the owner
-
-@property (nonatomic, copy) NSString *homeID; // Family ID
-@property (nonatomic, copy) NSString *homeName; // Family name
-@property (nonatomic, copy) NSString *position; // family location
-@property (nonatomic, copy) NSString *userName; // User nickname, value only when homeName does not exist
-@property (nonatomic, assign) MRFamilyJoinStatus joinStatus; // Joining status of family to others
-
-@property (nonatomic, copy) NSArray<MeariRoomModel *> *roomList; // room list
-@property (nonatomic, copy) NSArray<MeariDevice *> *relaySubDeviceList; // list of all child devices of relay
-@property (nonatomic, copy) NSArray<MeariDevice *> *allDeviceList; // All my devices list
-@property (nonatomic, copy) NSArray<MeariDevice *> *sharedDeviceList; // Shared device list
-@property (nonatomic, copy) NSArray<MeariDevice *> *unDistributionDeviceList;  // Unassigned family room equipment list
-```
-
-### 7.1.2 Get family list (Has device Info)
-
-```
-【Description】
-     After the user logs in, the family room list is obtained through the interface of the MeariFamily tool class, and all devices are processed. After success, the return result is obtained through [MeariFamily sharedInstance].familyArray
-【Function】
-    //Get all family room information (return family information including device information)
-    - (void)getFamilyHomeListSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
-    //Get the specified family room information (return family information including device information)
-    - (void)getFamilyListWithHomeID:(NSString *)homeID success:(MeariSuccess)success failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] getFamilyHomeListSuccess:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-    
-    [[MeariFamily sharedInstance] getFamilyListWithHomeID:familyid success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-
-### 7.1.3 Creat New Family
-
-```
-【Function】
-    //Create a new homegroup
-    - (void)addFamilyWithHomeName:(nonnull NSString *)homeName
-                 homePosition:(nullable NSString *)homePosition
-                 roomNameList:(nullable NSArray<NSString *> *)roomNameList
-                      success:(MeariSuccess)success
-                      failure:(MeariFailure)failure;
-
-【Code】
-      [[MeariFamily sharedInstance] addFamilyWithHomeName:familyName homePosition:familyPosition roomNameList:roomList success:^{
-      } failure:^(NSError *error) {
-        MR_HUD_SHOW_ERROR(error)
-    }];
-```
-### 7.1.4 Updating Family Information
-
-
-```
-【Function】
-    //Update family information
-    - (void)updateFamilyWithHomeID:(NSString *)homeID
-                      homeName:(NSString *)homeName
-                  homePosition:(NSString *)homePosition
-                       success:(MeariSuccess)success
-                       failure:(MeariFailure)failure;
-
-【Code】
-           [[MeariFamily sharedInstance] updateFamilyWithHomeID:self.familyModel.homeID homeName:homeName homePosition:position success:^{
-          } failure:^(NSError *error) {
-        }];
-```
-### 7.1.5 Delete Family 
-
-```
-
-【Function】
-    //Delete the family with the specified HomeID (the default family cannot be deleted)
-      - (void)removeFamilyWithHomeID:(NSString *)homeID success:(MeariSuccess)success failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] removeFamilyWithHomeID:homeID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-## 7.2 Family Sharing
-
-### 7.2.1 Join a Family
-
-```
-
-【Function】
-    //Request to join a specified homegroup
-    - (void)joinFamilyWithHomeIDList:(NSArray<NSString *> *)homeIDList
-                       success:(MeariSuccess)success
-                       failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] joinFamilyWithHomeIDList:homeIDList success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-### 7.2.2 Leaving Family
-
-```
-【Function】
-    //Leave a joined Family
-    - (void)leaveFamilyWithHomeID:(NSString *)homeID
-                      success:(MeariSuccess)success
-                      failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] leaveFamilyWithHomeID:homeID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-### 7.2.3 Invite members to join a family group
-```
-【Function】
-    //Invite other users to the homegroup (only the home owner has permission)
-    - (void)addMemberWithHomeID:(nonnull NSString *)homeID
-                   memberID:(nonnull NSString *)memberID
-        deviceAuthorityList:(NSArray *)deviceAuthorityList
-                       success:(MeariSuccess)success
-                       failure:(MeariFailure)failure;
-
-【Code】
-       NSArray *array = @[{"deviceID":1,"permission": 0}, {"deviceID":1,"permission": 0}];//home device permissions
-     [[MeariFamily sharedInstance] addMemberWithHomeID:homeID memberID:memberID deviceAuthorityList:array success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-### 7.2.4 Family Revoke Invite Member
-
-```
-【Function】
-    //When the member join status is 2, the member invitation message can be revoked through msgID
-    - (void)revokeFamilyInviteWithMsgID:(NSString *)msgID
-                             homeID:(NSString *)homeID
-                            success:(MeariSuccess)success
-                            failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] revokeFamilyInviteWithMsgID:msgID homeID:homeID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-### 7.2.5 Family Removal Member
-
-```
-
-【Function】
-    //Delete family members with specified memberID
-    - (void)removeMemberWithHomeID:(nonnull NSString *)homeID
-                      memberID:(nonnull NSString *)memberID
-                          success:(MeariSuccess)success
-                       failure:(MeariFailure)failure;
-
-
-【Code】
-     [[MeariFamily sharedInstance] removeMemberWithHomeID:homeID memberID:memberID :^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-### 7.2.6 Adding family members to search by account
-```
-Return：MeariMemberModel
-```
-
-```
-【Description】
-     When adding a family member, use HomeID and the entered account name to search and return the information of the member to be invited
-
-【Function】
-    //Query the information of adding members
-    - (void)searchUserWithHomeID:(nullable NSString *)homeID
-               memberAccount:(nonnull NSString *)memberAccount
-                 countryCode:(NSString *)countryCode
-                   phoneCode:(nonnull NSString *)phoneCode
-                     success:(MeariSuccess_Member)success
-                     failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] searchUserWithHomeID:homeID memberAccount:account countryCode:[MeariUser sharedInstance].userInfo.countryCode phoneCode:[MeariUser sharedInstance].userInfo.phoneCode success:^(MeariMemberModel *member){
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-MeariMemberModel property:
-```
-@property (nonatomic, assign) NSInteger userID; 
-@property (nonatomic, copy) NSString *userAccount; // User account
-@property (nonatomic, copy) NSString *nickName; // Nick Name
-@property (nonatomic, copy) NSString *userName; // Member Name
-@property (nonatomic, copy) NSString *imageUrl; 
-@property (nonatomic, copy) NSString *msgID; // When the joinStatus is 2, you can use msgid to revoke joining the family
-@property (nonatomic, assign) MRFamilyJoinStatus joinStatus; 
-@property (nonatomic, assign) BOOL isMaster; //Is the home owner
-@property (nonatomic, copy) NSString *hasInvited; 
-@property (nonatomic, assign) MRFamilyInvitedStatus invitedStatus;
-
-@property (nonatomic, copy) NSString *homeID;
-@property (nonatomic, copy) NSString *homeName;
-@property (nonatomic, copy) NSArray<MeariFamilyDeviceModel *> *devices;
-
-@property (nonatomic, copy) NSArray<MeariFamilyModel *> *homes;
-```
-### 7.2.7 List of Family Members
-```
-Return：MeariMemberModel
-```
-
-```
-【Function】
-    //Get information on all family members
-    - (void)getMemberListWithHomeID:(NSString *)homeID success:(MeariSuccess_MemberList)success failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] getMemberListWithHomeID:homeID success:^(MeariMemberModel *member){
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-### 7.2.8 Home Device Permission Changes
-
-```
-
-【Function】
-    //Modify family device access to family members
-    - (void)updateMemberPermissionMemberID:(nonnull NSString *)memberID
-                                homeID:(NSString *)homeID
-                   deviceAuthorityList:(NSArray *)deviceAuthorityList
-                               success:(MeariSuccess)success
-                               failure:(MeariFailure)failure;
-【Code】
-     [[MeariFamily sharedInstance] updateMemberPermissionMemberID: homeID: deviceAuthorityList: success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-### 7.2.9 Family Member Name Modification
-
-```
-
-【Function】
-    //Edit family member names 
-    - (void)memberNameUpdateWithHomeID:(NSString *)homeID
-                    memberID:(NSString *)memberID
-                  memberName:(NSString *)memberName
-                     success:(MeariSuccess)success
-                     failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] memberNameUpdateWithHomeID:homeID memberID: memberID memberName: memberName success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-## 7.3 Room Management 
-### 7.3.1 Equipment Assignment Room
-
-```
-【Function】
-    //Assign a device to a room in the home
-    - (void)roomDeviceDistributioRoomID:(nonnull NSString *)roomID
-                              homeID:(nonnull NSString *)homeID
-                          deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
-                               success:(MeariSuccess)success
-                            failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] roomDeviceDistributioRoomID:roomID homeID:homeID deviceIDList:array success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-### 7.3.2 Adding a Room
-
-```
-
-
-【Function】
-    //Create new room
-    - (void)addRoomWithRoomName:(NSString *)roomName
-                     homeID:(NSString *)homeID
-                    success:(MeariSuccess)success
-                    failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] addRoomWithRoomName:roomName homeID:homeID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-### 7.3.3 Room Name Modification
-
-
-```
-【Function】
-    //Modify the room name of the specified room in the homegroup
-   - (void)updateRoomNameWithRoomName:(NSString *)roomName
-                            homeID:(NSString *)homeID
-                            roomID:(NSString *)roomID
-                    success:(MeariSuccess)success
-                           failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] updateRoomNameWithRoomName:roomName homeID:homeID roomID:roomID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-### 7.3.4 Delete Room
-
-```
-
-【Function】
-    //Delete the room of the specified family
-    - (void)removeRoomWithRoomIDList:(NSArray<NSString *> *)roomIDList
-                      homeID:(NSString *)homeID
-                     success:(MeariSuccess)success
-                     failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] removeRoomWithRoomIDList:array homeID:homeID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-### 7.3.5 Remove devices from this room
-
-```
-
-【Function】
-    //Remove devices from family room
-    - (void)removeDeviceWithRoomID:(NSString *)roomID
-                      homeID:(NSString *)homeID
-                deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
-                     success:(MeariSuccess)success
-                     failure:(MeariFailure)failure;
-【Code】
-     [[MeariFamily sharedInstance] removeDeviceWithRoomID:roomID homeID:homeID deviceIDList:array success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-
-
-# 8.Device information
+# 6.Device information
 ```
 Belong to：MeariUser
 ```
-## 8.1 Get device list 
+## 6.1 Get device list 
 ```
 Belong to：MeariDeviceList
 ```
@@ -934,7 +529,7 @@ MeariDeviceList Attributes：
 /** Base */
 @property (nonatomic, strong) NSArray <MeariDevice *> *chimes;
 ```
-## 8.2 Device Info
+## 6.2 Device Info
 
 ```
 Belong to：MeariDevice
@@ -955,7 +550,7 @@ Belong to：MeariDevice
 @property (nonatomic, assign, readonly)BOOL supportFullDuplex;              //Whether to support FullDuplex intercom
 。。。
 ```
-## 8.3 Delete device 
+## 6.3 Delete device 
 
 ```
 【Description 】
@@ -978,7 +573,7 @@ Belong to：MeariDevice
      }];
 ```
 
-## 8.4 Device nickname modification 
+## 6.4 Device nickname modification 
 
 ```
 【Description 】
@@ -1003,7 +598,7 @@ Belong to：MeariDevice
     
 ```
 
-## 8.5 Device alarm time point 
+## 6.5 Device alarm time point 
 
 ```
 【Description 】
@@ -1026,7 +621,7 @@ Belong to：MeariDevice
      }];
 ```
 
-## 8.6 Query device version 
+## 6.6 Query device version 
 
 ```
 【Description 】
@@ -1061,7 +656,7 @@ MeariDeviceFirmwareInfo:
 
 ```
 
-## 8.7 Query device online status 
+## 6.7 Query device online status 
 
 ```
 【Description 】
@@ -1100,7 +695,7 @@ MeariDeviceFirmwareInfo:
 
 
 ```
-## 8.8 Remote wake up doorbell 
+## 6.8 Remote wake up doorbell 
 
 ```
 【Description 】
@@ -1124,7 +719,7 @@ MeariDeviceFirmwareInfo:
      Doorbell low-power products (camera.lowPowerDevice == YES), you need to call the remote wake-up interface first, and then call the hole-punching interface
 ```
 
-## 8.9 Upload doorbell message 
+## 6.9 Upload doorbell message 
 
 ```
 【Description 】
@@ -1148,7 +743,7 @@ MeariDeviceFirmwareInfo:
      }];
 ```
 
-## 8.10 Download doorbell message 
+## 6.10 Download doorbell message 
 
 ```
 【Description 】
@@ -1171,7 +766,7 @@ MeariDeviceFirmwareInfo:
     }];
 ```
 
-## 8.11 Delete doorbell message 
+## 6.11 Delete doorbell message 
 
 ```
 【Description 】
@@ -1194,14 +789,14 @@ MeariDeviceFirmwareInfo:
      }];
 ```
 
-# 9.Device control
+# 7.Device control
 ```
 Belong to：MeariDevice
 ```
 ```
 MeariDevice Responsible for all operations on the device, including preview, playback, settings, etc. For device settings, you need to ensure that the connection with the device has been established
 ```
-## 9.1 Connect the device 
+## 7.1 Connect the device 
 
 ```
 【Description 】
@@ -1225,7 +820,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      }];
 ```
 
-## 9.2 Disconnect device 
+## 7.2 Disconnect device 
 
 ```
 【Description 】
@@ -1247,7 +842,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 
-## 9.3 Get bit rate
+## 7.3 Get bit rate
 
 ```
 【Description 】
@@ -1264,7 +859,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 
-## 9.4 Preview 
+## 7.4 Preview 
 
 ```
 【Description 】
@@ -1290,7 +885,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 【Description 】
     Take real-time streaming to the camera
-	
+    
 【Function】
      /**
       @param playView Play view control
@@ -1350,7 +945,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 
-## 9.5 Play back
+## 7.5 Play back
 
 ```
 【Description 】
@@ -1454,9 +1049,9 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
      //Stop playback
      [self.device stopPlackbackSDCardSuccess:^{
-	
+    
       } failure:^(NSString *error) {
-	
+    
       }];
 
      //seek playback
@@ -1480,7 +1075,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
      }];
 ```
-## 9.6 Cloud Play back 
+## 7.6 Cloud Play back 
 ```
 【Description 】
      After the device activates the cloud storage service, the records will be stored in the cloud.
@@ -1519,7 +1114,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
       dateComponents.year = 2021;
       dateComponents.month = 7;
       [device getCloudVideoDaysWithMonthComponents: dateComponents success:^(NSArray<MeariDeviceTime *> *days) {
-	 	//Get the date of cloud storage recording
+         //Get the date of cloud storage recording
       } failure:^(NSError *error) {
         
       }];
@@ -1536,8 +1131,8 @@ MeariDevice Responsible for all operations on the device, including preview, pla
    
       }];
 
-		
-	  // Obtain the m3u8 url of the specific fragment in 24-hour format
+        
+      // Obtain the m3u8 url of the specific fragment in 24-hour format
      // The time is half an hour apart. For example: 12:00-12:30, 13:30-14:00
      // The m3u8 file is only valid for half an hour, and it will automatically expire after expiration.
       NSDateComponents * startTime = [[NSDateComponents alloc]init];
@@ -1555,7 +1150,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
       endTime.minute = 30;
 
       [self.camera getCloudVideoWithStartTime:startTime endTime:endTime success:^(NSURL *m3u8Url) {
-		
+        
       } failure:^(NSError *error) {
         
       }];
@@ -1601,7 +1196,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 
 ```
-## 9.7 Mute
+## 7.7 Mute
 
 ```
 【Description 】
@@ -1619,7 +1214,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 
-## 9.8 Voice intercom 
+## 7.8 Voice intercom 
 
 
 ```
@@ -1627,13 +1222,13 @@ MeariDevice Responsible for all operations on the device, including preview, pla
     Voice intercom is divided into one-way intercom and two-way intercom, one-way intercom can only have one party talking at the same time.
     
 【Be applicable】
-	[device supportFullDuplex] == YES Support two-way intercom
-	
-	[device supportFullDuplex] == NO  Support one-way intercom
+    [device supportFullDuplex] == YES Support two-way intercom
+    
+    [device supportFullDuplex] == NO  Support one-way intercom
 
 【Function】
 
-	/**
+    /**
      Set the type of voice intercom
 
      @param type intercom type
@@ -1670,7 +1265,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
     - (void)stopVoicetalkSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 【Code】
-	  //Set the voice intercom type Set according to the supported type
+      //Set the voice intercom type Set according to the supported type
       MeariVoiceTalkType type = self.camera.supportFullDuplex ?  MeariVoiceTalkTypeFullDuplex : MeariVoiceTalkTypeOneWay;
 
      //Get real-time volume of voice intercom
@@ -1697,7 +1292,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 
-## 9.9 Screenshots 
+## 7.9 Screenshots 
 
 ```
 【Description 】
@@ -1723,7 +1318,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 
-## 9.10 Video
+## 7.10 Video
 
 ```
 【Description 】
@@ -1767,7 +1362,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 
-## 9.11 Get all the parameters of the device
+## 7.11 Get all the parameters of the device
 
 ```
 【Description 】
@@ -1787,7 +1382,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
     }];
 ```
 
-## 9.12 PTZ control 
+## 7.12 PTZ control 
 
 ```
 【Description 】
@@ -1826,7 +1421,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
     }];
 
 ```
-## 9.13 Leave message
+## 7.13 Leave message
 ```
 【Description 】
      The doorbell device supports recording of messages, and you can choose to play the message when answering.
@@ -1837,7 +1432,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      camera.supportHostMessage == MeariDeviceSupportHostTypeMultiple  Support 3 messages, each of up to 10 seconds
 
 【Description 】
-	 Get device message list
+     Get device message list
 【Function】
      /**
       @param success (Successful callback, the URL address of the file containing the message)
@@ -1860,7 +1455,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      */
     - (void)startRecordVoiceMailWithPath:(NSString *)path;
 【Code】 
-	  [camera startRecordVoiceMailWithPath:@"xxxx/record.wav"];
+      [camera startRecordVoiceMailWithPath:@"xxxx/record.wav"];
 
 【Description 】
      End recording
@@ -1906,7 +1501,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 
-## 9.14 Detect alarm 
+## 7.14 Detect alarm 
 
 ```
 【Description 】
@@ -1938,7 +1533,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      General low-power camera
      It can be judged by device.supportPir == YES
      Get the Pir level supported by the device through device.supportPirSensitivity
-	
+    
 【Function】
      /**
      @param level alarm level  
@@ -1957,7 +1552,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 
-## 9.15 Storage (SD card)
+## 7.15 Storage (SD card)
 
 ```
 【Description 】
@@ -2010,7 +1605,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
  
 ```
 
-## 9.16 Firmware upgrade
+## 7.16 Firmware upgrade
 
 ```
 【Description 】
@@ -2100,7 +1695,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
      }];
 
-	 //Check the latest version of the device to assist in verifying whether the upgrade is successful
+     //Check the latest version of the device to assist in verifying whether the upgrade is successful
      [device getDeviceLatestVersionSuccess:^(NSDictionary *dict) {
      
      } failure:^(NSError *error) {
@@ -2109,7 +1704,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
         
 
 ```
-## 9.17 Sleep mode 
+## 7.17 Sleep mode 
 
 ```
 【Description 】
@@ -2141,7 +1736,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
      /**
       Set up geofencing
-	
+    
       @param ssid  
       @param bssid  
       @param deviceID  
@@ -2167,7 +1762,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
     
      //Set WiFi information
      [[MeariUser sharedInstance] setGeofenceWithSSID:(NSString *)ssid BSSID:(NSString *)bssid deviceID:(NSInteger)deviceID success:^(NSString *str){
-	
+    
      } failure:^(NSError *error){
 
      }];
@@ -2175,7 +1770,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 
-## 9.18 Temperature and humidity 
+## 7.18 Temperature and humidity 
 
 ```
 【Description 】
@@ -2204,7 +1799,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 
-## 9.19 Music 
+## 7.19 Music 
 
 ```
 【Description 】
@@ -2299,7 +1894,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 
-## 9.20 Device volume 
+## 7.20 Device volume 
 
 ```
 【Description 】
@@ -2342,7 +1937,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 
-## 9.21 Doorbell volume
+## 7.21 Doorbell volume
 
 ```
 【Description 】
@@ -2366,20 +1961,20 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
     }];
 ```
-## 9.22 Bell settings 
+## 7.22 Bell settings 
 
 ```
 【Description 】
      Set up wireless bell
 
 【Function】
-     /**	 
+     /**     
       @param volumeType  
       @param selectedSong  
       @param repeatTimes  
       @param success  
       @param failure  
-	 */
+     */
      - (void)setWirelessChimeVolumeLevel:(MeariDeviceLevel)volumeLevel selectedSong:(NSString *)selectedSong repeatTimes:(NSInteger)repeatTimes success:(MeariDeviceSucess_ID)success failure:(MeariDeviceFailure)failure;
 
 【Code】
@@ -2426,7 +2021,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
      }];
 ```
-## 9.23 Floodlight camera settings
+## 7.23 Floodlight camera settings
 
 ### (1) Switch lights
 
@@ -2437,20 +2032,20 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 【Function】
      /**
-	
-	  @param on  
-	  @param success  
-	  @param failure  
-	 */
-	 - (void)setFloodCameraLampOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure; 
+    
+      @param on  
+      @param success  
+      @param failure  
+     */
+     - (void)setFloodCameraLampOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure; 
 
 
 【Code】
-	 //Set the light switch
+     //Set the light switch
      [self.camera setFloodCameraLampOn:isOn success:^{
      
      } failure:^(NSError *error) {
-	
+    
      }];
 ```
 
@@ -2461,13 +2056,13 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      The switch of the alarm is controlled by the device to achieve the function of warning
     
 【Function】
-	 /**
-	
-	  @param on 
-	  @param success  
-	  @param failure  
-	 */
-	 - (void)setFloodCameraSirenOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;     
+     /**
+    
+      @param on 
+      @param success  
+      @param failure  
+     */
+     - (void)setFloodCameraSirenOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;     
 
 【Code】
  
@@ -2483,18 +2078,18 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 【Description 】
-	 Set a time period for the device. When the device is in the set time period, the device will turn on the light, and when the time is up, the control light will turn off
+     Set a time period for the device. When the device is in the set time period, the device will turn on the light, and when the time is up, the control light will turn off
     
 【Function】
      /**
-	
-	  @param on  
-	  @param fromDateStr  
-	  @param toDateStr  
-	  @param success  
-	  @param failure  
-	 */
-	 - (void)setFloodCameraScheduleOn:(BOOL)on fromDate:(NSString *)fromDateStr toDate:(NSString *)toDateStr success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;   
+    
+      @param on  
+      @param fromDateStr  
+      @param toDateStr  
+      @param success  
+      @param failure  
+     */
+     - (void)setFloodCameraScheduleOn:(BOOL)on fromDate:(NSString *)fromDateStr toDate:(NSString *)toDateStr success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;   
 
 【Code】
      [self.camera setFloodCameraScheduleOn:self.lightSwitch.isOn fromDate:_timeArray[0] toDate:_timeArray[1]  success:^{
@@ -2512,13 +2107,13 @@ MeariDevice Responsible for all operations on the device, including preview, pla
     
 【Function】
      /**
-	
-	   @param on  
-	   @param level Lighting time corresponding to different levels MeariDeviceLevelLow: 20s, MeariDeviceLevelMedium: 40s, MeariDeviceLevelHigh: 60s
-	   @param success 
-	   @param failure  
-	 */
-	 - (void)setFloodCameraLampOnDuration:(BOOL)on durationLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;   
+    
+       @param on  
+       @param level Lighting time corresponding to different levels MeariDeviceLevelLow: 20s, MeariDeviceLevelMedium: 40s, MeariDeviceLevelHigh: 60s
+       @param success 
+       @param failure  
+     */
+     - (void)setFloodCameraLampOnDuration:(BOOL)on durationLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;   
 
 【Code】
 
@@ -2539,7 +2134,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 
-# 10.Share Device
+# 8.Share Device
 ```
 Belong to: MeariUser
 
@@ -2675,7 +2270,7 @@ Belong to: MeariUser
      }];
 
 【Description 】
-	 Processing the shared message, you can accept or reject it.
+     Processing the shared message, you can accept or reject it.
 【Function】
      /**
        @param msgID  
@@ -2701,10 +2296,412 @@ Belong to: MeariUser
      MeariDeviceNewShareToHimNotification  (Someone requested to share my device with him)
 
 ```
-	 
+# 9.Family
+```
+Belong to：MeariFamily
+```
+
+## 9.1 Family Management
+### 9.1.1 Get family room list(Without device Info)
+```
+Return：MeariFamilyModel
+```
+```
+【Description】
+     After the user logs in, obtain the family room list through the interface of the MeariFamily tool class and return it in the form of a model Family Information Array (MeariFamilyModel)
+
+【Function】
+    //Get all family room information (only return family information without devices)
+    - (void)getFamilyListSuccess:(MeariSuccess_FamilyList)success failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] getFamilyListSuccess:^(NSArray<MeariFamilyModel *> *familyList) {
+      
+      } failure:^(NSError *error) {
+
+      }];
+```
+
+MeariFamilyModel property：
+
+```
+@property (nonatomic, assign) BOOL isDefault; // Whether the default family
+@property (nonatomic, assign) BOOL owner; // Whether the owner
+
+@property (nonatomic, copy) NSString *homeID; // Family ID
+@property (nonatomic, copy) NSString *homeName; // Family name
+@property (nonatomic, copy) NSString *position; // family location
+@property (nonatomic, copy) NSString *userName; // User nickname, value only when homeName does not exist
+@property (nonatomic, assign) MRFamilyJoinStatus joinStatus; // Joining status of family to others
+
+@property (nonatomic, copy) NSArray<MeariRoomModel *> *roomList; // room list
+@property (nonatomic, copy) NSArray<MeariDevice *> *relaySubDeviceList; // list of all child devices of relay
+@property (nonatomic, copy) NSArray<MeariDevice *> *allDeviceList; // All my devices list
+@property (nonatomic, copy) NSArray<MeariDevice *> *sharedDeviceList; // Shared device list
+@property (nonatomic, copy) NSArray<MeariDevice *> *unDistributionDeviceList;  // Unassigned family room equipment list
+```
+
+### 9.1.2 Get family list (Has device Info)
+
+```
+【Description】
+     After the user logs in, the family room list is obtained through the interface of the MeariFamily tool class, and all devices are processed. After success, the return result is obtained through [MeariFamily sharedInstance].familyArray
+【Function】
+    //Get all family room information (return family information including device information)
+    - (void)getFamilyHomeListSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+    //Get the specified family room information (return family information including device information)
+    - (void)getFamilyListWithHomeID:(NSString *)homeID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] getFamilyHomeListSuccess:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+    
+    [[MeariFamily sharedInstance] getFamilyListWithHomeID:familyid success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+
+### 9.1.3 Creat New Family
+
+```
+【Function】
+    //Create a new homegroup
+    - (void)addFamilyWithHomeName:(nonnull NSString *)homeName
+                 homePosition:(nullable NSString *)homePosition
+                 roomNameList:(nullable NSArray<NSString *> *)roomNameList
+                      success:(MeariSuccess)success
+                      failure:(MeariFailure)failure;
+
+【Code】
+      [[MeariFamily sharedInstance] addFamilyWithHomeName:familyName homePosition:familyPosition roomNameList:roomList success:^{
+      } failure:^(NSError *error) {
+        MR_HUD_SHOW_ERROR(error)
+    }];
+```
+### 9.1.4 Updating Family Information
 
 
-# 11.Message Center 
+```
+【Function】
+    //Update family information
+    - (void)updateFamilyWithHomeID:(NSString *)homeID
+                      homeName:(NSString *)homeName
+                  homePosition:(NSString *)homePosition
+                       success:(MeariSuccess)success
+                       failure:(MeariFailure)failure;
+
+【Code】
+           [[MeariFamily sharedInstance] updateFamilyWithHomeID:self.familyModel.homeID homeName:homeName homePosition:position success:^{
+          } failure:^(NSError *error) {
+        }];
+```
+### 9.1.5 Delete Family 
+
+```
+
+【Function】
+    //Delete the family with the specified HomeID (the default family cannot be deleted)
+      - (void)removeFamilyWithHomeID:(NSString *)homeID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] removeFamilyWithHomeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+## 9.2 Family Sharing
+
+### 9.2.1 Join a Family
+
+```
+
+【Function】
+    //Request to join a specified homegroup
+    - (void)joinFamilyWithHomeIDList:(NSArray<NSString *> *)homeIDList
+                       success:(MeariSuccess)success
+                       failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] joinFamilyWithHomeIDList:homeIDList success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 9.2.2 Leaving Family
+
+```
+【Function】
+    //Leave a joined Family
+    - (void)leaveFamilyWithHomeID:(NSString *)homeID
+                      success:(MeariSuccess)success
+                      failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] leaveFamilyWithHomeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 9.2.3 Invite members to join a family group
+```
+【Function】
+    //Invite other users to the homegroup (only the home owner has permission)
+    - (void)addMemberWithHomeID:(nonnull NSString *)homeID
+                   memberID:(nonnull NSString *)memberID
+        deviceAuthorityList:(NSArray *)deviceAuthorityList
+                       success:(MeariSuccess)success
+                       failure:(MeariFailure)failure;
+
+【Code】
+       NSArray *array = @[{"deviceID":1,"permission": 0}, {"deviceID":1,"permission": 0}];//home device permissions
+     [[MeariFamily sharedInstance] addMemberWithHomeID:homeID memberID:memberID deviceAuthorityList:array success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 9.2.4 Family Revoke Invite Member
+
+```
+【Function】
+    //When the member join status is 2, the member invitation message can be revoked through msgID
+    - (void)revokeFamilyInviteWithMsgID:(NSString *)msgID
+                             homeID:(NSString *)homeID
+                            success:(MeariSuccess)success
+                            failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] revokeFamilyInviteWithMsgID:msgID homeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 9.2.5 Family Removal Member
+
+```
+
+【Function】
+    //Delete family members with specified memberID
+    - (void)removeMemberWithHomeID:(nonnull NSString *)homeID
+                      memberID:(nonnull NSString *)memberID
+                          success:(MeariSuccess)success
+                       failure:(MeariFailure)failure;
+
+
+【Code】
+     [[MeariFamily sharedInstance] removeMemberWithHomeID:homeID memberID:memberID :^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 9.2.6 Adding family members to search by account
+```
+Return：MeariMemberModel
+```
+
+```
+【Description】
+     When adding a family member, use HomeID and the entered account name to search and return the information of the member to be invited
+
+【Function】
+    //Query the information of adding members
+    - (void)searchUserWithHomeID:(nullable NSString *)homeID
+               memberAccount:(nonnull NSString *)memberAccount
+                 countryCode:(NSString *)countryCode
+                   phoneCode:(nonnull NSString *)phoneCode
+                     success:(MeariSuccess_Member)success
+                     failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] searchUserWithHomeID:homeID memberAccount:account countryCode:[MeariUser sharedInstance].userInfo.countryCode phoneCode:[MeariUser sharedInstance].userInfo.phoneCode success:^(MeariMemberModel *member){
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+MeariMemberModel property:
+```
+@property (nonatomic, assign) NSInteger userID; 
+@property (nonatomic, copy) NSString *userAccount; // User account
+@property (nonatomic, copy) NSString *nickName; // Nick Name
+@property (nonatomic, copy) NSString *userName; // Member Name
+@property (nonatomic, copy) NSString *imageUrl; 
+@property (nonatomic, copy) NSString *msgID; // When the joinStatus is 2, you can use msgid to revoke joining the family
+@property (nonatomic, assign) MRFamilyJoinStatus joinStatus; 
+@property (nonatomic, assign) BOOL isMaster; //Is the home owner
+@property (nonatomic, copy) NSString *hasInvited; 
+@property (nonatomic, assign) MRFamilyInvitedStatus invitedStatus;
+
+@property (nonatomic, copy) NSString *homeID;
+@property (nonatomic, copy) NSString *homeName;
+@property (nonatomic, copy) NSArray<MeariFamilyDeviceModel *> *devices;
+
+@property (nonatomic, copy) NSArray<MeariFamilyModel *> *homes;
+```
+### 9.2.7 List of Family Members
+```
+Return：MeariMemberModel
+```
+
+```
+【Function】
+    //Get information on all family members
+    - (void)getMemberListWithHomeID:(NSString *)homeID success:(MeariSuccess_MemberList)success failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] getMemberListWithHomeID:homeID success:^(MeariMemberModel *member){
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 9.2.8 Home Device Permission Changes
+
+```
+
+【Function】
+    //Modify family device access to family members
+    - (void)updateMemberPermissionMemberID:(nonnull NSString *)memberID
+                                homeID:(NSString *)homeID
+                   deviceAuthorityList:(NSArray *)deviceAuthorityList
+                               success:(MeariSuccess)success
+                               failure:(MeariFailure)failure;
+【Code】
+     [[MeariFamily sharedInstance] updateMemberPermissionMemberID: homeID: deviceAuthorityList: success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 9.2.9 Family Member Name Modification
+
+```
+
+【Function】
+    //Edit family member names 
+    - (void)memberNameUpdateWithHomeID:(NSString *)homeID
+                    memberID:(NSString *)memberID
+                  memberName:(NSString *)memberName
+                     success:(MeariSuccess)success
+                     failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] memberNameUpdateWithHomeID:homeID memberID: memberID memberName: memberName success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+## 9.3 Room Management 
+### 9.3.1 Equipment Assignment Room
+
+```
+【Function】
+    //Assign a device to a room in the home
+    - (void)roomDeviceDistributioRoomID:(nonnull NSString *)roomID
+                              homeID:(nonnull NSString *)homeID
+                          deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
+                               success:(MeariSuccess)success
+                            failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] roomDeviceDistributioRoomID:roomID homeID:homeID deviceIDList:array success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 9.3.2 Adding a Room
+
+```
+
+
+【Function】
+    //Create new room
+    - (void)addRoomWithRoomName:(NSString *)roomName
+                     homeID:(NSString *)homeID
+                    success:(MeariSuccess)success
+                    failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] addRoomWithRoomName:roomName homeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 9.3.3 Room Name Modification
+
+
+```
+【Function】
+    //Modify the room name of the specified room in the homegroup
+   - (void)updateRoomNameWithRoomName:(NSString *)roomName
+                            homeID:(NSString *)homeID
+                            roomID:(NSString *)roomID
+                    success:(MeariSuccess)success
+                           failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] updateRoomNameWithRoomName:roomName homeID:homeID roomID:roomID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 9.3.4 Delete Room
+
+```
+
+【Function】
+    //Delete the room of the specified family
+    - (void)removeRoomWithRoomIDList:(NSArray<NSString *> *)roomIDList
+                      homeID:(NSString *)homeID
+                     success:(MeariSuccess)success
+                     failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] removeRoomWithRoomIDList:array homeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 9.3.5 Remove devices from this room
+
+```
+
+【Function】
+    //Remove devices from family room
+    - (void)removeDeviceWithRoomID:(NSString *)roomID
+                      homeID:(NSString *)homeID
+                deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
+                     success:(MeariSuccess)success
+                     failure:(MeariFailure)failure;
+【Code】
+     [[MeariFamily sharedInstance] removeDeviceWithRoomID:roomID homeID:homeID deviceIDList:array success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+
+
+
+​	 
+
+
+# 10.Message 
 
 ```
 Belong to：MeariMessageInfo
@@ -2712,7 +2709,7 @@ Belong to：MeariMessageInfo
 ```
 Note: The alarm message of the device, once pulled by the owner of the device, the server will delete the message, so it needs to be saved locally. If the person being shared pulls the alarm message of the device, the server will not delete it. Pay attention to the owner and being shared here. The difference between people
 ```
-## 11.1 Get whether all devices have messages 
+## 10.1 Get whether all devices have messages 
 
 ```
 【Description 】
@@ -2735,8 +2732,8 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 【Precautions】
     If the message is pulled by the owner, the server will not save the message, and the shared user will not see the message.
 ```
-## 11.2 Alarm message 
-### 11.2.1  Get the alarm message of a certain device 
+## 10.2 Alarm message 
+### 10.2.1  Get the alarm message of a certain device 
 
 ```
 【Description 】
@@ -2760,7 +2757,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 【Precautions】
      If the message is pulled by the owner, the server will not save the message, and the shared friend will not see the message.
 ```
-### 11.2.2 Get the latest alarm message list 
+### 10.2.2 Get the latest alarm message list 
 ```
 【Description】
     Get the latest alarm message list of the device owned by the user
@@ -2781,7 +2778,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
  【Precautions】
      If the message is pulled by the owner, the server will not save the message, and the shared friend will not see the message.
 ```
-### 11.2.3 Get the number of days with alarm messages (the last 7 days)
+### 10.2.3 Get the number of days with alarm messages (the last 7 days)
 ```
 【Description 】 
      Get the number of days with alarms in the last 7 days
@@ -2802,7 +2799,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 
      
 ```
-### 11.2.4 Get device alarm message
+### 10.2.4 Get device alarm message
 ```
 【Description 】 
       Get the device's alarm message on a certain day
@@ -2824,7 +2821,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
      }];
      
 ```
-### 11.2.5 Load alarm picture
+### 10.2.5 Load alarm picture
 ```
 【Description 】 
      The alarm pictures of the device are stored in Alibaba Cloud and Amazon Cloud
@@ -2873,7 +2870,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
      
 ```
 
-### 11.2.6 Delete multiple device alarm messages 
+### 10.2.6 Delete multiple device alarm messages 
 
 ```
 【Description 】
@@ -2895,8 +2892,8 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     }];
 
 ```
-## 11.3 Aystem messages
-### 11.3.1 Get system messages 
+## 10.3 Aystem messages
+### 10.3.1 Get system messages 
 
 ```
 【Description 】
@@ -2917,7 +2914,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     }];
 ```
 
-### 11.3.2 Delete system messages
+### 10.3.2 Delete system messages
 
 ```
 【Description 】
@@ -2939,8 +2936,8 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     }];
 ```
 
-## 11.4 Shared messages
-### 11.4.1 Get a list of device shared messages
+## 10.4 Shared messages
+### 10.4.1 Get a list of device shared messages
 ```
 【Description 】
 	Get all shared messages
@@ -2958,7 +2955,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
         
     }];
 ```
- ### 11.4.2 Delete shared message
+ ### 10.4.2 Delete shared message
 ```
 【Description 】
 	  Delete shared message
@@ -2979,7 +2976,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 
 
 ```
-### 11.4.3  Get a list of family shared messages
+### 10.4.3  Get a list of family shared messages
 ```
 【Description】
       Get family sharing messages
@@ -2994,7 +2991,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 
      }];
 ```
-### 11.4.4 Delete family shared messages
+### 10.4.4 Delete family shared messages
 ```
 【Description】
       Delete family shared messages
@@ -3017,7 +3014,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 
      }];
 ```
-### 11.4.3  Deal family shared messages
+### 10.4.3  Deal family shared messages
 ```
 【Description】
       Deal family shared messages
