@@ -18,6 +18,9 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 };
 
 @interface MeariDevice : MeariBaseModel<MeariDeviceControl>
++ (instancetype)deviceWithDeviceId:(NSInteger)deviceId;
++ (instancetype)deviceWithDeviceSn:(NSString *)sn;
+
 #pragma mark - 信息
 /** device info*/
 /** 自身的信息*/
@@ -25,6 +28,12 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** device params*/
 /** 控制功能的参数信息*/
 @property (nonatomic, strong) MeariDeviceParam *param;
+/** device channel*/
+/** nvr 设备通道*/
+@property (nonatomic, assign) NSInteger channel;
+/** device onvif*/
+/** nvr 子设备是否onvif接入*/
+@property (nonatomic, assign) BOOL isOnvif;
 /** normal device*/
 /** 是否是普通摄像机*/
 @property (nonatomic, assign, readonly, getter = isIpcCommon) BOOL ipcCommon;
@@ -43,6 +52,12 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** FloodCamera*/
 /** 灯具摄像机*/
 @property (nonatomic, assign, readonly, getter = isFloodCamera) BOOL FloodCamera;
+/** ForthGeneration*/
+/** 4G摄像机*/
+@property (nonatomic, assign, readonly, getter = isForthGeneration) BOOL ForthGeneration;
+/** jingle*/
+/** 铃铛jingle*/
+@property (nonatomic, assign, readonly, getter = isJing) BOOL jing;
 /** nvr network storage*/
 /** 是否是网络存储器（NVR）*/
 @property (nonatomic, assign, readonly, getter = isNvr) BOOL nvr;
@@ -53,8 +68,8 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** 是否iOT设备*/
 @property (nonatomic, assign) BOOL iotDevice;
 
-@property (nonatomic, assign,readonly) BOOL supportAwsIot;
-@property (nonatomic, assign,readonly) BOOL supportMeariIot;
+@property (nonatomic, assign, readonly) BOOL supportAwsIot;
+@property (nonatomic, assign, readonly) BOOL supportMeariIot;
 
 #pragma mark -- 状态
 /** Whether the device has established a network connection*/
@@ -247,6 +262,51 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 @property (nonatomic, assign, readonly) BOOL supportPtzPatrol;
 
 @property (nonatomic, assign, readonly) BOOL supportMotionMode;
+/** baby是否支持rgb*/
+@property (nonatomic, assign, readonly) BOOL supportRGB;
+/** 是否支持移动侦测*/
+@property (nonatomic, assign, readonly) BOOL supportMotion;
+/** 是否支持哭声侦测*/
+@property (nonatomic, assign, readonly) BOOL supportCryDetect;
+/** 是否支持噪声侦测*/
+@property (nonatomic, assign, readonly) BOOL supportNoiseDetect;
+/** 是否支持抗闪烁*/
+@property (nonatomic, assign, readonly) BOOL supportFlicker;
+/** 是否支持自动更新*/
+@property (nonatomic, assign, readonly) BOOL supportAutoUpdate;
+/** 是否支持实时信息统计*/
+@property (nonatomic, assign, readonly) BOOL supportRealTimeStatistics;
+/** 是否支持天/月信息统计*/
+@property (nonatomic, assign, readonly) BOOL supportIntervalStatistics;
+/** 是否支持鸣笛报警*/
+@property (nonatomic, assign, readonly) BOOL supportSiren;
+/** 是否支持设备扬声器*/
+@property (nonatomic, assign, readonly) BOOL supportDeviceSpeaker;
+/** 是否支持麦克风*/
+@property (nonatomic, assign, readonly) BOOL supportMicrophone;
+/** 是否支持开关暖光灯*/
+@property (nonatomic, assign, readonly) BOOL supportOnOffWarmLight;
+/** 是否支持开关非暖光灯*/
+@property (nonatomic, assign, readonly) BOOL supportOnOffUnWarmLight;
+/** 是否支持录像声音开关*/
+@property (nonatomic, assign, readonly) BOOL supportRecordVoice;
+/** 是否支持全天录像*/
+@property (nonatomic, assign, readonly) BOOL supportFullRecord;
+/** 是否支持事件录像*/
+@property (nonatomic, assign, readonly) BOOL supportEventRecord;
+/** 彩色日夜模式*/
+@property (nonatomic, assign, readonly) MeariDeviceDayNightMode dayNightType;
+/** 设备链接加密*/
+@property (nonatomic, assign, readonly) BOOL supportConnectEncryption;
+/** 是否支持最大警报时长 flight*/
+@property (nonatomic, assign, readonly) BOOL supportMaxSirenTime;
+/** 是否支持 亮灯时长设置 flight*/
+@property (nonatomic, assign, readonly) BOOL supportLightDuration;
+/** 是否支持时区设置*/
+@property (nonatomic, assign, readonly) BOOL supportTimeZone;
+/** 是否重启设置*/
+@property (nonatomic, assign, readonly) BOOL supportReboot;
+
 @end
 
 @interface MeariDeviceList : MeariBaseModel
@@ -269,7 +329,15 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** 网络存储器 */
 @property (nonatomic, strong) NSArray <MeariDevice *> *nvrs;
 /** chime */
-/** 中继铃铛 */
+/** 中继 */
 @property (nonatomic, strong) NSArray <MeariDevice *> *chimes;
-
+/** forth */
+/** 4G摄像机 */
+@property (nonatomic, strong) NSArray <MeariDevice *> *forths;
+/** 新版NVR */
+/** neutral nvr */
+@property (nonatomic, strong) NSArray <MeariDevice *> *neutralnvrs;
+/** jingle */
+/** 铃铛 */
+@property (nonatomic, strong) NSArray <MeariDevice *> *jings;
 @end

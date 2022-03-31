@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+
 typedef NS_ENUM(NSInteger, MeariDeviceType) {
     MeariDeviceTypeNVR = 0,
     MeariDeviceTypeIpc = 1,
@@ -20,7 +21,9 @@ typedef NS_ENUM(NSInteger, MeariDeviceSubType) {
     MeariDeviceSubTypeIpcBattery = 4,
     MeariDeviceSubTypeIpcVoiceBell = 5,
     MeariDeviceSubTypeIpcFloodlight = 6,
-    MeariDeviceSubTypeChime = 7,
+    MeariDeviceSubTypeIpcForthGeneration = 7,
+    MeariDeviceSubTypeChime = 8,
+    MeariDeviceSubTypeJing = 9,
 };
 
 typedef NS_ENUM(NSInteger, MeariDeviceAddStatus) {
@@ -58,6 +61,13 @@ typedef NS_ENUM (NSUInteger, MeariDeviceSupportBellType) {
     MeariDeviceSupportBellTypeWirelessBellSongs = 0b100000,//Wireless Bell (无线铃铛铃声选择)
     MeariDeviceSupportBellTypeWirelessEnable = 0b10000000,//Wireless enable (无线使能)
 };
+typedef NS_ENUM (NSUInteger, MeariDeviceSupportFlickerType) {
+    MeariDeviceSupportFlickerTypeNone = 0,       //Does not support flicker (不支持抗闪烁)
+    MeariDeviceSupportFlickerTypeFiftyHz = 0b1,//50HZ
+    MeariDeviceSupportFlickerTypeSixtyHz = 0b10,//60HZ
+    MeariDeviceSupportFlickerTypeAuto = 0b100,//自动
+    MeariDeviceSupportFlickerTypeClose = 0b1000,//关闭
+};
 typedef NS_ENUM(NSInteger, MeariDeviceSupportHostType) {
     MeariDeviceSupportHostTypeNone               = 0,    //Does not support messages (不支持留言)
     MeariDeviceSupportHostTypeOne                = 1,    //Support a message only (支持一段留言)
@@ -82,10 +92,21 @@ typedef NS_OPTIONS(NSUInteger, MeariDevicePtzAdvanceType) {
     MeariDevicePtzCruise = 0b10, // ptz高级功能 多点巡航 (Cruise between multiple points)
     MeariDevicePtzPatrol = 0b100, // ptz高级功能 巡逻一周 （Patrol for a week）
 };
-typedef NS_ENUM (NSUInteger, MeariDeviceDayNightType) {
-    MeariDeviceDayNightTypeAuto, // auto mode (自动改变)
-    MeariDeviceDayNightTypeDay, // day mode (白天)
-    MeariDeviceDayNightTypeNight // night mode (黑夜)
+typedef NS_ENUM (NSUInteger, MeariDeviceNightVisionMode) {
+    MeariDeviceNightVisionModeAuto, // auto mode (自动改变)
+    MeariDeviceNightVisionModeDay, // day mode (白天)
+    MeariDeviceNightVisionModeNight // night mode (黑夜)
+};
+typedef NS_ENUM (NSUInteger, MeariDeviceFullColorMode) {
+    MeariDeviceFullColorModeAuto, // auto mode 智能夜视（默认黑白夜视效果，检测到移动或人形时自动切换为全彩）
+    MeariDeviceFullColorModeNormal, // full color 全彩夜视（暖光灯开启，彩色画面呈现，同时起到照明作用）
+    MeariDeviceFullColorModeNightVision // night mode 黑白夜视（红外灯开启，黑白画面呈现，暖光灯自动关闭）
+};
+// 是否支持日夜切换开关(自动/日/夜)的能力级
+typedef NS_ENUM(NSUInteger, MeariDeviceDayNightMode) {
+    MeariDeviceDayNightModeNone, // 0=不支持
+    MeariDeviceDayNightModeNightVision, // 1=支持非暖光灯的夜视模式(自动/日/夜)
+    MeariDeviceDayNightModeFullColor, // 2=支持暖光灯的夜视模式（智能夜视/全彩夜视/黑白夜视）
 };
 typedef NS_ENUM(NSInteger, MeariDeviceTokenType) {
     MeariDeviceTokenTypeSmartWifi, // use SmartWifi Configure the network (SmartWifi 配网)
@@ -130,6 +151,15 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
     MeariDeviceFloodCameraTypeLowPower,
     // LowPower FloodLight Camera
 };
+typedef NS_ENUM (NSUInteger, MeariDeviceStatisticType) {
+    MeariDeviceStatisticTypeRealTime = 0b1,    // Real-time information reporting (实时信息上报)
+    MeariDeviceStatisticTypeInterval  = 0b10,   // Daily/Monthly Information Report (天/月信息上报)
+};
+typedef NS_ENUM(NSUInteger, MeariDeviceAuthority) {
+    MeariDeviceAuthorityOnlyView, // 仅查看
+    MeariDeviceAuthorityControl, // 允许控制
+    MeariDeviceAuthorityUnUseAble, // 不可使用
+};
 
 @interface MeariDeviceInfoCapabilityFunc : MeariBaseModel
 // Voice intercom type
@@ -165,6 +195,9 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
 /** Playback recording settings*/
 /** 回放录像设置*/
 @property (nonatomic, assign) NSInteger evs;
+/** Playback recording settings*/
+/** 回放录像设置*/
+@property (nonatomic, assign) NSInteger rec;
 /** Battery lock*/
 /** 电池锁*/
 @property (nonatomic, assign) NSInteger btl;
@@ -172,7 +205,7 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
 /** 云存储开关*/
 @property (nonatomic, assign) NSInteger cse;
 /** Day and night mode*/
-/** 白天黑夜模式*/
+/* 是否支持日夜切换开关(自动/日/夜)的能力级, 0/1, default: 0，0=不支持，1=支持非照明灯的夜视模式(自动/日/夜)， 2=支持照明灯的夜视模式（智能夜视/全彩夜视/黑白夜视） 能力级版本56**/
 @property (nonatomic, assign) NSInteger dnm;
 /** Second generation cloud storage*/
 /** 二代云存储*/
@@ -299,8 +332,40 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
 @property (nonatomic, assign) NSInteger pcr;
 /**低功耗的报警工作模式设置*/
 @property (nonatomic, assign) NSInteger lwm;
-/**是否支持报警总开关 */
-@property (nonatomic, assign) NSInteger gal;
+/**是否支持webrtc协议*/
+@property (nonatomic, assign) NSInteger mts;
+/** 是否支持夜灯设置  0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger rgb;
+/** 是否支持抗闪烁设置  0-不支持,1-支持+关闭+50HZ+60HZ,2-支持支持+关闭+50HZ+60HZ+自动*/
+@property (nonatomic, assign) NSInteger flk;
+/** 是否支持自动升级设置  0-不支持,1-支持*/
+@property (nonatomic, assign) NSInteger aup;
+/** 是否支持统计  0-不支持, 0xb1 支持实时信息统计 0xb10 支持按天/月统计*/
+@property (nonatomic, assign) NSInteger sti;
+/**是否支持homekit能力级，0-不支持，1-支持； */
+@property (nonatomic, assign) NSInteger hkt;
+/**是否支持喇叭使能开关, 0-不支持，1-支持 */
+@property (nonatomic, assign) NSInteger sen;
+/**是否支持麦克使能开关, 0-不支持，1-支持 */
+@property (nonatomic, assign) NSInteger men;
+/**是否支持鸣笛报警能力级 0-不支持, 1-支持  能力级版本55*/
+@property (nonatomic, assign) NSInteger sir;
+/**是否支持一键开关灯（非暖光灯）的能力级，0=不支持，1=支持  能力级版本56*/
+@property (nonatomic, assign) NSInteger lgh;
+/** 是否支持一键开关灯（暖光灯，用于夜间补光用）能力级，0-不支持, 1-支持 能力级版本56*/
+@property (nonatomic, assign) NSInteger lgl;
+/** 是否支持录像声音开关，0-不支持，1-支持，备注：如果麦克声音也关闭了，则录像声音开启也是无效的*/
+@property (nonatomic, assign) NSInteger rae;
+/** 是否支持链接加密  - 0-不支持，1-支持 需要设置device.info.connectPwd 字段*/
+@property (nonatomic, assign) NSInteger mup;
+/** 是否支持上报警报最大时间*/
+@property (nonatomic, assign) NSInteger sot;
+/** 是否支持亮灯时长设置*/
+@property (nonatomic, assign) NSInteger lot;
+/** 是否支持时区功能*/
+@property (nonatomic, assign) NSInteger tmz;
+/** 是否支持重启*/
+@property (nonatomic, assign) NSInteger rbt;
 
 @end
 
@@ -341,9 +406,6 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
 /** 设备被添加过 */
 @property (nonatomic, assign) BOOL hasAdd;
 
-/**是否支持云存储 */
-@property (nonatomic, assign) BOOL cloudSupport;
-
 @property (nonatomic, assign) MeariDeviceLimitLevel limitLevel;
 /** cloud storage State  */
 /** 云存储状态  */
@@ -360,6 +422,10 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
 /** 用户ID */
 /** userID */
 @property (nonatomic, assign) NSInteger userID;
+// device bind id(the device is jingle)
+@property (nonatomic, assign) NSInteger bindDeviceID;
+// device had be bind
+@property (nonatomic, assign) NSInteger hasBeBind;
 /** tp */
 @property (nonatomic, copy) NSString *tp;
 /** device uuid */
@@ -374,6 +440,8 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
 @property (nonatomic, copy) NSString *p2pInit;
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, copy) NSString *connectName;
+/** p2p加密 密码*/
+@property (nonatomic, copy) NSString *connectPwd;
 /** device nickname */
 /** 设备昵称 */
 @property (nonatomic, copy) NSString *nickname;
@@ -440,7 +508,11 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
 @property (nonatomic, assign) BOOL shared;
 /** Whether friends has device set  authority */
 /** 好友是否拥有分享设备设置权限 */
-@property (nonatomic, assign) NSInteger shareAccessSign;
+@property (nonatomic, assign) MeariDeviceAuthority shareAccessSign;
+/** Whether family has device set  authority */
+/** 家庭设备设置权限 */
+@property (nonatomic, assign) MeariDeviceAuthority familyShareAuthority;
+
 /** Whether there is a message from device  */
 /** 是否有报警消息 */
 @property (nonatomic, assign) BOOL hasMsg;

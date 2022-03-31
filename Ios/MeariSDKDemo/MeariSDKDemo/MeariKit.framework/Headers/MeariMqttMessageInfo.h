@@ -24,6 +24,21 @@
  - MeariMqttCodeTypeDeviceAutobundleByOtherFailure: device has been added by other(设备已经被绑定， 强绑定模式下)
  - MeariMqttCodeTypeDeviceShare:                 Receive the device share (收到别人的设备分享)
  - MeariMqttCodeTypeDeviceUpgradeFormat:         Firmware upgrade progress (固件升级进度)
+ 
+ - MeariMqttCodeTypeFamilyRefresh:     family info update (家庭信息更新)
+ - MeariMqttCodeTypeMemberAdd:  member add (家庭成员新增)
+ - MeariMqttCodeTypeInviteYouToHisFamily:  someone would like invite you to his family(xxx邀请你加入他的房间)
+ - MeariMqttCodeTypeInviteJoinFamilySuccess:  invite other to you family success (邀请其他人加入你的的家庭成功)
+ - MeariMqttCodeTypeJoinYourFamilyRequest: someone would like join your family (xxx 想要加入你的家庭)
+ - MeariMqttCodeTypeJoinOtherFamilySuccess: you join other user family success (你加入别人的家庭成功)
+ - MeariMqttCodeTypeFamilyInfoUpdate: family info update (name posistion) (家庭信息更新)
+ - MeariMqttCodeTypeFamilyRoomAddUpdate: family room add or update info (家庭房间新增或 更新名称)
+ - MeariMqttCodeTypeFamilyMemberInfoUpdate: family member name update  (家庭成员名称修改)
+ - MeariMqttCodeTypeFamilyDelete: family delete (家庭删除)
+ - MeariMqttCodeTypeFamilyRoomDelete: family room delete (家庭房间删除)
+ - MeariMqttCodeTypeFamilyRoomDeviceDelete:  family room device delete ( 家庭房间设备删除)
+ - MeariMqttCodeTypeFamilyMemberDelete: you join other user family success (家庭成员删除)
+ 
  - MeariMqttCodeTypeNotice:                            app reveive a notice message
  - MeariMqttCodeTypeSDCardFormat:                Sd card formatting progress (sd卡格式化进度)
  - MeariMqttCodeTypePropertyRefresh:             Get a property status in real time (实时获取某个属性状态 一发一答形式)
@@ -44,6 +59,24 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
     MeariMqttCodeTypeNewDeviceShareToMeRequest  = 181,
     MeariMqttCodeTypeNewDeviceShareToHimRequest = 182,
     MeariMqttCodeTypeHasBeenAnswerCall          = 188,
+    
+    MeariMqttCodeTypeFamilyRefresh              = 210,
+    MeariMqttCodeTypeMemberAdd                  = 211,
+    MeariMqttCodeTypeInviteYouToHisFamily       = 212,
+    MeariMqttCodeTypeInviteJoinFamilySuccess    = 213,
+    MeariMqttCodeTypeJoinYourFamilyRequest      = 215,
+    MeariMqttCodeTypeJoinOtherFamilySuccess     = 216,
+    MeariMqttCodeTypeFamilyInfoUpdate           = 218,
+    MeariMqttCodeTypeFamilyRoomAddUpdate        = 219,
+    MeariMqttCodeTypeFamilyMemberInfoUpdate     = 220,
+    MeariMqttCodeTypeFamilyDelete               = 221,
+    MeariMqttCodeTypeFamilyRoomDelete           = 222,
+    MeariMqttCodeTypeFamilyRoomDeviceDelete     = 223,
+    MeariMqttCodeTypeFamilyMemberDelete         = 224,
+    
+    MeariMqttCodeTypeFeedBackMsgRemind          = 225,
+    MeariMqttCodeTypeClientServerMsgRemind      = 226,
+    
     MeariMqttCodeTypeNotice                     = 200,
     MeariMqttCodeTypeSomebodyCall               = 201,
     MeariMqttCodeTypeDeviceUpgradeFormat        = 803,
@@ -85,6 +118,7 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, assign) NSInteger startTime; // notice begin time(公告开始时间)
 @property (nonatomic, assign) NSInteger endTime; // notice end time(公告结束时间)
 @property (nonatomic, assign) NSInteger noticeID; // notice end time(公告结束时间)
+@property (nonatomic, copy) NSString *appProtocolVer; // notice end time(公告最低支持协议版本)
 @end
 
 @interface MeariEventInfo : MeariBaseModel
@@ -118,7 +152,7 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @interface MeariMqttMessageInfo : MeariBaseModel
 @property (assign, nonatomic) double t;              // timestamp (时间戳)
 @property (strong, nonatomic) MeariMqttMessageInfoDevice *data;
-@property (assign, nonatomic) NSInteger msgid;          // Message ID (消息ID)
+@property (assign, nonatomic) NSInteger msgid;          // mqtt Message ID (消息ID)
 @property (nonatomic, assign) MeariMqttCodeType type;   // Message type (消息类型)
 @property (nonatomic, copy) NSString *requestID;
 @property (nonatomic, assign) NSInteger iotType;
@@ -126,14 +160,37 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, assign) double answerTime;
- 
 @property (nonatomic, copy) NSString *deviceName;
 @property (nonatomic, assign) NSInteger deviceID;
 @property (nonatomic, copy) NSString *shareMsgID;
 @property (nonatomic, copy) NSString *shareName;
 
+@property (nonatomic, copy) NSString *deviceTypeName; // device image 设备图片
+@property (nonatomic, copy) NSString *homeID;
+@property (nonatomic, copy) NSString *homeName;
+@property (nonatomic, copy) NSString *homePosition;
+@property (nonatomic, copy) NSString *homeNameList;
+@property (nonatomic, copy) NSString *roomID;
+@property (nonatomic, copy) NSString *roomName;
+@property (nonatomic, copy) NSString *roomIDList;
+@property (nonatomic, copy) NSString *deviceIDList;
+@property (nonatomic, copy) NSString *memberID;
+@property (nonatomic, copy) NSString *memberName;
+@property (nonatomic, copy) NSString *msgIDList; // family share msgid list
+@property (nonatomic, copy) NSString *msgID; // family share msgid
+
 @property (nonatomic, assign) NSInteger iotSignID;
 @property (nonatomic, copy) NSString *pfCompatID;
+
+@property (nonatomic, copy) NSString *leaveTopic;
+@property (nonatomic, copy) NSString *snNum;
+
+@property (nonatomic, copy) NSString *workOrderNo;
+@property (nonatomic, copy) NSString *customerId;
+@property (nonatomic, assign) NSInteger cloudType;
+@property (nonatomic, copy) NSString *brand;
+@property (nonatomic, copy) NSString *tp;
+
 @end
 
 
