@@ -14,7 +14,7 @@
 
 </center>
 
-#1. Functional Overview 
+# 1. Functional Overview 
 
 Meari Technology APP SDK provides the interface package for communication with hardware devices and Meari Cloud to accelerate the application development process. It mainly includes the following functions:
 
@@ -23,13 +23,13 @@ Meari Technology APP SDK provides the interface package for communication with h
 - Family group related (functions such as creating a family group, creating a new room, assigning a room, inviting members, etc.)
 - Message center (alarm message, device sharing message, family sharing message, system message)
 
-#2. Integration preparation
+# 2. Integration preparation
 
 **Prepare for cloud-to-cloud docking**
 
 You need to connect to the cloud, request data from the Meari server through your own server, and then transfer the data to the corresponding interface of the SDK. For the specific interface process, please refer to the Server directory at work.
 
-#3. Integrated SDK
+# 3. Integrated SDK
 
 ## 3.1 Integration preparation 
 
@@ -65,7 +65,7 @@ Belong to: MeariSdk tools
 ```
 
 
-#4. User Management 
+# 4. User Management 
 
 ```
 Belong to: MeariUser tool class
@@ -75,7 +75,7 @@ Meari Technology SDK provides a user management system: UID user system
 There is a phoneCode file in the Demo project that stores the corresponding country code and phone code
 ```
 
-##4.1 User uid login system 
+## 4.1 User uid login system 
 
 ```
 Meari Technology provides uid login system. If the customer has their own user system, they can log in to our SDK through the uid login system.
@@ -119,7 +119,7 @@ Meari Technology provides uid login system. If the customer has their own user s
 
      }];
 ```
-##4.2 User upload avatar 
+## 4.2 User upload avatar 
 
 ```
 【Description 】
@@ -140,7 +140,7 @@ Meari Technology provides uid login system. If the customer has their own user s
     
      }];
 ```
-##4.3 Modify nickname 
+## 4.3 Modify nickname 
 
 ```
 【Description 】
@@ -161,7 +161,7 @@ Meari Technology provides uid login system. If the customer has their own user s
     
      }];
 ```
-##4.4 APNS Message Push
+## 4.4 APNS Message Push
 
 ```
 【Description 】
@@ -221,7 +221,7 @@ Meari Technology provides uid login system. If the customer has their own user s
 
 ```
 
-##4.5 Data model 
+## 4.5 Data model 
 
 User-related data model.
 
@@ -274,7 +274,7 @@ The hardware module of Meari Technology supports three network distribution mode
 The general process is-get the network tokon-give the token and wifi information to the device-wait for the device to be added successfully. The main difference between each mode is how to send the network distribution information to the device, the QR code is scanned by the camera, the hotspot mode is transmitted through the WIFI link, and the wired distribution network is searched through the LAN.
 
 ```
-##6.1 Get distribution network token
+## 6.1 Get distribution network token
 ```
 【Description 】
      Obtain the distribution network token on the server, which needs to be passed to the device
@@ -297,7 +297,7 @@ The general process is-get the network tokon-give the token and wifi information
     }];
 
 ```
-##6.2 QR code distribution network
+## 6.2 QR code distribution network
 ```
 【Description 】
      Generate a QR code with WIFI information and network distribution token and scan it for the device.
@@ -348,7 +348,7 @@ The general process is-get the network tokon-give the token and wifi information
     [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
 
 ```
-##6.3 Hotspot distribution network (Ap distribution network)
+## 6.3 Hotspot distribution network (Ap distribution network)
 ```
 【Description 】
      Generate a QR code with WIFI information and network distribution token, and transparently transmit it to the device through the hotspot WIFI.
@@ -404,7 +404,7 @@ The general process is-get the network tokon-give the token and wifi information
     [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
 
 ```
-##6.4 Wired distribution network
+## 6.4 Wired distribution network
 ```
 【Description 】
      Make sure the device is plugged into the network cable, and the phone and device are in the same local area network
@@ -491,11 +491,13 @@ The general process is-get the network tokon-give the token and wifi information
 
     }];
 ```
-#7.Homegroup information
+# 7.Family
 ```
 Belong to：MeariFamily
 ```
-##7.1 Get family room list 
+
+## 7.1 Family Management
+### 7.1.1 Get family room list(Without device Info)
 ```
 Return：MeariFamilyModel
 ```
@@ -534,7 +536,7 @@ MeariFamilyModel property：
 @property (nonatomic, copy) NSArray<MeariDevice *> *unDistributionDeviceList;  // Unassigned family room equipment list
 ```
 
-##7.2 Get family list 
+### 7.1.2 Get family list (Has device Info)
 
 ```
 【Description】
@@ -559,7 +561,7 @@ MeariFamilyModel property：
     }];
 ```
 
-##7.3 Home Management - Creat New Family
+### 7.1.3 Creat New Family
 
 ```
 【Function】
@@ -576,7 +578,7 @@ MeariFamilyModel property：
         MR_HUD_SHOW_ERROR(error)
     }];
 ```
-##7.4 Family Management - Updating Family Information
+### 7.1.4 Updating Family Information
 
 
 ```
@@ -593,7 +595,7 @@ MeariFamilyModel property：
           } failure:^(NSError *error) {
         }];
 ```
-##7.5 Family Management - Delete Family 
+### 7.1.5 Delete Family 
 
 ```
 
@@ -608,7 +610,9 @@ MeariFamilyModel property：
     
     }];
 ```
-##7.6 Family Management - Join a Family
+## 7.2 Family Sharing
+
+### 7.2.1 Join a Family
 
 ```
 
@@ -625,11 +629,11 @@ MeariFamilyModel property：
     
     }];
 ```
-##7.7 Home Management - Leaving Home
+### 7.2.2 Leaving Family
 
 ```
 【Function】
-    //Leave a joined homegroup
+    //Leave a joined Family
     - (void)leaveFamilyWithHomeID:(NSString *)homeID
                       success:(MeariSuccess)success
                       failure:(MeariFailure)failure;
@@ -641,7 +645,7 @@ MeariFamilyModel property：
     
     }];
 ```
-##7.8 Family Management - Invite members to join a family group
+### 7.2.3 Invite members to join a family group
 ```
 【Function】
     //Invite other users to the homegroup (only the home owner has permission)
@@ -659,7 +663,7 @@ MeariFamilyModel property：
     
     }];
 ```
-##7.9 Family Management - Family Revoke Invite Member
+### 7.2.4 Family Revoke Invite Member
 
 ```
 【Function】
@@ -676,7 +680,7 @@ MeariFamilyModel property：
     
     }];
 ```
-##7.10 Family Management - Family Removal Member
+### 7.2.5 Family Removal Member
 
 ```
 
@@ -695,7 +699,7 @@ MeariFamilyModel property：
     
     }];
 ```
-##7.11 Family Management-Adding family members to search by account
+### 7.2.6 Adding family members to search by account
 ```
 Return：MeariMemberModel
 ```
@@ -720,7 +724,7 @@ Return：MeariMemberModel
     
     }];
 ```
-MeariMemberModel属性
+MeariMemberModel property:
 ```
 @property (nonatomic, assign) NSInteger userID; 
 @property (nonatomic, copy) NSString *userAccount; // User account
@@ -739,7 +743,7 @@ MeariMemberModel属性
 
 @property (nonatomic, copy) NSArray<MeariFamilyModel *> *homes;
 ```
-##7.12 Family Management - List of Family Members
+### 7.2.7 List of Family Members
 ```
 Return：MeariMemberModel
 ```
@@ -756,7 +760,7 @@ Return：MeariMemberModel
     
     }];
 ```
-##7.13 Home Management - Home Device Permission Changes
+### 7.2.8 Home Device Permission Changes
 
 ```
 
@@ -774,99 +778,7 @@ Return：MeariMemberModel
     
     }];
 ```
-##7.14 Home Management - Equipment Assignment Room
-
-```
-【Function】
-    //Assign a device to a room in the home
-    - (void)roomDeviceDistributioRoomID:(nonnull NSString *)roomID
-                              homeID:(nonnull NSString *)homeID
-                          deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
-                               success:(MeariSuccess)success
-                            failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] roomDeviceDistributioRoomID:roomID homeID:homeID deviceIDList:array success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-##7.15 Home Management - Adding a Room
-
-```
-
-
-【Function】
-    //Create new room
-    - (void)addRoomWithRoomName:(NSString *)roomName
-                     homeID:(NSString *)homeID
-                    success:(MeariSuccess)success
-                    failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] addRoomWithRoomName:roomName homeID:homeID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-##7.16 Home Management - Room Name Modification
-
-
-```
-【Function】
-    //Modify the room name of the specified room in the homegroup
-   - (void)updateRoomNameWithRoomName:(NSString *)roomName
-                            homeID:(NSString *)homeID
-                            roomID:(NSString *)roomID
-                    success:(MeariSuccess)success
-                           failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] updateRoomNameWithRoomName:roomName homeID:homeID roomID:roomID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-##7.17 Home Management - Delete Room
-
-```
-
-【Function】
-    //Delete the room of the specified family
-    - (void)removeRoomWithRoomIDList:(NSArray<NSString *> *)roomIDList
-                      homeID:(NSString *)homeID
-                     success:(MeariSuccess)success
-                     failure:(MeariFailure)failure;
-
-【Code】
-     [[MeariFamily sharedInstance] removeRoomWithRoomIDList:array homeID:homeID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-##7.18 Home Management - Remove devices from this room
-
-```
-
-【Function】
-    //Remove devices from family room
-    - (void)removeDeviceWithRoomID:(NSString *)roomID
-                      homeID:(NSString *)homeID
-                deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
-                     success:(MeariSuccess)success
-                     failure:(MeariFailure)failure;
-【Code】
-     [[MeariFamily sharedInstance] removeDeviceWithRoomID:roomID homeID:homeID deviceIDList:array success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-##7.19 Family Management - Family Member Name Modification
+### 7.2.9 Family Member Name Modification
 
 ```
 
@@ -885,12 +797,106 @@ Return：MeariMemberModel
     
     }];
 ```
+## 7.3 Room Management 
+### 7.3.1 Equipment Assignment Room
 
-#8.Device information
+```
+【Function】
+    //Assign a device to a room in the home
+    - (void)roomDeviceDistributioRoomID:(nonnull NSString *)roomID
+                              homeID:(nonnull NSString *)homeID
+                          deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
+                               success:(MeariSuccess)success
+                            failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] roomDeviceDistributioRoomID:roomID homeID:homeID deviceIDList:array success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 7.3.2 Adding a Room
+
+```
+
+
+【Function】
+    //Create new room
+    - (void)addRoomWithRoomName:(NSString *)roomName
+                     homeID:(NSString *)homeID
+                    success:(MeariSuccess)success
+                    failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] addRoomWithRoomName:roomName homeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 7.3.3 Room Name Modification
+
+
+```
+【Function】
+    //Modify the room name of the specified room in the homegroup
+   - (void)updateRoomNameWithRoomName:(NSString *)roomName
+                            homeID:(NSString *)homeID
+                            roomID:(NSString *)roomID
+                    success:(MeariSuccess)success
+                           failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] updateRoomNameWithRoomName:roomName homeID:homeID roomID:roomID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 7.3.4 Delete Room
+
+```
+
+【Function】
+    //Delete the room of the specified family
+    - (void)removeRoomWithRoomIDList:(NSArray<NSString *> *)roomIDList
+                      homeID:(NSString *)homeID
+                     success:(MeariSuccess)success
+                     failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariFamily sharedInstance] removeRoomWithRoomIDList:array homeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 7.3.5 Remove devices from this room
+
+```
+
+【Function】
+    //Remove devices from family room
+    - (void)removeDeviceWithRoomID:(NSString *)roomID
+                      homeID:(NSString *)homeID
+                deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
+                     success:(MeariSuccess)success
+                     failure:(MeariFailure)failure;
+【Code】
+     [[MeariFamily sharedInstance] removeDeviceWithRoomID:roomID homeID:homeID deviceIDList:array success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+
+
+# 8.Device information
 ```
 Belong to：MeariUser
 ```
-##8.1 Get device list 
+## 8.1 Get device list 
 ```
 Belong to：MeariDeviceList
 ```
@@ -928,7 +934,7 @@ MeariDeviceList Attributes：
 /** Base */
 @property (nonatomic, strong) NSArray <MeariDevice *> *chimes;
 ```
-##8.2 Device Info
+## 8.2 Device Info
 
 ```
 Belong to：MeariDevice
@@ -949,7 +955,7 @@ Belong to：MeariDevice
 @property (nonatomic, assign, readonly)BOOL supportFullDuplex;              //Whether to support FullDuplex intercom
 。。。
 ```
-##8.3 Delete device 
+## 8.3 Delete device 
 
 ```
 【Description 】
@@ -972,7 +978,7 @@ Belong to：MeariDevice
      }];
 ```
 
-##8.4 Device nickname modification 
+## 8.4 Device nickname modification 
 
 ```
 【Description 】
@@ -997,7 +1003,7 @@ Belong to：MeariDevice
     
 ```
 
-##8.5 Device alarm time point 
+## 8.5 Device alarm time point 
 
 ```
 【Description 】
@@ -1020,7 +1026,7 @@ Belong to：MeariDevice
      }];
 ```
 
-##8.6 Query device version 
+## 8.6 Query device version 
 
 ```
 【Description 】
@@ -1055,7 +1061,7 @@ MeariDeviceFirmwareInfo:
 
 ```
 
-##8.7 Query device online status 
+## 8.7 Query device online status 
 
 ```
 【Description 】
@@ -1094,7 +1100,7 @@ MeariDeviceFirmwareInfo:
 
 
 ```
-##8.8 Remote wake up doorbell 
+## 8.8 Remote wake up doorbell 
 
 ```
 【Description 】
@@ -1118,7 +1124,7 @@ MeariDeviceFirmwareInfo:
      Doorbell low-power products (camera.lowPowerDevice == YES), you need to call the remote wake-up interface first, and then call the hole-punching interface
 ```
 
-##8.9 Upload doorbell message 
+## 8.9 Upload doorbell message 
 
 ```
 【Description 】
@@ -1142,7 +1148,7 @@ MeariDeviceFirmwareInfo:
      }];
 ```
 
-##8.10 Download doorbell message 
+## 8.10 Download doorbell message 
 
 ```
 【Description 】
@@ -1165,7 +1171,7 @@ MeariDeviceFirmwareInfo:
     }];
 ```
 
-##8.11 Delete doorbell message 
+## 8.11 Delete doorbell message 
 
 ```
 【Description 】
@@ -1188,14 +1194,14 @@ MeariDeviceFirmwareInfo:
      }];
 ```
 
-#9.Device control
+# 9.Device control
 ```
 Belong to：MeariDevice
 ```
 ```
 MeariDevice Responsible for all operations on the device, including preview, playback, settings, etc. For device settings, you need to ensure that the connection with the device has been established
 ```
-##9.1 Connect the device 
+## 9.1 Connect the device 
 
 ```
 【Description 】
@@ -2698,7 +2704,7 @@ Belong to: MeariUser
 	 
 
 
-#11.Message Center 
+# 11.Message Center 
 
 ```
 Belong to：MeariMessageInfo
@@ -2706,7 +2712,7 @@ Belong to：MeariMessageInfo
 ```
 Note: The alarm message of the device, once pulled by the owner of the device, the server will delete the message, so it needs to be saved locally. If the person being shared pulls the alarm message of the device, the server will not delete it. Pay attention to the owner and being shared here. The difference between people
 ```
-##11.1 Get whether all devices have messages 
+## 11.1 Get whether all devices have messages 
 
 ```
 【Description 】
@@ -2729,8 +2735,8 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 【Precautions】
     If the message is pulled by the owner, the server will not save the message, and the shared user will not see the message.
 ```
-##11.2 Alarm message 
-###11.2.1  Get the alarm message of a certain device 
+## 11.2 Alarm message 
+### 11.2.1  Get the alarm message of a certain device 
 
 ```
 【Description 】
@@ -2754,7 +2760,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 【Precautions】
      If the message is pulled by the owner, the server will not save the message, and the shared friend will not see the message.
 ```
-###11.2.2 Get the latest alarm message list 
+### 11.2.2 Get the latest alarm message list 
 ```
 【Description】
     Get the latest alarm message list of the device owned by the user
@@ -2775,7 +2781,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
  【Precautions】
      If the message is pulled by the owner, the server will not save the message, and the shared friend will not see the message.
 ```
-###11.2.3 Get the number of days with alarm messages (the last 7 days)
+### 11.2.3 Get the number of days with alarm messages (the last 7 days)
 ```
 【Description 】 
      Get the number of days with alarms in the last 7 days
@@ -2796,7 +2802,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 
      
 ```
-###11.2.4 Get device alarm message
+### 11.2.4 Get device alarm message
 ```
 【Description 】 
       Get the device's alarm message on a certain day
@@ -2818,7 +2824,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
      }];
      
 ```
-###11.2.5 Load alarm picture
+### 11.2.5 Load alarm picture
 ```
 【Description 】 
      The alarm pictures of the device are stored in Alibaba Cloud and Amazon Cloud
@@ -2867,7 +2873,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
      
 ```
 
-###11.2.6 Delete multiple device alarm messages 
+### 11.2.6 Delete multiple device alarm messages 
 
 ```
 【Description 】
@@ -2889,8 +2895,8 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     }];
 
 ```
-##11.3 Aystem messages
-###11.3.1 Get system messages 
+## 11.3 Aystem messages
+### 11.3.1 Get system messages 
 
 ```
 【Description 】
@@ -2933,8 +2939,8 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     }];
 ```
 
-##11.4 Shared messages
-###11.4.1 Get a list of device shared messages
+## 11.4 Shared messages
+### 11.4.1 Get a list of device shared messages
 ```
 【Description 】
 	Get all shared messages
@@ -2952,7 +2958,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
         
     }];
 ```
- ###11.4.2 Delete shared message
+ ### 11.4.2 Delete shared message
 ```
 【Description 】
 	  Delete shared message
@@ -2973,7 +2979,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 
 
 ```
-###11.4.3  Get a list of family shared messages
+### 11.4.3  Get a list of family shared messages
 ```
 【Description】
       Get family sharing messages
@@ -2988,7 +2994,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 
      }];
 ```
-###11.4.4 Delete family shared messages
+### 11.4.4 Delete family shared messages
 ```
 【Description】
       Delete family shared messages
@@ -3011,7 +3017,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 
      }];
 ```
-###11.4.3  Deal family shared messages
+### 11.4.3  Deal family shared messages
 ```
 【Description】
       Deal family shared messages

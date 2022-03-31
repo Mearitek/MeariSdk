@@ -13,7 +13,7 @@
 | 4.1.0 | 觅睿技术团队 | 2021.03.23 | 优化
 </center>
 
-#1. 功能概述 
+# 1. 功能概述 
 
 觅睿科技APP SDK提供了与硬件设备、觅睿云通讯的接口封装，加速应用开发过程，主要包括以下功能：
 
@@ -22,16 +22,16 @@
 - 家庭组相关 (新建家庭组、新建房间、分配房间、邀请成员等功能) 
 - 消息中心（报警消息、设备分享消息、家庭分享消息、系统消息）
 
-#2. 集成准备
+# 2. 集成准备
 
 **准备云云对接**
 需要云云对接，通过自己服务器向Meari服务器请求数据，然后将数据传入SDK对应接口中。具体接口流程请参考工作中的Server目录。
 
 
 
-#3. 集成SDK 
+# 3. 集成SDK 
 
-## 3.1 集成准备 
+## 3.1 集成配置 
 
 ### (1) 引入sdk包 
 
@@ -64,7 +64,7 @@
 ```
 
 
-#4. 用户管理 
+# 4. 用户管理 
 
 ```
 所属：MeariUser工具类
@@ -74,7 +74,7 @@
 Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话代码
 ```
 
-##4.1 用户uid登录体系 
+## 4.1 用户uid登录体系 
 
 ```
 觅睿科技提供uid登陆体系。如果客户自有用户体系，那么可以通过uid登陆体系，接入我们的sdk。
@@ -121,7 +121,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 
      }];
 ```
-##4.2 用户上传头像 
+## 4.2 用户上传头像 
 
 ```
 【描述】
@@ -142,7 +142,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     
      }];
 ```
-##4.3 修改昵称 
+## 4.3 修改昵称 
 
 ```
 【描述】
@@ -163,7 +163,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     
      }];
 ```
-##4.4 注册消息推送
+## 4.4 注册消息推送
 
 ```
 【描述】
@@ -220,7 +220,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 
 ```
 
-##4.5 数据模型 
+## 4.5 数据模型 
 
 用户相关的数据模型。
 
@@ -244,7 +244,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 @property (nonatomic, assign, readonly) MeariThirdLoginType thirdLoginType; 第三方登录类型
 ```
 
-#5.设备消息通知 
+# 5.设备消息通知 
 
 ```
 及时消息通知是MeariSDK及时通知App端当前用户和用户账户下设备的一些状态，以方便App端实现更好的用户体验
@@ -264,7 +264,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoginInvalidNotification:) name:MeariUserLoginInvalidNotification object:nil];
 ```
 
-#6.设备配网
+# 6.设备配网
 
 ```
 所属：MeariDeviceActivator工具类
@@ -275,7 +275,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 ```
 
 
-##6.1 获取配网token
+## 6.1 获取配网token
 ```
 【描述】
      获取服务器上的配网Token,需要传递给设备
@@ -298,7 +298,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     }];
 
 ```
-##6.2 二维码配网
+## 6.2 二维码配网
 ```
 【描述】
      将WIFI信息,配网token 生成二维码 给设备扫描。
@@ -347,7 +347,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
 
 ```
-##6.3 热点配网(Ap配网)
+## 6.3 热点配网(Ap配网)
 ```
 【描述】
      将WIFI信息、配网token生成二维码, 通过热点WIFI透传给设备。
@@ -399,7 +399,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
 
 ```
-##6.4 有线配网
+## 6.4 有线配网
 ```
 【描述】
      确保设备插入网线,手机和设备处于同一个局域网之内
@@ -486,11 +486,13 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     }];
 
 ```
-#7.家庭组信息获取
+# 7.家庭
 ```
 所属：MeariFamily
 ```
-##7.1 获取家庭房间列表 
+## 7.1 家庭管理
+
+### 7.1.1 获取家庭房间列表(不包含设备信息) 
 ```
 返回：MeariFamilyModel
 ```
@@ -530,7 +532,7 @@ MeariFamilyModel属性：
 @property (nonatomic, copy) NSArray<MeariDevice *> *unDistributionDeviceList;  // 未分配设备列表
 ```
 
-##7.2 获取家庭列表 
+### 7.1.2 获取家庭房间列表(包含设备信息) 
 
 ```
 【描述】
@@ -556,7 +558,7 @@ MeariFamilyModel属性：
     }];
 ```
 
-##7.3 家庭管理-新建家庭
+### 7.1.3 新建家庭
 
 ```
 【函数调用】
@@ -573,7 +575,7 @@ MeariFamilyModel属性：
         MR_HUD_SHOW_ERROR(error)
     }];
 ```
-##7.4 家庭管理-更新家庭名和地址
+### 7.1.4 更新家庭信息
 
 
 ```
@@ -590,7 +592,7 @@ MeariFamilyModel属性：
       	} failure:^(NSError *error) {
     	}];
 ```
-##7.5 家庭管理-删除家庭 
+### 7.1.5 删除家庭 
 
 ```
 
@@ -605,8 +607,10 @@ MeariFamilyModel属性：
     
     }];
 ```
-##7.6 家庭管理-加入家庭
+## 7.2 家庭分享
 
+
+### 7.2.1 加入家庭
 ```
 
 【函数调用】
@@ -622,7 +626,7 @@ MeariFamilyModel属性：
     
     }];
 ```
-##7.7 家庭管理-离开家庭
+### 7.2.2 离开家庭
 
 ```
 【函数调用】
@@ -638,7 +642,7 @@ MeariFamilyModel属性：
     
     }];
 ```
-##7.8 家庭管理-邀请成员加入家庭组
+### 7.2.3 邀请成员加入家庭组
 ```
 【函数调用】
     //邀请其他用户加入家庭组（仅家庭主人有权限）
@@ -656,7 +660,7 @@ MeariFamilyModel属性：
     
     }];
 ```
-##7.9 家庭管理-家庭撤销邀请成员
+### 7.2.4 撤销邀请成员
 
 ```
 【函数调用】
@@ -673,7 +677,7 @@ MeariFamilyModel属性：
     
     }];
 ```
-##7.10 家庭管理-家庭删除成员
+### 7.2.5 家庭移除成员
 
 ```
 
@@ -692,7 +696,7 @@ MeariFamilyModel属性：
     
     }];
 ```
-##7.11 家庭管理-家庭添加成员根据账号搜索 
+### 7.2.6 家庭添加成员根据账号搜索 
 ```
 返回：MeariMemberModel
 ```
@@ -736,7 +740,7 @@ MeariMemberModel属性
 // 普通成员
 @property (nonatomic, copy) NSArray<MeariFamilyModel *> *homes;
 ```
-##7.12 家庭管理-家庭成员列表 
+### 7.2.7 家庭成员列表 
 ```
 返回：MeariMemberModel
 ```
@@ -753,7 +757,7 @@ MeariMemberModel属性
     
     }];
 ```
-##7.13 家庭管理-家庭设备权限变更 
+### 7.2.8 家庭设备权限变更 
 
 ```
 
@@ -771,99 +775,7 @@ MeariMemberModel属性
     
     }];
 ```
-##7.14 家庭管理-设备分配房间
-
-```
-【函数调用】
-    //分配设备到家庭的某个房间
-    - (void)roomDeviceDistributioRoomID:(nonnull NSString *)roomID
-                              homeID:(nonnull NSString *)homeID
-                          deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
-                               success:(MeariSuccess)success
-                            failure:(MeariFailure)failure;
-
-【代码范例】
-     [[MeariFamily sharedInstance] roomDeviceDistributioRoomID:roomID homeID:homeID deviceIDList:array success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-##7.15 家庭管理-新增房间
-
-```
-
-
-【函数调用】
-    //创建新的房间
-    - (void)addRoomWithRoomName:(NSString *)roomName
-                     homeID:(NSString *)homeID
-                    success:(MeariSuccess)success
-                    failure:(MeariFailure)failure;
-
-【代码范例】
-     [[MeariFamily sharedInstance] addRoomWithRoomName:roomName homeID:homeID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-##7.16 家庭管理-房间名称修改
-
-
-```
-【函数调用】
-    //修改家庭组中指定房间的房间名
-   - (void)updateRoomNameWithRoomName:(NSString *)roomName
-                            homeID:(NSString *)homeID
-                            roomID:(NSString *)roomID
-                    success:(MeariSuccess)success
-                           failure:(MeariFailure)failure;
-
-【代码范例】
-     [[MeariFamily sharedInstance] updateRoomNameWithRoomName:roomName homeID:homeID roomID:roomID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-##7.17 家庭管理-删除房间
-
-```
-
-【函数调用】
-    //删除指定家庭的的房间
-    - (void)removeRoomWithRoomIDList:(NSArray<NSString *> *)roomIDList
-                      homeID:(NSString *)homeID
-                     success:(MeariSuccess)success
-                     failure:(MeariFailure)failure;
-
-【代码范例】
-     [[MeariFamily sharedInstance] removeRoomWithRoomIDList:array homeID:homeID success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-##7.18 家庭管理-移除该房间的设备
-
-```
-
-【函数调用】
-    //移除家庭房间的设备
-    - (void)removeDeviceWithRoomID:(NSString *)roomID
-                      homeID:(NSString *)homeID
-                deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
-                     success:(MeariSuccess)success
-                     failure:(MeariFailure)failure;
-【代码范例】
-     [[MeariFamily sharedInstance] removeDeviceWithRoomID:roomID homeID:homeID deviceIDList:array success:^{
-     
-    } failure:^(NSError *error) {
-    
-    }];
-```
-##7.19 家庭管理-家庭成员名称修改 
+### 7.2.9 家庭成员名称修改 
 
 ```
 
@@ -882,13 +794,105 @@ MeariMemberModel属性
     
     }];
 ```
+## 7.3 房间操作
+### 7.3.1 设备分配房间
+
+```
+【函数调用】
+    //分配设备到家庭的某个房间
+    - (void)roomDeviceDistributioRoomID:(nonnull NSString *)roomID
+                              homeID:(nonnull NSString *)homeID
+                          deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
+                               success:(MeariSuccess)success
+                            failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] roomDeviceDistributioRoomID:roomID homeID:homeID deviceIDList:array success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 7.3.2 新增房间
+
+```
 
 
-#8.设备信息获取
+【函数调用】
+    //创建新的房间
+    - (void)addRoomWithRoomName:(NSString *)roomName
+                     homeID:(NSString *)homeID
+                    success:(MeariSuccess)success
+                    failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] addRoomWithRoomName:roomName homeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 7.3.3 房间名称修改
+
+
+```
+【函数调用】
+    //修改家庭组中指定房间的房间名
+   - (void)updateRoomNameWithRoomName:(NSString *)roomName
+                            homeID:(NSString *)homeID
+                            roomID:(NSString *)roomID
+                    success:(MeariSuccess)success
+                           failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] updateRoomNameWithRoomName:roomName homeID:homeID roomID:roomID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 7.3.4 删除房间
+
+```
+
+【函数调用】
+    //删除指定家庭的的房间
+    - (void)removeRoomWithRoomIDList:(NSArray<NSString *> *)roomIDList
+                      homeID:(NSString *)homeID
+                     success:(MeariSuccess)success
+                     failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] removeRoomWithRoomIDList:array homeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+### 7.3.5 移除房间的设备
+
+```
+
+【函数调用】
+    //移除家庭房间的设备
+    - (void)removeDeviceWithRoomID:(NSString *)roomID
+                      homeID:(NSString *)homeID
+                deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
+                     success:(MeariSuccess)success
+                     failure:(MeariFailure)failure;
+【代码范例】
+     [[MeariFamily sharedInstance] removeDeviceWithRoomID:roomID homeID:homeID deviceIDList:array success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+
+# 8.设备信息获取
 ```
 所属：MeariUser
 ```
-##8.1 获取设备列表 
+## 8.1 获取设备列表 
 
 ```
 返回：MeariDeviceList
@@ -928,7 +932,7 @@ MeariDeviceList属性：
 /** 中继 */
 @property (nonatomic, strong) NSArray <MeariDevice *> *chimes;
 ```
-##8.2 设备信息 
+## 8.2 设备信息 
 
 ```
 所属：MeariDevice
@@ -950,7 +954,7 @@ MeariDeviceList属性：
 @property (nonatomic, assign, readonly)BOOL supportVoiceTalk;               //是否支持语音对讲
 。。。
 ```
-##8.3 删除设备 
+## 8.3 删除设备 
 
 ```
 【描述】
@@ -973,7 +977,7 @@ MeariDeviceList属性：
      }];
 ```
 
-##8.4 设备昵称修改 
+## 8.4 设备昵称修改 
 
 ```
 【描述】
@@ -998,7 +1002,7 @@ MeariDeviceList属性：
     
 ```
 
-##8.5 设备报警时间点
+## 8.5 设备报警时间点
 
 ```
 【描述】
@@ -1021,7 +1025,7 @@ MeariDeviceList属性：
      }];
 ```
 
-##8.6 查询设备版本 
+## 8.6 查询设备版本 
 
 ```
 【描述】
@@ -1056,7 +1060,7 @@ MeariDeviceFirmwareInfo:
 
 ```
 
-##8.7 查询设备在线状态 
+## 8.7 查询设备在线状态 
 
 ```
 【描述】
@@ -1095,7 +1099,7 @@ MeariDeviceFirmwareInfo:
 
 
 ```
-##8.8 远程唤醒门铃 
+## 8.8 远程唤醒门铃 
 
 ```
 【描述】
@@ -1119,7 +1123,7 @@ MeariDeviceFirmwareInfo:
      门铃类低功耗产品（camera.lowPowerDevice == YES），需要先调用远程唤醒接口，再调用打洞的接口
 ```
 
-##8.9 上传门铃留言 
+## 8.9 上传门铃留言 
 
 ```
 【描述】
@@ -1143,7 +1147,7 @@ MeariDeviceFirmwareInfo:
      }];
 ```
 
-##8.10 下载门铃留言 
+## 8.10 下载门铃留言 
 
 ```
 【描述】
@@ -1166,7 +1170,7 @@ MeariDeviceFirmwareInfo:
     }];
 ```
 
-##8.11 删除门铃留言 
+## 8.11 删除门铃留言 
 
 ```
 【描述】
@@ -1189,14 +1193,14 @@ MeariDeviceFirmwareInfo:
      }];
 ```
 
-#9.设备控制
+# 9.设备控制
 ```
 所属：MeariDevice
 ```
 ```
 MeariDevice 负责对设备的所有操作，包括预览、回放、设置等，对设备的设置，需要确保已经与设备建立好了连接
 ```
-##9.1 连接设备 
+## 9.1 连接设备 
 
 ```
 【描述】
@@ -2714,10 +2718,8 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      MeariDeviceNewShareToHimNotification  （别人请求将我的设备分享给他）
 
 ```
-	 
 
-
-#11.消息中心 
+# 11.消息中心 
 
 ```
 所属：MeariMessageInfo
@@ -2725,7 +2727,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 注意：设备的报警消息，一经设备的主人拉取后，服务器就会删除该消息，因此需要本地保存，被分享的人拉取了设备的报警消息，服务器不会删除，这里注意主人和被分享人的区别
 ```
-##11.1 获取所有设备是否有消息 
+## 11.1 获取所有设备是否有消息 
 
 ```
 【描述】
@@ -2749,8 +2751,8 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     如果消息一经主人拉取后，服务器不会保存消息，被分享的用户也看不到这些消息
 ```
 
-##11.2 报警消息 
-###11.2.1 获取某个设备报警消息 
+## 11.2 报警消息 
+### 11.2.1 获取某个设备报警消息 
 ```
 【描述】
     获取某个设备报警消息, 每次会拉取服务器上最新的20条消息
@@ -2772,7 +2774,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
  【注意事项】
     如果消息一经主人拉取后，服务器不会保存消息，被分享的好友也看不到这些消息
 ```
-###11.2.2 获取用户所拥有设备最新的一条报警消息列表 
+### 11.2.2 获取用户所拥有设备最新的一条报警消息列表 
 ```
 【描述】
     获取用户所拥有设备最新的一条报警消息列表
@@ -2794,7 +2796,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
  【注意事项】
     如果消息一经主人拉取后，服务器不会保存消息，被分享的好友也看不到这些消息
 ```
-###11.2.3 获取有报警消息的天数(最近7天)
+### 11.2.3 获取有报警消息的天数(最近7天)
 ```
 【描述】 
      获取最近7天有报警的天数
@@ -2817,7 +2819,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
      
 ```
-###11.2.4 获取设备某天的报警消息
+### 11.2.4 获取设备某天的报警消息
 ```
 【描述】 
       获取设备某天的报警消息
@@ -2841,7 +2843,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      }];
      
 ```
-###11.2.5 加载报警图片
+### 11.2.5 加载报警图片
 ```
 【描述】 
       设备的报警图片存储在阿里云以及亚马逊云
@@ -2890,7 +2892,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      
 ```
 
-###11.2.6 批量删除多个设备报警消息 
+### 11.2.6 批量删除多个设备报警消息 
 
 ```
 【描述】
@@ -2914,9 +2916,9 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
 ```
 
-##11.3 系统消息 
+## 11.3 系统消息 
 
-###11.3.1 获取系统消息 
+### 11.3.1 获取系统消息 
 ```
 【描述】
     获取系统消息 
@@ -2938,7 +2940,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     }];
 ```
 
-###11.3.2 批量删除系统消息 
+### 11.3.2 批量删除系统消息 
 
 ```
 【描述】
@@ -2961,9 +2963,9 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     }];
 ```
 
-##11.4 分享消息
+## 11.4 分享消息
 
-###11.4.1 获取设备分享消息列表
+### 11.4.1 获取设备分享消息列表
 ```
 【描述】
 	 获取所有分享消息
@@ -2982,8 +2984,8 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
         
     }];
 ```
- 
-###11.4.2 删除设备分享消息
+
+### 11.4.2 删除设备分享消息
 ```
 【描述】
 	  删除分享消息
@@ -3005,7 +3007,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      }];
 
 ```
-###11.4.3  获取家庭分享消息列表
+### 11.4.3  获取家庭分享消息列表
 ```
 【描述】
 	  获取家庭分享消息
@@ -3020,7 +3022,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
      }];
 ```
-###11.4.4 删除家庭分享消息
+### 11.4.4 删除家庭分享消息
 ```
 【描述】
 	  删除分享消息
@@ -3043,7 +3045,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
      }];
 ```
-###11.4.3  处理家庭分享消息
+### 11.4.3  处理家庭分享消息
 ```
 【描述】
 	  处理家庭分享消息
