@@ -4,10 +4,12 @@
 [TOC]
 
 <center>
+
 ---
 Version number | Development team | Update date | Notes
 :-:|:-:|:-:|:-:
 3.1.0 | Meari Technical Team | 2021.07.02 | Optimization
+4.1.0 | Meari Technical Team | 2022.03.31 | Optimization
 
 <center>
 
@@ -3543,4 +3545,5 @@ Not currently supported
 ```
 
 # Release Notes:
-2020-03-13 wu: Initial draft of 2.2.0 SDK access guide completed
+2020-03-13 wu: 2.2.0 Initial draft of SDK access guide completed
+2022-03-31 wu: 4.1.0 The first draft of the family interface document is completed 
