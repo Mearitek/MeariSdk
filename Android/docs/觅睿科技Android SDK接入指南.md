@@ -2978,30 +2978,7 @@ MeariUser.getInstance().searchContactForJoinFamily(account, new IBaseModelCallba
 });
 ```
 
-### 10.2.3 获取家庭分享消息
-```
-【描述】
-获取家庭分享消息
-
-【函数调用】
-/**
- * 获取家庭分享消息
- */
-public void getFamilyShareMessages(IBaseModelCallback<List<FamilyShareMsg>> callback)
-
-【代码范例】
-MeariUser.getInstance().getFamilyShareMessages(new IBaseModelCallback<List<FamilyShareMsg>>() {
-    @Override
-    public void onSuccess(List<FamilyShareMsg> familyShareMsgs) {
-    }
-
-    @Override
-    public void onFailed(int code, String errorMsg) {
-    }
-});
-```
-
-### 10.2.4 添加成员到家庭中
+### 10.2.3 添加成员到家庭中
 ```
 【描述】
 添加成员到家庭中
@@ -3029,7 +3006,7 @@ MeariUser.getInstance().addMemberToFamily(familyId, memberId, permissions, new I
 });
 ```
 
-### 10.2.5 加入一个家庭
+### 10.2.4 加入一个家庭
 ```
 【描述】
 加入一个家庭
@@ -3055,7 +3032,54 @@ MeariUser.getInstance().joinFamily(familyIdList, new IResultCallback() {
 });
 ```
 
-### 10.2.6 获取家庭成员列表
+### 10.2.5 获取家庭分享消息
+```
+【描述】
+获取家庭分享消息
+
+【函数调用】
+/**
+ * 获取家庭分享消息
+ */
+public void getFamilyShareMessages(IBaseModelCallback<List<FamilyShareMsg>> callback)
+
+【代码范例】
+MeariUser.getInstance().getFamilyShareMessages(new IBaseModelCallback<List<FamilyShareMsg>>() {
+    @Override
+    public void onSuccess(List<FamilyShareMsg> familyShareMsgs) {
+    }
+
+    @Override
+    public void onFailed(int code, String errorMsg) {
+    }
+});
+```
+
+### 10.2.6 处理家庭分享消息
+```
+【描述】
+处理家庭分享消息
+
+【函数调用】
+/**
+ * @param dealFlag 0-拒绝，1-同意
+ */
+public void dealFamilyShareMessage(List<String> msgIDList, int dealFlag, IResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().dealFamilyShareMessage(msgIDList, dealFlag, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+
+### 10.2.7 获取家庭成员列表
 ```
 【描述】
 获取家庭成员列表
@@ -3080,7 +3104,7 @@ MeariUser.getInstance().getFamilyMemberList(familyId, new IFamilyMemberListCallb
 });
 ```
 
-### 10.2.7 修改家庭成员设备权限
+### 10.2.8 修改家庭成员设备权限
 ```
 【描述】
 修改家庭成员设备权限
@@ -3105,7 +3129,7 @@ MeariUser.getInstance().modifyMemberDevicePermission(familyId, memberID, permiss
 });
 ```
 
-### 10.2.8 从家庭移除成员
+### 10.2.9 从家庭移除成员
 ```
 【描述】
 从家庭移除成员
@@ -3130,7 +3154,7 @@ MeariUser.getInstance().removeMemberFromFamily(familyId, memberID, new IStringRe
 });
 ```
 
-### 10.2.9 撤销成员邀请
+### 10.2.10 撤销成员邀请
 ```
 【描述】
 撤销成员邀请
@@ -3153,7 +3177,7 @@ MeariUser.getInstance().revokeMemberInvitation(familyId, msgId, new IResultCallb
 });
 ```
 
-### 10.2.10 离开家庭
+### 10.2.11 离开家庭
 ```
 【描述】
 离开家庭
@@ -3339,7 +3363,7 @@ String location; 家庭地址
 List<MeariRoom> roomList; 家庭房间列表
 List<CameraInfo> familyDeviceList; 家庭设备列表
 ```
-### 10.4.1 MeariRoom
+### 10.4.2 MeariRoom
 ```
 private String roomId; 房间ID
 // 默认家庭的默认房间名称为空，可以根据"roomTarget"，自己确定名称
@@ -3348,7 +3372,79 @@ private int roomTarget; 房间标志位
 private List<CameraInfo> roomDeviceList; 房间设备聊表
 ```
 
+### 10.4.3 DevicePermission
+```
+// familyMemberToAdd.getFamilyDevices().get(i).getDeviceID()
+String deviceID;
+// 0-仅可查看；1-允许查看和控制
+int permission;
+```
 
+### 10.4.4 FamilyShareMsg
+```
+long date; 时间
+String msgID; 消息ID
+String receiverName; 消息处理者名称
+String inviterName; 消息发起者名称
+long inviter; 消息发起者ID
+String familyName; 家庭名称
+int msgType; 消息类型：1-添加成员；2-加入家庭
+int dealFlag; 消息处理标志位：0-拒绝；1-同意；2-处理中
+
+if (MeariUser.getInstance().getUserInfo().getUserID() == msg.inviter) {
+    // 消息发起者
+    if(msgType == 1) {
+        if(dealFlag == 2) {
+            您正在邀请 receiverName 加入您的家庭： familyName
+        } else if(dealFlag == 1){
+            receiverName 已经加入您的家庭： familyName
+        } else {
+            receiverName 拒绝加入您的家庭： familyName
+        }
+    } else {
+        if(dealFlag == 2) {
+            您正在申请加入 receiverName 的家庭： familyName
+        } else if(dealFlag == 1){
+            receiverName 同意您加入家庭： familyName
+        } else {
+            receiverName 拒绝您加入家庭： familyName
+        }
+    }
+} else {
+    // 消息处理者
+    if(msgType == 1) {
+        if(dealFlag == 2) {
+            inviterName 邀请您加入他的家庭： familyName
+            // 点击处理：MeariUser.getInstance().dealFamilyShareMessage()
+        } else if(dealFlag == 1){
+            您已经加入了 inviterName 的家庭： familyName
+        } else {
+            您拒绝加入 inviterName 的家庭： familyName
+        }
+        
+    } else {
+        if(dealFlag == 2) {
+            inviterName 申请加入您的家庭： familyName
+            //点击处理：MeariUser.getInstance().dealFamilyShareMessage()
+        } else if(dealFlag == 1){
+            您同意 inviterName 加入您的家庭： familyName
+        } else {
+            您拒绝 inviterName 加入您的家庭：familyName
+        }
+    }
+}
+```
+
+### 10.4.5 FamilyMember
+```
+String userId; 成员ID
+String userAccount; 成员账号
+String nickName; 成员昵称
+String imageUrl; 成员头像
+int isMaster; 是否是主人
+int joinStatus; 成员加入状态：1-已加入；2-加入中
+String msgId; 消息ID
+```
 
 # 11.MQTT和推送
 
@@ -3443,12 +3539,78 @@ void requestReceivingDevice(String userName, String deviceName, String msgID);
  * @param msgID 消息ID
  */
 void requestShareDevice(String userName, String deviceName, String msgID);
+
+/**
+ * 家庭相关的mqtt消息
+ * @param familyMqttMsg 家庭MQTT消息
+ */
+void onFamilyMessage(FamilyMqttMsg familyMqttMsg);
+// 处理家庭消息
+// 默认家庭名称为空，更新默认家庭名称
+if (familyMqttMsg.getItemList().size() > 0) {
+    for (MqttMsg.MsgItem msgItem : familyMqttMsg.getItemList()) {
+        if (TextUtils.isEmpty(msgItem.name)) {
+            String name;
+            if (familyMqttMsg.getMsgId() == MqttMsgType.INVITE_JOIN_HOME) {
+                name = familyMqttMsg.getUserName();
+            } else {
+                name = MeariUser.getInstance().getUserInfo().getNickName();
+            }
+            msgItem.name = String.format(Locale.CHINA, "%s's home", name);
+        }
+    }
+}
+if (familyMqttMsg.getMsgId() == MqttMsgType.FAMILY_INFO_CHANGED) {
+    // 家庭信息改变，刷新家庭列表
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.FAMILY_MEMBER_INFO_CHANGED) {
+    // 成员信息改变，刷新成员信息
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.INVITE_JOIN_HOME) {
+    // 他人邀请您加入他的家庭，弹窗并处理消息
+    // MeariUser.getInstance().dealFamilyShareMessage()
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.INVITE_JOIN_HOME_SUCCESS) {
+    // 您加入家庭成功，刷新家庭列表
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.APPLY_ENTER_HOME) {
+    // 他人申请加入您的家庭，弹窗并处理消息
+    // MeariUser.getInstance().dealFamilyShareMessage()
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.APPLY_ENTER_HOME_SUCCESS) {
+    // 申请加入家庭成功，刷新家庭列表
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.REMOVE_FROM_FAMILY) {
+    // 您被移除家庭，刷新家庭列表
+}
+
+```
+## 11.2 MQTT相关类
+
+### 11.2.1 MqttMsg
+> MQTT消息基类
+```
+int msgId; 消息 ID
+String userCountryCode; 用户国家代号
+int userIotType; 用户IOT类型
+long t; 消息时间
 ```
 
-## 11.2 集成谷歌推送
+### 11.2.1 FamilyMqttMsg extends MqttMsg
+> 家庭MQTT消息
+```
+String familyId; 家庭 ID
+String familyName; 家庭名称
+String userName; 用户名称
+final List<MsgItem> itemList; 消息中的列表
+```
+
+### 11.2.2 MsgItem
+> 消息中的列表项
+```
+String id;  Item ID
+String name; Item名字
+boolean isCheck; 是否选中
+```
+
+## 11.3 集成谷歌推送
 首先, 参考教程: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) 和 [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), 把firebase设置界面生成的admin sdk文件发送给meari服务器配置，在app中获取fcm token并调用MeariUser.getInstance().upload(1, token, callback)上传token
 
-## 11.3 集成其他推送
+## 11.4 集成其他推送
 ```
 暂不支持
 ```

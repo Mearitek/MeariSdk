@@ -49,28 +49,28 @@ Import the so files and aar files from libs directory into your own project, you
 Add the following configuration to the build.gradle file:
 
 android {
-     defaultConfig {
-         ...
-         ndk {
-         // Select the .so library corresponding to the cpu type to be added.
-         abiFilters arm64-v7a', 'armeabi-v8a'
-         }
-     }
-      sourceSets {
-         main {
-             jniLibs.srcDirs = ['libs']
-         }
-     }
+     defaultConfig {
+         ...
+         ndk {
+         // Select the .so library corresponding to the cpu type to be added.
+         abiFilters arm64-v7a', 'armeabi-v8a'
+         }
+     }
+      sourceSets {
+         main {
+             jniLibs.srcDirs = ['libs']
+         }
+     }
 }
 
 repositories {
-     flatDir {
-         dirs 'libs'
-     }
+     flatDir {
+         dirs 'libs'
+     }
 }
 
 dependencies {
-     // Required libraries
+     // Required libraries
     implementation(name: 'sdk-core-3.1.0-beta6', ext: 'aar')
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
@@ -169,51 +169,51 @@ Mobile or email registration.
 
 [Function call]
 
-/ **
- * get verification code
- *
- * @param countryCode country code
- * @param phoneCode area code
- * @param userAccount account
- * @param callback network request callback
- * /
+/**
+ * get verification code
+ *
+ * @param countryCode country code
+ * @param phoneCode area code
+ * @param userAccount account
+ * @param callback network request callback
+ * /
 public void getValidateCodeWithAccount (String countryCode, String phoneCode, String userAccount, IValidateCallback callback);
 
-/ **
- * register account, and return the mqtt iot info.
- *
- * @param countryCode country code
- * @param phoneCode area code
- * @param account
- * @param pwd password
- * @param nickname
- * @param code verification code
- * @param callback network request callback
- * /
+/**
+ * register account, and return the mqtt iot info.
+ *
+ * @param countryCode country code
+ * @param phoneCode area code
+ * @param account
+ * @param pwd password
+ * @param nickname
+ * @param code verification code
+ * @param callback network request callback
+ * /
 public void registerWithAccount (String countryCode, String phoneCode, String account, String pwd, String nickname, String code, IRegisterCallback callback);
 
 [Code example]
 
 MeariUser.getInstance (). GetValidateCodeWithAccount (countryCode, phoneCode, account, new IValidateCallback () {
-    @Override
-    public void onSuccess (int leftTime) {
-        // leftTime indicates the remaining valid time of the verification code
-    }
+    @Override
+    public void onSuccess (int leftTime) {
+        // leftTime indicates the remaining valid time of the verification code
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 
 MeariUser.getInstance (). RegisterWithAccount (countryCode, phoneCode, account, pwd, nickname, code, new IRegisterCallback () {
-    @Override
-    public void onSuccess (UserInfo user) {
-        // UserInfo returns user information
-    }
+    @Override
+    public void onSuccess (UserInfo user) {
+        // UserInfo returns user information
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -249,51 +249,51 @@ MeariUser.getInstance().loginWithExternalData(redirectionJson, loginJson, new IL
 ```
 【description】
 reset Password
- 
+ 
 [Function call]
-/ **
- * get verification code
- *
- * @param countryCode country code
- * @param phoneCode area code
- * @param userAccount account
- * @param callback network request callback
- * /
+/**
+ * get verification code
+ *
+ * @param countryCode country code
+ * @param phoneCode area code
+ * @param userAccount account
+ * @param callback network request callback
+ * /
 public void getValidateCodeWithAccount (String countryCode, String phoneCode, String userAccount, IValidateCallback callback);
 
-/ **
- * reset Password
- *
- * @param countryCode country code
- * @param phoneCode area code
- * @param account Domestic phone / email
- * @param verificationCode verification code
- * @param password User new password password
- * @param callback network request callback
- * /
+/**
+ * reset Password
+ *
+ * @param countryCode country code
+ * @param phoneCode area code
+ * @param account Domestic phone / email
+ * @param verificationCode verification code
+ * @param password User new password password
+ * @param callback network request callback
+ * /
 public void resetPasswordWithAccount (String countryCode, String phoneCode, String account, String verificationCode, String pwd, IResetPasswordCallback callback);
-    
+    
 [Code example]
 
 MeariUser.getInstance (). GetValidateCodeWithAccount (countryCode, phoneCode, account, new IValidateCallback () {
-    @Override
-    public void onSuccess (int leftTime) {
-        // leftTime indicates the remaining valid time of the verification code
-    }
+    @Override
+    public void onSuccess (int leftTime) {
+        // leftTime indicates the remaining valid time of the verification code
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 
 MeariUser.getInstance (). ResetPasswordWithAccount (countryCode, phoneCode, account, verificationCode, pwd, new IResetPasswordCallback () {
-    @Override
-    public void onSuccess (UserInfo user) {
-    }
+    @Override
+    public void onSuccess (UserInfo user) {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -306,28 +306,28 @@ The uid is required to be unique and defined by your own. You can login directly
 
 [Function call]
 
-/ **
- * User UID login
- * @param countryCode country code
- * @param phoneCode area code
- * @param uid user unique identifier
- * @param callback network request callback
- * /
+/**
+ * User UID login
+ * @param countryCode country code
+ * @param phoneCode area code
+ * @param uid user unique identifier
+ * @param callback network request callback
+ * /
 public void loginWithUid (String countryCode, String phoneCode, String uuid, ILoginCallback callback);
-        
+        
 [Code example]
 
 MeariUser.getInstance (). LoginWithUid (countryCode, phoneCode, uid, new ILoginCallback () {
-    @Override
-    public void onSuccess (UserInfo user) {
-        // It is recommended to the mqtt service in MainActivity, save the user information after the first login, and do not have to log in every time you start the app.
-        // connect mqtt service
-        MeariUser.getInstance (). ConnectMqttServer (getApplication ());
-    }
-    @Override
-    public void onError (String code, String error) {
-        // fail
-    }
+    @Override
+    public void onSuccess (UserInfo user) {
+        // It is recommended to the mqtt service in MainActivity, save the user information after the first login, and do not have to log in every time you start the app.
+        // connect mqtt service
+        MeariUser.getInstance (). ConnectMqttServer (getApplication ());
+    }
+    @Override
+    public void onError (String code, String error) {
+        // fail
+    }
 });
 ```
 
@@ -338,24 +338,24 @@ sign out
 
 [Function call]
 
-/ **
- * sign out
- *
- * @param callback network request callback
- * /
+/**
+ * sign out
+ *
+ * @param callback network request callback
+ * /
 public void logout (ILogoutCallback callback);
 
 [Code example]
 MeariUser.getInstance (). Logout (new ILogoutCallback () {
-    @Override
-    public void onSuccess () {
-        // Clear user information, disconnect mqtt connection, etc.
-        MqttMangerUtils.getInstance (). DisConnectService ();
-    }
+    @Override
+    public void onSuccess () {
+        // Clear user information, disconnect mqtt connection, etc.
+        MqttMangerUtils.getInstance (). DisConnectService ();
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -363,58 +363,58 @@ MeariUser.getInstance (). Logout (new ILogoutCallback () {
 ```
 【description】
 Upload a user avatar.
- 
+ 
 [Function call]
 
-/ **
- * Upload user avatar
- *
- * @param file User avatar picture file (preferably 300 * 300)
- * @param callback network request callback
- * /
+/**
+ * Upload user avatar
+ *
+ * @param file User avatar picture file (preferably 300 * 300)
+ * @param callback network request callback
+ * /
 public void uploadUserAvatar (List <File> fileList, IAvatarCallback callback);
-        
+        
 [Code example]
 
 MeariUser.getInstance (). UploadUserAvatar (path, new IAvatarCallback () {
-    @Override
-    public void onSuccess (String path) {
+    @Override
+    public void onSuccess (String path) {
 // path is the avatar address stored on the server after returning the upload
-    }
+    }
 
-    @Override
-    public void onError (String code, String error) {
+    @Override
+    public void onError (String code, String error) {
 
-    }
+    }
 });
 ```
 ## 4.7 Change nickname
 ```
 【description】
 Modify user nickname.
- 
+ 
 [Function call]
 
-/ **
- * change username
- *
- * @param nickname
- * @param callback network request callback
- * /
+/**
+ * change username
+ *
+ * @param nickname
+ * @param callback network request callback
+ * /
 public void renameNickname (String nickname, IResultCallback callback);
-        
+        
 [Code example]
 
 MeariUser.getInstance (). RenameNickname (name, new IResultCallback () {
-    @Override
-    public void onSuccess () {
+    @Override
+    public void onSuccess () {
 
-    }
+    }
 
-    @Override
-    public void onError (String code, String error) {
+    @Override
+    public void onError (String code, String error) {
 
-    }
+    }
 });
 ```
 
@@ -434,45 +434,45 @@ Using token to generate an QR code.
 
 [Function call]
 
-/ **
- * Get distribution token
- *
- * @param callback callback
- * /
+/**
+ * Get distribution token
+ *
+ * @param callback callback
+ * /
 public void getToken (IGetTokenCallback callback);
 
-/ **
- * Generate distribution network QR code
- *
- * @param ssid wifi name
- * @param password wifi password
- * @param token distribution network token
- * @param callback callback
- * /
+/**
+ * Generate distribution network QR code
+ *
+ * @param ssid wifi name
+ * @param password wifi password
+ * @param token distribution network token
+ * @param callback callback
+ * /
 public void createQRCode (String ssid, String password, String token, ICreateQRCodeCallback callback);
 
 [Code example]
 
 // Get distribution token
 MeariUser.getInstance (). GetToken (new IGetTokenCallback () {
-    @Override
-    public void onSuccess (String token, int leftTime, int smart_switch) {
-        // token distribution token
-        // leftTime remaining valid time
-        // smart_switch smartWifi switch
-    }
+    @Override
+    public void onSuccess (String token, int leftTime, int smart_switch) {
+        // token distribution token
+        // leftTime remaining valid time
+        // smart_switch smartWifi switch
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 
 // Generate distribution network QR code
 MeariUser.getInstance (). CreateQRCode (wifiName, pwd, token, new ICreateQRCodeCallback () {
-    @Override
-    public void onSuccess (Bitmap bitmap) {
-        mQrImage.setImageBitmap (bitmap); // Show QR code
-    }
+    @Override
+    public void onSuccess (Bitmap bitmap) {
+        mQrImage.setImageBitmap (bitmap); // Show QR code
+    }
 });
 ```
 
@@ -485,53 +485,53 @@ There may be a delay in the mqtt message. In order to improve the experience, yo
 
 [Function call]
 
-/ **
- * Query device status list
- *
- * @param ssid wifi name
- * @param pwd wifi password
- * @param wifiMode wifi encryption type 0:no password, 1:WPA_PSK, 2:WPA_EAP
- * @param scanningResultActivity search result callback
- * @param status status
- * /
+/**
+ * Query device status list
+ *
+ * @param ssid wifi name
+ * @param pwd wifi password
+ * @param wifiMode wifi encryption type 0:no password, 1:WPA_PSK, 2:WPA_EAP
+ * @param scanningResultActivity search result callback
+ * @param status status
+ * /
 public MangerCameraScanUtils (String ssid, String pwd, int wifiMode, CameraSearchListener scanningResultActivity, boolean status)
 
-/ **
- * Query device status list
- *
- * @paramList <CameraInfo> cameraInfos device list
- * @param deviceTypeID device type id
- * @param callback network request callback
- * /
+/**
+ * Query device status list
+ *
+ * @paramList <CameraInfo> cameraInfos device list
+ * @param deviceTypeID device type id
+ * @param callback network request callback
+ * /
 public void checkDeviceStatus (List <CameraInfo> cameraInfos, IDeviceStatusCallback callback);
 
-/ **
- * Add device
- *
- * @paramList <CameraInfo> cameraInfos device list
- * @param deviceTypeID device type id
- * @param callback network request callback
- * /
+/**
+ * Add device
+ *
+ * @paramList <CameraInfo> cameraInfos device list
+ * @param deviceTypeID device type id
+ * @param callback network request callback
+ * /
 public void addDevice (CameraInfo cameraInfo, int deviceTypeID, IAddDeviceCallback callback);
 
 [Code example]
 
 MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils (ssid, pwd, wifiMode, new CameraSearchListener () {
-    @Override
-    public void onCameraSearchDetected (CameraInfo cameraInfo) {
-        // Discover the device and check the device status
-        checkDeviceStatus ();
-    }
+    @Override
+    public void onCameraSearchDetected (CameraInfo cameraInfo) {
+        // Discover the device and check the device status
+        checkDeviceStatus ();
+    }
 
-    @Override
-    public void onCameraSearchFinished () {
-        // Search completed
-    }
+    @Override
+    public void onCameraSearchFinished () {
+        // Search completed
+    }
 
-    @Override
-    public void onRefreshProgress (int time) {
-        // Search progress 100-0, search ends after 100s
-    }
+    @Override
+    public void onRefreshProgress (int time) {
+        // Search progress 100-0, search ends after 100s
+    }
 
 }, false);
 
@@ -540,47 +540,47 @@ mangerCameraScan.startSearchDevice (false, -1, 100, ActivityType.ACTIVITY_SEARCH
 
 
 MeariUser.getInstance (). CheckDeviceStatus (cameraInfos, deviceTypeID, new IDeviceStatusCallback () {
-    @Override
-    public void onSuccess (ArrayList <CameraInfo> deviceList) {
-        // 1 means your own device, 2 means others' device has not been shared, 3 means the device can be added 4 means others' device have been shared to you
-        if (cameraInfo.getAddStatus () == 3) {
-            // Add device
-            if (cameraInfo.getAutoBinding () == 1) {
-                // Support automatic binding, no manual processing required
-            } else {
-                // Automatic binding is not supported. Active addition
-                addDevice (info);
-            }
-        }
-    }
+    @Override
+    public void onSuccess (ArrayList <CameraInfo> deviceList) {
+        // 1 means your own device, 2 means others' device has not been shared, 3 means the device can be added 4 means others' device have been shared to you
+        if (cameraInfo.getAddStatus () == 3) {
+            // Add device
+            if (cameraInfo.getAutoBinding () == 1) {
+                // Support automatic binding, no manual processing required
+            } else {
+                // Automatic binding is not supported. Active addition
+                addDevice (info);
+            }
+        }
+    }
 
-    @Override
-    public void onError (int code, String error) {
+    @Override
+    public void onError (int code, String error) {
 
-    }
+    }
 });
 
 MeariUser.getInstance (). AddDevice (info, this.mDeviceTypeID, new IAddDeviceCallback () {
-    @Override
-    public void onSuccess (String sn) {
-       
-    }
+    @Override
+    public void onSuccess (String sn) {
+       
+    }
 
-    @Override
-    public void onError (int code, String error) {
-        
-    }
+    @Override
+    public void onError (int code, String error) {
+        
+    }
 });
 
 // The automatically added device waits for a callback message in MyMessageHandler
 @Override
 public void addDeviceSuccess (String message) {
-    // Add device success message
+    // Add device success message
 }
 
 @Override
 public void addDeviceFailed (String message) {
-    // Add device failure message
+    // Add device failure message
 }
 ```
 
@@ -679,32 +679,32 @@ Meari SDK provides multiple interface for developers to achieve device informati
 We use the EventBus to implement message notification. Therefore, the notification object needs to be registered and destroyed on each device operation page. For details, please refer to the demo implementation.
 
 [Function call]
-/ **
- * Get user's device list
- *
- * @param callback Function callback
- * /
+/**
+ * Get user's device list
+ *
+ * @param callback Function callback
+ * /
 public void getDeviceList (IDevListCallback callback);
 
 [Code example]
 MeariUser.getInstance (). GetDeviceList (new IDevListCallback () {
-    @Override
-    public void onSuccess (MeariDevice dev) {
-        // Select according to the device you access
-        ArrayList <CameraInfo> cameraInfos = new ArrayList <> ();
-        cameraInfos.addAll (dev.getNvrs ());
-        cameraInfos.addAll (dev.getIpcs ());
-        cameraInfos.addAll (dev.getDoorBells ());
-        cameraInfos.addAll (dev.getBatteryCameras ());
-        cameraInfos.addAll (dev.getVoiceBells ());
-        cameraInfos.addAll (dev.getFourthGenerations ());
-        cameraInfos.addAll (dev.getFlightCameras ());
-        cameraInfos.addAll (dev.getChimes ());
-    }
+    @Override
+    public void onSuccess (MeariDevice dev) {
+        // Select according to the device you access
+        ArrayList <CameraInfo> cameraInfos = new ArrayList <> ();
+        cameraInfos.addAll (dev.getNvrs ());
+        cameraInfos.addAll (dev.getIpcs ());
+        cameraInfos.addAll (dev.getDoorBells ());
+        cameraInfos.addAll (dev.getBatteryCameras ());
+        cameraInfos.addAll (dev.getVoiceBells ());
+        cameraInfos.addAll (dev.getFourthGenerations ());
+        cameraInfos.addAll (dev.getFlightCameras ());
+        cameraInfos.addAll (dev.getChimes ());
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -714,26 +714,26 @@ MeariUser.getInstance (). GetDeviceList (new IDevListCallback () {
 Device removal
 
 [Function call]
-/ **
- * Remove device
- *
- * @param devId device id
- * @param deviceType device type
- * @param callback Function callback
- * /
+/**
+ * Remove device
+ *
+ * @param devId device id
+ * @param deviceType device type
+ * @param callback Function callback
+ * /
 public void deleteDevice (String devId, int deviceType, IResultCallback callback);
 
 [Code example]
 MeariUser.getInstance (). DeleteDevice (cameraInfo.getDeviceID (), DeviceType.IPC, new IResultCallback () (
-    @Override
-    public void onSuccess () {
+    @Override
+    public void onSuccess () {
 
-    }
+    }
 
-    @Override
-    public void onError (String code, String error) {
+    @Override
+    public void onError (String code, String error) {
 
-    }
+    }
 ));
 ```
 
@@ -743,27 +743,27 @@ MeariUser.getInstance (). DeleteDevice (cameraInfo.getDeviceID (), DeviceType.IP
 Device nickname modification
 
 [Function call]
-/ **
- * Modify device nickname
- *
- * @param deviceId device id
- * @param deviceType device type
- * @param nickname device nickname
- * @param callback Function callback
- * /
+/**
+ * Modify device nickname
+ *
+ * @param deviceId device id
+ * @param deviceType device type
+ * @param nickname device nickname
+ * @param callback Function callback
+ * /
 public void renameDevice (String deviceId, int deviceType, String nickname, IResultCallback callback);
 
 [Code example]
 MeariUser.getInstance (). RenameDeviceNickName (cameraInfo.getDeviceID (), DeviceType.IPC, nickName, new IRemoveDeviceCallback () (
-    @Override
-    public void onSuccess () {
+    @Override
+    public void onSuccess () {
 
-    }
+    }
 
-    @Override
-    public void onError (String code, String error) {
+    @Override
+    public void onError (String code, String error) {
 
-    }
+    }
 ));
 ```
 
@@ -774,24 +774,24 @@ Get time segment of device alarm message
 
 [Function call]
 
-/ **
-  * Get time segment of devcie alarm message
-  *
-  * @param deviceID device ID
-  * @param dayTime Time: "20200303"
-  * @param callback callback
-  * /
+/**
+  * Get time segment of devcie alarm message
+  *
+  * @param deviceID device ID
+  * @param dayTime Time: "20200303"
+  * @param callback callback
+  * /
 public void getDeviceAlarmMessageTimeForDate (String deviceID, String dayTime, IDeviceAlarmMessageTimeCallback callback);
 
 [Code example]
 MeariUser.getInstance().GetDeviceAlarmMessageTimeForDate (deviceID, dayTime, new IDeviceAlarmMessageTimeCallback () {
-     @Override
-     public void onSuccess (ArrayList <VideoTimeRecord> videoTimeList) {
-     }
+     @Override
+     public void onSuccess (ArrayList <VideoTimeRecord> videoTimeList) {
+     }
 
-     @Override
-     public void onError (int code, String error) {
-     }
+     @Override
+     public void onError (int code, String error) {
+     }
 });
 ```
 
@@ -803,21 +803,21 @@ One device corresponds to one CameraInfo and one MeariDeviceController. When per
 CameraInfo and a MeariDeviceController can be stored in the MeariUser class and retrieved when needed. You need to recreate and save when operating another device.
 
 [Function call]
-/ **
- * Connected device
- *
- * @param deviceListener device listener
- * /
+/**
+ * Connected device
+ *
+ * @param deviceListener device listener
+ * /
 public void startConnect (MeariDeviceListener deviceListener);
 
-/ **
- * Start preview
+/**
+ * Start preview
 
- * @param ppsGLSurfaceView video control
- * @param videoId video resolution 0-HD; 1-SD
- * @param deviceListener operation listen
- * @param videoStopListener
- * /
+ * @param ppsGLSurfaceView video control
+ * @param videoId video resolution 0-HD; 1-SD
+ * @param deviceListener operation listen
+ * @param videoStopListener
+ * /
 public void startPreview (PPSGLSurfaceView ppsGLSurfaceView, int videoId, MeariDeviceListener deviceListener, MeariDeviceVideoStopListener videoStopListener);
 
 
@@ -832,19 +832,19 @@ ll_video_view.addView (videoSurfaceView);
 MeariDeviceController deviceController = new MeariDeviceController ();
 deviceController.setCameraInfo (cameraInfo);
 deviceController.startConnect (new MeariDeviceListener () {
-    @Override
-    public void onSuccess (String successMsg) {
-        // After successful connection, start preview
-        startPreview ();
-        // Save the object and avoid duplicate creation
-        MeariUser.getInstance (). SetCameraInfo (cameraInfo);
-        MeariUser.getInstance (). SetController (deviceController);
-    }
+    @Override
+    public void onSuccess (String successMsg) {
+        // After successful connection, start preview
+        startPreview ();
+        // Save the object and avoid duplicate creation
+        MeariUser.getInstance (). SetCameraInfo (cameraInfo);
+        MeariUser.getInstance (). SetController (deviceController);
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
-        
-    }
+    @Override
+    public void onFailed (String errorMsg) {
+        
+    }
 });
 
 // Get saved objects when needed
@@ -853,64 +853,64 @@ MeariDeviceController deviceController = MeariUser.getInstance (). GetController
 
 // start preview
 deviceController.startPreview (videoSurfaceView, videoId, new MeariDeviceListener () {
-    @Override
-    public void onSuccess (String successMsg) {
+    @Override
+    public void onSuccess (String successMsg) {
 
-    }
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
+    @Override
+    public void onFailed (String errorMsg) {
 
-    }
+    }
 }, new MeariDeviceVideoStopListener () {
-    @Override
-    public void onVideoClosed (int code) {
-        
-    }
+    @Override
+    public void onVideoClosed (int code) {
+        
+    }
 });
 
 // switch resolution
 deviceController.changeVideoResolution (videoSurfaceView, videoId, new MeariDeviceListener () {
-    @Override
-    public void onSuccess (String successMsg) {
+    @Override
+    public void onSuccess (String successMsg) {
 
-    }
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
+    @Override
+    public void onFailed (String errorMsg) {
 
-    }
+    }
 }, new MeariDeviceVideoStopListener () {
-    @Override
-    public void onVideoClosed (int code) {
-        
-    }
+    @Override
+    public void onVideoClosed (int code) {
+        
+    }
 });
 
 // stop preview
 deviceController.stopPreview (new MeariDeviceListener () {
-    @Override
-    public void onSuccess (String successMsg) {
-        
-    }
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
+    @Override
+    public void onFailed (String errorMsg) {
 
-    }
+    }
 });
 
 // Disconnect, you must disconnect when exiting preview and playback
 deviceController.stopConnect (new MeariDeviceListener () {
-    @Override
-    public void onSuccess (String successMsg) {
-        
-    }
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
+    @Override
+    public void onFailed (String errorMsg) {
 
-    }
+    }
 });
 ```
 
@@ -921,64 +921,64 @@ After the SD is inserted into device, it will record the video and save it to th
 
 [Function call]
 
-/ **
- * Get a month with a video date
- * @param year
- * @param month
- * @param videoId video definition
- * @param callback callback
- * /
+/**
+ * Get a month with a video date
+ * @param year
+ * @param month
+ * @param videoId video definition
+ * @param callback callback
+ * /
 public void getPlaybackVideoDaysInMonth (int year, int month, int videoId, IPlaybackDaysCallback callback);
 
-/ **
- * Get all video clips of the day
- * @param year
- * @param month
- * @param videoId video definition
- * @param callback callback
- * /
+/**
+ * Get all video clips of the day
+ * @param year
+ * @param month
+ * @param videoId video definition
+ * @param callback callback
+ * /
 public void getPlaybackVideoTimesInDay (int year, int month, int day, int videoId, MeariDeviceListener deviceListener);
 
 
-/ **
- * Start playing video
- *
- * @param ppsGLSurfaceView video control
- * @param videoId video resolution 0-HD; 1-SD
- * @param startTime video start time
- * @param deviceListener operation listen
- * @param videoStopListener
- * /
+/**
+ * Start playing video
+ *
+ * @param ppsGLSurfaceView video control
+ * @param videoId video resolution 0-HD; 1-SD
+ * @param startTime video start time
+ * @param deviceListener operation listen
+ * @param videoStopListener
+ * /
 public void startPlaybackSDCard (PPSGLSurfaceView ppsGLSurfaceView, int videoId, String startTime, MeariDeviceListener deviceListener, MeariDeviceVideoStopListener videoStopListener);
 
-/ **
- * Drag to change playback video
- *
- * @param seekTime the time the video started
- * @param deviceListener operation listen
- * @param videoStopListener
- * /
+/**
+ * Drag to change playback video
+ *
+ * @param seekTime the time the video started
+ * @param deviceListener operation listen
+ * @param videoStopListener
+ * /
 public void seekPlaybackSDCard (String seekTime, MeariDeviceListener deviceListener, MeariDeviceVideoSeekListener seekListener);
 
-/ **
- * Pause video
- *
- * @param deviceListener operation listen
- * /
+/**
+ * Pause video
+ *
+ * @param deviceListener operation listen
+ * /
 public void pausePlaybackSDCard (MeariDeviceListener deviceListener);
 
-/ **
- * Replay video after pause
- *
- * @param deviceListener operation listen
- * /
+/**
+ * Replay video after pause
+ *
+ * @param deviceListener operation listen
+ * /
 public void resumePlaybackSDCard (MeariDeviceListener deviceListener)
 
-/ **
- * Stop playing video
- *
- * @param deviceListener operation listen
- * /
+/**
+ * Stop playing video
+ *
+ * @param deviceListener operation listen
+ * /
 public void stopPlaybackSDCard (MeariDeviceListener deviceListener);
 
 
@@ -987,103 +987,103 @@ public void stopPlaybackSDCard (MeariDeviceListener deviceListener);
 // Play the video only after the device is successfully connected
 // Get the date of a month with video
 deviceController.getPlaybackVideoDaysInMonth (year, month, videoId, new IPlaybackDaysCallback () {
-    @Override
-    public void onSuccess (ArrayList <Integer> playbackDays) {
-        
-    }
+    @Override
+    public void onSuccess (ArrayList <Integer> playbackDays) {
+        
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
+    @Override
+    public void onFailed (String errorMsg) {
 
-    }
+    }
 });
 
 // Get all video clips of the day
 deviceController.getPlaybackVideoTimesInDay (year, month, day, videoId, new MeariDeviceListener () {
-    @Override
-    public void onSuccess (String successMsg) {
-        
-    }
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
+    @Override
+    public void onFailed (String errorMsg) {
 
-    }
+    }
 });
 
 // start playing video
 deviceController.startPlaybackSDCard (ppsGLSurfaceView, videoId, startTime, new MeariDeviceListener () {
-    @Override
-    public void onSuccess (String successMsg) {
+    @Override
+    public void onSuccess (String successMsg) {
 
-    }
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
+    @Override
+    public void onFailed (String errorMsg) {
 
-    }
+    }
 }, new MeariDeviceVideoStopListener () {
-    @Override
-    public void onVideoClosed (int code) {
-        
-    }
+    @Override
+    public void onVideoClosed (int code) {
+        
+    }
 });
 
 // Drag to change playback video
 deviceController.seekPlaybackSDCard (seekTime, new MeariDeviceListener () {
-    @Override
-    public void onSuccess (String successMsg) {
+    @Override
+    public void onSuccess (String successMsg) {
 
-    }
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
+    @Override
+    public void onFailed (String errorMsg) {
 
-    }
+    }
 }, new MeariDeviceVideoSeekListener () {
-    @Override
-    public void onVideoSeek () {
-        
-    }
+    @Override
+    public void onVideoSeek () {
+        
+    }
 });
 
 // Pause video
 deviceController.pausePlaybackSDCard (new MeariDeviceListener () {
-    @Override
-    public void onSuccess (String successMsg) {
-        
-    }
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
+    @Override
+    public void onFailed (String errorMsg) {
 
-    }
+    }
 });
 
 // Replay video after pause
 deviceController.resumePlaybackSDCard (new MeariDeviceListener () {
-    @Override
-    public void onSuccess (String successMsg) {
-        
-    }
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
+    @Override
+    public void onFailed (String errorMsg) {
 
-    }
+    }
 });
 
 // stop playing video
 deviceController.stopPlaybackSDCard (new MeariDeviceListener () {
-    @Override
-    public void onSuccess (String successMsg) {
-        
-    }
+    @Override
+    public void onSuccess (String successMsg) {
+        
+    }
 
-    @Override
-    public void onFailed (String errorMsg) {
+    @Override
+    public void onFailed (String errorMsg) {
 
-    }
+    }
 });
 ```
 
@@ -1109,23 +1109,23 @@ ShareDeviceInfo shared device information
 Get device share list
 
 [Function call]
-/ **
- * Get device share list
- *
- * @param deviceID device ID
- * @param callback Function callback
- * /
+/**
+ * Get device share list
+ *
+ * @param deviceID device ID
+ * @param callback Function callback
+ * /
 public void getShareListForDevice (String deviceID, IShareUserListCallback callback);
 
 [Code example]
 MeariUser.getInstance (). GetShareListForDevice (cameraInfo.getDeviceID (), new IShareUserListCallback () {
-    @Override
-    public void onSuccess (ArrayList <ShareUserInfo> shareUserInfoList) {
-    }
+    @Override
+    public void onSuccess (ArrayList <ShareUserInfo> shareUserInfoList) {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1135,23 +1135,23 @@ MeariUser.getInstance (). GetShareListForDevice (cameraInfo.getDeviceID (), new 
 Get history share list
 
 [Function call]
-/ **
- * Get history share list
- *
- * @param deviceID device ID
- * @param callback Function callback
- * /
+/**
+ * Get history share list
+ *
+ * @param deviceID device ID
+ * @param callback Function callback
+ * /
 public void getHistoryShare (String deviceID, IShareUserListCallback callback);
 
 [Code example]
 MeariUser.getInstance (). GetHistoryShare (cameraInfo.getDeviceID (), new IShareUserListCallback () {
-    @Override
-    public void onSuccess (ArrayList <ShareUserInfo> shareUserInfoList) {
-    }
+    @Override
+    public void onSuccess (ArrayList <ShareUserInfo> shareUserInfoList) {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1161,22 +1161,22 @@ MeariUser.getInstance (). GetHistoryShare (cameraInfo.getDeviceID (), new IShare
 Get sharing results of all devices
 
 [Function call]
-/ **
- * Get sharing results of all devices
- *
- * @param callback Function callback
- * /
+/**
+ * Get sharing results of all devices
+ *
+ * @param callback Function callback
+ * /
 public void getAllDeviceShare (IShareDeviceListCallback callback);
 
 [Code example]
 MeariUser.getInstance (). GetAllDeviceShare (new IShareDeviceListCallback () {
-    @Override
-    public void onSuccess (ArrayList <ShareDeviceInfo> shareDeviceInfoList) {
-    }
+    @Override
+    public void onSuccess (ArrayList <ShareDeviceInfo> shareDeviceInfoList) {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1186,25 +1186,25 @@ MeariUser.getInstance (). GetAllDeviceShare (new IShareDeviceListCallback () {
 Search users
 
 [Function call]
-/ **
- * Search for a user
- *
- * @param account
- * @param deviceID device ID
- * @param phoneCode country phone code
- * @param callback Function callback
- * /
+/**
+ * Search for a user
+ *
+ * @param account
+ * @param deviceID device ID
+ * @param phoneCode country phone code
+ * @param callback Function callback
+ * /
 public void searchUser (String account, String deviceID, String phoneCode, ISearchUserCallback callback)
 
 [Code example]
 MeariUser.getInstance (). SearchUser (account, deviceID, phoneCode, new ISearchUserCallback () {
-    @Override
-    public void onSuccess (ShareUserInfo shareUserInfo) {
-    }
+    @Override
+    public void onSuccess (ShareUserInfo shareUserInfo) {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1214,24 +1214,24 @@ MeariUser.getInstance (). SearchUser (account, deviceID, phoneCode, new ISearchU
 Share device
 
 [Function call]
-/ **
- * Share device
- * @param account
- * @param deviceID device ID
- * @param phoneCode country phone code
- * @param callback Function callback
- * /
+/**
+ * Share device
+ * @param account
+ * @param deviceID device ID
+ * @param phoneCode country phone code
+ * @param callback Function callback
+ * /
 public void shareDevice (String account, String deviceID, String phoneCode, IResultCallback callback);
 
 [Code example]
 MeariUser.getInstance (). ShareDevice (account, deviceID, phoneCode, new IResultCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1241,24 +1241,24 @@ MeariUser.getInstance (). ShareDevice (account, deviceID, phoneCode, new IResult
 Cancel shared device
 
 [Function call]
-/ **
- * Cancel shared device
- * @param account
- * @param deviceID device ID
- * @param phoneCode country phone code
- * @param callback Function callback
- * /
+/**
+ * Cancel shared device
+ * @param account
+ * @param deviceID device ID
+ * @param phoneCode country phone code
+ * @param callback Function callback
+ * /
 public void cancelShareDevice (String account, String deviceID, String phoneCode, IResultCallback callback);
 
 [Code example]
 MeariUser.getInstance (). CancelShareDevice (account, cameraInfo.getDeviceID (), phoneCode, new IResultCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1268,24 +1268,24 @@ MeariUser.getInstance (). CancelShareDevice (account, cameraInfo.getDeviceID (),
 Delete history shared user
 
 [Function call]
-/ **
- * Delete history shared users
- *
- * @param accountArray user array
- * @param deviceID device ID
- * @param callback Function callback
- * /
+/**
+ * Delete history shared users
+ *
+ * @param accountArray user array
+ * @param deviceID device ID
+ * @param callback Function callback
+ * /
 public void deleteHistoryShare (String accountArray, String deviceID, IResultCallback callback);
 
 [Code example]
 MeariUser.getInstance (). DeleteHistoryShare (accountArray, deviceID, new IResultCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1295,24 +1295,24 @@ MeariUser.getInstance (). DeleteHistoryShare (accountArray, deviceID, new IResul
 Handling shared messages
 
 [Function call]
-/ **
- * Handle shared messages
- *
- * @param msgID message ID
- * @param dealFlag 0-reject; 1-accept
- * @param callback Function callback
- * /
+/**
+ * Handle shared messages
+ *
+ * @param msgID message ID
+ * @param dealFlag 0-reject; 1-accept
+ * @param callback Function callback
+ * /
 public void dealShareMessage (long msgID, int dealFlag, IResultCallback callback);
 
 [Code example]
 MeariUser.getInstance (). DealShareMessage (msgID, dealFlag, new IResultCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1325,11 +1325,11 @@ MeariUser.getInstance (). DealShareMessage (msgID, dealFlag, new IResultCallback
 Get shared message list of device
 
 [Function call]
-/ **
- * Get share message list of devicw
- *
- * @param callback Function callback
- * /
+/**
+ * Get share message list of devicw
+ *
+ * @param callback Function callback
+ * /
 public void getShareMessage (IShareMessageCallback callback);
 
 [Method call]
@@ -1342,13 +1342,13 @@ ShareMessage
 -String deviceName; device name
 
 MeariUser.getInstance (). GetShareMessage (new IShareMessageCallback () {
-    @Override
-    public void onSuccess (ArrayList <ShareMessage> shareMessages) {
-    }
+    @Override
+    public void onSuccess (ArrayList <ShareMessage> shareMessages) {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1358,24 +1358,24 @@ MeariUser.getInstance (). GetShareMessage (new IShareMessageCallback () {
 Delete shared messages of device
 
 [Function call]
-/ **
- * Delete share messages of device
- *
- * @param msgIDList Message ID array
- * @param callback Function callback
- * /
+/**
+ * Delete share messages of device
+ *
+ * @param msgIDList Message ID array
+ * @param callback Function callback
+ * /
 public void deleteShareMessage (List <String> msgIDList, IResultCallback callback);
 
 [Method call]
 
 MeariUser.getInstance (). DeleteShareMessage (msgIDList, new IResultCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 ## 8.2 Alarm message of device
@@ -1386,11 +1386,11 @@ MeariUser.getInstance (). DeleteShareMessage (msgIDList, new IResultCallback () 
 Gets all devices whether have messages
 
 [Function call]
-/ **
- * Get alarm messages of all devices
- *
- * @param callback function callback
- * /
+/**
+ * Get alarm messages of all devices
+ *
+ * @param callback function callback
+ * /
 public void getDeviceMessageStatusList (IDeviceMessageStatusCallback callback);
 
 [Method call]
@@ -1403,15 +1403,15 @@ DeviceMessageStatus
 -boolean hasMessage; whether the device has an alarm message
 
 MeariUser.getInstance (). GetDeviceMessageStatusList (new IDeviceMessageStatusCallback () {
-    @Override
-    public void onSuccess (List <DeviceMessageStatus> deviceMessageStatusList) {
-        // If the device has an alarm message, you can get the alarm message
-    }
+    @Override
+    public void onSuccess (List <DeviceMessageStatus> deviceMessageStatusList) {
+        // If the device has an alarm message, you can get the alarm message
+    }
 
-    @Override
-    public void onError (int code, String error) {
+    @Override
+    public void onError (int code, String error) {
 
-    }
+    }
 });
 ```
 
@@ -1421,13 +1421,13 @@ MeariUser.getInstance (). GetDeviceMessageStatusList (new IDeviceMessageStatusCa
 Get alarm messages of a single device
 
 [Function call]
-/ **
- * Get the alarm message of a single device (get the latest 20 at a time, after the device owner pulls it, the server deletes the data, pay attention to save the data)
- *
- * @param deviceId device id
- * @param day date yyyyMMdd
- * @param callback function callback
- * /
+/**
+ * Get the alarm message of a single device (get the latest 20 at a time, after the device owner pulls it, the server deletes the data, pay attention to save the data)
+ *
+ * @param deviceId device id
+ * @param day date yyyyMMdd
+ * @param callback function callback
+ * /
 public void getAlertMsg (long deviceId, String day, IGetAlarmMessagesCallback callback);
 
 [Method call]
@@ -1448,14 +1448,14 @@ class DeviceAlarmMessage:
 
 
 MeariUser.getInstance().getAlertMsg(getMsgInfo().GetDeviceID(), day, new IDeviceAlarmMessagesCallback () {
-    @Override
-    public void onSuccess (List <DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
+    @Override
+    public void onSuccess (List <DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
 
-    }
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1467,11 +1467,11 @@ MeariUser.getInstance().getAlertMsg(getMsgInfo().GetDeviceID(), day, new IDevice
 Get list of system messages
 
 [Function call]
-/ **
- * Get system message list
- *
- * @param callback function callback
- * /
+/**
+ * Get system message list
+ *
+ * @param callback function callback
+ * /
 public void getSystemMessage (ISystemMessageCallback callback);
 
 [Method call]
@@ -1493,13 +1493,13 @@ class SystemMessage:
 -String imageUrl; // Avatar
 
 MeariUser.getInstance (). GetSystemMessage (new ISystemMessageCallback () {
-    @Override
-    public void onSuccess (List <SystemMessage> systemMessageList) {
-    }
+    @Override
+    public void onSuccess (List <SystemMessage> systemMessageList) {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1509,25 +1509,25 @@ MeariUser.getInstance (). GetSystemMessage (new ISystemMessageCallback () {
 Delete system messages
 
 [Function call]
-/ **
- * delete system message by message ID
- * Delete system messages
- *
- * @param msgIdList message id
- * @param callback function callback
- * /
+/**
+ * delete system message by message ID
+ * Delete system messages
+ *
+ * @param msgIdList message id
+ * @param callback function callback
+ * /
 public void deleteSystemMessage (List <String> msgIdList, final IResultCallback callback);
 
 [Method call]
 
 MeariUser.getInstance (). DeleteSystemMessage (msgIdList, new IResultCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onError (int code, String error) {
-    }
+    @Override
+    public void onError (int code, String error) {
+    }
 });
 ```
 
@@ -1608,25 +1608,25 @@ device Capability
 The device formats the SD card. After the formatting is successful, the formatting progress is obtained through the mqtt message.
 
 [Function call]
-/ **
- * Get device SD card information
- *
- * @param callback Function callback
- * /
+/**
+ * Get device SD card information
+ *
+ * @param callback Function callback
+ * /
 public void getSDCardInfo (ISDCardInfoCallback callback);
 
-/ **
- * Start formatting SD card
- *
- * @param callback Function callback
- * /
+/**
+ * Start formatting SD card
+ *
+ * @param callback Function callback
+ * /
 public void startSDCardFormat (ISDCardFormatCallback callback);
 
-/ **
- * Get SD card progress
- *
- * @param callback Function callback
- * /
+/**
+ * Get SD card progress
+ *
+ * @param callback Function callback
+ * /
 public void getSDCardFormatPercent (ISDCardFormatPercentCallback callback)
 
 [Code example]
@@ -1639,35 +1639,35 @@ SDCardInfo
 
 // Get SD card information of device
 MeariUser.getInstance (). GetSDCardInfo (new ISDCardInfoCallback () {
-    @Override
-    public void onSuccess (SDCardInfo sdCardInfo) {
-    }
+    @Override
+    public void onSuccess (SDCardInfo sdCardInfo) {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 
 // start formatting SD card
 MeariUser.getInstance (). StartSDCardFormat (new ISDCardFormatCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 
 // Get the process of formatting SD card
 MeariUser.getInstance (). GetSDCardFormatPercent (new ISDCardFormatPercentCallback () {
-    @Override
-    public void onSuccess (int percent) {
-    }
+    @Override
+    public void onSuccess (int percent) {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 ```
 
@@ -1686,36 +1686,36 @@ DeviceUpgradeInfo
 -String upgradeDescription; New version description
 -String upgradeUrl; new version address
 
-/ **
- * Check if the device has a new version
- *
- * @param devVersion device version
- * @param licenseID device sn
- * @param tp device tp
- * @param callback callback
- * /
+/**
+ * Check if the device has a new version
+ *
+ * @param devVersion device version
+ * @param licenseID device sn
+ * @param tp device tp
+ * @param callback callback
+ * /
 public void checkNewFirmwareForDev(String devVersion, String licenseID, String tp, ICheckNewFirmwareForDevCallback callback)
 
-/ **
- * Start to upgrade device firmware
- *
- * @param upgradeUrl upgrade address
- * @param upgradeVersion upgrade version
- * @param callback Function callback
- * /
+/**
+ * Start to upgrade device firmware
+ *
+ * @param upgradeUrl upgrade address
+ * @param upgradeVersion upgrade version
+ * @param callback Function callback
+ * /
 public void startDeviceUpgrade (String upgradeUrl, String upgradeVersion, IDeviceUpgradeCallback callback);
 
-/ **
- * Get progress of firmware upgrade
- * @param callback Function callback
- * /
+/**
+ * Get progress of firmware upgrade
+ * @param callback Function callback
+ * /
 public void getDeviceUpgradePercent (IDeviceUpgradePercentCallback callback);
 
-/ **
- * Get the firmware version of device
- * @param deviceID device id
- * @param callback Function callback
- * /
+/**
+ * Get the firmware version of device
+ * @param deviceID device id
+ * @param callback Function callback
+ * /
 public void getDeviceFirmwareVersion(String deviceID, IStringResultCallback callback)
 
 
@@ -1737,28 +1737,28 @@ MeariUser.getInstance().checkNewFirmwareForDev(firmwareVersion, cameraInfo.getSn
 
 // If you can upgrade, start the upgrade
 MeariUser.getInstance (). StartDeviceUpgrade (deviceUpgradeInfo.getUpgradeUrl (), deviceUpgradeInfo.getNewVersion (), new IDeviceUpgradeCallback () {
-    @Override
-    public void onSuccess () {
+    @Override
+    public void onSuccess () {
 
-    }
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
 
-    }
+    }
 });
 
 // Get the progress of upgrade
 MeariUser.getInstance (). GetDeviceUpgradePercent (new IDeviceUpgradePercentCallback () {
-    @Override
-    public void onSuccess (int percent) {
+    @Override
+    public void onSuccess (int percent) {
 
-    }
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
 
-    }
+    }
 });
 
 // Get the firmware verion of device
@@ -1928,23 +1928,23 @@ MeariUser.getInstance().setDayNightMode(mode, new ISetDeviceParamsCallback() {
 Sleep mode setting of device
 
 [Function call]
-/ **
-  * Sleep mode setting of device
-  *
-  * @param mode mode
-  * @param callback Function callback
-  * /
+/**
+  * Sleep mode setting of device
+  *
+  * @param mode mode
+  * @param callback Function callback
+  * /
 public void setSleepMode (int mode, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetSleepMode (sleepMode, new ISetDeviceParamsCallback () {
-     @Override
-     public void onSuccess () {
-     }
+     @Override
+     public void onSuccess () {
+     }
 
-     @Override
-     public void onFailed (int errorCode, String errorMsg) {
-     }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
 
@@ -1954,12 +1954,12 @@ MeariUser.getInstance (). SetSleepMode (sleepMode, new ISetDeviceParamsCallback 
 Scheduled sleep period setting of device
 
 [Function call]
-/ **
-  * Scheduled sleep period setting of device
-  *
-  * @param timeList the period of sleep
-  * @param callback Function callback
-  * /
+/**
+  * Scheduled sleep period setting of device
+  *
+  * @param timeList the period of sleep
+  * @param callback Function callback
+  * /
 public void setSleepModeTimes (String timeList, ISetDeviceParamsCallback callback);
 
 [Code example]
@@ -1971,25 +1971,25 @@ stop_time: end time
 repeat: 1 ~ 7 days in effect every week
 
 [{
-     "enable": true,
-     "start_time": "03:00",
-     "stop_time": "04:00",
-     "repeat": [3, 4]
+     "enable": true,
+     "start_time": "03:00",
+     "stop_time": "04:00",
+     "repeat": [3, 4]
 }, {
-     "enable": false,
-     "start_time": "00:00",
-     "stop_time": "03:00",
-     "repeat": [1, 2]
+     "enable": false,
+     "start_time": "00:00",
+     "stop_time": "03:00",
+     "repeat": [1, 2]
 }]
 
 MeariUser.getInstance (). SetSleepModeTimes (timeList, new ISetDeviceParamsCallback () {
-     @Override
-     public void onSuccess () {
-     }
+     @Override
+     public void onSuccess () {
+     }
 
-     @Override
-     public void onFailed (int errorCode, String errorMsg) {
-     }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
 
@@ -1999,24 +1999,24 @@ MeariUser.getInstance (). SetSleepModeTimes (timeList, new ISetDeviceParamsCallb
 Motion detection setting of device
 
 [Function call]
-/ **
-  * Motion detection setting of device
-  *
-  * @param motionDetEnable motion detection enable
-  * @param motionDetSensitivity motion detection sensitivity
-  * @param callback Function callback
-  * /
+/**
+  * Motion detection setting of device
+  *
+  * @param motionDetEnable motion detection enable
+  * @param motionDetSensitivity motion detection sensitivity
+  * @param callback Function callback
+  * /
 public void setMotionDetection (int motionDetEnable, int motionDetSensitivity, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetMotionDetection (motionDetEnable, motionDetSensitivity, new ISetDeviceParamsCallback () {
-     @Override
-     public void onSuccess () {
-     }
+     @Override
+     public void onSuccess () {
+     }
 
-     @Override
-     public void onFailed (int errorCode, String errorMsg) {
-     }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
 
@@ -2026,24 +2026,24 @@ MeariUser.getInstance (). SetMotionDetection (motionDetEnable, motionDetSensitiv
 PIR detection setting of device
 
 [Function call]
-/ **
-  * PIR detection setting of device
-  *
-  * @param pirDetEnable PIR detection enable
-  * @param pirDetSensitivity PIR detection sensitivity
-  * @param callback Function callback
-  * /
+/**
+  * PIR detection setting of device
+  *
+  * @param pirDetEnable PIR detection enable
+  * @param pirDetSensitivity PIR detection sensitivity
+  * @param callback Function callback
+  * /
 public void setPirDetection (int pirDetEnable, int pirDetSensitivity, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetPirDetection (pirDetEnable, pirDetSensitivity, new ISetDeviceParamsCallback () {
-     @Override
-     public void onSuccess () {
-     }
+     @Override
+     public void onSuccess () {
+     }
 
-     @Override
-     public void onFailed (int errorCode, String errorMsg) {
-     }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
 
@@ -2053,24 +2053,24 @@ MeariUser.getInstance (). SetPirDetection (pirDetEnable, pirDetSensitivity, new 
 Noise detection setting of device
 
 [Function call]
-/ **
-  * Noise detection setting of device
-  *
-  * @param soundDetEnable sound detection enable
-  * @param soundDetSensitivity sound detection sensitivity
-  * @param callback Function callback
-  * /
+/**
+  * Noise detection setting of device
+  *
+  * @param soundDetEnable sound detection enable
+  * @param soundDetSensitivity sound detection sensitivity
+  * @param callback Function callback
+  * /
 public void setSoundDetection (int soundDetEnable, int soundDetSensitivity, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetSoundDetection (soundDetEnable, soundDetSensitivity, new ISetDeviceParamsCallback () {
-     @Override
-     public void onSuccess () {
-     }
+     @Override
+     public void onSuccess () {
+     }
 
-     @Override
-     public void onFailed (int errorCode, String errorMsg) {
-     }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
 
@@ -2080,23 +2080,23 @@ MeariUser.getInstance (). SetSoundDetection (soundDetEnable, soundDetSensitivity
 Cry alarm setting of device
 
 [Function call]
-/ **
-  * Cry alarm setting of device
-  *
-  * @param cryDetEnable cry detection
-  * @param callback Function callback
-  * /
+/**
+  * Cry alarm setting of device
+  *
+  * @param cryDetEnable cry detection
+  * @param callback Function callback
+  * /
 public void setCryDetection (int cryDetEnable, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetCryDetection (cryDetEnable, new ISetDeviceParamsCallback () {
-     @Override
-     public void onSuccess () {
-     }
+     @Override
+     public void onSuccess () {
+     }
 
-     @Override
-     public void onFailed (int errorCode, String errorMsg) {
-     }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
 
@@ -2106,23 +2106,23 @@ MeariUser.getInstance (). SetCryDetection (cryDetEnable, new ISetDeviceParamsCal
 Human tracking setting of Device
 
 [Function call]
-/ **
- * Human tracking setting of Device
- *
- * @param humanTrackEnable human track enable
- * @param callback Function callback
- * /
+/**
+ * Human tracking setting of Device
+ *
+ * @param humanTrackEnable human track enable
+ * @param callback Function callback
+ * /
 public void setHumanTrack (int humanTrackEnable, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetHumanTrack (humanTrackEnable, new ISetDeviceParamsCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 ```
 
@@ -2132,23 +2132,23 @@ MeariUser.getInstance (). SetHumanTrack (humanTrackEnable, new ISetDeviceParamsC
 Human detection alarm setting of device
 
 [Function call]
-/ **
- * Human detection alarm setting of device
- *
- * @param humanDetEnable human detection enable
- * @param callback Function callback
- * /
+/**
+ * Human detection alarm setting of device
+ *
+ * @param humanDetEnable human detection enable
+ * @param callback Function callback
+ * /
 public void setHumanDetection (int humanDetEnable, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetHumanDetection (humanDetEnable, new ISetDeviceParamsCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 ```
 
@@ -2158,23 +2158,23 @@ MeariUser.getInstance (). SetHumanDetection (humanDetEnable, new ISetDeviceParam
 Humanoid frame setting of device
 
 [Function call]
-/ **
- * Humanoid frame setting of device
- *
- * @param humanFrameEnable human frame enable
- * @param callback Function callback
- * /
+/**
+ * Humanoid frame setting of device
+ *
+ * @param humanFrameEnable human frame enable
+ * @param callback Function callback
+ * /
 public void setHumanFrame (int humanFrameEnable, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetHumanFrame (humanFrameEnable, new ISetDeviceParamsCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 ```
 
@@ -2184,24 +2184,24 @@ MeariUser.getInstance (). SetHumanFrame (humanFrameEnable, new ISetDeviceParamsC
 Onvif setting of device
 
 [Function call]
-/ **
-  * Onvif setting of device
-  *
-  * @param enable onvif enable
-  * @param password onvif password
-  * @param callback Function callback
-  * /
+/**
+  * Onvif setting of device
+  *
+  * @param enable onvif enable
+  * @param password onvif password
+  * @param callback Function callback
+  * /
 public void setOnvif (int enable, String password, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetOnvif (enable, password, new ISetDeviceParamsCallback () {
-     @Override
-     public void onSuccess () {
-     }
+     @Override
+     public void onSuccess () {
+     }
 
-     @Override
-     public void onFailed (int errorCode, String errorMsg) {
-     }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
 
@@ -2211,23 +2211,23 @@ MeariUser.getInstance (). SetOnvif (enable, password, new ISetDeviceParamsCallba
 Video encoding format setting of device
 
 [Function call]
-/ **
-  * Video encoding format setting of device
-  *
-  * @param enable H265 enable
-  * @param callback Function callback
-  * /
+/**
+  * Video encoding format setting of device
+  *
+  * @param enable H265 enable
+  * @param callback Function callback
+  * /
 public void setVideoEncoding (int enable, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetVideoEncoding (enable, new ISetDeviceParamsCallback () {
-     @Override
-     public void onSuccess () {
-     }
+     @Override
+     public void onSuccess () {
+     }
 
-     @Override
-     public void onFailed (int errorCode, String errorMsg) {
-     }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
 
@@ -2346,23 +2346,23 @@ MeariUser.getInstance().closeDeviceAlarmPush(cameraInfo.getDeviceID(), status, n
 Intercom volume setting of Device
 
 [Function call]
-/ **
- * Intercom volume setting of Device
- *
- * @param volume intercom volume
- * @param callback Function callback
- * /
+/**
+ * Intercom volume setting of Device
+ *
+ * @param volume intercom volume
+ * @param callback Function callback
+ * /
 public void setSpeakVolume (int volume, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetSpeakVolume (volume, new ISetDeviceParamsCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 ```
 
@@ -2372,22 +2372,22 @@ MeariUser.getInstance (). SetSpeakVolume (volume, new ISetDeviceParamsCallback (
 Unlocking the battery lock
 
 [Function call]
-/ **
- * Unlocking the battery lock
- *
- * @param callback Function callback
- * /
+/**
+ * Unlocking the battery lock
+ *
+ * @param callback Function callback
+ * /
 public void unlockBattery (ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). UnlockBattery (new ISetDeviceParamsCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 ```
 
@@ -2397,22 +2397,22 @@ MeariUser.getInstance (). UnlockBattery (new ISetDeviceParamsCallback () {
 Binding Wireless Chime
 
 [Function call]
-/ **
-  * Binding Wireless Chime
-  *
-  * @param callback Function callback
-  * /
+/**
+  * Binding Wireless Chime
+  *
+  * @param callback Function callback
+  * /
 public void bindWirelessChime (ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). BindWirelessChime (new ISetDeviceParamsCallback () {
-     @Override
-     public void onSuccess () {
-     }
+     @Override
+     public void onSuccess () {
+     }
 
-     @Override
-     public void onFailed (int errorCode, String errorMsg) {
-     }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
 
@@ -2422,22 +2422,22 @@ MeariUser.getInstance (). BindWirelessChime (new ISetDeviceParamsCallback () {
 Unbinding Wireless Chime
 
 [Function call]
-/ **
-  * Unbinding Wireless Chime
-  *
-  * @param callback Function callback
-  * /
+/**
+  * Unbinding Wireless Chime
+  *
+  * @param callback Function callback
+  * /
 public void unbindWirelessChime (ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). UnbindWirelessChime (new ISetDeviceParamsCallback () {
-     @Override
-     public void onSuccess () {
-     }
+     @Override
+     public void onSuccess () {
+     }
 
-     @Override
-     public void onFailed (int errorCode, String errorMsg) {
-     }
+     @Override
+     public void onFailed (int errorCode, String errorMsg) {
+     }
 });
 ```
 
@@ -2447,23 +2447,23 @@ MeariUser.getInstance (). UnbindWirelessChime (new ISetDeviceParamsCallback () {
 Whether the wireless chime works
 
 [Function call]
-/ **
- * Whether the wireless chime works
- *
- * @param enable wireless chime enable
- * @param callback Function callback
- * /
+/**
+ * Whether the wireless chime works
+ *
+ * @param enable wireless chime enable
+ * @param callback Function callback
+ * /
 public void setWirelessChimeEnable (int enable, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetWirelessChimeEnable (enable, new ISetDeviceParamsCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 ```
 
@@ -2474,23 +2474,23 @@ MeariUser.getInstance (). SetWirelessChimeEnable (enable, new ISetDeviceParamsCa
 Volume setting of wireless chime
 
 [Function call]
-/ **
- * Volume setting of wireless chime
- *
- * @param volume volume of wireless chime
- * @param callback Function callback
- * /
+/**
+ * Volume setting of wireless chime
+ *
+ * @param volume volume of wireless chime
+ * @param callback Function callback
+ * /
 public void setWirelessChimeVolume (int volume, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetWirelessChimeVolume (volume, new ISetDeviceParamsCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 ```
 
@@ -2500,23 +2500,23 @@ MeariUser.getInstance (). SetWirelessChimeVolume (volume, new ISetDeviceParamsCa
 Ringtone setting of wireless chime
 
 [Function call]
-/ **
- * Ringtone setting of wireless chime
- *
- * @param song wireless chime ringtone
- * @param callback Function callback
- * /
+/**
+ * Ringtone setting of wireless chime
+ *
+ * @param song wireless chime ringtone
+ * @param callback Function callback
+ * /
 public void setWirelessChimeSong (String song, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetWirelessChimeSong (song, new ISetDeviceParamsCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 ```
 
@@ -2526,23 +2526,23 @@ MeariUser.getInstance (). SetWirelessChimeSong (song, new ISetDeviceParamsCallba
 Whether the mechanical chime works
 
 [Function call]
-/ **
- * Whether the mechanical chime works
- *
- * @param status 0-off; 1-on
- * @param callback Function callback
- * /
+/**
+ * Whether the mechanical chime works
+ *
+ * @param status 0-off; 1-on
+ * @param callback Function callback
+ * /
 public void setMechanicalChimeEnable (int status, ISetDeviceParamsCallback callback);
 
 [Code example]
 MeariUser.getInstance (). SetMechanicalChimeEnable (enable, new ISetDeviceParamsCallback () {
-    @Override
-    public void onSuccess () {
-    }
+    @Override
+    public void onSuccess () {
+    }
 
-    @Override
-    public void onFailed (int errorCode, String errorMsg) {
-    }
+    @Override
+    public void onFailed (int errorCode, String errorMsg) {
+    }
 });
 ```
 ## 9.7 Flight camera parameter setting
@@ -2905,30 +2905,7 @@ MeariUser.getInstance().searchContactForJoinFamily(account, new IBaseModelCallba
 });
 ```
 
-### 10.2.3 Get family sharing Messages
-```
-【description】
-Get family sharing Messages
-
-【Function call】
-/**
- * Get family sharing Messages
- */
-public void getFamilyShareMessages(IBaseModelCallback<List<FamilyShareMsg>> callback)
-
-【Code example】
-MeariUser.getInstance().getFamilyShareMessages(new IBaseModelCallback<List<FamilyShareMsg>>() {
-    @Override
-    public void onSuccess(List<FamilyShareMsg> familyShareMsgs) {
-    }
-
-    @Override
-    public void onFailed(int code, String errorMsg) {
-    }
-});
-```
-
-### 10.2.4 Add member to the family
+### 10.2.3 Add member to the family
 ```
 【description】
 Add member to the family
@@ -2956,7 +2933,7 @@ MeariUser.getInstance().addMemberToFamily(familyId, memberId, permissions, new I
 });
 ```
 
-### 10.2.5 Join a family
+### 10.2.4 Join a family
 ```
 【description】
 Join a family
@@ -2982,7 +2959,53 @@ MeariUser.getInstance().joinFamily(familyIdList, new IResultCallback() {
 });
 ```
 
-### 10.2.6 Get a list of family members
+### 10.2.5 Get family sharing Messages
+```
+【description】
+Get family sharing Messages
+
+【Function call】
+/**
+ * Get family sharing Messages
+ */
+public void getFamilyShareMessages(IBaseModelCallback<List<FamilyShareMsg>> callback)
+
+【Code example】
+MeariUser.getInstance().getFamilyShareMessages(new IBaseModelCallback<List<FamilyShareMsg>>() {
+    @Override
+    public void onSuccess(List<FamilyShareMsg> familyShareMsgs) {
+    }
+
+    @Override
+    public void onFailed(int code, String errorMsg) {
+    }
+});
+```
+
+### 10.2.6 Handling family shared messages 
+```
+【description】
+Handling family shared messages
+
+【Function call】
+/**
+ * @param dealFlag 0-reject，1-agree
+ */
+public void dealFamilyShareMessage(List<String> msgIDList, int dealFlag, IResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().dealFamilyShareMessage(msgIDList, dealFlag, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 10.2.7 Get a list of family members
 ```
 【description】
 Get a list of family members 
@@ -3007,7 +3030,7 @@ MeariUser.getInstance().getFamilyMemberList(familyId, new IFamilyMemberListCallb
 });
 ```
 
-### 10.2.7 Modify device permissions of the family member
+### 10.2.8 Modify device permissions of the family member
 ```
 【description】
 Modify device permissions of the family member
@@ -3032,7 +3055,7 @@ MeariUser.getInstance().modifyMemberDevicePermission(familyId, memberID, permiss
 });
 ```
 
-### 10.2.8 Remove a member from the family 
+### 10.2.9 Remove a member from the family 
 ```
 【description】
 Remove a member from the family 
@@ -3057,7 +3080,7 @@ MeariUser.getInstance().removeMemberFromFamily(familyId, memberID, new IStringRe
 });
 ```
 
-### 10.2.9 Revoke member invitation 
+### 10.2.10 Revoke member invitation 
 ```
 【description】
 Revoke member invitation 
@@ -3080,7 +3103,7 @@ MeariUser.getInstance().revokeMemberInvitation(familyId, msgId, new IResultCallb
 });
 ```
 
-### 10.2.10 Leave family
+### 10.2.11 Leave family
 ```
 【description】
 Leave family
@@ -3266,13 +3289,87 @@ String location; family address
 List<MeariRoom> roomList; room list in family
 List<CameraInfo> familyDeviceList; all camera in family
 ```
-### 10.4.1 MeariRoom
+### 10.4.2 MeariRoom
 ```
 private String roomId; room ID
 // The default room name of the default family is empty, you can determine the name yourself according to "roomTarget"
 private String roomName; room name
 private int roomTarget; room room target
 private List<CameraInfo> roomDeviceList; device list in room
+```
+
+### 10.4.3 DevicePermission
+```
+// familyMemberToAdd.getFamilyDevices().get(i).getDeviceID()
+String deviceID;
+// 0-view only; 1-allow view and control 
+int permission;
+```
+
+### 10.4.4 FamilyShareMsg
+```
+long date; time
+String msgID; Message ID
+String receiverName; message handler name
+String inviterName; message originator name
+long inviter; message originator ID
+String familyName; family name
+int msgType; Message Type: 1-Add Member; 2-Join Family
+int dealFlag; Message processing flag: 0-reject; 1-agree; 2-processing
+
+if (MeariUser.getInstance().getUserInfo().getUserID() == msg.inviter) {
+    // message originator
+    if(msgType == 1) {
+        if(dealFlag == 2) {
+            You are inviting receiverName to join your family： familyName
+        } else if(dealFlag == 1){
+            receiverName has joined your family： familyName
+        } else {
+            receiverName refused to join your family： familyName
+        }
+    } else {
+        if(dealFlag == 2) {
+            You are applying to join receiverName's family： familyName
+        } else if(dealFlag == 1){
+            receiverName agrees you to join the family： familyName
+        } else {
+            receiverName denied you to join the family： familyName
+        }
+    }
+} else {
+    // message handler
+    if(msgType == 1) {
+        if(dealFlag == 2) {
+            inviterName invited you to join his family： familyName
+            // click processing ：MeariUser.getInstance().dealFamilyShareMessage()
+        } else if(dealFlag == 1){
+            You have joined inviterName's family： familyName
+        } else {
+            You declined to join inviterName's family： familyName
+        }
+        
+    } else {
+        if(dealFlag == 2) {
+            inviterName apply to join your family： familyName
+            //click processing ：MeariUser.getInstance().dealFamilyShareMessage()
+        } else if(dealFlag == 1){
+            You agree to inviterName to join your family： familyName
+        } else {
+            You declined inviterName to join your family：familyName
+        }
+    }
+}
+```
+
+### 10.4.5 FamilyMember
+```
+String userId; Member ID
+String userAccount; Member Account
+String nickName; Member nickName
+String imageUrl; Member Avatar 
+int isMaster; Is it the master 
+int joinStatus; Member joining status: 1-joined; 2-joining 
+String msgId; Message ID
 ```
 
 
@@ -3302,79 +3399,145 @@ MeariUser.getInstance (). DisConnectMqttService ();
 When the SDK is initialized, the implementation of the MqttMessageCallback interface should be passed into it, like MyMessageHandler in the demo.
 Handle MQTT in the implementation of the MqttMessageCallback interface (see Demo MyMessageHandler)
 
-/ **
- * Other news
- * @param messageId message ID
- * @param message message content
- * /
+/**
+ * Other news
+ * @param messageId message ID
+ * @param message message content
+ * /
 void otherMessage (int messageId, String message);
 
-/ **
- * Offsite login
- * /
+/**
+ * Offsite login
+ * /
 void loginOnOtherDevices ();
 
-/ **
- * The owner cancels or deletes the shared device
- * @param deviceId device ID
- * @param deviceName device name
- * /
+/**
+ * The owner cancels or deletes the shared device
+ * @param deviceId device ID
+ * @param deviceName device name
+ * /
 void onCancelSharingDevice (String deviceId, String deviceName);
 
-/ **
- * Device unbound (e-commerce unbundling)
- * /
+/**
+ * Device unbound (e-commerce unbundling)
+ * /
 void deviceUnbundled ();
 
-/ **
- * Doorbell call
- * @param bellJson doorbell information
- * @param isUpdateScreenshot is the message to update the screenshot
- * /
+/**
+ * Doorbell call
+ * @param bellJson doorbell information
+ * @param isUpdateScreenshot is the message to update the screenshot
+ * /
 void onDoorbellCall (String bellJson, boolean isUpdateScreenshot);
 
-/ **
- * Device added successfully
- * /
+/**
+ * Device added successfully
+ * /
 void addDeviceSuccess (String message);
 
-/ **
- * Failed to add device
- * /
+/**
+ * Failed to add device
+ * /
 void addDeviceFailed (String message);
 
-/ **
- * Failed to add the device, the device failed to be unbound and the add failed
- * /
+/**
+ * Failed to add the device, the device failed to be unbound and the add failed
+ * /
 void addDeviceFailedUnbundled (String message);
 
-/ **
- * Received device shared by someone
- * /
+/**
+ * Received device shared by someone
+ * /
 void ReceivedDevice (String message);
 
-/ **
- * Request to receive a device shared by someone
- * @param userName user name
- * @param deviceName device name
- * @param msgID message ID
- * /
+/**
+ * Request to receive a device shared by someone
+ * @param userName user name
+ * @param deviceName device name
+ * @param msgID message ID
+ * /
 void requestReceivingDevice (String userName, String deviceName, String msgID);
 
-/ **
- * Request to share device to someone
- * @param userName user name
- * @param deviceName device name
- * @param msgID message ID
- * /
+/**
+ * Request to share device to someone
+ * @param userName user name
+ * @param deviceName device name
+ * @param msgID message ID
+ * /
 void requestShareDevice (String userName, String deviceName, String msgID);
+
+/**
+ * Family related mqtt message
+ * @param familyMqttMsg Family mqtt message
+ */
+void onFamilyMessage(FamilyMqttMsg familyMqttMsg);
+// handle family messages
+// The default family name is empty, update the default family name
+if (familyMqttMsg.getItemList().size() > 0) {
+    for (MqttMsg.MsgItem msgItem : familyMqttMsg.getItemList()) {
+        if (TextUtils.isEmpty(msgItem.name)) {
+            String name;
+            if (familyMqttMsg.getMsgId() == MqttMsgType.INVITE_JOIN_HOME) {
+                name = familyMqttMsg.getUserName();
+            } else {
+                name = MeariUser.getInstance().getUserInfo().getNickName();
+            }
+            msgItem.name = String.format(Locale.CHINA, "%s's home", name);
+        }
+    }
+}
+if (familyMqttMsg.getMsgId() == MqttMsgType.FAMILY_INFO_CHANGED) {
+    // Family information changes, refresh the family list 
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.FAMILY_MEMBER_INFO_CHANGED) {
+    // Member information changes, refresh member information 
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.INVITE_JOIN_HOME) {
+    // Someone invites you to join his family, pops up and handles messages 
+    // MeariUser.getInstance().dealFamilyShareMessage()
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.INVITE_JOIN_HOME_SUCCESS) {
+    // You join the family successfully, refresh the family list
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.APPLY_ENTER_HOME) {
+    // Others apply to join your family, pop up the window and process the message 
+    // MeariUser.getInstance().dealFamilyShareMessage()
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.APPLY_ENTER_HOME_SUCCESS) {
+    // Apply to join the family successfully, refresh the family list
+} else if (familyMqttMsg.getMsgId() == MqttMsgType.REMOVE_FROM_FAMILY) {
+    // You are removed from the family, refresh the family list
+}
 ```
 
-## 11.2 Integrated FCM Push
+## 11.2 MQTT Related Classes 
+
+### 11.2.1 MqttMsg
+> MQTT message base class 
+```
+int msgId; message ID
+String userCountryCode; user Country Code
+int userIotType; user Iot Type
+long t; time
+```
+
+### 11.2.1 FamilyMqttMsg extends MqttMsg
+> family MQTT message
+```
+String familyId; family ID
+String familyName; family Name
+String userName; user Name
+final List<MsgItem> itemList; list in message 
+```
+
+### 11.2.2 MsgItem
+> list item in message
+```
+String id;  Item ID
+String name; Item name
+boolean isCheck; Is it checked 
+```
+
+## 11.3 Integrated FCM Push
 First, You can follow these guides: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) and [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), then go to firebase setting page, geneating the admin sdk file，provide the file to meari,
 call MeariUser.getInstance().uploadToken(1, token, callback) to upload your fcm token to meari server.
 
-## 11.3 Integration with other pushes
+## 11.4 Integration with other pushes
 ```
 Not currently supported
 ```
