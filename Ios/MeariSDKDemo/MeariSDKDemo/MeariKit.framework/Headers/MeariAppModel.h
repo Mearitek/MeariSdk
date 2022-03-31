@@ -15,7 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *content;
 @property (nonatomic, assign) NSInteger startTime;
 @property (nonatomic, assign) NSInteger endTime;
-
+@property (nonatomic, assign) NSInteger jumpState;
+@property (nonatomic, copy) NSString *jumpUrl;
+@property (nonatomic, copy) NSString *appProtocolVer;
 @end
 
 NS_ASSUME_NONNULL_END

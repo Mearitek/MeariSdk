@@ -29,6 +29,8 @@
 
 - (UIImage*)snapshot;
 
+- (void)deallocGLEnvironment;
+
 @end
 
 #endif /* MRGLView_h */

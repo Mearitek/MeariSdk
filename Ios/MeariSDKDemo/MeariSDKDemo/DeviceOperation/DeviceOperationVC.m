@@ -91,7 +91,7 @@
         NSLog(@"start preview failure --- %@",error);
     } close:^(MeariDeviceSleepMode sleepModeType) {
         NSLog(@"device open sleep mode  --- %ld", sleepModeType);
-    }];
+    }abnormal:nil];
     
 }
 - (IBAction)stopPreView:(id)sender {

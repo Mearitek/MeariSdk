@@ -55,29 +55,44 @@ typedef NS_ENUM(NSInteger, MeariShareMessageType) {
 
 
 @interface MeariMessageInfoSystem : MeariMessageInfo
-@property (nonatomic, assign)MeariSystemMessageType msgType;  // message type (消息类型)
-@property (nonatomic, assign)NSInteger msgID;          // message id (消息ID)
-@property (nonatomic, assign)NSInteger deviceID;       // device id (设备ID)
-@property (nonatomic, copy)NSString *deviceName;       // device name (设备名称)
-@property (nonatomic, copy)NSString *deviceUUID;       // device uuid (设备UUID)
-@property (nonatomic, assign)NSInteger friendID;       // friend id (好友ID)
-@property (nonatomic, copy)NSString *friendAccount;    // friend account (好友账号)
-@property (nonatomic, copy)NSString *friendNickname;   // friend nickname (好友昵称)
-@property (nonatomic, copy)NSString *friendAvatarUrl;  // friend avatar (好友头像)
+@property (nonatomic, copy) NSString *date;
+@property (nonatomic, assign) MeariSystemMessageType msgType;  // message type (消息类型)
+@property (nonatomic, assign) NSInteger msgID;          // message id (消息ID)
+@property (nonatomic, assign) NSInteger deviceID;       // device id (设备ID)
+@property (nonatomic, copy) NSString *deviceName;       // device name (设备名称)
+@property (nonatomic, copy) NSString *deviceUUID;       // device uuid (设备UUID)
+@property (nonatomic, assign) NSInteger friendID;       // friend id (好友ID)
+@property (nonatomic, copy) NSString *friendAccount;    // friend account (好友账号)
+@property (nonatomic, copy) NSString *friendNickname;   // friend nickname (好友昵称)
+@property (nonatomic, copy) NSString *friendAvatarUrl;  // friend avatar (好友头像)
 @end
 
 @interface MeariMessageInfoAlarm : MeariMessageInfo
 @property (nonatomic, assign) NSInteger deviceID;       // device id (设备ID)
+@property (nonatomic, assign) NSInteger channel;       // 通道
 @property (nonatomic, copy) NSString *deviceName;       // device name (设备名称)
 @property (nonatomic, copy) NSString *deviceSn;         // device sn (设备sn号)
 @property (nonatomic, copy) NSString *deviceUUID;       // device uuid (设备UUID)
 @property (nonatomic, copy) NSString *deviceIconUrl;    // device icon (设备缩略图)
 @property (nonatomic, assign) BOOL hasMsg;              // whether has alarm message or not (是否有消息)
 @end
+@interface MeariMessageLatestAlarm : MeariMessageInfo
+@property (nonatomic, assign) NSInteger deviceID;       // device id (设备ID)
+@property (nonatomic, assign) NSInteger channel;       // channel (通道)
+@property (nonatomic, copy) NSString *deviceName;       // device name (设备名称)
+@property (nonatomic, copy) NSString *deviceSn;         // device sn (设备sn号)
+@property (nonatomic, copy) NSString *deviceUUID;       // device uuid (设备UUID)
+@property (nonatomic, copy) NSString *deviceIconUrl;    // device icon (设备缩略图)
+@property (nonatomic, assign) MeariAlarmMessageType msgType;  // message type (消息类型)
+@property (nonatomic, copy) NSString *alarmTime;       // device alarm time (消息时间)
+@property (nonatomic, assign) BOOL hasMsg;              // whether has alarm message or not (是否有消息)
+@property (nonatomic, assign) BOOL isReponse;           //是否接听
+@end
 
 @interface MeariMessageInfoAlarmDevice : MeariMessageInfo
-@property (nonatomic, assign)MeariAlarmMessageType msgType;  // message type (消息类型)
+@property (nonatomic, assign) MeariAlarmMessageType msgType;  // message type (消息类型)
 @property (nonatomic, assign) NSInteger deviceID;       // device id (设备ID)
+@property (nonatomic, assign) NSInteger channel;       // 通道
 @property (nonatomic, copy) NSString *alarmTime;        // device alarm time (设备报警时间)
 @property (nonatomic, copy) NSString *alarmThumbImage;  // device alarm thumb image (缩略图)
 @property (nonatomic, copy) NSArray <NSString*> *alarmImages; // device alarm images (设备报警图片)
@@ -89,7 +104,8 @@ typedef NS_ENUM(NSInteger, MeariShareMessageType) {
 @property (nonatomic, assign) NSInteger cloudType;     //cloud storage Type(AliOSS or AWSS3)
 @property (nonatomic, assign) NSInteger iotType;        // iot Type(Ali iOT or AWS iOT)
 @property (nonatomic, copy) NSString *day;      //alarm dat(报警日期，如:"20200804")
-
+@property (nonatomic, copy) NSString *callbackUser;
+@property (nonatomic, copy) NSString *aiInfo;             //AI
 /**
  userID/ownerID：
  Description:
@@ -112,12 +128,16 @@ typedef NS_ENUM(NSInteger, MeariShareMessageType) {
 @property (nonatomic, assign)NSInteger msgID;           // Message ID (消息ID)
 @property (nonatomic, assign)NSInteger userID;          // User ID (用户ID)
 @property (nonatomic, assign)NSInteger deviceID;       // Device ID (设备ID)
+@property (nonatomic, assign) NSInteger channel;       // 通道
+@property (nonatomic, copy) NSString *callbackUser;
+@property (nonatomic, copy) NSString *aiInfo;             //AI
 @end
 
 @interface MeariMessageInfoShare : MeariBaseModel
 @property (nonatomic,   copy) NSString *shareAccount; // share account (账号)
 @property (nonatomic,   copy) NSString *shareName;  // share name (用户昵称)
 @property (nonatomic,   copy) NSString *deviceName;  // device name (设备昵称)
+@property (nonatomic,   copy) NSString *deviceTypeName; // device image 设备图片
 @property (nonatomic,   copy) NSString *date; // request time (请求的时间)
 @property (nonatomic,   copy) NSString *msgID; // message ID (消息ID)
 @property (nonatomic, assign) NSInteger deviceID;  // Device ID (设备ID)

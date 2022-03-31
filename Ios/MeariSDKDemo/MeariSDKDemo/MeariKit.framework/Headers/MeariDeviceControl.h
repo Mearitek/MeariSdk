@@ -251,6 +251,16 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  */
 - (void)stopConnectSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+/**
+ Set Connect passwprd (是否开启设备的连接密码)
+ 设置之后需要每次连接设备之前需要设置密码 camera.info.connectPwd = pwd
+ 
+ @param enable  是否开启预览密码。如果enable为NO password字段无效 设备将会清除本地密码
+ @param password 连接密码
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setConnectPwdEnable:(BOOL)enable password:(NSString *)password success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 #pragma mark -- 获取参数：（码率、模式、静音）
 
 /**
@@ -280,8 +290,21 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  @param close is in sleep mode, the lens is off, return value: sleep mode(close 处于休眠模式，镜头关闭，返回值：休眠模式)
+ @param abnormal  Preview abnormal situations such as playback freeze (预览异常情况 如播放卡顿)
  */
-- (void)startPreviewWithPlayView:(MeariPlayView *)playView videoStream: (MeariDeviceVideoStream)videoStream success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepMode sleepModeType))close;
+- (void)startPreviewWithPlayView:(MeariPlayView *)playView videoStream:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepMode sleepModeType))close abnormal:(void (^)(MeariDevicePreviewAbnormalType type))abnormal;
+
+/**
+ NVR - Start previewing the device(开始预览子设备)
+ 
+ @param playView play view control(播放视图控件)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ @param channel Channel of sub-device (子设备的通道)
+ @param close is in sleep mode, the lens is off, return value: sleep mode(close 处于休眠模式，镜头关闭，返回值：休眠模式)
+ @param abnormal  Preview abnormal situations such as playback freeze (预览异常情况 如播放卡顿)
+ */
+- (void)startNVRPreviewWithPlayView:(MeariPlayView *)playView videoStream: (MeariDeviceVideoStream)videoStream channel:(NSInteger)channel success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepMode sleepModeType))close abnormal:(void (^)(MeariDevicePreviewAbnormalType type))abnormal;
 
 /**
  stop preview
@@ -341,6 +364,16 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 
 
 
+/**
+ Start playback of video: only one person can view playback video at the same time (开始回放录像：同一个设备同一时间只能一个人查看回放录像)
+ 
+ @param playView play view(播放视图)
+ @param startTime Start time: format is 20171228102035 (开始时间:格式为20171228102035)
+ @param channel Channel of sub-device （子设备的通道）
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)startNVRPlayBlackWithPlayView:(MeariPlayView *)playView startTime:(NSString *)startTime channel:(NSInteger)channel success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 /**
  Stop playback(停止回放)
  
@@ -409,6 +442,28 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param failure failure callback (失败回调)
  */
 - (void)getCloudVideoDaysWithMonthComponents:(NSDateComponents *)monthComponents success:(void(^)(NSArray <MeariDeviceTime *> *days))success failure:(MeariDeviceFailure)failure;
+
+/**
+ Delete cloud storage recordings of a certain day
+ 删除某天的全部云存储录像
+ 
+ @param dayComponents   time(NSDateComponents *),Used to get specific time 具体的天数
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)deleteCloudVideoDaysWithDayComponents:(NSDateComponents *)dayComponents success:(void(^)(void))success failure:(MeariDeviceFailure)failure;
+
+
+/**
+ Delete cloud storage recordings of a certain day
+ 删除某天的部分云存储录像
+ 
+ @param startTime  （The specific time must be within the same day. The start time is less than the end time）具体的时间 必须要在同一天之内 开始时间小于结束时间
+ @param endTime （The specific time must be within the same day. The start time is less than the end time）具体的时间 必须要在同一天之内 开始时间小于结束时间
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)deleteCloudVideoWithStartTime:(NSDateComponents *)startTime endTime:(NSDateComponents *)endTime success:(void(^)(void))success failure:(MeariDeviceFailure)failure;
 
 #pragma mark -- 静音
 /**
@@ -582,17 +637,90 @@ Start record sound(开始录音)
  */
 - (void)setLEDOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+#pragma mark - Flicker
+
+/**
+  set  Flicker(设置抗闪烁)
+ 
+ @param on 是否打开Flicker
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setFLickerLevel:(MeariDeviceFlickerLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+#pragma mark - AutoUpdate
+
+/**
+  set  AutoUpdate(设置自动更新)
+ 
+ @param on 是否打开自动更新
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setAutoUpdateOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+#pragma mark -- 夜灯设置
+/**
+ LED灯开关（RGB灯）
+
+ @param open 是否开启
+ @param success 成功回调
+ @param failure 失败回调
+ */
+-(void)setNightLightSwitch:(BOOL)open success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ 亮灯定时计划（RGB灯）
+
+ @param enable 是否开启
+ @param from     开始事件
+ @param to          结束时间
+ @param success 成功回调
+ @param failure 失败回调
+ */
+-(void)setNightLightSchedule:(BOOL)enable from:(NSString *)from to:(NSString *)to success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ 亮灯模式控制（RGB灯）
+
+ @param mode  0：正常模式；1：跑马灯模式；2：呼吸模式
+ @param success 成功回调
+ @param failure 失败回调
+ */
+-(void)setNightLightMode:(NSInteger)mode success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ LED灯颜色（RGB灯）
+
+ @param red  红
+ @param green  绿
+ @param blue  蓝
+ @param success 成功回调
+ @param failure 失败回调
+ */
+-(void)setNightLightColorWithRed:(NSInteger)red green:(NSInteger)green blue:(NSInteger)blue success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
 #pragma mark -- 日夜模式
 
 /**
  // Set day and night mode, the camera will have color or grayscale
- // 设置日夜模式, 摄像头会有彩色或灰度两种
+ // 设置夜视模式, 摄像头会有彩色或灰度两种
 
- @param type  MeariDeviceDayNightType(日夜模式)
+ @param type  MeariDeviceNightVisionMode(夜视模式)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setDayNightModeType:(MeariDeviceDayNightType)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)setDayNightModeType:(MeariDeviceNightVisionMode)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ // Set full color mode,
+ // 设置全彩模式
+
+ @param type  MeariDeviceFullColorMode(夜视模式)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setFullColorModeType:(MeariDeviceFullColorMode)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
 #pragma mark -- 噪声检测
 
 /**
@@ -708,7 +836,7 @@ Start record sound(开始录音)
 */
 - (void)setAlarmInterval:(MeariDeviceCapabilityAFQ)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure ;
 /**
- 设置报警计划
+ 设置人形画框
 
  // Whether human borders  are on
  // 人形边框是否开启
@@ -787,16 +915,6 @@ Start record sound(开始录音)
  @param failure failure callback (失败回调)
  */
 - (void)setAlarmWorkMode:(NSInteger)mode success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
-
-/**
- // alarm whole
- // 报警总开关
- 
- @param enable 是否开启
- @param success Successful callback (成功回调)
- @param failure failure callback (失败回调)
- */
-- (void)setAlarmWholeEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 #pragma mark -- 存储
 /**
  Get storage information(获取存储信息)
@@ -823,6 +941,13 @@ Start record sound(开始录音)
  */
 - (void)startSDCardFormatSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+/**
+ Format memory card(格式化硬盘)
+ @param channel 通道
+ @param success Successful callback (成功回调)
+ @param failure 失败回道
+ */
+- (void)startHardDiskFormatWithChannel:(NSInteger)channel Success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 #pragma mark -- 固件版本
 
@@ -1086,6 +1211,24 @@ Start record sound(开始录音)
  @param failure failure callback (失败回调)
  */
 - (void)setSpeakVolume:(NSInteger)volume success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// 设置设备扬声器是否开启
+/// @param enable 是否开启
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setDeviceSpeakerEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// 设置手机麦克风是否开启
+/// @param enable 是否开启
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setMicrophoneEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// 是否录制声音
+/// @param enable 是否开启
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setRecordAudioEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
  Set the doorbell PIR (human body detection) alarm type (设置门铃单PIR(人体侦测)报警类型) warning : level can contain MeariDeviceLevelOff
@@ -1424,6 +1567,21 @@ Start record sound(开始录音)
 /// @param success 成功回调
 /// @param failure 失败回调
 - (void)setFloodCameraVoiceLightAlarmType:(MeariDeviceVoiceLightType)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+#pragma mark --- Jing4
+/// set jingle sleepmode enable
+/// 设置jingle 休眠模式总开关
+/// @param enable enable
+/// @param success  成功回调
+/// @param failure 失败回调
+- (void)setJingleSleepModeEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// set jingle sleepmode time
+/// @param times      (NSArray <MeariDeviceParamSleepTime *>*)
+/// @param success  成功回调
+/// @param failure 失败回调
+- (void)setJingleSleepModeTimes:(NSArray <MeariDeviceParamSleepTime *>*)times success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
 #pragma mark --- Ptz 高级功能
 /// 触发ptz 巡逻功能
 /// Trigger device patrol function
@@ -1663,6 +1821,16 @@ Determine whether it is a face
                 failure:(MeariDeviceFailure)failure;
 
 /**
+ Set time zone auto
+ 设置自动时区
+ 
+ @param enable  auto or manul time zone (是否开启自动设置时区)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+*/
+- (void)setTimeZoneAuto:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
  Set tamper alarm
  设置防拆报警
  
@@ -1684,6 +1852,39 @@ Determine whether it is a face
 */
 -(void)getInstallGuideVideoUrlWithTp:(NSString *)tp                 success:(MeariDeviceSuccess_Dictionary)success
                              failure:(MeariDeviceFailure)failure;
+
+#pragma mark -  Device Statistics
+/**
+ Get real-time information statistics of the device
+ 获取设备实时的信息统计信息 (预览时间（单位秒）、唤醒时间（单位秒）、报警次数、误报次数)
+ @param deviceSN 设备SN
+ @param dps  数据点
+ @param start  开始时间 1626682956
+ @param end  结束时间 1626769356
+ @param page  当前页数 1
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+*/
+- (void)getDeviceRealTimeStatisticsInfoSuccess:(void(^)(NSDictionary *dic))success failure:(MeariDeviceFailure)failure;
+
+/**
+ Obtain statistics based on dp points (Currently supported part)
+ 根据dp点获取统计数据 （目前支持部分）按天/月 设备wif强度以及电池信息
+ @param deviceSN 设备SN
+ @param dps  数据点
+ @param start  开始时间 1626682956
+ @param end  结束时间 1626769356
+ @param page  当前页数 1
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+*/
++ (void)getDeviceIntervalStatisticsWithDeviceSN:(NSString *)deviceSN dps:(NSArray *)dps startTime:(long long)start endTime:(long long)end page:(NSInteger)page success:(void(^)(BOOL complete,NSDictionary *dic))success failure:(MeariDeviceFailure)failure;
+/// 获取iot dp属性
+/// @param snList sn list
+/// @param dpList  dp list
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
++ (void)getIotInfoWithSnList:(NSArray<NSString *> *)snList dpList:(NSArray<NSString *> *)dpList success:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
 
 #pragma mark - 耳机
 /**

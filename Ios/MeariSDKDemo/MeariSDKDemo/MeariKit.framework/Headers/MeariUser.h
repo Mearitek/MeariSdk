@@ -14,6 +14,7 @@
 @class MeariDeviceFirmwareInfo;
 @class MeariMusicInfo;
 @class MeariMessageInfoAlarm;
+@class MeariMessageLatestAlarm;
 @class MeariMessageInfoSystem;
 @class MeariMessageInfoAlarmDevice;
 @class MeariMessageInfoVisitor;
@@ -22,11 +23,13 @@
 @class MeariShareInfo;
 @class MeariMessageInfoShare;
 @class MeariShareCameraInfo;
+@class MeariPanelHistoryInfo;
 @class MeariDeviceHostMessage;
 @class MeariNoticeModel;
 @class MeariCustomServerMsgContent;
 @class MeariCustomServerMsgAck;
 @class MeariCustomServerMsg;
+@class MeariUserAfterSaleModel;
 typedef void(^MeariSuccess)(void);
 typedef void(^MeariSuccess_Avatar)(NSString *avatarUrl);
 typedef void(^MeariSuccess_DeviceList)(MeariDeviceList *deviceList);
@@ -50,6 +53,7 @@ typedef void(^MeariSuccess_FriendList)(NSArray <MeariFriendInfo *>*friends);
 typedef void(^MeariSuccess_FriendListForDevice)(NSArray <MeariFriendInfo *>*friends);
 typedef void(^MeariSuccess_FriendListForNVR)(NSArray <MeariFriendInfo *>*friends);
 typedef void(^MeariSuccess_MsgAlarmList)(NSArray <MeariMessageInfoAlarm *>*msgs);
+typedef void(^MeariSuccess_MsgLatestAlarmList)(NSArray <MeariMessageLatestAlarm *>*msgs);
 typedef void(^MeariSuccess_MsgSystemList)(NSArray <MeariMessageInfoSystem *>*msgs);
 typedef void(^MeariSuccess_MsgAlarmDeviceList)(NSArray<MeariMessageInfoAlarmDevice *> *msgs, MeariDevice *device,BOOL msgFrequently);
 typedef void(^MeariSuccess_MsgVoiceDeviceList)(NSArray <MeariMessageInfoVisitor *>*msgs);
@@ -63,8 +67,9 @@ typedef void(^MeariSuccess_OnlineHelp)(NSString *str,NSString *type);
 typedef void(^MeariSuccess_BOOL)(BOOL isSuccess);
 typedef void(^MeariFailure)(NSError *error);
 typedef void(^MeariSuccess_RequestAuthority)(NSInteger msgEffectTime,double serverTime);
-typedef void(^MeariSuccess_RedDot)(BOOL hasShare, BOOL hasAlarm);
+typedef void(^MeariSuccess_RedDot)(BOOL hasDeviceShare, BOOL hasHomeShare, BOOL hasAlarm);
 typedef void(^MeariSuccess_FaceList)(NSArray <MeariUserFaceInfo *>*list);
+typedef void(^MeariSuccess_AfterSaleList)(NSArray <MeariUserAfterSaleModel *> *list);
 
 typedef NS_ENUM(NSInteger, MeariUserAccountType) {
     MeariUserAccountTypeCommon,
@@ -111,6 +116,9 @@ UIKIT_EXTERN NSString *const MeariIotDeviceOnlineNotification; //Meari iot devic
 
 UIKIT_EXTERN NSString *const MeariIotCustomerServerMessageAccept ; //Customer Service Message Accept new message （客服消息接收）
 UIKIT_EXTERN NSString *const MeariIotCustomerServerMessageRead ; //Customer Service Message read（客服消息已读）
+
+UIKIT_EXTERN NSString *const MeariIotCustomerServerFeedBackRemind ; //Customer service feedback message reminder（客服反馈消息提醒）
+UIKIT_EXTERN NSString *const MeariIotCustomerServerRemind ; //Customer service message reminder（客服聊天消息提醒）
 @interface MeariUser : NSObject
  
 + (instancetype)sharedInstance;
@@ -157,6 +165,8 @@ Whether has meari iot info   (是否有自研iot信息)
 @property (nonatomic, assign) BOOL supportLog;
 
 @property (nonatomic, strong) NSDictionary *logConfig;
+
+@property (nonatomic, strong) NSMutableArray *meariIotSns;
 /**
     重新定向访问地址
  
@@ -417,6 +427,24 @@ Whether has meari iot info   (是否有自研iot信息)
 /// @param failure failure callback (失败回调)
 - (void)getNoticeSuccess:(MeariSuccess_Notice)success failure:(MeariFailure)failure;
 
+#pragma mark -- Ad
+/**
+ 获取广告
+ 
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)getLaunchAdWithSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ 广告标记
+  
+ @param adId 广告id
+ @param isInterest  感兴趣1，不感兴趣0
+ @param success 成功回调
+ @param failure 失败回调
+ */
+-(void)markLaunchAdWithAdId:(NSString *)adId isInterest:(BOOL)isInterest success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 #pragma mark -- Cloud
 
 /**
@@ -563,10 +591,11 @@ delete face list
 /**
  Getting device list information
  获取设备列表
-
+ 
  @param success Successful callback (成功回调)，返回设备列表
  @param failure failure callback (失败回调)
  */
+
 - (void)getDeviceListSuccess:(MeariSuccess_DeviceList)success failure:(MeariFailure)failure;
 
 /**
@@ -608,6 +637,16 @@ Getting device online status for Meari iot device
 - (void)addDevice:(MeariDevice *)device success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
 /**
+ Add device
+ 添加设备 (4G)
+ 
+ @param licenseID 扫码得到的licenseID
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)add4GDeviceWithLicenseID:(NSString *)licenseID success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
  Remove the device(移除设备)
  
  @param type device type(设备类型)
@@ -617,6 +656,12 @@ Getting device online status for Meari iot device
  */
 - (void)deleteDeviceWithType:(MeariDeviceType)type deviceID:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
 
+
+/// Remove  muli device 删除多台设备
+/// @param deviceIdList 设备ID列表
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)deleteDeviceWithDeviceIdList:(NSArray <NSNumber *> *)deviceIdList success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
   rename device 修改设备昵称
@@ -639,7 +684,7 @@ Getting device online status for Meari iot device
  @param success Successful callback (成功回调)：return to the alarm time list(返回报警时刻列表)
  @param failure failure callback (失败回调)
  */
-- (void)getAlarmMessageTimesWithDeviceID:(NSInteger)deviceID onDate:(NSString *)date success:(MeariSuccess_DeviceAlarmMsgTime)success failure:(MeariFailure)failure;
+- (void)getAlarmMessageTimesWithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel onDate:(NSString *)date success:(MeariSuccess_DeviceAlarmMsgTime)success failure:(MeariFailure)failure;
 
 
 /**
@@ -652,16 +697,6 @@ Getting device online status for Meari iot device
  @param failure failure callback (失败回调)
  */
 - (void)checkNewFirmwareWith:(NSString *)deviceSn tp:(NSString *)tp currentFirmware:(NSString *)currentFirmware success:(MeariSuccess_DeviceFirmwareInfo)success failure:(MeariFailure)failure;
-
-/**
- Query the device is online?
- (查询设备是否在线)
- 
- @param deviceID device ID(设备ID)
- @param success Successful callback (成功回调)：Returns whether the device is online(返回设备是否在线)
- @param failure failure callback (失败回调)
- */
-- (void)checkDeviceOnlineStatusWithDeviceID:(NSInteger)deviceID success:(MeariSuccess_DeviceOnlineStatus)success failure:(MeariFailure)failure;
 
 
 /**
@@ -894,7 +929,7 @@ deviceList.count must  ==  modeList.count
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)cancelShareDeviceWithDeviceID:(NSInteger)deviceID shareAccount:(NSString *)shareAccount success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)cancelShareDeviceWithDeviceID:(NSInteger)deviceID shareAccount:(NSString *)shareAccount phoneCode:(NSString *)phoneCode success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  share devie request
@@ -902,10 +937,11 @@ deviceList.count must  ==  modeList.count
  @param deviceID 设备ID
  @param shareAccount 分享账号
  @param authSign 分享权限标识
+ @param phoneCode country phone code(国际手机前缀).
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)shareDeviceWithDeviceID:(NSInteger)deviceID shareAccount:(NSString *)shareAccount authSign:(NSInteger)authSign success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)shareDeviceWithDeviceID:(NSInteger)deviceID shareAccount:(NSString *)shareAccount authSign:(NSInteger)authSign phoneCode:(NSString *)phoneCode success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  change share devie Authority
@@ -925,10 +961,11 @@ deviceList.count must  ==  modeList.count
  
  @param deviceID 设备ID
  @param userAccount 用户账号
+ @param phoneCode country phone code(国际手机前缀).
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)searchUserWithDeviceID:(NSInteger)deviceID account:(NSString *)userAccount success:(MeariSuccess_Share)success failure:(MeariFailure)failure;
+- (void)searchUserWithDeviceID:(NSInteger)deviceID account:(NSString *)userAccount phoneCode:(NSString *)phoneCode success:(MeariSuccess_Share)success failure:(MeariFailure)failure;
 
 /**
  get history shared list
@@ -946,10 +983,11 @@ deviceList.count must  ==  modeList.count
  
  @param deviceID 设备ID
  @param shareAccountArray 分享数组
+ @param phoneCodeArray 分享人所在国家前缀数组
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)deleteHistoryShareWithDeviceID:(NSInteger)deviceID shareAccountArray:(NSArray *)shareAccountArray success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)deleteHistoryShareWithDeviceID:(NSInteger)deviceID shareAccountArray:(NSArray *)shareAccountArray phoneCodeArray:(NSArray *)phoneCodeArray success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  (get all the your device's shared result)
@@ -1014,14 +1052,23 @@ deviceList.count must  ==  modeList.count
 - (void)getAlarmMessageListForDeviceWithDeviceID:(NSInteger)deviceID success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
 
 /**
+ get all the alarm messgae List
+ (获取某个设备报警消息)
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+-(void)getAlarmLatestMessageListForDeviceListSuccess:(MeariSuccess_MsgLatestAlarmList)success Failure:(MeariFailure)failure;
+/**
 get recent 7 days for alarm messages
 (获取报警消息最近7天的天数)
 
 @param deviceID 设备ID
+@param channel 通道
 @param success Successful callback (成功回调)
 @param failure failure callback (失败回调)
 */
-- (void)getAlarmMessageRecentDaysWithDeviceID:(NSInteger)deviceID  success:(void (^)(NSArray *msgHas))success failure:(MeariFailure)failure;
+- (void)getAlarmMessageRecentDaysWithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel success:(void (^)(NSArray *msgHas))success failure:(MeariFailure)failure;
 
 /**
 get all the alarm messgae of one device  by day
@@ -1029,10 +1076,11 @@ get all the alarm messgae of one device  by day
 
 @param deviceID 设备ID
 @param day 天，如："20200804"
+@param channel 通道
 @param success Successful callback (成功回调)
 @param failure failure callback (失败回调)
 */
-- (void)getAlarmMessageListForDeviceWithDeviceID:(NSInteger)deviceID
+- (void)getAlarmMessageListForDeviceWithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel
                                              day:(NSString *)day success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
 
 /**
@@ -1158,7 +1206,7 @@ get all the alarm messgae of one device  by day
  @param url  image url (图片url)
  @param deviceID 设备ID
  @param userID 用户ID
- @param userID
+ @param userIDs
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
@@ -1284,8 +1332,8 @@ get all the alarm messgae of one device  by day
 // get origin data of voice message
 
 @param remoteUrl  voice url (语音链接)
- @param deviceID  device ID (设备ID)
-@param success Successful callback (成功回调)
+@param deviceID  device ID (设备ID)
+@param sourceData Successful callback (成功回调)
 @param failure failure callback (失败回调)
 */
 - (void)getVoiceMessageAudioDataWithRemoteUrl:(NSString *)remoteUrl deviceID:(NSInteger)deviceID success:(MeariSuccess_DeviceVoiceData)sourceData failure:(MeariFailure)failure;
@@ -1326,11 +1374,11 @@ get all the alarm messgae of one device  by day
 /// @param failure failure callback (失败回调)
 - (void)uploadTuyaSceneImage:(UIImage *)image success:(MeariSuccess_Str)success failure:(MeariFailure)failure;
 
-/// 私有的url 去获取正常的图片二进制
+/// 私有的url 去获取正常的图片
 /// @param url 图片url
 /// @param success Successful callback (成功回调)
 /// @param failure failure callback (失败回调)
-- (void)getOssNormalImageDataWithUrl:(NSString *)url success:(MeariSuccess_Str)success failure:(MeariFailure)failure;
+- (void)getOssNormalImageDataWithUrl:(NSString *)url cloudType:(NSInteger)cloudType success:(MeariSuccess_Str)success failure:(MeariFailure)failure;
 
 /// 私有的url 去获取安装指引的视频url
 /// @param tp 设备的tp值
@@ -1399,6 +1447,9 @@ get all the alarm messgae of one device  by day
  */
 - (NSString *)getHelpLinkWithHelpType:(MeariHelpType)helpType languageString:(NSString *)lng;
 
+/// get quick Guide Url
+/// @param lowPower 是否低功耗设备 is lowpower
+- (NSString *)getQuickGuideUrl:(BOOL)lowPower;
 
 #pragma mark - Other
 /**
@@ -1406,6 +1457,10 @@ Get User product
 获取用户配网产品列表
 */
 - (void)getProductList:(MeariSuccess_Dictionary) success failure:(MeariFailure)failure;
+
+/// 国内版获取列表
+- (void)getProductListV2:(void(^)(NSDictionary *dic)) success failure:(MeariFailure)failure;
+
 /**
 Get User product
 获取配网产品图片
@@ -1419,6 +1474,22 @@ Get User product
  @param timeType 12/24
  */
 -(void)setUserTimeType:(NSString *)timeType success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ Set User TimeZone (Only valid for the device in the case of : device.supportTimeZone = YES )
+ 设置用户时区 只对支持时区的设备生效  即（ device.supportTimeZone = YES）
+ @param timeZone 时区 格式 例如 --  GMT+08:00（Format e.g. - GMT+08:00）
+ */
+-(void)setUserTimeZone:(NSString *)timeZone success:(void(^)(NSDictionary *dic))success failure:(MeariFailure)failure;
+
+
+/**
+ Get a list of time zones （获取设备时区列表）
+ 
+ @param version 当前的version 字段 如果version较低 则会返回新的时区列表
+ */
+-(void)getUserTimeZoneList:(NSInteger )version success:(void(^)(NSDictionary *dic))success failure:(MeariFailure)failure;
+
 
 /**
 Get User Preference
@@ -1508,6 +1579,12 @@ download file from server
  @param clientBrand  服务器端brand
 */
 - (void)customServerCheckClientOnline:(NSString *)clientID  brand:(NSString *)clientBrand success:(void (^)(BOOL online))success failure:(void (^)(NSError *error))failure;
+
+/**
+ Customer service email reminder
+ @param order  客服工单号
+*/
+- (void)customServerEmailRemind:(NSString *)order success:(MeariSuccess_Dictionary)success failure:(void (^)(NSError *error))failure;
 #pragma mark - Custom Server
 /**
  custon server feed back send (客服反馈发送)
@@ -1542,7 +1619,7 @@ download file from server
  custon server feed back  create  (创建客服反馈)
  @param licenseId 设备SN
  @param tp 设备TP值 可以为空
- @param deviceName 设备名称 可以为空
+ @param name 设备名称 可以为空
  @param contact 联系方式 可以为空
  @param content 文本内容
  @param files 图片URL字符串 以,分隔
@@ -1555,6 +1632,20 @@ download file from server
  @param topic 客服反馈ID
 */
 - (void)customServerFeedbackFinish:(NSString *)topic success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/// 获取售后联系方式
+/// @param tpList tp's list
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)getCloudPromotionListWithTPList:(NSArray <NSString *> *)tpList success:(MeariSuccess_AfterSaleList)success failure:(MeariFailure)failure __deprecated_msg("Use `MeariUser -> getAppPromotionListWithTPList: success: failure:`");
+
+/// 获取app试用信息
+///  get app try infomation
+/// @param tpList tpList
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)getAppPromotionListWithTPList:(NSArray <NSString *> *)tpList success:(MeariSuccess_AfterSaleList)success failure:(MeariFailure)failure;
+
 #pragma mark - Cancel
 /**
 Clean user info
@@ -1582,4 +1673,76 @@ Get User Preference
 */
 -(void)setUserCloudConfig:(NSDictionary *)dic success:(void(^)(NSDictionary *dic))success failure:(MeariFailure)failure;
 
+- (void)uploadTest:(NSData *)imageData;
+
+#pragma mark -- AI Analysis
+
+/**
+ Get AI Analysis status
+ 获取AI智能分析状态
+
+ @param deviceID device ID (设备ID)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)aiAnalysisGetStatusWithDeviceID:(NSInteger)deviceID success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ AI Analysis trial
+ AI智能分析试用
+
+ @param deviceID  device ID (设备ID)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)aiAnalysisTryWithDeviceID:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ AI Analysis Switch
+ AI智能分析开关
+ @param enable  enable (开关)
+ @param deviceID  device ID (设备ID)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)aiAnalysisEnable:(BOOL)enable deviceID:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ AI Analysis type
+ AI智能分析类型拉取
+
+ @param deviceID  device ID (设备ID)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)aiAnalysisTypeGetWithDeviceID:(NSInteger)deviceID success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ AI Analysis Type Update
+ AI智能分析类型更新
+
+ @param deviceID  device ID (设备ID)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)aiAnalysisTypeUpdateWithDeviceID:(NSInteger)deviceID projects:(NSDictionary *)projects success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ AI Analysis Alarm Feedback
+ AI智能分析报警消息反馈
+
+ @param deviceID  device ID (设备ID)
+ @param msgId  Message ID (消息ID)
+ @param typeArray  Type Array (反馈类型数组)
+ @param description  Description (自定义描述)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)aiAnalysisFeedbackWithDeviceID:(NSInteger)deviceID  messageId:(NSInteger)msgId params:(NSArray *)typeArray description:(NSString *)description success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ user migration status
+ 用户是否需要迁移状态
+*/
+- (void)getUserMigrationStatusSucess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ start user migration
+ 执行用户迁移
+*/
+- (void)startUserMigrationSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 @end

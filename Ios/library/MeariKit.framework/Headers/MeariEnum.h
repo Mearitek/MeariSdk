@@ -167,6 +167,20 @@ typedef NS_ENUM(NSInteger, MeariUserCode) {
     MeariUserCodeVerificationExpired    = 1067,
     MeariUserCodeVerificationError      = 1068,
     MeariUserCodeShareByYourself        = 1069,
+    
+    MeariUserCodeIsDefaultFamily        = 1101,
+    MeariUserCodeFamilyNotExist         = 1102,
+    MeariUserCodeRoomNotExist           = 1103,
+    MeariUserCodeFamilyDeviceNotExist   = 1104,
+    MeariUserCodeFamilyExistMember      = 1105,
+    MeariUserCodeUserNotFamilyOwner     = 1106,
+    MeariUserCodeUserIsFamilyOwner      = 1107,
+    MeariUserCodeFamilyMessageWaitDeal  = 1108,
+    MeariUserCodeFamilyMessageHadDeal   = 1109,
+    MeariUserCodeFamilyMemberReachLimit = 1110,
+    MeariUserCodeUserNoInFamily         = 1111,
+    MeariUserCodeNoPermissionDealMessage = 1113,
+    MeariUserCodeFamilyNameExist        = 1114,
 };
 
 
@@ -207,6 +221,7 @@ typedef NS_ENUM(NSInteger, MeariDeviceCode) {
     MeariDeviceCodeNoTemperatureAndHumidityCantRead = -1044,
     MeariDeviceCodeVoiceTalkFail                  = -1045,
     MeariDeviceCodeVideoClipRecording             = -1050,
+    MeariDeviceCodeConnectVideoPasswordError      = -1051,
     MeariDeviceCodeDeviceParamFail                = -10000
 };
 

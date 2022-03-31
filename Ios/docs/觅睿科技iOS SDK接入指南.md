@@ -10,7 +10,7 @@
 | ------ | ------ | ------ | ------ |
 | 2.0.1 | 觅睿技术团队 | 2019.06.25 | 优化
 | 3.1.0 | 觅睿技术团队 | 2021.07.05 | 优化
-
+| 4.1.0 | 觅睿技术团队 | 2021.03.23 | 优化
 </center>
 
 #1. 功能概述 
@@ -19,8 +19,8 @@
 
 - 硬件设备相关 (配网、控制、状态上报、固件升级、预览回放等功能) 
 - 账号体系 (手机号、邮箱的注册、登录、重置密码等通用账号功能) 
-- 设备共享
-- 消息中心
+- 家庭组相关 (新建家庭组、新建房间、分配房间、邀请成员等功能) 
+- 消息中心（报警消息、设备分享消息、家庭分享消息、系统消息）
 
 #2. 集成准备
 
@@ -90,7 +90,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
      /**
       @param info 用户登录信息 有云云对接之后 从服务器端获取
      */
-     - (void)loginUidWithExtraParamInfo:(NSDictionary *)info complete:(void(^)(NSError *error))complete 
+     - (void)loginUidWithExtraParamInfo:(NSDictionary *)info complete:(void(^)(NSError *error))complete;
 
 【代码范例】
     [[MeariUser sharedInstance] loginUidWithExtraParamInfo:dic complete:^(NSError *error) {
@@ -133,10 +133,10 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
       @param success 成功回调，返回头像的url
       @param failure 失败回调
       */
-     - (void)uploadUserAvatar:(UIImage *)image success:(MeariSuccess_Avatar)success failure:(MeariFailure)failure;
+     - (void)uploadUserAvatarWithImage:(UIImage *)image success:(MeariSuccess_Avatar)success failure:(MeariFailure)failure;
         
 【代码范例】
-     [[MeariUser sharedInstance] uploadUserAvatar:[UIImage imageWithData:self.imageData] success:^(NSString *avatarUrl) {
+     [[MeariUser sharedInstance] uploadUserAvatarWithImage:[UIImage imageWithData:self.imageData] success:^(NSString *avatarUrl) {
 
      } failure:^(NSError *error) {
     
@@ -154,10 +154,10 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
       @param success 成功回调
       @param failure 失败回调
      */
-    - (void)renameNickname:(NSString *)name  success:(MeariSuccess)success failure:(MeariFailure)failure;
+    - (void)renameNicknameWithName:(NSString *)name  success:(MeariSuccess)success failure:(MeariFailure)failure;
         
 【代码范例】
-     [[MeariUser sharedInstance] renameNickname:newName success:^{
+     [[MeariUser sharedInstance] renameNicknameWithName:newName success:^{
     
      } failure:^(NSError *error) {
     
@@ -198,7 +198,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
    
      */
 
-    - (void)notificationSoundOpen:(BOOL)openSound success:(MeariSuccess)success 	failure:(MeariFailure)failure;
+    - (void)notificationSoundOpen:(BOOL)openSound success:(MeariSuccess)success failure:(MeariFailure)failure;
 【代码范例】
      [[MeariUser sharedInstance] notificationSoundOpen:YES success:^{
 
@@ -486,13 +486,412 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     }];
 
 ```
-#7.设备信息获取
+#7.家庭组信息获取
+```
+所属：MeariFamily
+```
+##7.1 获取家庭房间列表 
+```
+返回：MeariFamilyModel
+```
+```
+【描述】
+     用户登录后，通过MeariFamily工具类的接口获取家庭房间列表，以模型形式返回
+家庭信息数组 (MeariFamilyModel) 
+
+【函数调用】
+    //获取所有家庭房间信息(仅返回家庭信息未包含设备)
+    - (void)getFamilyListSuccess:(MeariSuccess_FamilyList)success failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] getFamilyListSuccess:^(NSArray<MeariFamilyModel *> *familyList) {
+      
+      } failure:^(NSError *error) {
+
+      }];
+```
+
+MeariFamilyModel属性：
+
+```
+@property (nonatomic, assign) BOOL isDefault; // 是否默认家庭
+@property (nonatomic, assign) BOOL owner; // 是否所有者
+
+@property (nonatomic, copy) NSString *homeID; // 家庭ID
+@property (nonatomic, copy) NSString *homeName; // 家庭名称
+@property (nonatomic, copy) NSString *position; // 家庭位置
+@property (nonatomic, copy) NSString *userName; // 用户昵称，当homeName不存在时才有值
+@property (nonatomic, assign) MRFamilyJoinStatus joinStatus; // 家庭对别人的加入状态
+
+@property (nonatomic, copy) NSArray<MeariRoomModel *> *roomList; // 房间列表
+@property (nonatomic, copy) NSArray<MeariDevice *> *relaySubDeviceList; // relay所有子设备列表
+@property (nonatomic, copy) NSArray<MeariDevice *> *allDeviceList; // 我的所有设备列表
+@property (nonatomic, copy) NSArray<MeariDevice *> *sharedDeviceList; // 分享设备列表
+@property (nonatomic, copy) NSArray<MeariDevice *> *unDistributionDeviceList;  // 未分配设备列表
+```
+
+##7.2 获取家庭列表 
+
+```
+【描述】
+     用户登录后，通过MeariFamily工具类的接口获取家庭房间列表，并处理所有的设备，成功后通过[MeariFamily sharedInstance].familyArray来获取返回结果
+
+【函数调用】
+    //获取所有家庭房间信息(仅返回家庭信息包含设备信息)
+    - (void)getFamilyHomeListSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+    //获取指定家庭房间信息(仅返回家庭信息包含设备信息)
+    - (void)getFamilyListWithHomeID:(NSString *)homeID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] getFamilyHomeListSuccess:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+    
+    [[MeariFamily sharedInstance] getFamilyListWithHomeID:familyid success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+
+##7.3 家庭管理-新建家庭
+
+```
+【函数调用】
+    //创建新的家庭组
+    - (void)addFamilyWithHomeName:(nonnull NSString *)homeName
+                 homePosition:(nullable NSString *)homePosition
+                 roomNameList:(nullable NSArray<NSString *> *)roomNameList
+                      success:(MeariSuccess)success
+                      failure:(MeariFailure)failure;
+
+【代码范例】
+      [[MeariFamily sharedInstance] addFamilyWithHomeName:familyName homePosition:familyPosition roomNameList:roomList success:^{
+      } failure:^(NSError *error) {
+        MR_HUD_SHOW_ERROR(error)
+    }];
+```
+##7.4 家庭管理-更新家庭名和地址
+
+
+```
+【函数调用】
+    //修改家庭信息
+    - (void)updateFamilyWithHomeID:(NSString *)homeID
+                      homeName:(NSString *)homeName
+                  homePosition:(NSString *)homePosition
+                       success:(MeariSuccess)success
+                       failure:(MeariFailure)failure;
+
+【代码范例】
+   		[[MeariFamily sharedInstance] updateFamilyWithHomeID:self.familyModel.homeID homeName:homeName homePosition:position success:^{
+      	} failure:^(NSError *error) {
+    	}];
+```
+##7.5 家庭管理-删除家庭 
+
+```
+
+【函数调用】
+    //删除指定HomeID的家庭（默认家庭无法删除）
+ 	 - (void)removeFamilyWithHomeID:(NSString *)homeID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] removeFamilyWithHomeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.6 家庭管理-加入家庭
+
+```
+
+【函数调用】
+    //请求加入指定家庭组
+    - (void)joinFamilyWithHomeIDList:(NSArray<NSString *> *)homeIDList
+                       success:(MeariSuccess)success
+                       failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] joinFamilyWithHomeIDList:homeIDList success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.7 家庭管理-离开家庭
+
+```
+【函数调用】
+    //离开加入的家庭组
+    - (void)leaveFamilyWithHomeID:(NSString *)homeID
+                      success:(MeariSuccess)success
+                      failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] leaveFamilyWithHomeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.8 家庭管理-邀请成员加入家庭组
+```
+【函数调用】
+    //邀请其他用户加入家庭组（仅家庭主人有权限）
+    - (void)addMemberWithHomeID:(nonnull NSString *)homeID
+                   memberID:(nonnull NSString *)memberID
+        deviceAuthorityList:(NSArray *)deviceAuthorityList
+                       success:(MeariSuccess)success
+                       failure:(MeariFailure)failure;
+
+【代码范例】
+	   NSArray *array = @[{"deviceID":1,"permission": 0}, {"deviceID":1,"permission": 0}];//家庭内设备权限
+     [[MeariFamily sharedInstance] addMemberWithHomeID:homeID memberID:memberID deviceAuthorityList:array success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.9 家庭管理-家庭撤销邀请成员
+
+```
+【函数调用】
+    //当查询到成员加入状态为2时可通过msgID撤销邀请成员消息
+    - (void)revokeFamilyInviteWithMsgID:(NSString *)msgID
+                             homeID:(NSString *)homeID
+                            success:(MeariSuccess)success
+                            failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] revokeFamilyInviteWithMsgID:msgID homeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.10 家庭管理-家庭删除成员
+
+```
+
+【函数调用】
+    //删除指定memberID的家庭成员
+    - (void)removeMemberWithHomeID:(nonnull NSString *)homeID
+                      memberID:(nonnull NSString *)memberID
+                          success:(MeariSuccess)success
+                       failure:(MeariFailure)failure;
+
+
+【代码范例】
+     [[MeariFamily sharedInstance] removeMemberWithHomeID:homeID memberID:memberID :^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.11 家庭管理-家庭添加成员根据账号搜索 
+```
+返回：MeariMemberModel
+```
+
+```
+【描述】
+     添加某个家庭成员时，通过HomeID和输入的账号名去搜索返回要邀请成员的信息
+
+【函数调用】
+    //查询添加成员的信息
+    - (void)searchUserWithHomeID:(nullable NSString *)homeID
+               memberAccount:(nonnull NSString *)memberAccount
+                 countryCode:(NSString *)countryCode
+                   phoneCode:(nonnull NSString *)phoneCode
+                     success:(MeariSuccess_Member)success
+                     failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] searchUserWithHomeID:homeID memberAccount:account countryCode:[MeariUser sharedInstance].userInfo.countryCode phoneCode:[MeariUser sharedInstance].userInfo.phoneCode success:^(MeariMemberModel *member){
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+MeariMemberModel属性
+```
+@property (nonatomic, assign) NSInteger userID;
+@property (nonatomic, copy) NSString *userAccount; // 用户账号
+@property (nonatomic, copy) NSString *nickName; // 昵称
+@property (nonatomic, copy) NSString *userName; // 成员名称
+@property (nonatomic, copy) NSString *imageUrl;
+@property (nonatomic, copy) NSString *msgID; // 当加入状态为2时， 可以使用msgid 撤销加入家庭
+@property (nonatomic, assign) MRFamilyJoinStatus joinStatus;
+@property (nonatomic, assign) BOOL isMaster;
+@property (nonatomic, copy) NSString *hasInvited; //
+@property (nonatomic, assign) MRFamilyInvitedStatus invitedStatus;
+// 管理员
+@property (nonatomic, copy) NSString *homeID;
+@property (nonatomic, copy) NSString *homeName;
+@property (nonatomic, copy) NSArray<MeariFamilyDeviceModel *> *devices;
+// 普通成员
+@property (nonatomic, copy) NSArray<MeariFamilyModel *> *homes;
+```
+##7.12 家庭管理-家庭成员列表 
+```
+返回：MeariMemberModel
+```
+
+```
+【函数调用】
+    //获取家庭所有成员信息
+    - (void)getMemberListWithHomeID:(NSString *)homeID success:(MeariSuccess_MemberList)success failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] getMemberListWithHomeID:homeID success:^(MeariMemberModel *member){
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.13 家庭管理-家庭设备权限变更 
+
+```
+
+【函数调用】
+    //修改家庭设备对于对家庭成员的使用权限
+    - (void)updateMemberPermissionMemberID:(nonnull NSString *)memberID
+                                homeID:(NSString *)homeID
+                   deviceAuthorityList:(NSArray *)deviceAuthorityList
+                               success:(MeariSuccess)success
+                               failure:(MeariFailure)failure;
+【代码范例】
+     [[MeariFamily sharedInstance] updateMemberPermissionMemberID: homeID: deviceAuthorityList: success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.14 家庭管理-设备分配房间
+
+```
+【函数调用】
+    //分配设备到家庭的某个房间
+    - (void)roomDeviceDistributioRoomID:(nonnull NSString *)roomID
+                              homeID:(nonnull NSString *)homeID
+                          deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
+                               success:(MeariSuccess)success
+                            failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] roomDeviceDistributioRoomID:roomID homeID:homeID deviceIDList:array success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.15 家庭管理-新增房间
+
+```
+
+
+【函数调用】
+    //创建新的房间
+    - (void)addRoomWithRoomName:(NSString *)roomName
+                     homeID:(NSString *)homeID
+                    success:(MeariSuccess)success
+                    failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] addRoomWithRoomName:roomName homeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.16 家庭管理-房间名称修改
+
+
+```
+【函数调用】
+    //修改家庭组中指定房间的房间名
+   - (void)updateRoomNameWithRoomName:(NSString *)roomName
+                            homeID:(NSString *)homeID
+                            roomID:(NSString *)roomID
+                    success:(MeariSuccess)success
+                           failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] updateRoomNameWithRoomName:roomName homeID:homeID roomID:roomID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.17 家庭管理-删除房间
+
+```
+
+【函数调用】
+    //删除指定家庭的的房间
+    - (void)removeRoomWithRoomIDList:(NSArray<NSString *> *)roomIDList
+                      homeID:(NSString *)homeID
+                     success:(MeariSuccess)success
+                     failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] removeRoomWithRoomIDList:array homeID:homeID success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.18 家庭管理-移除该房间的设备
+
+```
+
+【函数调用】
+    //移除家庭房间的设备
+    - (void)removeDeviceWithRoomID:(NSString *)roomID
+                      homeID:(NSString *)homeID
+                deviceIDList:(nonnull NSArray<NSNumber *> *)deviceIDList
+                     success:(MeariSuccess)success
+                     failure:(MeariFailure)failure;
+【代码范例】
+     [[MeariFamily sharedInstance] removeDeviceWithRoomID:roomID homeID:homeID deviceIDList:array success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+##7.19 家庭管理-家庭成员名称修改 
+
+```
+
+【函数调用】
+    //修改家庭成员名称
+    - (void)memberNameUpdateWithHomeID:(NSString *)homeID
+                    memberID:(NSString *)memberID
+                  memberName:(NSString *)memberName
+                     success:(MeariSuccess)success
+                     failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariFamily sharedInstance] memberNameUpdateWithHomeID:homeID memberID: memberID memberName: memberName success:^{
+     
+    } failure:^(NSError *error) {
+    
+    }];
+```
+
+
+#8.设备信息获取
 ```
 所属：MeariUser
 ```
-##7.1 获取设备列类 
+##8.1 获取设备列表 
+
 ```
-所属：MeariDeviceList
+返回：MeariDeviceList
 ```
 ```
 【描述】
@@ -529,7 +928,7 @@ MeariDeviceList属性：
 /** 中继 */
 @property (nonatomic, strong) NSArray <MeariDevice *> *chimes;
 ```
-##7.2 设备信息 
+##8.2 设备信息 
 
 ```
 所属：MeariDevice
@@ -551,7 +950,7 @@ MeariDeviceList属性：
 @property (nonatomic, assign, readonly)BOOL supportVoiceTalk;               //是否支持语音对讲
 。。。
 ```
-##7.3 删除设备 
+##8.3 删除设备 
 
 ```
 【描述】
@@ -574,7 +973,7 @@ MeariDeviceList属性：
      }];
 ```
 
-##7.4 设备昵称修改 
+##8.4 设备昵称修改 
 
 ```
 【描述】
@@ -599,7 +998,7 @@ MeariDeviceList属性：
     
 ```
 
-##7.5 设备报警时间点
+##8.5 设备报警时间点
 
 ```
 【描述】
@@ -607,21 +1006,22 @@ MeariDeviceList属性：
 【函数调用】
      /**
       @param deviceID 设备ID
+      @param channel  如果设备不是NVR子设备传入0
       @param date 日期：格式为20171212
       @param success 成功回调：返回报警时刻列表
       @param failure 失败回调
      */
-     - (void)getAlarmMessageTimesWithDeviceID:(NSInteger)deviceID onDate:(NSString *)date success:(MeariSuccess_DeviceAlarmMsgTime)success failure:(MeariFailure)failure;
+     - (void)getAlarmMessageTimesWithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel onDate:(NSString *)date success:(MeariSuccess_DeviceAlarmMsgTime)success failure:(MeariFailure)failure;
 
 【代码范例】
-     [[MeariUser sharedInstance] getAlarmMessageTimesWithDeviceID:self.device.info.ID onDate:@"20171212" success:^(NSArray<NSString *> *time) {
+     [[MeariUser sharedInstance] getAlarmMessageTimesWithDeviceID:self.device.info.ID channel:self.device.channel onDate:@"20171212" success:^(NSArray<NSString *> *time) {
 
      } failure:^(NSError *error) {
 
      }];
 ```
 
-##7.6 查询设备版本 
+##8.6 查询设备版本 
 
 ```
 【描述】
@@ -656,7 +1056,7 @@ MeariDeviceFirmwareInfo:
 
 ```
 
-##7.7 查询设备在线状态 
+##8.7 查询设备在线状态 
 
 ```
 【描述】
@@ -695,7 +1095,7 @@ MeariDeviceFirmwareInfo:
 
 
 ```
-##7.8 远程唤醒门铃 
+##8.8 远程唤醒门铃 
 
 ```
 【描述】
@@ -719,7 +1119,7 @@ MeariDeviceFirmwareInfo:
      门铃类低功耗产品（camera.lowPowerDevice == YES），需要先调用远程唤醒接口，再调用打洞的接口
 ```
 
-##7.9 上传门铃留言 
+##8.9 上传门铃留言 
 
 ```
 【描述】
@@ -743,7 +1143,7 @@ MeariDeviceFirmwareInfo:
      }];
 ```
 
-##7.10 下载门铃留言 
+##8.10 下载门铃留言 
 
 ```
 【描述】
@@ -766,7 +1166,7 @@ MeariDeviceFirmwareInfo:
     }];
 ```
 
-##7.11 删除门铃留言 
+##8.11 删除门铃留言 
 
 ```
 【描述】
@@ -789,14 +1189,14 @@ MeariDeviceFirmwareInfo:
      }];
 ```
 
-#8.设备控制
+#9.设备控制
 ```
 所属：MeariDevice
 ```
 ```
 MeariDevice 负责对设备的所有操作，包括预览、回放、设置等，对设备的设置，需要确保已经与设备建立好了连接
 ```
-##8.1 连接设备 
+##9.1 连接设备 
 
 ```
 【描述】
@@ -820,7 +1220,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      }];
 ```
 
-## 8.2 断开设备 
+## 9.2 断开设备 
 
 ```
 【描述】
@@ -842,7 +1242,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
 ```
 
-## 8.3 获取码率 
+## 9.3 获取码率 
 
 ```
 【描述】
@@ -859,7 +1259,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 
 
-## 8.4 预览 
+## 9.4 预览 
 
 ```
 【描述】
@@ -945,7 +1345,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 
 
-## 8.5 回放 
+## 9.5 回放 
 
 ```
 【描述】
@@ -1076,7 +1476,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
      }];
 ```
-## 8.6 云回放 
+## 9.6 云回放 
 ```
 【描述】
      设备开通云存储服务之后,会将记录存储云端。
@@ -1197,7 +1597,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
 
 ```
-## 8.7 静音 
+## 9.7 静音 
 
 ```
 【描述】
@@ -1215,7 +1615,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
 ```
 
-## 8.8 语音对讲 
+## 9.8 语音对讲 
 
 
 ```
@@ -1296,7 +1696,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
 ```
 
-## 8.9 截图 
+## 9.9 截图 
 
 ```
 【描述】
@@ -1322,7 +1722,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 
 
-## 8.10 录像 
+## 9.10 录像 
 
 ```
 【描述】
@@ -1366,7 +1766,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
 ```
 
-## 8.11 获取设备所有参数
+## 9.11 获取设备所有参数
 
 ```
 【描述】
@@ -1386,7 +1786,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     }];
 ```
 
-## 8.12 云台控制 
+## 9.12 云台控制 
 
 ```
 【描述】
@@ -1425,7 +1825,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     }];
 
 ```
-## 8.13 留言
+## 9.13 留言
 ```
 【描述】
      门铃设备支持录制留言，可以在接听的时候选择播放留言操作。
@@ -1506,7 +1906,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
 ```
 
-## 8.14 侦测报警 
+## 9.14 侦测报警 
 
 ```
 【描述】
@@ -1558,7 +1958,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 
 
-## 8.14 存储 (SD卡) 
+## 9.15 存储 (SD卡) 
 
 ```
 【描述】
@@ -1611,7 +2011,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
  
 ```
 
-## 8.15 固件升级 
+## 9.16 固件升级 
 
 ```
 【描述】
@@ -1710,7 +2110,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
         
 
 ```
-## 8.16 休眠模式 
+## 9.17 休眠模式 
 
 ```
 【描述】
@@ -1776,7 +2176,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 
 
-## 8.17 温湿度 
+## 9.18 温湿度 
 
 ```
 【描述】
@@ -1805,7 +2205,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 
 
-## 8.18 音乐 
+## 9.19 音乐 
 
 ```
 【描述】
@@ -1904,7 +2304,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 
 
-## 8.19 设备音量 
+## 9.20 设备音量 
 
 ```
 【描述】
@@ -1947,7 +2347,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 
 
-## 8.20 门铃音量 
+## 9.21 门铃音量 
 
 ```
 【描述】
@@ -1971,7 +2371,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
     }];
 ```
-## 8.21 铃铛设置 
+## 9.22 铃铛设置 
 
 ```
 【描述】
@@ -2031,7 +2431,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
      }];
 ```
-## 8.22 灯具摄像机设置 
+## 9.23 灯具摄像机设置 
 
 ### (1) 开关灯 
 
@@ -2147,7 +2547,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 
 
-# 9.分享设备 
+# 10.分享设备 
 ```
 所属: MeariUser
 
@@ -2317,7 +2717,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 	 
 
 
-#10.消息中心 
+#11.消息中心 
 
 ```
 所属：MeariMessageInfo
@@ -2325,7 +2725,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 注意：设备的报警消息，一经设备的主人拉取后，服务器就会删除该消息，因此需要本地保存，被分享的人拉取了设备的报警消息，服务器不会删除，这里注意主人和被分享人的区别
 ```
-##10.1 获取所有设备是否有消息 
+##11.1 获取所有设备是否有消息 
 
 ```
 【描述】
@@ -2349,8 +2749,8 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     如果消息一经主人拉取后，服务器不会保存消息，被分享的用户也看不到这些消息
 ```
 
-##10.2 获取某个设备报警消息 
-
+##11.2 报警消息 
+###11.2.1 获取某个设备报警消息 
 ```
 【描述】
     获取某个设备报警消息, 每次会拉取服务器上最新的20条消息
@@ -2372,7 +2772,29 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
  【注意事项】
     如果消息一经主人拉取后，服务器不会保存消息，被分享的好友也看不到这些消息
 ```
-##10.3 获取有报警消息的天数(最近7天)
+###11.2.2 获取用户所拥有设备最新的一条报警消息列表 
+```
+【描述】
+    获取用户所拥有设备最新的一条报警消息列表
+    设备报警消息拉取完成之后会从服务器上删除消息记录，之后接口不再返回该设备最新报警消息
+
+【函数调用】
+    //获取用户所拥有设备最新的一条报警消息列表
+    @param deviceID 设备ID
+    @param success 成功回调
+    @param failure 失败回调
+    -(void)getAlarmLatestMessageListForDeviceListSuccess:(MeariSuccess_MsgLatestAlarmList)success Failure:(MeariFailure)failure;
+
+【代码范例】
+    [[MeariUser sharedInstance] getAlarmLatestMessageListForDeviceListSuccess:^(NSArray<MeariMessageLatestAlarm *> *msgs) {
+
+    } failure:^(NSError *error) {
+
+    }];
+ 【注意事项】
+    如果消息一经主人拉取后，服务器不会保存消息，被分享的好友也看不到这些消息
+```
+###11.2.3 获取有报警消息的天数(最近7天)
 ```
 【描述】 
      获取最近7天有报警的天数
@@ -2381,12 +2803,13 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       (获取报警消息最近7天的天数)
 
       @param deviceID 设备ID
+      @param channel  如果设备不是NVR子设备传入0
       @param success Successful callback (成功回调)
       @param failure failure callback (失败回调)
      */
-     - (void)getAlarmMessageRecentDaysWithDeviceID:(NSInteger)deviceID   success:(void (^)(NSArray *msgHas))success failure:(MeariFailure)failure;
+     - (void)getAlarmMessageRecentDaysWithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel success:(void (^)(NSArray *msgHas))success failure:(MeariFailure)failure;
 【代码范例】
-     [[MeariUser sharedInstance] getAlarmMessageRecentDaysWithDeviceID:_deviceID success:^(NSArray *msgHas) {
+     [[MeariUser sharedInstance] getAlarmMessageRecentDaysWithDeviceID:_deviceID channel:device.channel success:^(NSArray *msgHas) {
 	
      } failure:^(NSError *error) {
 
@@ -2394,7 +2817,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
      
 ```
-##10.4 获取设备某天的报警消息
+###11.2.4 获取设备某天的报警消息
 ```
 【描述】 
       获取设备某天的报警消息
@@ -2402,22 +2825,23 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      /**
 
       @param deviceID 设备ID
+      @param channel  如果设备不是NVR子设备传入0
       @param day 天，如："20200804"
       @param success Successful callback (成功回调)
       @param failure failure callback (失败回调)
      */
-     - (void)getAlarmMessageListForDeviceWithDeviceID:(NSInteger)deviceID
-                                             day:(NSString *)day success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
+     - (void)getAlarmMessageListForDeviceWithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel day:(NSString *)day success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
+     
 
 【代码范例】
-     [[MeariUser sharedInstance] getAlarmMessageListForDeviceWithDeviceID:_deviceID day:day success:^(NSArray<MeariMessageInfoAlarmDevice *> *msgs, MeariDevice *device, BOOL msgFrequently) {
+     [[MeariUser sharedInstance] getAlarmMessageListForDeviceWithDeviceID:_deviceID channel:device.channel day:day success:^(NSArray<MeariMessageInfoAlarmDevice *> *msgs, MeariDevice *device, BOOL msgFrequently) {
        
      } failure:^(NSError *error) {
         
      }];
      
 ```
-##10.5 加载报警图片
+###11.2.5 加载报警图片
 ```
 【描述】 
       设备的报警图片存储在阿里云以及亚马逊云
@@ -2466,7 +2890,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      
 ```
 
-##10.6 批量删除多个设备报警消息 
+###11.2.6 批量删除多个设备报警消息 
 
 ```
 【描述】
@@ -2490,8 +2914,9 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
 ```
 
-##10.7 获取系统消息 
+##11.3 系统消息 
 
+###11.3.1 获取系统消息 
 ```
 【描述】
     获取系统消息 
@@ -2513,7 +2938,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     }];
 ```
 
-## 10.8 批量删除系统消息 
+###11.3.2 批量删除系统消息 
 
 ```
 【描述】
@@ -2536,7 +2961,9 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     }];
 ```
 
-##10.9 获取分享消息列表
+##11.4 分享消息
+
+###11.4.1 获取设备分享消息列表
 ```
 【描述】
 	 获取所有分享消息
@@ -2556,7 +2983,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     }];
 ```
  
-##10.10 删除分享消息
+###11.4.2 删除设备分享消息
 ```
 【描述】
 	  删除分享消息
@@ -2577,6 +3004,65 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
      }];
 
-
 ```
+###11.4.3  获取家庭分享消息列表
+```
+【描述】
+	  获取家庭分享消息
 
+【函数调用】
+     
+     - (void)getFamilyShareListSuccess:(MeariSuccess_FamilyMessageList)success failure:(MeariFailure)failure;
+【代码范例】
+     [[MeariFamily sharedInstance] getFamilyShareListSuccess:^(NSArray<MeariMessageFamilyShare *> *familyMessageList) {
+     
+     } failure:^(NSError *error) {
+
+     }];
+```
+###11.4.4 删除家庭分享消息
+```
+【描述】
+	  删除分享消息
+
+【函数调用】
+     /**
+      删除家庭分享消息
+ 
+      @param msgIDList 消息ID列表
+      @param success Successful callback (成功回调)
+      @param failure failure callback (失败回调)
+     */
+     - (void)removeFamilyInviteMessageWithMsgIDList:(NSArray<NSString *> *)msgIDList
+                     success:(MeariSuccess)success
+                     failure:(MeariFailure)failure;
+【代码范例】
+     [[MeariFamily sharedInstance] removeFamilyInviteMessageWithMsgIDList:@[model.shareInfo.msgID] success:^{
+
+     } failure:^(NSError *error) {
+
+     }];
+```
+###11.4.3  处理家庭分享消息
+```
+【描述】
+	  处理家庭分享消息
+
+【函数调用】
+     /**
+		处理家庭分享消息
+ 		@param msgIDList msg id list
+ 		@param flag reject (0) or  accept (1)
+		@param success Successful callback (成功回调)
+ 		@param failure failure callback (失败回调)
+ 	  */
+     - (void)dealFamilyShareMessageWithMsgIDList:(NSArray<NSString *> *)msgIDList
+                                       flag:(NSInteger)flag
+                                    success:(MeariSuccess)success
+                                    failure:(MeariFailure)failure;
+【代码范例】
+     [[MeariFamily sharedInstance] dealFamilyShareMessageWithMsgIDList:@[model.msgID] flag:accept success:{
+        } failure:^(NSError *error) {
+
+        }];
+```
