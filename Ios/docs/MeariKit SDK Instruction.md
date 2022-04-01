@@ -1,8 +1,108 @@
 
 <h1><center> Documentation </center></h1>
 
-[TOC]
-
+* 1 [Functional Overview ](#1-Functional-Overview)
+* 2 [Integration preparation](#2-Integration-preparation)
+* 3 [Integrated SDK](#3-Integrated-SDK)
+    * 3.1 [Integrated configuration](#31-Integrated-configuration)
+    * 3.2 [Initialize the SDK](#32-Initialize-the-SDK)
+* 4 [User Management](#4-User-Management)
+    * 4.1 [User uid login system](#41-User-uid-login-system)
+        * 4.1.1 [User login](#411-User-login)
+        * 4.1.2 [User logout](#412-User-logout)
+    * 4.2 [User upload avatar](#42-User-upload-avatar)
+    * 4.3 [Modify nickname](#43-Modify-nickname)
+    * 4.4 [APNS Message Push](#44-APNS-Message-Push)
+    * 4.5 [Data model](#45-Data-model)
+    * 4.6 [User message notification](#46-User-message-notification)
+* 5 [Device distribution network](#5-Device-distribution-network)
+    * 5.1 [Get distribution network token](#51-Get-distribution-network-token)
+    * 5.2 [QR code distribution network](#52-QR-code-distribution-network)
+    * 5.3 [Hotspot distribution network (Ap distribution network)](#53-hotspot-distribution-network-ap-distribution-network)
+    * 5.4 [Wired distribution network](#54-Wired-distribution-network)
+* 6 [Device information](#6-Device-information)
+    * 6.1 [Get device list](#61-Get-device-list)
+    * 6.2 [Device Info](#62-Device-Info)
+    * 6.3 [Delete device](#63-Delete-device)
+    * 6.4 [Device nickname modification](#64-Device-nickname-modification)
+    * 6.5 [Device alarm time point ](#65-Device-alarm-time-point)
+    * 6.6 [Query device version](#66-Query-device-version)
+    * 6.7 [Query device online status](#67-Query-device-online-status)
+    * 6.8 [Remote wake up doorbell](#68-Remote-wake-up-doorbell)
+    * 6.9 [Upload doorbell message](#69-Upload-doorbell-message)
+    * 6.10 [Download doorbell message](#610-Download-doorbell-message)
+    * 6.11 [Delete doorbell message](#611-Delete-doorbell-message)
+* 7 [Device control](#7-Device-control)
+    * 7.1 [Connect the device](#71-Connect-the-device)
+    * 7.2 [Disconnect device](#72-Disconnect-device)
+    * 7.3 [Get bit rate](#73-Get-bit-rate)
+    * 7.4 [Preview](#74-Preview)
+    * 7.5 [Play back](#75-Play-back)
+    * 7.6 [Cloud Play back](#76-Cloud-Play-back)
+    * 7.7 [Mute](#77-Mute)
+    * 7.8 [Voice intercom](#78-Voice-intercom)
+    * 7.9 [Screenshots](#79-Screenshots)
+    * 7.10 [Video](#710-Video)
+    * 7.11 [Get all the parameters of the device](#711-Get-all-the-parameters-of-the-device)
+    * 7.12 [PTZ control](#712-PTZ-control)
+    * 7.13 [Leave message](#713-Leave-message)
+    * 7.14 [Detect alarm](#714-Detect-alarm)
+    * 7.15 [Storage (SD card)](#715-Storage-SD-card)
+    * 7.16 [Firmware upgrade](#716-Firmware-upgrade)
+    * 7.17 [Sleep mode](#717-Sleep-mode)
+    * 7.18 [Temperature and humidity](#718-Temperature-and-humidity)
+    * 7.19 [Music](#719-Music)
+    * 7.20 [Device volume](#720-Device-volume)
+    * 7.21 [Doorbell volume](#721-Doorbell-volume)
+    * 7.22 [Bell settings](#722-Bell-settings)
+    * 7.23 [Floodlight camera settings](#723-Floodlight-camera-settings)
+        * 7.23.1 [Switch lights](#7231-Switch-lights)
+        * 7.23.2 [Sound alarm switch](#7232-Sound-alarm-switch)
+        * 7.23.3 [Turn on the lights according to the time period](#7233-Turn on the lights according to the time period)
+        * 7.23.4 [Switch lights on and off according to alarm events](#7234-Switch lights on and off according to alarm events)
+* 8[Share Device](#8-Share-Device) 
+* 9[Family](#9-Family)
+    * 9.1 [Family Management](#91-Family-Management)
+        * 9.1.1 [Get family room list(Without device Info)](#911-Get-family-room-list-Without-device-Info)
+        * 9.1.2 [Get family list (Has device Info)](#912-Get-family-list-Has-device-Info)
+        * 9.1.3 [Creat New Family](#913-Creat-New-Family)
+        * 9.1.4 [Updating Family Information](#914-Updating-Family-Information)
+        * 9.1.5 [Delete Family](#915-Delete-Family)
+    * 9.2 [Family Sharing](#92-Family-Sharing)
+        * 9.2.1 [Join a Family](#921-Join-a-Family)
+        * 9.2.2 [Leaving Family](#922-Leaving-Family)
+        * 9.2.3 [Invite members to join a family group](#923-Invite-members-to-join-a-family-group)
+        * 9.2.4 [Family Revoke Invite Member](#924-Family-Revoke-Invite-Member)
+        * 9.2.5 [Family Removal Member](#925-Family-Removal-Member])
+        * 9.2.6 [Adding family members to search by account](#926-Adding-family-members-to-search-by-account)
+        * 9.2.7 [List of Family Members](#927-List-of-Family-Members)
+        * 9.2.8 [Home Device Permission Changes](#928-Home-Device-Permission-Changes)
+        * 9.2.9 [Family Member Name Modification](#929-Family-Member-Name-Modification)
+    * 9.3 [Room Management](#93-Room-Management)
+        * 9.3.1 [Equipment Assignment Room](#931-Equipment-Assignment-Room)
+        * 9.3.2 [Adding a Room](#932-Adding-a-Room)
+        * 9.3.3 [Room Name Modification](#933-Room-Name-Modification)
+        * 9.3.4 [Delete Room](#934-Delete-Room)
+        * 9.3.5 [Remove devices from this room](#935-Remove-devices-from-this-room)
+* 10 [Message](#10-Message)
+    * 10.1 [Get whether all devices have messages](#101-Get-whether-all-devices-have-messages)
+    * 10.2 [Alarm message](#102-Alarm-message) 
+        * 10.2.1 [Get the alarm message of a certain device](#1021-Get-the-alarm-message-of-a-certain-device)
+        * 10.2.2 [Get the latest alarm message list](#1022-Get-the-latest-alarm-message-list)
+        * 10.2.3 [Get the number of days with alarm messages (the last 7 days)](#Get-the-number-of-days-with-alarm-messages-the-last-7-days)
+        * 10.2.4 [Get device alarm message](#1024-Get-device-alarm-message)
+        * 10.2.5 [Load alarm picture](#1025-Load-alarm-picture)
+        * 10.2.6 [Delete multiple device alarm messages](#1026-Delete-multiple-device-alarm-messages)
+    * 10.3 [System messages](#103-System-messages)
+        * 10.3.1 [Get system messages](#1031-Get-system-messages)
+        * 10.3.2 [Delete system messages](#1032-Delete-system-messages)
+    * 10.4 [Shared messages](#104-Shared-messages)
+        * 10.4.1 [Get a list of device shared messages](#1041-Get-a-list-of-device-shared-messages)
+        * 10.4.2 [Delete device shared messages](#1042-Delete-device-shared-messages)
+        * 10.4.3 [Get a list of family shared messages](#1043-Get-a-list-of-family-shared-messages)
+        * 10.4.4 [Delete family shared messages](#1044-Delete-family-shared-messages)
+        * 10.4.5 [Deal family shared messages](#1045-Deal-family-shared-messages)
+        
 <center>
 
 ---
@@ -30,7 +130,7 @@ You need to connect to the cloud, request data from the Meari server through you
 
 # 3. Integrated SDK
 
-## 3.1 Integration preparation 
+## 3.1 Integrated configuration 
 
 ### (1) SDK 
 
@@ -77,7 +177,7 @@ There is a phoneCode file in the Demo project that stores the corresponding coun
 Meari Technology provides uid login system. If the customer has their own user system, they can log in to our SDK through the uid login system.
 ```
 
-### (1) Redirect 
+### 4.1.1 User login 
 ```
 【Description 】
          After the cloud-to-cloud connection, the data obtained from the server v2/third/sdk/login is transferred to the SDK to realize the login operation.
@@ -97,7 +197,7 @@ Meari Technology provides uid login system. If the customer has their own user s
       }];
 ```
 
-### (3) User logout 
+### 4.1.2 User logout 
 
 ```
 【Description 】
@@ -261,7 +361,7 @@ Timely message notification means MeariSDK notifies the current user on the App 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoginInvalidNotification:) name:MeariUserLoginInvalidNotification object:nil];
 ```
 
-# 5.Device distribution network
+# 5. Device distribution network
 
 ```
 Belong to: MeariDeviceActivator tool class
@@ -487,7 +587,7 @@ The general process is-get the network tokon-give the token and wifi information
 
     }];
 ```
-# 6.Device information
+# 6. Device information
 ```
 Belong to：MeariUser
 ```
@@ -789,7 +889,7 @@ MeariDeviceFirmwareInfo:
      }];
 ```
 
-# 7.Device control
+# 7. Device control
 ```
 Belong to：MeariDevice
 ```
@@ -2023,7 +2123,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 ## 7.23 Floodlight camera settings
 
-### (1) Switch lights
+### 7.23.1 Switch lights
 
 ```
 【Description 】
@@ -2049,7 +2149,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      }];
 ```
 
-### (2) Sound alarm switch
+### 7.23.2 Sound alarm switch
 
 ```
 【Description 】
@@ -2074,7 +2174,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 
-### (3) Turn on the lights according to the time period
+### 7.23.3 Turn on the lights according to the time period
 
 ```
 【Description 】
@@ -2099,7 +2199,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
     }];
 ```
 
-### (4) Switch lights on and off according to alarm events
+### 7.23.4 Switch lights on and off according to alarm events
 
 ```
 【Description 】
@@ -2134,7 +2234,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 
-# 8.Share Device
+# 8. Share Device
 ```
 Belong to: MeariUser
 
@@ -2296,7 +2396,7 @@ Belong to: MeariUser
      MeariDeviceNewShareToHimNotification  (Someone requested to share my device with him)
 
 ```
-# 9.Family
+# 9. Family
 ```
 Belong to：MeariFamily
 ```
@@ -2701,7 +2801,7 @@ Return：MeariMemberModel
 ​	 
 
 
-# 10.Message 
+# 10. Message 
 
 ```
 Belong to：MeariMessageInfo
@@ -2892,7 +2992,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     }];
 
 ```
-## 10.3 Aystem messages
+## 10.3 System messages
 ### 10.3.1 Get system messages 
 
 ```
@@ -2955,7 +3055,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
         
     }];
 ```
- ### 10.4.2 Delete shared message
+ ### 10.4.2 Delete device shared messages
 ```
 【Description 】
 	  Delete shared message
@@ -3014,7 +3114,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 
      }];
 ```
-### 10.4.3  Deal family shared messages
+### 10.4.5  Deal family shared messages
 ```
 【Description】
       Deal family shared messages
