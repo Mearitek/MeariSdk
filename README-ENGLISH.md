@@ -23,3 +23,9 @@ Android SDK Document:
 
 iOS SDK Document:
 [中文文档](iOS/docs/觅睿科技iOS%20SDK接入指南.md) | [English document](iOS/docs/MeariKit%20SDK%20Instruction.md)
+
+## FAQ
+[中文](Common/FAQ.md) | [English](FAQ-ENGLISH.md)
+
+## Network request status code
+[中文](Common/Code.md) | [English](Common/Code-ENGLISH.md)
