@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MRDeviceUpgradeVC">
+            <connections>
+                <outlet property="checkTextView" destination="KHL-OS-1Im" id="Rv3-zQ-PDw"/>
+                <outlet property="deviceVersionTextView" destination="juh-k0-u2e" id="pTv-4g-9cU"/>
+                <outlet property="upgradeTextView" destination="D3V-3d-gBd" id="lIv-66-qdC"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="device version" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="juh-k0-u2e">
+                    <rect key="frame" x="20" y="124" width="374" height="40"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="rSN-Ml-hIS"/>
+                    </constraints>
+                    <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="check device whether is  lastest version" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="KHL-OS-1Im">
+                    <rect key="frame" x="31" y="184" width="352" height="80"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="80" id="w7Q-xm-Oth"/>
+                    </constraints>
+                    <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="device version" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="D3V-3d-gBd">
+                    <rect key="frame" x="31" y="344" width="352" height="40"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="KNF-cZ-l2E"/>
+                    </constraints>
+                    <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="avv-6H-77F">
+                    <rect key="frame" x="20" y="64" width="374" height="40"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="ZGr-l3-v0h"/>
+                    </constraints>
+                    <state key="normal" title="Get device version">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="getDeviceVersionAction:" destination="-1" eventType="touchUpInside" id="7rm-mj-EkY"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRq-gf-ZaK">
+                    <rect key="frame" x="20" y="284" width="374" height="40"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="XAz-gA-67r"/>
+                    </constraints>
+                    <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="start upgrade">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="startUpgradeAction:" destination="-1" eventType="touchUpInside" id="cAv-dX-mzK"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="D3V-3d-gBd" firstAttribute="trailing" secondItem="KHL-OS-1Im" secondAttribute="trailing" id="548-wv-YbM"/>
+                <constraint firstItem="JRq-gf-ZaK" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="F7y-YJ-ODb"/>
+                <constraint firstItem="D3V-3d-gBd" firstAttribute="top" secondItem="JRq-gf-ZaK" secondAttribute="bottom" constant="20" id="Fl4-gG-0yf"/>
+                <constraint firstItem="KHL-OS-1Im" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="31" id="Ost-Yk-F8Y"/>
+                <constraint firstItem="juh-k0-u2e" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="SRL-ZD-POd"/>
+                <constraint firstItem="juh-k0-u2e" firstAttribute="top" secondItem="avv-6H-77F" secondAttribute="bottom" constant="20" id="VQr-OU-7Kr"/>
+                <constraint firstItem="avv-6H-77F" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="20" id="W9o-Wf-xOo"/>
+                <constraint firstItem="KHL-OS-1Im" firstAttribute="top" secondItem="juh-k0-u2e" secondAttribute="bottom" constant="20" id="YkA-5v-aoO"/>
+                <constraint firstItem="D3V-3d-gBd" firstAttribute="leading" secondItem="KHL-OS-1Im" secondAttribute="leading" id="bnm-tT-h6q"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="juh-k0-u2e" secondAttribute="trailing" constant="20" id="mB7-N8-7uA"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="avv-6H-77F" secondAttribute="trailing" constant="20" id="neI-oY-56E"/>
+                <constraint firstItem="JRq-gf-ZaK" firstAttribute="top" secondItem="KHL-OS-1Im" secondAttribute="bottom" constant="20" id="nzC-mR-Kqz"/>
+                <constraint firstItem="avv-6H-77F" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="20" id="s07-Wc-DlX"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="JRq-gf-ZaK" secondAttribute="trailing" constant="20" id="t6G-dt-kGa"/>
+                <constraint firstItem="KHL-OS-1Im" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="xbo-Ut-LuM"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="145" y="63"/>
+        </view>
+    </objects>
+</document>
