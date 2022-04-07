@@ -14,5 +14,8 @@
 
    
 
-4. Follow the app sdk guide: <https://github.com/Mearitek/MeariSdk/blob/MeariSdk-3.1.0/Android/docs/Meari%20Android%20SDK%20Guide.md>
+4. Follow the app sdk guide: 
 
+  [Android SDK Document](Android/docs/Meari%20Android%20SDK%20Guide.md)
+
+  [iOS SDK Document](Ios/docs/MeariKit%20SDK%20Instruction.md)
