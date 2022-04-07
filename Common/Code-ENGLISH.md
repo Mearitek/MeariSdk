@@ -1,254 +1,264 @@
-网络请求错误状态码
+
+### Network request status code
 
 + 1001
-  ```请求成功```
+```Request successful```
 
 + 1002
-  ```请求失败```
+```Request failed```
 
 + 1003
-  ```参数不合法```
+```The parameter is invalid```
 
 + 1004
-  ```无效的验证码```
+```Invalid verification code```
 
 + 1005
-  ```系统异常```
+```System exception```
 
 + 1006
-  ```数据库异常```
+```Database exception```
 
 + 1007
-  ```数据不存在```
+```Data does not exist```
 
 + 1008
-  ```验证码错误```
+```Verification code error```
 
 + 1009
-  ```验证码已过期```
+```The verification code has expired```
 
 + 1010
-  ```已经是好友```
+```Already a friend```
 
 + 1011
-  ```消息等待处理中```
+```Message waiting to be processed```
   
 + 1012
-  ```处理成功```
+```Processing successful```
   
 + 1013
-  ```设备已经被别人添加```
+```The device has been added by someone else```
   
 + 1014
-  ```无未读消息```
+```No unread messages```
   
 + 1015
-  ```有未读消息```
+```There are unread messages```
 
 + 1016
-  ```设备已分享/重复分享```
+```The device has been shared/duplicated```
 
 + 1017
-  ```用户登录密码错误```
+```User login password is incorrect```
 
 + 1018
-  ```用户账号不存在```
+```User account does not exist```
 
 + 1019
-  ```用户账号已存在```
+```User account already exists```
   
 + 1020
- ```密码正确```
+```Password is correct```
 
 + 1021
- ```设备已被分享```
+```The device has been shared```
 
 + 1022
-  ```添加好友，输入是自己账号```
+```Add friends, input is your own account```
 
 + 1023
-  ```异地登录/无效的用户令牌```
+```Location Login/Invalid User Token```
 
 + 1024
-  ```去处理消息/跳转处理消息页面```
+```Go to process message/jump to process message page```
 
 + 1025
-  ```支付金额计算错误```
+```Payment amount calculation error```
   
 + 1026
-  ```订单超时```
+```Order Timeout```
  
 + 1027
-  ```订单数据错误```
+```Order data error```
 
 + 1028
-  ```未付款```
+```Unpaid```
   
- + 1028
-  ```不能重复试用```
++ 1028
+```Can't try again```
 
 + 1030
-  ```用户和设备不匹配```
+```User and device mismatch```
 
 + 1031
-  ```邮箱不存在```
+```Mailbox does not exist```
 
 + 1032
-  ```綁定攝影機到NVR，一台NVR最多能綁定8台攝影機```
+```Bind cameras to NVR, one NVR can bind up to 8 cameras```
 
 + 1033
-  ```无效```
+```invalid```
 
 + 1038
-  ```无法获取到夏令时```
+```Can't get daylight saving time```
 
 + 1039
-  ```短信发送失败```
+```SMS sending failed```
 
 + 1040
-  ```不是好友关系```
+```Not a friendship```
 
 + 1041
-  ```无效的涂鸦令牌```
+```Invalid graffiti token```
 
 + 1042
-  ```无效```
+```invalid```
 
 + 1046
-  ```门铃没被抢断```
+```Door bell was not stolen```
 
 + 1045
-  ```门铃已被抢断```
+```The doorbell has been stolen```
 
 + 1047
-  ```门铃正被接听，无法挂断```
+```The doorbell is being answered and cannot be hung up```
 
 + 1048
-  ```用户账号已在其它区域被注册```
+```User account has been registered in another area```
 
 + 1049
-  ```设备没有被绑定```
+```The device is not bound```
 
 + 1050
-  ```无效的分享关系```
+```Invalid share relationship```
 
 + 1051
-  ```订单重复支付```
+```Repeated order payment```
 
 + 1052
-  ```订单支付失败```
+```Order payment failed```
 
 + 1055
-  ```好友分享成功```
+```Friends share success```
 
 + 1057
-  ```出厂认证失败```
+```Factory authentication failed```
 
 + 1058
-  ```老的iothub处理失败```
+```The old iothub processing failed```
 
 + 1059
-  ```设备已经被自己添加```
+```The device has been added by itself```
 
 + 1062
-  ```无效的ip地址```
+```Invalid ip address```
 
 + 1064
-  ```无效```
+```invalid```
 
 + 1066
-  ```设置失败```
+```Setup failed```
 
 + 1067
-  ```云存储激活码已被使用```
+```Cloud storage activation code has been used```
 
 + 1068
-  ```无效的云存储激活码```
+```Invalid cloud storage activation code```
 
 + 1069
-  ```设备分享的对象是自己```
+```The object of device sharing is yourself```
 
 + 1070
-  ```中继设备不存在```
+```Relay device does not exist```
 
 + 1071
-  ```是强绑定的经销商```
+``` is a strongly bound reseller```
 
 + 1072
-  ```中继添加超过限制的子设备数量```
+```Relay add the number of sub-devices exceeding the limit```
 
 + 1073
-  ```中继添加限制锁```
+```Add Restriction Lock on Relay```
 
 + 1074
-  ```无效```
+```invalid```
 
 
 + 1101
-  ```默认家庭无法删除```
+```Default family cannot be deleted```
   
 + 1102
-  ```該家庭不存在```
+```The family does not exist```
         
 + 1103
-  ```該房间不存在```
+```The room does not exist```
 
 + 1104
-  ```该设备不在房间内```
+```The device is not in the room```
            
 + 1105
-	```家庭已存在该成员```
-	
+  ```The member of the family already exists```
+  
 + 1106
-  ```沒有權限，用戶不是家庭所有者```
+```No permissions, user is not a family owner```
   
 + 1107
-  ```用戶是家庭主人```
+```User is the home owner```
             
 + 1108:
-  ```請求成功，等待對方處理```
+```The request is successful, waiting for the other party to process```
   
 + 1109:
-  ```消息已被处理```
+```The message has been processed```
    
 + 1110:
-  ```数量已达上限```
+```The number has reached the upper limit```
    
 + 1111:
-  ```成员已不在家庭中```
+```The member is no longer in the family```
 
 + 1113
-  ```无权处理此家庭消息```
+```Not authorized to process this family message```
      
 + 1114
-  ```家庭名称已存在```
+```Family name already exists```
 
 + 1150
-  ```设备未激活（4g）```
+```Device is not activated (4g)```
   
 + 1191
-  ```该邮箱已绑定```
+```The mailbox has been bound```
   
 + 1195
-  ```该账号不支持迁移```
+```This account does not support migration```
 
-New Add
+
+### Added status code
 
 + 2001
-```添加设备-无效的参数deviceUUID```
+```Add device - invalid parameter deviceUUID```
+
 + 2002
-```添加设备-p2p信息为空/p2p类型为空```
+```Add device-p2p info is empty/p2p type is empty```
+
 + 2003
-```添加设备-无可用的p2p号```
+```Add device - no p2p number available```
+
 + 2004
-```添加设备-获取iot/mqtt信息失败```
+```Add device - failed to get iot/mqtt info```
+
 + 2005
-```添加设备-设备添加失败```
+```Add Device - Device Add Failed```
+
 + 2006
-```添加设备-sn-md5-deviceKey校验失败```
+```Add device-sn-md5-deviceKey verification failed```
+
 + 2007
-```添加设备-license信息不存在```
+```Add device - license information does not exist```
+
 + 2008
-```添加设备-no-mac校验数据不存在或数据异常```
+```Add device -no-mac verification data does not exist or data is abnormal```
+
 + 2009
-```添加设备-未出厂认证/mac冲突```
+```Add device - not factory certified/mac conflict```
