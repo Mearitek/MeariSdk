@@ -22,4 +22,4 @@ Android SDK Document:
 [中文文档](Android/docs/觅睿科技Android%20SDK接入指南.md) |  [English document](Android/docs/Meari%20Android%20SDK%20Guide.md)
 
 iOS SDK Document:
-[中文文档](Ios/docs/觅睿科技iOS%20SDK接入指南.md) | [English document](Ios/docs/MeariKit%20SDK%20Instruction.md)
+[中文文档](iOS/docs/觅睿科技iOS%20SDK接入指南.md) | [English document](iOS/docs/MeariKit%20SDK%20Instruction.md)

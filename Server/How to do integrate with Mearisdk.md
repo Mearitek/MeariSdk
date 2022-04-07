@@ -18,4 +18,4 @@
 
   [Android SDK Document](Android/docs/Meari%20Android%20SDK%20Guide.md)
 
-  [iOS SDK Document](Ios/docs/MeariKit%20SDK%20Instruction.md)
+  [iOS SDK Document](iOS/docs/MeariKit%20SDK%20Instruction.md)
