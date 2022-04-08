@@ -4,17 +4,17 @@
 * 1 [Functional Overview ](#1-Functional-Overview)
 * 2 [Integration preparation](#2-Integration-preparation)
 * 3 [Integrated SDK](#3-Integrated-SDK)
-    * 3.1 [Integrated configuration](#31-Integrated-configuration)
-    * 3.2 [Initialize the SDK](#32-Initialize-the-SDK)
+    * 3.1 [Add framework ](#31-Add-framework )
+    * 3.2 [Environment configuration ](#32-Environment-configuration )
+    * 3.3 [Initialize the SDK](#33-Initialize-the-SDK)
 * 4 [User Management](#4-User-Management)
-    * 4.1 [User uid login system](#41-User-uid-login-system)
-        * 4.1.1 [User login](#411-User-login)
-        * 4.1.2 [User logout](#412-User-logout)
-    * 4.2 [User upload avatar](#42-User-upload-avatar)
-    * 4.3 [Modify nickname](#43-Modify-nickname)
-    * 4.4 [APNS Message Push](#44-APNS-Message-Push)
-    * 4.5 [Data model](#45-Data-model)
-    * 4.6 [User message notification](#46-User-message-notification)
+    * 4.1 [User login](#41-User-login)
+    * 4.2 [User logout](#42-User-logout)
+    * 4.3 [User upload avatar](#43-User-upload-avatar)
+    * 4.4 [Modify nickname](#44-Modify-nickname)
+    * 4.5 [APNS Message Push](#45-APNS-Message-Push)
+    * 4.6 [Data model](#46-Data-model)
+    * 4.7 [User message notification](#47-User-message-notification)
 * 5 [Device distribution network](#5-Device-distribution-network)
     * 5.1 [Get distribution network token](#51-Get-distribution-network-token)
     * 5.2 [QR code distribution network](#52-QR-code-distribution-network)
@@ -130,23 +130,19 @@ You need to connect to the cloud, request data from the Meari server through you
 
 # 3. Integrated SDK
 
-## 3.1 Integrated configuration 
-
-### (1) SDK 
+## 3.1 Add framework 
 
 ```
-Drag the downloaded MeariKit.framework to the project
+Add MeariKit.framework to target -> General -> Embedded Binaries or target -> General -> Framework, Libraries, and Embedded Content 
 ```
-
-### (2) Environment configuration  
+![framework](framework.png)
+## 3.2 Environment configuration  
 
 ```
-1. Add MeariKit.framework to target -> General -> Embedded Binaries or target -> General -> Framework, Libraries, and Embedded Content 
-2. Disable bitcode: In the project panel, select target -> Build Settings -> Build Options -> Enable Bitcode -> Set to No
-3. Add files that support C++: change any .m file to .mm file, for example, change AppDelegate.m to AppDelegate.mm format
+Disable bitcode: In the project panel, select target -> Build Settings -> Build Options -> Enable Bitcode -> Set to No
 ```
-
-## 3.2 Initialize the SDK 
+![environment](environment.png)
+## 3.3 Initialize the SDK 
 
 ```
 Belong to: MeariSdk tools
@@ -171,13 +167,7 @@ Meari Technology SDK provides a user management system: UID user system
 There is a phoneCode file in the Demo project that stores the corresponding country code and phone code
 ```
 
-## 4.1 User uid login system 
-
-```
-Meari Technology provides uid login system. If the customer has their own user system, they can log in to our SDK through the uid login system.
-```
-
-### 4.1.1 User login 
+## 4.1 User login 
 ```
 【Description 】
          After the cloud-to-cloud connection, the data obtained from the server v2/third/sdk/login is transferred to the SDK to realize the login operation.
@@ -197,7 +187,7 @@ Meari Technology provides uid login system. If the customer has their own user s
       }];
 ```
 
-### 4.1.2 User logout 
+## 4.2 User logout 
 
 ```
 【Description 】
@@ -215,7 +205,7 @@ Meari Technology provides uid login system. If the customer has their own user s
 
      }];
 ```
-## 4.2 User upload avatar 
+## 4.3 User upload avatar 
 
 ```
 【Description 】
@@ -236,7 +226,7 @@ Meari Technology provides uid login system. If the customer has their own user s
     
      }];
 ```
-## 4.3 Modify nickname 
+## 4.4 Modify nickname 
 
 ```
 【Description 】
@@ -257,7 +247,7 @@ Meari Technology provides uid login system. If the customer has their own user s
     
      }];
 ```
-## 4.4 APNS Message Push
+## 4.5 APNS Message Push
 
 ```
 【Description 】
@@ -317,7 +307,7 @@ Meari Technology provides uid login system. If the customer has their own user s
 
 ```
 
-## 4.5 Data model 
+## 4.6 Data model 
 
 User-related data model.
 
@@ -341,7 +331,7 @@ User-related data model.
 @property (nonatomic, assign, readonly) MeariThirdLoginType thirdLoginType; 
 ```
 
-## 4.6 User message notification 
+## 4.7 User message notification 
 
 ```
 Timely message notification means MeariSDK notifies the current user on the App side and some status of the device under the user account in time to facilitate the App side to achieve a better user experience

@@ -2,17 +2,17 @@
 * 1 [功能概述](#1-功能概述)
 * 2 [集成准备](#2-集成准备)
 * 3 [集成SDK](#3-集成SDK)
-    * 3.1 [集成配置](#31-集成配置)
-    * 3.2 [初始化SDK](#32-初始化SDK)
+    * 3.1 [工程中引入Framework](#31-工程中引入Framework)
+    * 3.2 [环境配置](#32-环境配置)
+    * 3.3 [初始化SDK](#33-初始化SDK)
 * 4 [用户管理](#4-用户管理)
-    * 4.1 [用户uid登录体系](#41-用户uid登录体系)
-        * 4.1.1 [用户uid登录](#411-用户uid登录)
-        * 4.1.2 [用户登出](#412-用户登出)
-    * 4.2 [用户上传头像](#42-用户上传头像)
-    * 4.3 [修改昵称](#43-修改昵称)
-    * 4.4 [注册消息推送](#44-注册消息推送)
-    * 4.5 [数据模型](#45-数据模型)
-    * 4.6 [消息通知](#46-消息通知)
+    * 4.1 [用户登录](#41-用户登录)
+    * 4.2 [用户登出](#42-用户登出)
+    * 4.3 [用户上传头像](#43-用户上传头像)
+    * 4.4 [修改昵称](#44-修改昵称)
+    * 4.5 [注册消息推送](#45-注册消息推送)
+    * 4.6 [数据模型](#46-数据模型)
+    * 4.7 [消息通知](#47-消息通知)
 * 5 [设备配网](#5-设备配网)
     * 5.1 [获取配网token](#51-获取配网token)
     * 5.2 [二维码配网](#52-二维码配网)
@@ -116,6 +116,7 @@
 觅睿科技APP SDK提供了与硬件设备、觅睿云通讯的接口封装，加速应用开发过程，主要包括以下功能：
 - 账号体系 (登录、登出、修改用户信息、注册推送等通用账号功能) 
 - 硬件设备相关 (配网、控制、状态上报、固件升级、预览回放等功能) 
+- 云存储服务(获取开通状态、开通服务、创建订单、邀请成员等功能) 
 - 家庭组相关 (新建家庭组、新建房间、分配房间、邀请成员等功能) 
 - 消息中心（报警消息、设备分享消息、家庭分享消息、系统消息）
 
@@ -128,23 +129,19 @@
 
 # 3. 集成SDK 
 
-## 3.1 集成配置 
-
-### (1) 引入sdk包 
+## 3.1 工程中引入Framework  
 
 ```
-将下载好的MeariKit.framework拖到工程中
+ 将MeariKit.framework 添加到 target -> General -> Embedded Binaries 或者 target -> General -> Framework,Libraries, and Embedded Content
 ```
-
-### (2) 环境配置  
+![framework](framework.png)
+## 3.2 环境配置  
 
 ```
-1. 将MeariKit.framework 添加到 target -> General -> Embedded Binaries 或者 target -> General -> Framework,Libraries, and Embedded Content 
-2. 禁用bitcode：在工程面板中，选中target -> Build Settings -> Build Options -> Enable Bitcode -> 设为 No
-3. 添加支持c++的文件：将任意一个.m文件改为.mm文件，例如将AppDelegate.m 改为 AppDelegate.mm格式
+禁用bitcode：在工程面板中，选中target -> Build Settings -> Build Options -> Enable Bitcode -> 设为 No
 ```
-
-## 3.2 初始化SDK
+![environment](environment.png)
+## 3.3 初始化SDK
 
 ```
 所属：MeariSdk工具类
@@ -154,7 +151,10 @@
       通过云云对接后，从服务器 v2/third/sdk/redirect 中获取的数据传入并初始化SDK.
 【函数调用】
 
-- (void)startSDKWithRedirectInfo:(NSDictionary *)info;    
+- (void)startSDKWithRedirectInfo:(NSDictionary *)info;
+
+【代码范例】
+       [[MeariSDK sharedInstance] startSDKWithRedirectInfo:@{}]; 
 ```
 
 
@@ -168,13 +168,7 @@
 Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话代码
 ```
 
-## 4.1 用户uid登录体系 
-
-```
-觅睿科技提供uid登陆体系。如果客户自有用户体系，那么可以通过uid登陆体系，接入我们的sdk。
-```
-
-### 4.1.1 用户uid登录 
+## 4.1 用户登录 
 
 ```
 【描述】
@@ -197,7 +191,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 
 ```
 
-### 4.1.2 用户登出 
+## 4.2 用户登出 
 
 ```
 【描述】
@@ -215,7 +209,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 
      }];
 ```
-## 4.2 用户上传头像 
+## 4.3 用户上传头像 
 
 ```
 【描述】
@@ -236,7 +230,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     
      }];
 ```
-## 4.3 修改昵称
+## 4.4 修改昵称
 
 ```
 【描述】
@@ -257,7 +251,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     
      }];
 ```
-## 4.4 注册消息推送
+## 4.5 注册消息推送
 
 ```
 【描述】
@@ -314,7 +308,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 
 ```
 
-## 4.5 数据模型 
+## 4.6 数据模型 
 
 用户相关的数据模型。
 
@@ -337,7 +331,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 @property (nonatomic, assign) BOOL notificationSound;   // 消息推送是否有声音
 @property (nonatomic, assign, readonly) MeariThirdLoginType thirdLoginType; 第三方登录类型
 ```
-## 4.6 消息通知 
+## 4.7 消息通知 
 
 ```
 及时消息通知是MeariSDK及时通知App端当前用户和用户账户下设备的一些状态，以方便App端实现更好的用户体验
