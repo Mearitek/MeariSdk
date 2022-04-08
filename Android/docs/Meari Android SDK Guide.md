@@ -1191,6 +1191,75 @@ deviceController.stopPlaybackSDCard (new MeariDeviceListener () {
 ## 6.3 Device related
 ### 6.3.1 Doorbell Answering Process
 
+- 1 Receive doorbell call message
+> Press the doorbell, receive the doorbell call mqtt message callback or push message
+> Need to connect to mqtt or access push
+```
+/**
+ * doorbell call callback
+ * @param bellJson doorbell info
+ * @param isUpdateScreenshot Whether this message is to update the picture; false-call; true-update the picture
+ */
+public void onDoorbellCall(String bellJson, boolean isUpdateScreenshot);
+```
+
+- 2 Pop up the doorbell answering page
+> Through the mqtt message callback or click on the push message to pop up the doorbell answering page
+> Parse bellJson and display relevant information
+```
+//Get doorbell information
+bellJsonStr = bundle.getString("bellInfo");
+try {
+    JSONObject bellJsonObject = new JSONObject(bellJson);
+    CameraInfo bellInfo = JsonUtil.getCameraInfo(bellJsonObject);
+} catch (JSONException e) {
+}
+```
+
+- 3 Answer or hang up
+> Handle the logic of answering, hanging up, etc.
+> Answering is similar to previewing
+```
+// answer
+MeariUser.getInstance().postAnswerBell(bellInfo.getDeviceID(), String.valueOf(bellInfo.getMsgID()), new IStringResultCallback() {
+    @Override
+    public void onError(int code, String error) {
+        if (code == 1045) {
+            // someone has answered
+        } else {
+            // other errors, close
+        }
+    }
+
+    @Override
+    public void onSuccess(String result) {
+        acceptSuccess();
+    }
+});
+
+private void acceptSuccess() {
+    // Heartbeat every 20s
+    MeariUser.getInstance().postSendBellHeartBeat(bellInfo.getDeviceID());
+    // StartConnect and preview
+    ...
+}
+
+// hang up
+MeariUser.getInstance().postHangUpBell(bellInfo.getDeviceID(), new IResultCallback() {
+    @Override
+    public void onSuccess() {
+        // Close the hole, close the page
+        ...
+    }
+
+    @Override
+    public void onError(int code, String error) {
+        // Close the hole, close the page
+        ...
+    }
+});
+```
+
 # 7 Share device
 
 ## 7.1 Related Classes

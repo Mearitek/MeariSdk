@@ -1261,8 +1261,74 @@ MeariUser.getInstance().getCloudVideo(deviceid, index, year, month, day, new ICl
 
 ## 6.3 设备相关
 ### 6.3.1 门铃接听流程
+
+- 1 收取门铃呼叫消息
+> 按门铃，收到门铃呼叫mqtt消息回调或推送消息
+> 需要连接mqtt或接入推送
+```
+/**
+ * 门铃呼叫回调
+ * @param bellJson 门铃信息
+ * @param isUpdateScreenshot 本次消息是否是更新图片；false-呼叫；true-更新图片
+ */
+public void onDoorbellCall(String bellJson, boolean isUpdateScreenshot);
 ```
 
+- 2 弹出门铃接听页面
+> 通过mqtt消息回调或点击推送消息弹出门铃接听页面
+> 解析bellJson，展示相关信息
+```
+//获取门铃信息
+bellJsonStr = bundle.getString("bellInfo");
+try {
+    JSONObject bellJsonObject = new JSONObject(bellJson);
+    CameraInfo bellInfo = JsonUtil.getCameraInfo(bellJsonObject);
+} catch (JSONException e) {
+}
+```
+
+- 3 接听或挂断
+> 处理接听、挂断等逻辑
+> 接听与预览相似
+```
+// 接听
+MeariUser.getInstance().postAnswerBell(bellInfo.getDeviceID(), String.valueOf(bellInfo.getMsgID()), new IStringResultCallback() {
+    @Override
+    public void onError(int code, String error) {
+        if (code == 1045) {
+            // 有人已接听
+        } else {
+            // 其他错误，关闭
+        }
+    }
+
+    @Override
+    public void onSuccess(String result) {
+        acceptSuccess();
+    }
+});
+
+private void acceptSuccess() {
+    // 每20s发一次心跳
+    MeariUser.getInstance().postSendBellHeartBeat(bellInfo.getDeviceID());
+    // 开始打洞预览
+    ...
+}
+
+// 挂断
+MeariUser.getInstance().postHangUpBell(bellInfo.getDeviceID(), new IResultCallback() {
+    @Override
+    public void onSuccess() {
+        // 关洞，关闭页面
+        ...
+    }
+
+    @Override
+    public void onError(int code, String error) {
+        // 关洞，关闭页面
+        ...
+    }
+});
 ```
 
 # 7 分享设备
