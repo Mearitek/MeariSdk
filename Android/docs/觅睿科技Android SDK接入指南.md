@@ -2508,6 +2508,8 @@ MeariUser.getInstance().closeDeviceAlarmPush(cameraInfo.getDeviceID(), status, n
 });
 ```
 
+<span id="jump"></span>
+
 ### 9.5.20 报警频率设置
 ```
 【描述】
