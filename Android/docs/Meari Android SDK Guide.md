@@ -37,6 +37,8 @@
     * 6.2 [Device preview and playback](#62-Device-preview-and-playback)
         * 6.2.1 [Device Preview](#621-Device-Preview)
         * 6.2.2 [Device SD card playback](#622-Device-SD-card-playback)
+    * 6.3 [Device related](#63-Device-related)
+        * 6.3.1 [Doorbell Answering Process](#631-Doorbell-Answering-Process) 
 * 7 [Share device](#7-Share-device)
     * 7.1 [Related Classes](#71-Related-Classes)
     * 7.2 [Get device share list](#72-Get-device-share-list)
@@ -1185,6 +1187,9 @@ deviceController.stopPlaybackSDCard (new MeariDeviceListener () {
     }
 });
 ```
+
+## 6.3 Device related
+### 6.3.1 Doorbell Answering Process
 
 # 7 Share device
 

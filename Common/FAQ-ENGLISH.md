@@ -1,7 +1,8 @@
-### FAQ
+
+### FAQ | [常见问题](FAQ.md)
 
 - 1.The answering process of the doorbell
-[Android](../Android/docs/Meari%20Android%20SDK%20Guide.md#6-设备控制)
+[Android](../Android/docs/Meari%20Android%20SDK%20Guide.md#631-Doorbell-Answering-Process)
 [iOS](../iOS/docs/MeariKit%20SDK%20Instruction.md#94)
 - 2.Device upgrade process
 [Android](../Android/docs/Meari%20Android%20SDK%20Guide.md#94-Upgrade-Device-Firmware)

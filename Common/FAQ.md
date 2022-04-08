@@ -1,8 +1,8 @@
 
-### 常见问题
+### 常见问题 | [FAQ](FAQ-ENGLISH.md)
 
 - 1.门铃的接听流程
-[Android](../Android/docs/觅睿科技Android%20SDK接入指南.md#6-设备控制)
+[Android](../Android/docs/觅睿科技Android%20SDK接入指南.md#631-门铃接听流程)
 [iOS](../iOS/docs/觅睿科技iOS%20SDK接入指南.md#94)
 - 2.设备升级流程
 [Android](../Android/docs/觅睿科技Android%20SDK接入指南.md#94-升级设备固件)
