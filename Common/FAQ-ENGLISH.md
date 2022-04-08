@@ -55,7 +55,7 @@
 - 4.How to set the alarm interval of the device
 
 	[Android](../Android/docs/Meari%20Android%20SDK%20Guide.md#9520-Alarm-frequency-setting)
-	[iOS](../iOS/docs/MeariKit%20SDK%20Instruction.md#7143-Alarm-interval)
+	[iOS](../iOS/docs/MeariKit%20SDK%20Instruction.md#7143-alarm-interval)
 - 5.How to set the playback duration of the device
 	
 	[Android](../Android/docs/Meari%20Android%20SDK%20Guide.md#9522-SD-card-recording-type-and-time-setting)

@@ -1662,7 +1662,8 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 【Be applicable】
      General low-power camera
      It can be judged by device.supportPir == YES
-     Get the Pir level supported by the device through device.supportPirSensitivity
+     Get whether the device supports multi-gear adjustment through device.supportPirSensitivity
+     Get the specific supported level of the device from device.supportPirLevel
     
 【Function】
      /**
