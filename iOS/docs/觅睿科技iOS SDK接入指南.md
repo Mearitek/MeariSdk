@@ -4,7 +4,8 @@
 * 3 [集成SDK](#3-集成SDK)
     * 3.1 [工程中引入Framework](#31-工程中引入Framework)
     * 3.2 [环境配置](#32-环境配置)
-    * 3.3 [初始化SDK](#33-初始化SDK)
+    * 3.3 [添加依赖库](#33-添加依赖库)
+    * 3.4 [初始化SDK](#34-初始化SDK)
 * 4 [用户管理](#4-用户管理)
     * 4.1 [用户登录](#41-用户登录)
     * 4.2 [用户登出](#42-用户登出)
@@ -36,6 +37,8 @@
     * 7.3 [获取码率](#73-获取码率)
     * 7.4 [预览](#74-预览)
     * 7.5 [回放](#75-回放)
+        * 7.5.1 [回放相关](#751-回放相关)
+        * 7.5.2 [设置回放时长](#752-设置回放时长)
     * 7.6 [云回放](#76-云回放)
     * 7.7 [静音](#77-静音)
     * 7.8 [语音对讲](#78-语音对讲)
@@ -45,6 +48,9 @@
     * 7.12 [云台控制](#712-云台控制)
     * 7.13 [留言](#713-留言)
     * 7.14 [侦测报警](#714-侦测报警)
+        * 7.14.1 [移动侦测](#7141-移动侦测)
+        * 7.14.2 [人体侦测](#7142-人体侦测)
+        * 7.14.3 [报警间隔](#7143-报警间隔)
     * 7.15 [存储(SD卡)](#715-存储(SD卡))
     * 7.16 [固件升级](#716-固件升级)
     * 7.17 [休眠模式](#717-休眠模式)
@@ -58,6 +64,7 @@
         * 7.23.2 [报警器开关](#7232-报警器开关)
         * 7.23.3 [按时间段开灯](#7233-按时间段开灯)
         * 7.23.4 [按报警事件开关灯](#7234-按报警事件开关灯)
+    * 7.24 [门铃接听流程](724-门铃接听流程)
 * 8[设备分享](#8-设备分享) 
 * 9[家庭](#9-家庭)
     * 9.1 [家庭管理](#91-家庭管理)
@@ -116,7 +123,7 @@
 觅睿科技APP SDK提供了与硬件设备、觅睿云通讯的接口封装，加速应用开发过程，主要包括以下功能：
 - 账号体系 (登录、登出、修改用户信息、注册推送等通用账号功能) 
 - 硬件设备相关 (配网、控制、状态上报、固件升级、预览回放等功能) 
-- 云存储服务(获取开通状态、开通服务、创建订单、邀请成员等功能) 
+- 云存储服务(获取开通状态、开通服务、创建订单、订单列表等功能) 
 - 家庭组相关 (新建家庭组、新建房间、分配房间、邀请成员等功能) 
 - 消息中心（报警消息、设备分享消息、家庭分享消息、系统消息）
 
@@ -141,7 +148,12 @@
 禁用bitcode：在工程面板中，选中target -> Build Settings -> Build Options -> Enable Bitcode -> 设为 No
 ```
 ![environment](environment.png)
-## 3.3 初始化SDK
+## 3.3 添加依赖库 
+```
+使用cocospod 引入framework所需要的AWSS3 和 AliyunOSSiOS，如下所示
+```
+![pod](pod.png)
+## 3.4 初始化SDK
 
 ```
 所属：MeariSdk工具类
@@ -1037,6 +1049,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
 ## 7.5 回放 
 
+### 7.5.1 回放相关
 ```
 【描述】
      对摄像机的录像进行回放
@@ -1166,6 +1179,32 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
      }];
 ```
+### 7.5.2 设置回放时长
+```
+【描述】
+    设置摄像机的录像时长
+    可以通过[self.device supportSdRecordLevels] 获取支持的录像回放时长
+
+【函数调用】
+    /**
+    Set playback level
+    设置回放等级
+ 
+    @param level MeariDeviceRecordDuration  回放等级
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)setPlaybackRecordVideoLevel:(MeariDeviceRecordDuration)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+【代码范例】
+     //设置录像回放时长
+    [self.camera setPlaybackRecordVideoLevel:levels success:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];
+```
+
 ## 7.6 云回放 
 ```
 【描述】
@@ -1598,12 +1637,13 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
 ## 7.14 侦测报警 
 
+### 7.14.1 移动侦测
 ```
 【描述】
      移动侦测的设置 
 【适用】
      一般的非低功耗摄像机
-     可以通过 device.info.capability.caps.md == YES 来判断
+     可以通过 device.info.capability.caps.md == YES 来判断是否支持此功能
 【函数调用】
      /**
      设置报警级别
@@ -1621,13 +1661,17 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      } failure:^(NSString *error) {
  
      }];
+```
+### 7.14.2 人体侦测
 
+```
 【描述】
-     设置门铃单个PIR(人体侦测)报警类型)
+     设置门铃单个PIR(人体侦测)报警级别
 【适用】
      一般的低功耗摄像机
-     可以通过 device.supportPir == YES 来判断 
-     通过 device.supportPirSensitivity 获取设备支持的Pir level
+     可以通过 device.supportPir == YES 来判断是否支持人体检测 
+     通过 device.supportPirSensitivity 获取设备是否支持多档位调节
+     device.supportPirLevel 获取设备具体支持的档位
     
 【函数调用】
      /**
@@ -1644,6 +1688,32 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      } failure:^(NSString *error) {
  
      }];
+```
+### 7.14.3 报警间隔
+```
+【描述】
+     设置报警间隔
+【适用】
+     一般的低功耗摄像机
+    可以根据设备列表里的camera.supportAlarmInterval的判断当前设备是否支持报警间隔
+    可以通过[self.device supportAlarmFrequencyIntervalLevels] 获取支持的报警间隔数组
+    
+【函数调用】
+     /**
+     @param level alarm level (报警间隔级别)
+     @param success Successful callback (成功回调)
+     @param failure failure callback (失败回调)
+     */
+    - (void)setAlarmInterval:(MeariDeviceCapabilityAFQ)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+【代码范例】
+     //设置报警间隔
+    [self.camera setAlarmInterval:afqType success:^{
+        [weakSelf.tableView reloadData];
+        MR_HUD_SHOW_TOAST(MeariLocalString(@"toast_set_success"))
+    } failure:^(NSError *error) {
+        MR_HUD_SHOW_ERROR(error)
+    }];
 
 ```
 
@@ -2235,6 +2305,48 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
      }];
 ```
+
+## 7.24 门铃接听流程
+
+- 1 收取门铃呼叫消息
+> 按门铃，收到门铃呼叫mqtt消息回调或推送消息
+> 注册通知接受通知回调的得到呼叫信息
+```
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceHasVisitorNotification:) name:MeariDeviceHasVisitorNotification object:nil];
+- (void)deviceHasVisitorNotification:(NSNotification *)sender {
+    MeariMqttMessageInfo *msg = sender.object;
+}
+```
+
+- 2 根据获取的呼叫消息弹出接听页面
+
+- 3 接听或挂断
+> 处理接听、挂断等逻辑
+> 接听与预览相似
+```
+/**
+ // Used to answer the doorbell, must be used with "requestReleaseAnswerAuthorityWithID"
+ // 用于接听门铃, 必须和“ requestReleaseAnswerAuthorityWithID” 一起使用
+ 
+ @param deviceID 设备ID
+ @param messageID 消息ID (the data create by push, or mqtt)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)requestAnswerAuthorityWithDeviceID:(NSInteger)deviceID messageID:(NSInteger)messageID  success:(MeariSuccess_RequestAuthority)success failure:(MeariFailure)failure;
+
+/**
+ // Used to hang up the doorbell, must be used with "requestAnswerAuthorityWithDeviceID"
+ // 用于挂掉门铃, 必须和“ requestAnswerAuthorityWithDeviceID” 一起使用
+ 
+ @param ID  device ID (设备ID)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)requestReleaseAnswerAuthorityWithID:(NSInteger)ID success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+```
+
 # 8. 设备分享 
 ```
 所属: MeariUser

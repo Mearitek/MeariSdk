@@ -4,9 +4,10 @@
 * 1 [Functional Overview ](#1-Functional-Overview)
 * 2 [Integration preparation](#2-Integration-preparation)
 * 3 [Integrated SDK](#3-Integrated-SDK)
-    * 3.1 [Add framework ](#31-Add-framework )
-    * 3.2 [Environment configuration ](#32-Environment-configuration )
-    * 3.3 [Initialize the SDK](#33-Initialize-the-SDK)
+    * 3.1 [Add framework](#31-Add-dependency-library)
+    * 3.2 [Environment configuration](#32-Environment-configuration)
+    * 3.3 [Add dependency library](#33-Environment-configuration)
+    * 3.4 [Initialize the SDK](#34-Initialize-the-SDK)
 * 4 [User Management](#4-User-Management)
     * 4.1 [User login](#41-User-login)
     * 4.2 [User logout](#42-User-logout)
@@ -38,6 +39,8 @@
     * 7.3 [Get bit rate](#73-Get-bit-rate)
     * 7.4 [Preview](#74-Preview)
     * 7.5 [Play back](#75-Play-back)
+        * 7.5.1 [Playback related](#751-Playback-related)
+        * 7.5.2 [Set playback duration](#752-Set-playback-duration)
     * 7.6 [Cloud Play back](#76-Cloud-Play-back)
     * 7.7 [Mute](#77-Mute)
     * 7.8 [Voice intercom](#78-Voice-intercom)
@@ -47,6 +50,9 @@
     * 7.12 [PTZ control](#712-PTZ-control)
     * 7.13 [Leave message](#713-Leave-message)
     * 7.14 [Detect alarm](#714-Detect-alarm)
+        * 7.14.1 [Motion Detection](#7141-Motion-Detection)
+        * 7.14.2 [Human detection](#7142-Human-detection)
+        * 7.14.3 [Alarm interval](#7143-Alarm-interval)
     * 7.15 [Storage (SD card)](#715-Storage-SD-card)
     * 7.16 [Firmware upgrade](#716-Firmware-upgrade)
     * 7.17 [Sleep mode](#717-Sleep-mode)
@@ -60,6 +66,7 @@
         * 7.23.2 [Sound alarm switch](#7232-Sound-alarm-switch)
         * 7.23.3 [Turn on the lights according to the time period](#7233-Turn-on-the-lights-according-to-the-time-period)
         * 7.23.4 [Switch lights on and off according to alarm events](#7234-Switch-lights-on-and-off-according-to-alarm-events)
+    * 7.24 [Doorbell answering process](#724-Doorbell-answering-process)
 * 8[Share Device](#8-Share-Device) 
 * 9[Family](#9-Family)
     * 9.1 [Family Management](#91-Family-Management)
@@ -119,6 +126,7 @@
 Meari Technology APP SDK provides the interface package for communication with hardware devices and Meari Cloud to accelerate the application development process. It mainly includes the following functions:
 - Account system (login, logout, modification of user information, registration push, etc.)
 - Hardware equipment related (network distribution, control, status reporting, firmware upgrade, preview playback, etc.)
+- Cloud storage service (obtaining the activation status, activation of services, creating orders, order lists, etc.)
 - Family group related (functions such as creating a family group, creating a new room, assigning a room, inviting members, etc.)
 - Message center (alarm message, device sharing message, family sharing message, system message)
 
@@ -130,19 +138,24 @@ You need to connect to the cloud, request data from the Meari server through you
 
 # 3. Integrated SDK
 
-## 3.1 Add framework 
+## 3.1 Add framework
 
 ```
 Add MeariKit.framework to target -> General -> Embedded Binaries or target -> General -> Framework, Libraries, and Embedded Content 
 ```
 ![framework](framework.png)
-## 3.2 Environment configuration  
+## 3.2 Environment configuration
 
 ```
 Disable bitcode: In the project panel, select target -> Build Settings -> Build Options -> Enable Bitcode -> Set to No
 ```
 ![environment](environment.png)
-## 3.3 Initialize the SDK 
+## 3.3 Add dependency library
+```
+Use cocospod to import AWSS3 and AliyunOSSiOS required by the framework, as shown below
+```
+![pod](pod.png)
+## 3.4 Initialize the SDK
 
 ```
 Belong to: MeariSdk tools
@@ -1037,6 +1050,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ## 7.5 Play back
 
+### 7.5.1 Playback related
 ```
 【Description 】
      Play back the video of the camera
@@ -1165,6 +1179,31 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
      }];
 ```
+### 7.5.2 Set playback duration
+```
+【Description】
+    Set the recording duration of the camera
+    You can get the supported video playback duration levels through [self.device supportSdRecordLevels]
+
+【Function】
+    /**
+    Set playback level
+ 
+    @param level MeariDeviceRecordDuration  
+    @param success Successful callback 
+    @param failure failure callback 
+    */
+    - (void)setPlaybackRecordVideoLevel:(MeariDeviceRecordDuration)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+【Code】
+     //Set the video playback time
+    [self.camera setPlaybackRecordVideoLevel:levels success:^{
+    
+    } failure:^(NSError *error) {
+    
+    }];
+```
+
 ## 7.6 Cloud Play back 
 ```
 【Description 】
@@ -1592,7 +1631,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 ## 7.14 Detect alarm 
-
+### 7.14.1 Motion Detection
 ```
 【Description 】
      Motion detection settings 
@@ -1616,9 +1655,12 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      } failure:^(NSString *error) {
  
      }];
+```
 
-【Description 】
-     Set the doorbell single PIR (human detection) alarm type)
+### 7.14.2 Human detection
+```
+【Description】
+     Set the doorbell single PIR (human detection) level
 【Be applicable】
      General low-power camera
      It can be judged by device.supportPir == YES
@@ -1638,7 +1680,34 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      } failure:^(NSString *error) {
  
      }];
+```
+        * 7.14.1 [Motion Detection](#7141-Motion-Detection)
+        * 7.14.2 [Human detection](#7142-Human-detection)
+### 7.14.3 Alarm interval
+```
+【Description】
+     Set the alarm interval
+【Be applicable】
+      General low-power camera
+      It can be judged by device.supportAlarmInterval
+      An array of supported alarm intervals can be obtained through [self.device supportAlarmFrequencyIntervalLevels]
+    
+【Function】
+     /**
+     @param level  Alarm interval level
+     @param success Successful callback 
+     @param failure failure callback
+     */
+    - (void)setAlarmInterval:(MeariDeviceCapabilityAFQ)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+【Code】
+     //Set the alarm interval
+    [self.camera setAlarmInterval:afqType success:^{
+        [weakSelf.tableView reloadData];
+        MR_HUD_SHOW_TOAST(MeariLocalString(@"toast_set_success"))
+    } failure:^(NSError *error) {
+        MR_HUD_SHOW_ERROR(error)
+    }];
 ```
 
 
@@ -2222,7 +2291,46 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
      }];
 ```
+## 7.24 Doorbell answering process
 
+- 1 Receive doorbell call messages
+> Press the doorbell, receive the doorbell call mqtt message callback or push message
+> Register notification to receive call information for notification callback
+```
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceHasVisitorNotification:) name:MeariDeviceHasVisitorNotification object:nil];
+- (void)deviceHasVisitorNotification:(NSNotification *)sender {
+    MeariMqttMessageInfo *msg = sender.object;
+}
+```
+
+- 2 Pop up the answering page based on the acquired call message
+
+- 3 answer or hang up
+> Handle the logic of answering, hanging up, etc
+> Answering is similar to previewing
+```
+/**
+ // Used to answer the doorbell, must be used with "requestReleaseAnswerAuthorityWithID"
+
+ 
+ @param deviceID 
+ @param messageID  (the data create by push, or mqtt)
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)requestAnswerAuthorityWithDeviceID:(NSInteger)deviceID messageID:(NSInteger)messageID  success:(MeariSuccess_RequestAuthority)success failure:(MeariFailure)failure;
+
+/**
+ // Used to hang up the doorbell, must be used with "requestAnswerAuthorityWithDeviceID"
+ 
+ 
+ @param ID  device ID 
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)requestReleaseAnswerAuthorityWithID:(NSInteger)ID success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+```
 
 # 8. Share Device
 ```

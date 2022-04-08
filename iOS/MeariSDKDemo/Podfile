@@ -12,6 +12,5 @@ target 'MeariSDKDemo' do
   pod 'MJExtension',  '~>3.0.17'
   pod 'AliyunOSSiOS', '~>2.10.7'
   pod 'AWSS3'
-#  pod 'IMSIotSmart'
 
 end
