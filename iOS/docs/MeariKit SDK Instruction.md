@@ -132,9 +132,7 @@ Meari Technology APP SDK provides the interface package for communication with h
 
 # 2. Integration preparation
 
-**Prepare for cloud-to-cloud docking**
-
-You need to connect to the cloud, request data from the Meari server through your own server, and then transfer the data to the corresponding interface of the SDK. For the specific interface process, please refer to the Server directory at work.
+Please read the server documentation first, and then proceed to the next step after obtaining the authentication information for redirection and login.
 
 # 3. Integrated SDK
 
