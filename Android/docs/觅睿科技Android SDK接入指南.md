@@ -13,13 +13,10 @@
         * 3.1.3 [配置AndroidManifest.xml](#313-配置AndroidManifest.xml)
     * 3.2 [初始化SDK](#32-初始化SDK)
 * 4 [用户管理](#4-用户管理)
-    * 4.1 [手机/邮箱注册](#41-手机/邮箱注册)
-    * 4.2 [服务端认证信息登录](#42-服务端认证信息登录)
-    * 4.3 [重置密码](#43-重置密码)
-    * 4.4 [uid用户系统](#44-uid用户系统)
-    * 4.5 [退出登录](#45-退出登录)
-    * 4.6 [上传用户头像](#46-上传用户头像)
-    * 4.7 [修改昵称](#47-修改昵称)
+    * 4.1 [用户登录](#41-用户登录)
+    * 4.2 [退出登录](#42-退出登录)
+    * 4.3 [上传用户头像](#43-上传用户头像)
+    * 4.4 [修改昵称](#44-修改昵称)
 * 5 [添加设备](#5-添加设备)
     * 5.1 [二维码配网添加设备](#51-二维码配网添加设备)
         * 5.1.1 [生成二维码](#511-生成二维码)
@@ -27,6 +24,9 @@
     * 5.2 [AP配网添加设备](#52-AP配网添加设备)
         * 5.2.1 [连接设备热点](#521-连接设备热点)
         * 5.2.2 [搜索添加设备](#522-搜索添加设备)
+    * 5.3 [有线配网添加设备](#53-有线配网添加设备)
+        * 5.3.1 [搜索设备](#531-搜索设备)
+        * 5.3.2 [添加设备](#532-添加设备)
 * 6 [设备控制](#6-设备控制)
     * 6.1 [设备基本操作](#61-设备基本操作)
         * 6.1.1 [设备相关类介绍](#611-设备相关类介绍)
@@ -83,6 +83,9 @@
         * 9.5.17 [设备转动控制](#9517-设备转动控制)
         * 9.5.18 [设备报警计划时间段设置](#9518-设备报警计划时间段设置)
         * 9.5.19 [设备推送消息开关设置](#9519-设备推送消息开关设置)
+        * 9.5.20 [报警频率设置](#9520-报警频率设置)
+        * 9.5.21 [多档PIR设置](#9521-多档PIR设置)
+        * 9.5.22 [SD卡录像类型和时间设置](#9522-SD卡录像类型和时间设置)
     * 9.6 [门铃参数设置](#96-门铃参数设置)
         * 9.6.1 [设备对讲音量设置](#961-设备对讲音量设置)
         * 9.6.2 [解锁电池锁](#962-解锁电池锁)
@@ -164,6 +167,7 @@
 - 设备控制
 - 设备设置
 - 设备共享
+- 家庭
 - 消息中心
 
 --------------
@@ -209,12 +213,24 @@ repositories {
 
 dependencies {
     // 必需依赖库
-    implementation(name: 'sdk-core-3.1.0-beta6', ext: 'aar')
+    implementation(name: 'core-sdk-device-20220326', ext: 'aar')
+    implementation(name: 'core-sdk-meari-20220326', ext: 'aar')
+
+    implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
-    implementation 'com.alibaba:fastjson:1.2.57'
+    implementation 'com.alibaba:fastjson:1.1.67.android'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.zxing:core:3.3.3'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    def aws_version = "2.16.+"
+    implementation("com.amazonaws:aws-android-sdk-iot:$aws_version") {
+        exclude group: 'org.eclipse.paho'
+    }
+    implementation ("com.amazonaws:aws-android-sdk-mobile-client:$aws_version") { transitive = true }
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 }
 ```
 
@@ -301,62 +317,7 @@ UserInfo类
 - desc        用户描述;
 
 
-## 4.1 手机/邮箱注册
-```
-【描述】
-手机或邮箱注册。
-
-【函数调用】
-
-/**
- * 获取验证码
- *
- * @param countryCode 国家代号
- * @param phoneCode   国家电话号码区号
- * @param userAccount 账户
- * @param callback    网络请求回调
- */
-public void getValidateCodeWithAccount(String countryCode, String phoneCode, String userAccount, IValidateCallback callback);
-
-/**
- * register account, and return the mqtt iot info.
- *
- * @param countryCode 国家代号
- * @param phoneCode   国家电话号码区号
- * @param account     账户
- * @param pwd         密码
- * @param nickname    呢称
- * @param code        验证码
- * @param callback    网络请求回调
- */
-public void registerWithAccount(String countryCode, String phoneCode, String account, String pwd, String nickname, String code, IRegisterCallback callback);
-
-【代码范例】
-
-MeariUser.getInstance().getValidateCodeWithAccount(countryCode, phoneCode, account, new IValidateCallback() {
-    @Override
-    public void onSuccess(int leftTime) {
-        //leftTime 表示验证码剩余有效时间
-    }
-
-    @Override
-    public void onError(int code, String error) {
-    }
-});
-
-MeariUser.getInstance().registerWithAccount(countryCode,phoneCode,account,pwd,nickname,code, new IRegisterCallback() {
-    @Override
-    public void onSuccess(UserInfo user) {
-        //UserInfo 返回用户信息                        
-    }
-
-    @Override
-    public void onError(int code, String error) {
-    }
-});
-```
-
-## 4.2 服务端认证信息登录
+## 4.1 用户登录
 ```
 【描述】
 服务端认证信息登陆
@@ -383,93 +344,7 @@ MeariUser.getInstance().loginWithExternalData(redirectionJson, loginJson, new IL
 });
 ```
 
-## 4.3 重置密码
-```
-【描述】
-重置密码
- 
-【函数调用】
-/**
- * 获取验证码
- *
- * @param countryCode 国家代号
- * @param phoneCode   国家电话号码区号
- * @param userAccount 账户
- * @param callback    网络请求回调
- */
-public void getValidateCodeWithAccount(String countryCode, String phoneCode, String userAccount, IValidateCallback callback);
-
-/**
- * 重置密码
- *
- * @param countryCode 国家代号
- * @param phoneCode   国家电话号码区号
- * @param account     国内电话/邮箱
- * @param verificationCode   验证码
- * @param password    用户新密码密码
- * @param callback    网络请求回调
- */
-public void resetPasswordWithAccount(String countryCode, String phoneCode, String account, String verificationCode, String pwd, IResetPasswordCallback callback);
-    
-【代码范例】
-
-MeariUser.getInstance().getValidateCodeWithAccount(countryCode, phoneCode, account, new IValidateCallback() {
-    @Override
-    public void onSuccess(int leftTime) {
-        //leftTime 表示验证码剩余有效时间
-    }
-
-    @Override
-    public void onError(int code, String error) {
-    }
-});
-
-MeariUser.getInstance().resetPasswordWithAccount(countryCode, phoneCode, account, verificationCode, pwd, new IResetPasswordCallback() {
-    @Override
-    public void onSuccess(UserInfo user) {
-    }
-
-    @Override
-    public void onError(int code, String error) {
-    }
-});
-```
-
-## 4.4 uid用户系统
-
-```
-【描述】
-如果客户有自己的用户体系，那么可以通过uid登陆，接入我们的sdk。
-用户uid登录，uid要求唯一，由接入方自己定义。uid体系可以直接登录，不需要注册。
-
-【函数调用】
-
-/**
- * 用户UID登录
- * @param countryCode 国家代号
- * @param phoneCode   国家电话号码区号
- * @param uid         用户唯一标识符
- * @param callback    网络请求回调
- */
-public void loginWithUid(String countryCode, String phoneCode, String uuid, ILoginCallback callback);
-        
-【代码范例】
-
-MeariUser.getInstance().loginWithUid(countryCode, phoneCode,uid, new ILoginCallback() {
-    @Override
-    public void onSuccess(UserInfo user) {
-        // 建议在MainActivity中连接mqtt服务，第一次登陆完保存用户信息，不必每次启动app都去登录。
-        // 连接mqtt服务
-        MeariUser.getInstance().connectMqttServer(getApplication());
-    }
-    @Override
-    public void onError(String code, String error) {
-        // 失败
-    }
-});
-```
-
-## 4.5 退出登录
+## 4.2 退出登录
 ```
 【描述】
 退出登录
@@ -497,7 +372,7 @@ MeariUser.getInstance().logout(new ILogoutCallback() {
 });
 ```
 
-## 4.6 上传用户头像
+## 4.3 上传用户头像
 ```
 【描述】
 上传用户头像。
@@ -526,7 +401,7 @@ MeariUser.getInstance().uploadUserAvatar(path, new IAvatarCallback()  {
     }
 });
 ```
-## 4.7 修改昵称
+## 4.4 修改昵称
 ```
 【描述】
 修改用户昵称。
@@ -784,6 +659,84 @@ deviceController.setAp(mSsid, mPwd, new MeariDeviceListener() {
 ```
 见5.1.2
 ```
+
+## 5.3 有线配网添加设备
+```
+使有线设备和手机处于同一局域网，开始搜索设备。如果是有线设备，开始检测设备状态。如果设备可以添加，开始添加设备。
+```
+### 5.3.1 搜索设备
+```
+【描述】
+搜索局域网内的设备，如果是有线设备，判断设备状态
+
+【代码范例】
+MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(null, null, 0, new CameraSearchListener() {
+    @Override
+    public void onCameraSearchDetected(CameraInfo cameraInfo) {
+        //发现设备，如果是有线设备，检查设备状态
+        if(deviceInfo!=null && deviceInfo.isWireDevice()) {
+            checkDeviceStatus();
+        }
+    }
+
+    @Override
+    public void onCameraSearchFinished() {
+        //搜索完毕
+    }
+
+    @Override
+    public void onRefreshProgress(int time) {
+        //搜索进度100-0,100s后结束搜索
+    }
+
+}, false);
+
+// 开始搜索
+mangerCameraScan.startSearchDevice(false, -1, ACTIVITY_WIRED_OPERATION);
+
+// 检测设备状态
+MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
+    @Override
+    public void onSuccess(ArrayList<CameraInfo> deviceList) {
+        // 1代表是自己的设备，2代表别人的分享给设备,3代表设备可添加,4别人的设备已分享给自己
+        if (cameraInfo.getAddStatus() == 3) {
+            //添加设备
+            addDevice(info);
+        }
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+```
+
+### 5.3.2 添加设备
+```
+【描述】
+获取token，并添加设备
+
+【代码范例】
+// 获取token
+MeariUser.getInstance().getToken(new IGetTokenCallback() {
+    @Override
+    public void onSuccess(String token, int leftTime, int smart_switch) {
+        mToken = token;
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+}, DeviceType.NVR_NEUTRAL);
+
+//添加设备
+public void addDevice(CameraInfo info) {
+    MeariDeviceController deviceController = new MeariDeviceController();
+    deviceController.setWireDevice(info.getWireConfigIp(), mToken);
+}
+```
+
 
 # 6 设备控制
 
@@ -2555,6 +2508,132 @@ MeariUser.getInstance().closeDeviceAlarmPush(cameraInfo.getDeviceID(), status, n
 });
 ```
 
+### 9.5.20 报警频率设置
+```
+【描述】
+报警频率设置
+
+【函数调用】
+/**
+ * 报警频率设置
+ *
+ * @param alarmFrequency alarmFrequency
+ * @param callback callback
+ */
+public void setAlarmFrequency(int alarmFrequency, ISetDeviceParamsCallback callback);
+
+【代码范例】
+
+// 判断是否支持报警频率设置
+if (cameraInfo.getAfq() > 0) {
+    int afq = cameraInfo.getAfq();
+    // afq: 0-not support; 1-support
+    afq      bit-0 bit-1 bit-2 bit-3 bit-4 bit-5
+    name     off   1min  2min  3min  5min  10min
+    setValue 0     1     2     3     4     5
+}
+
+// 当前选择的频率
+int currentValue = deviceParams.getAlarmFrequency()
+
+// 选择报警频率
+MeariUser.getInstance().setAlarmFrequency(setValue, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.21 多档PIR设置
+```
+【描述】
+多档PIR设置
+
+【函数调用】
+/**
+ * 多档PIR设置
+ *
+ * @param pirDetSensitivity pirDetSensitivity
+ * @param callback callback
+ */
+public void setPirDetectionSensitivity(int pirDetSensitivity, ISetDeviceParamsCallback callback);
+
+【代码范例】
+
+// 判断是否支持多档PIR设置
+if (cameraInfo.getPlv() > 0) {
+    int maxLevel = cameraInfo.getPlv();
+    setValue 0-maxLevel
+}
+
+// 当前选择的值
+int currentLevel = deviceParams.getPirDetLevel();
+
+// 设置PIR的值
+MeariUser.getInstance().setPirDetectionSensitivity(pirLevel, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.22 SD卡录像类型和时间设置
+```
+【描述】
+SD卡录像类型和时间设置
+
+【函数调用】
+/**
+ * SD卡录像类型和时间设置
+ *
+ * @param type     Recording type
+ * @param duration Event recording time
+ * @param callback Function callback
+ */
+public void setPlaybackRecordVideo(int type, int duration, ISetDeviceParamsCallback callback)
+
+【代码范例】
+
+// 判断是否支持事件录像和全天录像
+if (cameraInfo.getVer() >= 57){
+    if(cameraInfo.getRec() == 0) {
+        // 支持事件录像和全天录像
+    } else if(cameraInfo.getRec() == 1){
+        // 仅支持事件录像
+    }
+} else {
+    if (MeariDeviceUtil.isLowPowerDevice(cameraInfo)) {
+        // 仅支持事件录像
+    } else {
+        // 支持事件录像和全天录像
+    }
+}
+
+// 当前事件类型
+int currenttype = deviceParams.getSdRecordType()
+// 当前事件录像的时间
+int currentDuration = deviceParams.getSdRecordDuration()
+
+// 设置类型或时间
+MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
 ## 9.6 门铃参数设置
 ### 9.6.1 设备对讲音量设置
 ```
@@ -3756,7 +3835,7 @@ boolean isCheck; 是否选中
 
 ## 11.4 集成其他推送
 ```
-暂不支持
+联系服务器配置其他推送
 ```
 
 # 12 更新说明：

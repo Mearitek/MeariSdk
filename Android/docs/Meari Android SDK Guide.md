@@ -13,13 +13,10 @@
         * 3.1.3 [Configuring AndroidManifest.xml](#313-Configuring-AndroidManifest.xml)
     * 3.2 [Initializing the SDK](#32-Initializing-the-SDK)
 * 4 [User Management](#4-User-Management)
-    * 4.1 [Mobile / Email Registration](#41-Mobile-/-Email-Registration)
-    * 4.2 [Login with authorization info from sever](#42-Login-with-authorization-info-from-sever)
-    * 4.3 [Reset password](#43-Reset-password)
-    * 4.4 [uid user system](#44-uid-user-system)
-    * 4.5 [Log out](#45-Log-out)
-    * 4.6 [Upload user avatar](#46-Upload-user-avatar)
-    * 4.7 [Change nickname](#47-Change-nickname)
+    * 4.1 [User login](#41-User-login)
+    * 4.2 [Log out](#42-Log-out)
+    * 4.3 [Upload user avatar](#43-Upload-user-avatar)
+    * 4.4 [Change nickname](#44-Change-nickname)
 * 5 [Add device](#5-Add-device)
     * 5.1 [Add device via QR code](#51-Add-device-via-QR-code)
         * 5.1.1 [Generate QR Code](#511-Generate-QR-Code)
@@ -27,6 +24,9 @@
     * 5.2 [Add device via AP](#52-Add-device-via-AP)
         * 5.2.1 [Connect to AP](#521-Connect-to-AP)
         * 5.2.2 [Search and add device](#522-Search-and-add-device)
+    * 5.3 [Wired distribution network to add device](#53-Wired-distribution-network-to-add-device)
+        * 5.3.1 [Searching for devices](#531-Searching-for-devices)
+        * 5.3.2 [Add device](#532-Add-device)
 * 6 [Device Control](#6-Device-Control)
     * 6.1 [Basic Device operation](#61-Basic-Device-operation)
         * 6.1.1 [Introduction to device-related classes](#611-Introduction-to-device-related-classes)
@@ -82,6 +82,9 @@
         * 9.5.17 [Device rotation control](#9517-Device-rotation-control)
         * 9.5.18 [Device alarm plan time period setting](#9518-Device-alarm-plan-time-period-setting)
         * 9.5.19 [Device push message switch setting](#9519-Device-push-message-switch-setting)
+        * 9.5.20 [Alarm frequency setting](#9520-Alarm-frequency-setting)
+        * 9.5.21 [Multi-level PIR setting](#9521-Multi-level-PIR-setting)
+        * 9.5.22 [SD card recording type and time setting](#9522-SD-card-recording-type-and-time-setting)
     * 9.6 [Parameter setting of doorbell](#96-Parameter-setting-of-doorbell)
         * 9.6.1 [Intercom volume settings of device](#961-Intercom-volume-settings-of-device)
         * 9.6.2 [Unlocking the battery lock](#962-Unlocking-the-battery-lock)
@@ -163,6 +166,7 @@ The Meari SDK provides interface of communicating with hardware devices and Mera
 - Device Control
 - Device Settings
 - Share Device
+- Family
 - Message Center
 
 --------------
@@ -214,11 +218,25 @@ repositories {
 
 dependencies {
      // Required libraries
-    implementation(name: 'sdk-core-3.1.0-beta6', ext: 'aar')
+    // aar required
+    implementation(name: 'core-sdk-device-20220326', ext: 'aar')
+    implementation(name: 'core-sdk-meari-20220326', ext: 'aar')
+
+    implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
-    implementation 'com.alibaba:fastjson:1.2.57'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    implementation 'com.alibaba:fastjson:1.1.67.android'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.zxing:core:3.3.3'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    def aws_version = "2.16.+"
+    implementation("com.amazonaws:aws-android-sdk-iot:$aws_version") {
+        exclude group: 'org.eclipse.paho'
+    }
+    implementation ("com.amazonaws:aws-android-sdk-mobile-client:$aws_version") { transitive = true }
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 }
 ```
 
@@ -305,62 +323,7 @@ UserInfo class
 - desc user description;
 
 
-## 4.1 Mobile / Email Registration
-```
-【description】
-Mobile or email registration.
-
-[Function call]
-
-/**
- * get verification code
- *
- * @param countryCode country code
- * @param phoneCode area code
- * @param userAccount account
- * @param callback network request callback
- * /
-public void getValidateCodeWithAccount (String countryCode, String phoneCode, String userAccount, IValidateCallback callback);
-
-/**
- * register account, and return the mqtt iot info.
- *
- * @param countryCode country code
- * @param phoneCode area code
- * @param account
- * @param pwd password
- * @param nickname
- * @param code verification code
- * @param callback network request callback
- * /
-public void registerWithAccount (String countryCode, String phoneCode, String account, String pwd, String nickname, String code, IRegisterCallback callback);
-
-[Code example]
-
-MeariUser.getInstance (). GetValidateCodeWithAccount (countryCode, phoneCode, account, new IValidateCallback () {
-    @Override
-    public void onSuccess (int leftTime) {
-        // leftTime indicates the remaining valid time of the verification code
-    }
-
-    @Override
-    public void onError (int code, String error) {
-    }
-});
-
-MeariUser.getInstance (). RegisterWithAccount (countryCode, phoneCode, account, pwd, nickname, code, new IRegisterCallback () {
-    @Override
-    public void onSuccess (UserInfo user) {
-        // UserInfo returns user information
-    }
-
-    @Override
-    public void onError (int code, String error) {
-    }
-});
-```
-
-## 4.2 Login with authorization info from sever
+## 4.1 User login
 ```
 【description】
 Login with authorization info from sever
@@ -388,93 +351,7 @@ MeariUser.getInstance().loginWithExternalData(redirectionJson, loginJson, new IL
 });
 ```
 
-## 4.3 Reset password
-```
-【description】
-reset Password
- 
-[Function call]
-/**
- * get verification code
- *
- * @param countryCode country code
- * @param phoneCode area code
- * @param userAccount account
- * @param callback network request callback
- * /
-public void getValidateCodeWithAccount (String countryCode, String phoneCode, String userAccount, IValidateCallback callback);
-
-/**
- * reset Password
- *
- * @param countryCode country code
- * @param phoneCode area code
- * @param account Domestic phone / email
- * @param verificationCode verification code
- * @param password User new password password
- * @param callback network request callback
- * /
-public void resetPasswordWithAccount (String countryCode, String phoneCode, String account, String verificationCode, String pwd, IResetPasswordCallback callback);
-    
-[Code example]
-
-MeariUser.getInstance (). GetValidateCodeWithAccount (countryCode, phoneCode, account, new IValidateCallback () {
-    @Override
-    public void onSuccess (int leftTime) {
-        // leftTime indicates the remaining valid time of the verification code
-    }
-
-    @Override
-    public void onError (int code, String error) {
-    }
-});
-
-MeariUser.getInstance (). ResetPasswordWithAccount (countryCode, phoneCode, account, verificationCode, pwd, new IResetPasswordCallback () {
-    @Override
-    public void onSuccess (UserInfo user) {
-    }
-
-    @Override
-    public void onError (int code, String error) {
-    }
-});
-```
-
-## 4.4 uid user system
-
-```
-【description】
-If customers have their own user system, then you can use uid to login.
-The uid is required to be unique and defined by your own. You can login directly without registration.
-
-[Function call]
-
-/**
- * User UID login
- * @param countryCode country code
- * @param phoneCode area code
- * @param uid user unique identifier
- * @param callback network request callback
- * /
-public void loginWithUid (String countryCode, String phoneCode, String uuid, ILoginCallback callback);
-        
-[Code example]
-
-MeariUser.getInstance (). LoginWithUid (countryCode, phoneCode, uid, new ILoginCallback () {
-    @Override
-    public void onSuccess (UserInfo user) {
-        // It is recommended to the mqtt service in MainActivity, save the user information after the first login, and do not have to log in every time you start the app.
-        // connect mqtt service
-        MeariUser.getInstance (). ConnectMqttServer (getApplication ());
-    }
-    @Override
-    public void onError (String code, String error) {
-        // fail
-    }
-});
-```
-
-## 4.5 Log out
+## 4.2 Log out
 ```
 【description】
 sign out
@@ -502,7 +379,7 @@ MeariUser.getInstance (). Logout (new ILogoutCallback () {
 });
 ```
 
-## 4.6 Upload user avatar
+## 4.3 Upload user avatar
 ```
 【description】
 Upload a user avatar.
@@ -531,7 +408,8 @@ MeariUser.getInstance (). UploadUserAvatar (path, new IAvatarCallback () {
     }
 });
 ```
-## 4.7 Change nickname
+
+## 4.4 Change nickname
 ```
 【description】
 Modify user nickname.
@@ -785,6 +663,84 @@ deviceController.setAp(mSsid, mPwd, new MeariDeviceListener() {
 
 ```
 see 5.1.2
+```
+
+## 5.3 Wired distribution network to add devices
+```
+Make the wired device and the mobile phone in the same local area network and start searching for the device. If it is a wired device, start to detect the device status. If the device can be added, start adding the device.
+```
+### 5.3.1 Searching for devices
+```
+【description】
+Search for devices in the local area network, if it is a wired device, determine the device status
+
+【Code example】
+MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(null, null, 0, new CameraSearchListener() {
+    @Override
+    public void onCameraSearchDetected(CameraInfo cameraInfo) {
+        //Discover the device, if it is a wired device, check the device status
+        if(deviceInfo!=null && deviceInfo.isWireDevice()) {
+            checkDeviceStatus();
+        }
+    }
+
+    @Override
+    public void onCameraSearchFinished() {
+        //search done
+    }
+
+    @Override
+    public void onRefreshProgress(int time) {
+        //Search progress
+    }
+
+}, false);
+
+// start search
+mangerCameraScan.startSearchDevice(false, -1, ACTIVITY_WIRED_OPERATION);
+
+// Check device status
+MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
+    @Override
+    public void onSuccess(ArrayList<CameraInfo> deviceList) {
+        // 1 means it's your own device, 2 means someone else's share to the device, 
+        // 3 means the device can be added, 4 means someone else's device has been shared with you
+        if (cameraInfo.getAddStatus() == 3) {
+            //Add device
+            addDevice(info);
+        }
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+```
+
+### 5.3.2 Add device
+```
+【description】
+Get token and add device
+
+【Code example】
+// Get token
+MeariUser.getInstance().getToken(new IGetTokenCallback() {
+    @Override
+    public void onSuccess(String token, int leftTime, int smart_switch) {
+        mToken = token;
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+}, DeviceType.NVR_NEUTRAL);
+
+//add device
+public void addDevice(CameraInfo info) {
+    MeariDeviceController deviceController = new MeariDeviceController();
+    deviceController.setWireDevice(info.getWireConfigIp(), mToken);
+}
 ```
 
 
@@ -2482,6 +2438,132 @@ MeariUser.getInstance().closeDeviceAlarmPush(cameraInfo.getDeviceID(), status, n
 });
 ```
 
+### 9.5.20 Alarm frequency setting
+```
+【description】
+Alarm frequency setting
+
+【Function call】
+/**
+ * Alarm frequency setting
+ *
+ * @param alarmFrequency alarmFrequency
+ * @param callback callback
+ */
+public void setAlarmFrequency(int alarmFrequency, ISetDeviceParamsCallback callback);
+
+【Code example】
+
+// Determine whether to support the alarm frequency setting
+if (cameraInfo.getAfq() > 0) {
+    int afq = cameraInfo.getAfq();
+    // afq: 0-not support; 1-support
+    afq      bit-0 bit-1 bit-2 bit-3 bit-4 bit-5
+    name     off   1min  2min  3min  5min  10min
+    setValue 0     1     2     3     4     5
+}
+
+// currently selected frequency
+int currentValue = deviceParams.getAlarmFrequency()
+
+// Select the alarm frequency
+MeariUser.getInstance().setAlarmFrequency(setValue, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.21 Multi-level PIR setting
+```
+【description】
+Multi-level PIR setting
+
+【Function call】
+/**
+ * Multi-level PIR setting
+ *
+ * @param pirDetSensitivity pirDetSensitivity
+ * @param callback callback
+ */
+public void setPirDetectionSensitivity(int pirDetSensitivity, ISetDeviceParamsCallback callback);
+
+【Code example】
+
+// Determine whether to support multi-level PIR settings
+if (cameraInfo.getPlv() > 0) {
+    int maxLevel = cameraInfo.getPlv();
+    setValue 0-maxLevel
+}
+
+// currently selected value
+int currentLevel = deviceParams.getPirDetLevel();
+
+// Set the value of PIR
+MeariUser.getInstance().setPirDetectionSensitivity(pirLevel, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.22 SD card recording type and time setting
+```
+【description】
+SD card recording type and time setting
+
+【Function call】
+/**
+ * SD card recording type and time setting
+ *
+ * @param type     Recording type
+ * @param duration Event recording time
+ * @param callback Function callback
+ */
+public void setPlaybackRecordVideo(int type, int duration, ISetDeviceParamsCallback callback)
+
+【Code example】
+
+// Determine whether to support event recording and all-day recording
+if (cameraInfo.getVer() >= 57){
+    if(cameraInfo.getRec() == 0) {
+        // Support event recording and all-day recording
+    } else if(cameraInfo.getRec() == 1){
+        // Only supports event recording
+    }
+} else {
+    if (MeariDeviceUtil.isLowPowerDevice(cameraInfo)) {
+        // Only supports event recording
+    } else {
+        // Support event recording and all-day recording
+    }
+}
+
+// current event type
+int currenttype = deviceParams.getSdRecordType()
+// The time of the current event recording
+int currentDuration = deviceParams.getSdRecordDuration()
+
+// set type or time
+MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
 ## 9.6 Parameter setting of doorbell
 ### 9.6.1 Intercom volume settings of device
 ```
@@ -3682,7 +3764,7 @@ call MeariUser.getInstance().uploadToken(1, token, callback) to upload your fcm 
 
 ## 11.4 Integration with other pushes
 ```
-Not currently supported
+Contact the server to configure other pushes
 ```
 
 # 12 Release Notes:
