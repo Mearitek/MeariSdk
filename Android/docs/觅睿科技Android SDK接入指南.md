@@ -1842,8 +1842,6 @@ MeariUser.getInstance().getSDCardFormatPercent(new ISDCardFormatPercentCallback(
 });
 ```
 
-<span id="94"></span>
-
 ## 9.4 升级设备固件
 ```
 【描述】
@@ -2510,8 +2508,6 @@ MeariUser.getInstance().closeDeviceAlarmPush(cameraInfo.getDeviceID(), status, n
 });
 ```
 
-<span id="9520"></span>
-
 ### 9.5.20 报警频率设置
 ```
 【描述】
@@ -2588,8 +2584,6 @@ MeariUser.getInstance().setPirDetectionSensitivity(pirLevel, new ISetDeviceParam
     }
 });
 ```
-
-<span id="9522"></span>
 
 ### 9.5.22 SD卡录像类型和时间设置
 ```
