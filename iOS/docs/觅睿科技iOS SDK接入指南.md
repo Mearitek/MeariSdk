@@ -147,7 +147,7 @@
 ![environment](environment.png)
 ## 3.3 添加依赖库 
 ```
-使用cocospod 引入framework所需要的AWSS3 和 AliyunOSSiOS，如下所示
+使用cocospod 引入framework所需要的AWSS3 ，如下所示
 ```
 ![pod](pod.png)
 ## 3.4 初始化SDK

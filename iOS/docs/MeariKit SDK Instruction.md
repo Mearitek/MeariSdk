@@ -150,7 +150,7 @@ Disable bitcode: In the project panel, select target -> Build Settings -> Build 
 ![environment](environment.png)
 ## 3.3 Add dependency library
 ```
-Use cocospod to import AWSS3 and AliyunOSSiOS required by the framework, as shown below
+Use cocospod to import AWSS3 required by the framework, as shown below
 ```
 ![pod](pod.png)
 ## 3.4 Initialize the SDK

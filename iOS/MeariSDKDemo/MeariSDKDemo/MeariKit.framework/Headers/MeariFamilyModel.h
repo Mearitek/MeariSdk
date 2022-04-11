@@ -55,11 +55,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *userName; // 用户昵称，当homeName不存在时才有值
 @property (nonatomic, assign) MRFamilyJoinStatus joinStatus; // 家庭对别人的加入状态
 
-@property (nonatomic, copy) NSArray<MeariRoomModel *> *roomList; // 家庭列表
+@property (nonatomic, copy) NSArray<MeariRoomModel *> *roomList; // 房间列表
 @property (nonatomic, copy) NSArray<MeariDevice *> *relaySubDeviceList; // relay所有子设备列表
 @property (nonatomic, copy) NSArray<MeariDevice *> *allDeviceList; // 我的所有设备列表
-@property (nonatomic, copy) NSArray<MeariDevice *> *sharedDeviceList; // 分享的设备列表
-@property (nonatomic, copy) NSArray<MeariDevice *> *unDistributionDeviceList;  // 未分配的设备列表
+@property (nonatomic, copy) NSArray<MeariDevice *> *sharedDeviceList; // 分享设备列表
+@property (nonatomic, copy) NSArray<MeariDevice *> *unDistributionDeviceList;  // 未分配设备列表
 
 // 根据ID 获取家庭
 + (instancetype)familyWithFamilyId:(NSString *)homeID;

@@ -1052,8 +1052,8 @@ deviceList.count must  ==  modeList.count
 - (void)getAlarmMessageListForDeviceWithDeviceID:(NSInteger)deviceID success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
 
 /**
- get all the alarm messgae List
- (获取某个设备报警消息)
+ Get the latest alarm message list
+ (获取用户所拥有设备最新的一条报警消息列表)
  
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
