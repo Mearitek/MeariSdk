@@ -1,14 +1,14 @@
 # MeariSdk
 
-[中文说明](README.md) | English Readme
+中文说明 | [English Readme](README.md)
 
-Welcome to Meari Developer Kit (SDK). In order to facilitate developers to debug and access the App SDK, here are the steps you must take to access the SDK:
+欢迎使用觅睿开发者工具套件（SDK）。为方便开发者调试和接入App SDK，这里向您介绍接入SDK必须要进行的几个步骤：
 
-## 1. Get App Key and App secret
-  contact [us](https://www.meari.com/contact-us/)
+## 1. 获取App Key和App secret
+  联系[我们](https://www.meari.com/contact-us/)
     
-## 2. Connect with the server cloud
-  For details on the connection steps, see the documentation in the Server directory:
+## 2. 与服务器云云对接
+  对接步骤详情见 Server 目录下文档:
   
   [How to do integrate with Mearisdk](Server/How%20to%20do%20integrate%20with%20Mearisdk.md)
     
@@ -16,7 +16,7 @@ Welcome to Meari Developer Kit (SDK). In order to facilitate developers to debug
     
   [server to server](Server/server%20to%20server.md)
   
-## 3. App SDK
+## 3. 接入App SDK
 
 Android SDK Document:
 [中文文档](Android/docs/觅睿科技Android%20SDK接入指南.md) |  [English document](Android/docs/Meari%20Android%20SDK%20Guide.md)
@@ -24,8 +24,8 @@ Android SDK Document:
 iOS SDK Document:
 [中文文档](iOS/docs/觅睿科技iOS%20SDK接入指南.md) | [English document](iOS/docs/MeariKit%20SDK%20Instruction.md)
 
-## FAQ
+## 常见问题
 [中文](Common/FAQ.md) | [English](Common/FAQ-ENGLISH.md)
 
-## Network request status code
+## 网络请求状态码
 [中文](Common/Code.md) | [English](Common/Code-ENGLISH.md)
