@@ -28,7 +28,8 @@
         <activity android:name=".user.RegisterActivity" />
         <activity android:name=".user.LoginActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -39,7 +40,8 @@
 
         <activity
             android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -52,14 +54,14 @@
 
         <meta-data
             android:name="MEARI_APPKEY"
-            android:value="8a48b2105058489aba0c08b79325ef3f" />
+            android:value="cbd2ea035b39449f86ce37eea79118b5" />
         <meta-data
             android:name="MEARI_SECRET"
-            android:value="f6c33593133c44f98372f67213568411" />
+            android:value="0330563ad5b349ff8bbff9536d4f4c71" />
 
-        <service
-            android:name="org.eclipse.paho.android.service.MqttService"
-            android:priority="1000" />
+<!--        <service-->
+<!--            android:name="org.eclipse.paho.android.service.MqttService"-->
+<!--            android:priority="1000" />-->
     </application>
 
 </manifest>

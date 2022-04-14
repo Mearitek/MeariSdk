@@ -17,6 +17,7 @@ import com.meari.sdk.bean.MeariDevice;
 import com.meari.sdk.callback.IDevListCallback;
 import com.meari.test.R;
 import com.meari.test.app.MeariApplication;
+import com.vc.audio.MwAudioSdk;
 
 import java.util.ArrayList;
 import java.util.List;
