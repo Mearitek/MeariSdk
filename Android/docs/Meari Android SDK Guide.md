@@ -175,7 +175,7 @@ The Meari SDK provides interface of communicating with hardware devices and Mera
 
 # 2 Integration preparation
 
-- 1. Create App Key and App secret
+- 1. Get App Key and App secret
 - 2. Please read the server documentation first to obtain authentication information for redirection and login
 
 --------------
