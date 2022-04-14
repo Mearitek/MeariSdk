@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 //                tvInfo.setText(i + s);
 //            }
 //        });
-        MeariUser.getInstance().loginWithAccount("IL", "972", "uid", 70, new ILoginCallback() {
+        MeariUser.getInstance().loginWithAccount("CN", "86", "uid", 13, new ILoginCallback() {
             @Override
             public void onSuccess(UserInfo userInfo) {
                 Toast.makeText(LoginActivity.this, R.string.toast_success, Toast.LENGTH_LONG).show();

@@ -54,10 +54,10 @@
 
         <meta-data
             android:name="MEARI_APPKEY"
-            android:value="cbd2ea035b39449f86ce37eea79118b5" />
+            android:value="8a48b2105058489aba0c08b79325ef3f" />
         <meta-data
             android:name="MEARI_SECRET"
-            android:value="0330563ad5b349ff8bbff9536d4f4c71" />
+            android:value="f6c33593133c44f98372f67213568411" />
 
 <!--        <service-->
 <!--            android:name="org.eclipse.paho.android.service.MqttService"-->
