@@ -174,16 +174,10 @@ The Meari SDK provides interface of communicating with hardware devices and Mera
 --------------
 
 # 2 Integration preparation
-Create App ID and App Secert
-```
-Meari Technology Cloud Platform provides webpages to automatically create App ID and App Secert for user SDK development, configuration in AndroidManifest
-<meta-data
-    Android:name="MEARI_APPKEY"
-    Android:value="your MEARI_APPKEY" />
-<meta-data
-    Android:name="MEARI_SECRET"
-    Android:value="your MEARI_SECRET" />
-```
+
+- 1. Create App Key and App secret
+- 2. Please read the server documentation first to obtain authentication information for redirection and login
+
 --------------
 
 # 3 Integrated SDK
