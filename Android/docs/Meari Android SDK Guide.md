@@ -69,18 +69,18 @@
         * 9.5.2 [Device LED light switch control](#952-Device-LED-light-switch-control)
         * 9.5.3 [Device preview video flip control](#953-Device-preview-video-flip-control)
         * 9.5.4 [Device local recording setting](#954-Device-local-recording-settings-of-device)
-        * 9.5.5 [Device day and night mode setting](#955-Device-day-and-night-mode-setting-of-device)
-        * 9.5.6 [Device sleep mode setting](#956-Device-sleep-mode-setting-of-device)
-        * 9.5.7 [Device scheduled sleep period setting](#957-Device-scheduled-sleep-period-setting-of-device)
-        * 9.5.8 [Device motion detection setting](#958-Device-motion-detection-setting-of-device)
-        * 9.5.9 [Device PIR detection setting](#959-Device-PIR-detection-setting-of-device)
-        * 9.5.10 [Device noise detection setting](#9510-Device-noise-detection-setting-of-device)
-        * 9.5.11 [Device cry alarm setting](#9511-Device-cry-alarm-setting-of-device)
-        * 9.5.12 [Device human tracking setting](#9512-Device-human-tracking-setting-of-Device)
-        * 9.5.13 [Device human detection alarm setting](#9513-Device-human-detection-alarm-setting-of-device)
-        * 9.5.14 [Device humanoid frame setting](#9514-Device-humanoid-frame-setting-of-device)
-        * 9.5.15 [Device Onvif setting](#9515-Device-Onvif-setting-of-device)
-        * 9.5.16 [Device video encoding format setting](#9516-Device-video-encoding-format-setting-of-device)
+        * 9.5.5 [Device day and night mode setting](#955-Device-day-and-night-mode-setting)
+        * 9.5.6 [Device sleep mode setting](#956-Device-sleep-mode-setting)
+        * 9.5.7 [Device scheduled sleep period setting](#957-Device-scheduled-sleep-period-setting)
+        * 9.5.8 [Device motion detection setting](#958-Device-motion-detection-setting)
+        * 9.5.9 [Device PIR detection setting](#959-Device-PIR-detection-setting)
+        * 9.5.10 [Device noise detection setting](#9510-Device-noise-detection-setting)
+        * 9.5.11 [Device cry alarm setting](#9511-Device-cry-alarm-setting)
+        * 9.5.12 [Device human tracking setting](#9512-Device-human-tracking-setting)
+        * 9.5.13 [Device human detection alarm setting](#9513-Device-human-detection-alarm-setting)
+        * 9.5.14 [Device humanoid frame setting](#9514-Device-humanoid-frame-setting)
+        * 9.5.15 [Device Onvif setting](#9515-Device-Onvif-setting)
+        * 9.5.16 [Device video encoding format setting](#9516-Device-video-encoding-format-setting)
         * 9.5.17 [Device rotation control](#9517-Device-rotation-control)
         * 9.5.18 [Device alarm plan time period setting](#9518-Device-alarm-plan-time-period-setting)
         * 9.5.19 [Device push message switch setting](#9519-Device-push-message-switch-setting)
@@ -89,9 +89,9 @@
         * 9.5.22 [SD card recording type and time setting](#9522-SD-card-recording-type-and-time-setting)
     * 9.6 [Doorbell parameter setting](#96-Doorbell-parameter-setting)
         * 9.6.1 [Device Intercom volume settings](#961-Device-Intercom-volume-settings)
-        * 9.6.2 [Unlock the battery lock](#962-Unlocking-the-battery-lock)
-        * 9.6.3 [Bind Wireless Chime](#963-Binding-Wireless-Chime)
-        * 9.6.4 [Unbind Wireless Chime](#964-Unbinding-Wireless-Chime)
+        * 9.6.2 [Unlock the battery lock](#962-Unlock-the-battery-lock)
+        * 9.6.3 [Bind Wireless Chime](#963-Bind-Wireless-Chime)
+        * 9.6.4 [Unbind Wireless Chime](#964-Unbind-Wireless-Chime)
         * 9.6.5 [Whether the wireless chime works setting](#965-Whether-the-wireless-chime-works-setting)
         * 9.6.6 [Wireless chime volume setting](#966-Wireless-chime-volume-setting)
         * 9.6.7 [Wireless chime ringtone setting](#967-Wireless-chime-ringtone-setting)
@@ -115,10 +115,10 @@
         * 10.2.1 [Search for member accounts to be added](#1021-Search-for-member-accounts-to-be-added)
         * 10.2.2 [Search for the family account to be joined](#1022-Search-for-the-family-account-to-be-joined)
         * 10.2.3 [Add member to the family](#1023-Add-member-to-the-family)
-        * 10.2.4 [Join a family](#-1024Join-a-family)
+        * 10.2.4 [Join a family](#1024-Join-a-family)
         * 10.2.5 [Get family shared messages](#1025-Get-family-shared-messages)
         * 10.2.6 [Handle family shared messages](#1026-Handle-family-shared-messages)
-        * 10.2.7 [Get family member list](#1027-Get-family-members-list)
+        * 10.2.7 [Get family member list](#1027-Get-family-member-list)
         * 10.2.8 [Modify device permissions of the family member](#1028-Modify-device-permissions-of-the-family-member)
         * 10.2.9 [Remove member from the family](#1029-Remove-a-member-from-the-family)
         * 10.2.10 [Revoke member invitation](#10210-Revoke-member-invitation)
@@ -126,7 +126,7 @@
     * 10.3 [Room Operation](#103-Room-Operation)
         * 10.3.1 [Add a room](#1031-Add-a-room)
         * 10.3.2 [Modify room information](#1032-Modify-room-information)
-        * 10.3.3 [Delete room](#1033-Delete-room-from-the-family)
+        * 10.3.3 [Delete room](#1033-Delete-room)
         * 10.3.4 [Add device to the room](#1034-Add-device-to-the-room)
         * 10.3.5 [Remove device from the room](#1035-Remove-device-from-the-room)
         * 10.3.6 [Batch remove devices](#1036-Batch-remove-devices)
@@ -2787,7 +2787,7 @@ MeariUser.getInstance (). SetWirelessChimeVolume (volume, new ISetDeviceParamsCa
 });
 ```
 
-### 9.6.7 Wireless chime of ringtone setting
+### 9.6.7 Wireless chime ringtone setting
 ```
 【description】
 Ringtone setting of wireless chime
@@ -3173,7 +3173,7 @@ MeariUser.getInstance().searchContactForAddFamilyMember(account, familyId, new I
 });
 ```
 
-### 10.2.2 Search for a family account to join 
+### 10.2.2 Search for the family account to be joined
 ```
 【description】
 Search for a family account to join 
@@ -3298,14 +3298,14 @@ MeariUser.getInstance().dealFamilyShareMessage(msgIDList, dealFlag, new IResultC
 });
 ```
 
-### 10.2.7 Get a list of family members
+### 10.2.7 Get family member list
 ```
 【description】
-Get a list of family members 
+Get family member list
 
 【Function call】
 /**
- * Get a list of family members 
+ * Get family member list
  *
  * @param callback callback
  */
@@ -3545,10 +3545,10 @@ MeariUser.getInstance().removeDeviceFromRoom(familyId, roomId, deviceList, new I
 });
 ```
 
-### 10.3.6 Batch delete devices
+### 10.3.6 Batch remove devices
 ```
 【description】
-Batch delete devices
+Batch remove devices
 
 【Function call】
 /**
