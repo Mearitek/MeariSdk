@@ -68,7 +68,7 @@
         * 9.5.1 [Get device parameters](#951-Get-device-parameters)
         * 9.5.2 [Device LED light switch control](#952-Device-LED-light-switch-control)
         * 9.5.3 [Device preview video flip control](#953-Device-preview-video-flip-control)
-        * 9.5.4 [Device local recording setting](#954-Device-local-recording-settings-of-device)
+        * 9.5.4 [Device local recording setting](#954-Device-local-recording-setting)
         * 9.5.5 [Device day and night mode setting](#955-Device-day-and-night-mode-setting)
         * 9.5.6 [Device sleep mode setting](#956-Device-sleep-mode-setting)
         * 9.5.7 [Device scheduled sleep period setting](#957-Device-scheduled-sleep-period-setting)
