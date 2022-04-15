@@ -9,8 +9,8 @@
 * 3 [Integrated SDK](#3-Integrated-SDK)
     * 3.1 [Integration Process](#31-Integration-Process)
         * 3.1.1 [Import the sdk package](#311-Import-the-sdk-package)
-        * 3.1.2 [Configure build.gradle](#312-Configure-build.gradle)
-        * 3.1.3 [Configure AndroidManifest.xml](#313-Configure-AndroidManifest.xml)
+        * 3.1.2 [Configure build.gradle](#312-Configure-buildgradle)
+        * 3.1.3 [Configure AndroidManifest.xml](#313-Configure-AndroidManifestxml)
     * 3.2 [Initialize the SDK](#32-Initialize-the-SDK)
 * 4 [User Management](#4-User-Management)
     * 4.1 [User login](#41-User-login)
@@ -25,15 +25,15 @@
         * 5.2.1 [Connect to device hotspot](#521-Connect-to-device-hotspot)
         * 5.2.2 [Search and add device](#522-Search-and-add-device)
     * 5.3 [Add device via wired network](#53-Add-device-via-wired-network)
-        * 5.3.1 [Search device](#531-Searching-for-devices)
+        * 5.3.1 [Search device](#531-Search-device)
         * 5.3.2 [Add device](#532-Add-device)
 * 6 [Device Control](#6-Device-Control)
     * 6.1 [Basic device operations](#61-Basic-device-operations)
         * 6.1.1 [Introduction of device-related classes](#611-Introduction-of-device-related-classes)
         * 6.1.2 [Get device information list](#612-Get-device-information-list)
         * 6.1.3 [Device removal](#613-Device-removal)
-        * 6.1.4 [Device nickname modification](614#-Device-nickname-modification)
-        * 6.1.5 [Get time segment of device alarm message](615#-Get-time-segment-of-device-alarm-message)
+        * 6.1.4 [Device nickname modification](#614-Device-nickname-modification)
+        * 6.1.5 [Get time segment of device alarm message](#615-Get-time-segment-of-device-alarm-message)
     * 6.2 [Device preview and playback](#62-Device-preview-and-playback)
         * 6.2.1 [Device preview](#621-Device-preview)
         * 6.2.2 [Device SD card playback](#622-Device-SD-card-playback)
@@ -1486,7 +1486,7 @@ MeariUser.getInstance (). DealShareMessage (msgID, dealFlag, new IResultCallback
 # 8 Message Center
 ## 8.1 Device shared messages
 
-### 8.1.1 Get list of device shared message
+### 8.1.1 Get list of the device shared message
 ```
 【description】
 Get list of device shared message
@@ -1700,7 +1700,7 @@ MeariUser.getInstance (). DeleteSystemMessage (msgIdList, new IResultCallback ()
 
 
 
-# 9 Camera settings
+# 9 Device settings
 Used to set the camera's detection alarm, sleep mode, local playback, etc.
 Whether different devices support a certain setting can be judged by the device's capability set.
 
@@ -1769,7 +1769,7 @@ device Capability
 - String wirelessChimeSongs; song list of wireless bell: ["song1", "song2", "song3"]
 
 
-## 9.3 Format  device SD Card
+## 9.3 Format device SD Card
 ```
 【description】
 The device formats the SD card. After the formatting is successful, the formatting progress is obtained through the mqtt message.
