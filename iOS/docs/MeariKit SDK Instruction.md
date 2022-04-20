@@ -70,7 +70,7 @@
 * 8 [Share Device](#8-Share-Device) 
 * 9 [Family](#9-Family)
     * 9.1 [Family management](#91-Family-management)
-        * 9.1.1 [Get family room list(Without device Info)](#911-Get-family-room-list-Without-device-Info)
+        * 9.1.1 [Get family room list (Without device Info)](#911-Get-family-room-list-Without-device-Info)
         * 9.1.2 [Get family list (With device Info)](#912-Get-family-list-With-device-Info)
         * 9.1.3 [Create new family](#913-Create-new-family)
         * 9.1.4 [Updating family Information](#914-Updating-family-Information)
@@ -96,7 +96,7 @@
     * 10.2 [Alarm message](#102-Alarm-message) 
         * 10.2.1 [Get whether the devices have alarm message](#1021-Get-whether-the-devices-have-alarm-message)
         * 10.2.2 [Get the latest alarm message list](#1022-Get-the-latest-alarm-message-list)
-        * 10.2.3 [Get the number of days with alarm messages (the last 7 days)](#Get-the-number-of-days-with-alarm-messages-the-last-7-days)
+        * 10.2.3 [Get the number of days with alarm messages (the last 7 days)](#1024-get-the-number-of-days-with-alarm-messages-the-last-7-days)
         * 10.2.4 [Get device alarm message in a certain day](#1024-Get-device-alarm-message-in-a-certain-day)
         * 10.2.5 [Load alarm picture](#1025-Load-alarm-picture)
         * 10.2.6 [Delete multiple device alarm messages](#1026-Delete-multiple-device-alarm-messages)
@@ -2232,7 +2232,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 
-### 7.23.3 Turn on the lights according to the time period
+### 7.23.3 Turn on/off the lights according to the time period
 
 ```
 【Description 】
@@ -2257,7 +2257,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
     }];
 ```
 
-### 7.23.4 Turn on and off lights according to alarm events
+### 7.23.4 Turn on/off lights according to alarm events
 
 ```
 【Description 】
@@ -2503,7 +2503,7 @@ Belong to：MeariFamily
 
 ## 9.1 Family Management
 
-### 9.1.1 Get family room list(Without device Info)
+### 9.1.1 Get family room list (Without device Info)
 
 ```
 Return：MeariFamilyModel
@@ -2543,7 +2543,7 @@ MeariFamilyModel property：
 @property (nonatomic, copy) NSArray<MeariDevice *> *unDistributionDeviceList;  // Unassigned family room equipment list
 ```
 
-### 9.1.2 Get family list (Has device Info)
+### 9.1.2 Get family list (With device Info)
 
 ```
 【Description】
