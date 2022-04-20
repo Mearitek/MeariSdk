@@ -1,12 +1,12 @@
 
 <h1><center> Documentation </center></h1>
 
-* 1 [Functional Overview ](#1-Functional-Overview)
+* 1 [Functional overview ](#1-Functional-overview)
 * 2 [Integration preparation](#2-Integration-preparation)
 * 3 [Integrated SDK](#3-Integrated-SDK)
-    * 3.1 [Add framework](#31-Add-dependency-library)
+    * 3.1 [Add framework](#31-Add-framework)
     * 3.2 [Environment configuration](#32-Environment-configuration)
-    * 3.3 [Add dependency library](#33-Environment-configuration)
+    * 3.3 [Add dependency library](#33-Add-dependency-library)
     * 3.4 [Initialize the SDK](#34-Initialize-the-SDK)
 * 4 [User Management](#4-User-Management)
     * 4.1 [User login](#41-User-login)
@@ -16,16 +16,16 @@
     * 4.5 [APNS Message Push](#45-APNS-Message-Push)
     * 4.6 [Data model](#46-Data-model)
     * 4.7 [User message notification](#47-User-message-notification)
-* 5 [Device distribution network](#5-Device-distribution-network)
-    * 5.1 [Get distribution network token](#51-Get-distribution-network-token)
-    * 5.2 [QR code distribution network](#52-QR-code-distribution-network)
-    * 5.3 [Hotspot distribution network (Ap distribution network)](#53-hotspot-distribution-network-ap-distribution-network)
-    * 5.4 [Wired distribution network](#54-Wired-distribution-network)
-* 6 [Device information](#6-Device-information)
+* 5 [Device configuration](#5-Device-configuration)
+    * 5.1 [Get configuration token](#51-Get-configuration-token)
+    * 5.2 [QR code configuration](#52-QR-code-configuration)
+    * 5.3 [Hotspot configuration (AP configuration)](#53-Hotspot-configuration-AP-configuration)
+    * 5.4 [Wired network configuration](#54-Wired-network-configuration)
+* 6 [Get device information](#6-Get-device-information)
     * 6.1 [Get device list](#61-Get-device-list)
-    * 6.2 [Device Info](#62-Device-Info)
+    * 6.2 [Device Information](#62-Device-Information)
     * 6.3 [Delete device](#63-Delete-device)
-    * 6.4 [Device nickname modification](#64-Device-nickname-modification)
+    * 6.4 [Modify device nickname](#64-Modify-device-nickname)
     * 6.5 [Device alarm time point ](#65-Device-alarm-time-point)
     * 6.6 [Query device version](#66-Query-device-version)
     * 6.7 [Query device online status](#67-Query-device-online-status)
@@ -38,10 +38,10 @@
     * 7.2 [Disconnect device](#72-Disconnect-device)
     * 7.3 [Get bit rate](#73-Get-bit-rate)
     * 7.4 [Preview](#74-Preview)
-    * 7.5 [Play back](#75-Play-back)
+    * 7.5 [Playback](#75-Playback)
         * 7.5.1 [Playback related](#751-Playback-related)
         * 7.5.2 [Set playback duration](#752-Set-playback-duration)
-    * 7.6 [Cloud Play back](#76-Cloud-Play-back)
+    * 7.6 [Cloud Playback](#76-Cloud-Playback)
     * 7.7 [Mute](#77-Mute)
     * 7.8 [Voice intercom](#78-Voice-intercom)
     * 7.9 [Screenshots](#79-Screenshots)
@@ -50,7 +50,7 @@
     * 7.12 [PTZ control](#712-PTZ-control)
     * 7.13 [Leave message](#713-Leave-message)
     * 7.14 [Detect alarm](#714-Detect-alarm)
-        * 7.14.1 [Motion Detection](#7141-Motion-Detection)
+        * 7.14.1 [Motion detection](#7141-Motion-detection)
         * 7.14.2 [Human detection](#7142-Human-detection)
         * 7.14.3 [Alarm interval](#7143-Alarm-interval)
     * 7.15 [Storage (SD card)](#715-Storage-SD-card)
@@ -64,51 +64,51 @@
     * 7.23 [Floodlight camera settings](#723-Floodlight-camera-settings)
         * 7.23.1 [Switch lights](#7231-Switch-lights)
         * 7.23.2 [Sound alarm switch](#7232-Sound-alarm-switch)
-        * 7.23.3 [Turn on the lights according to the time period](#7233-Turn-on-the-lights-according-to-the-time-period)
-        * 7.23.4 [Switch lights on and off according to alarm events](#7234-Switch-lights-on-and-off-according-to-alarm-events)
+        * 7.23.3 [Turn on/off the lights according to the time period](#7233-Turn-on/off-the-lights-according-to-the-time-period)
+        * 7.23.4 [Turn on/off the lights according to alarm events](#7234-Turn-on/off-the-lights-according-to-alarm-events)
     * 7.24 [Doorbell answering process](#724-Doorbell-answering-process)
-* 8[Share Device](#8-Share-Device) 
-* 9[Family](#9-Family)
-    * 9.1 [Family Management](#91-Family-Management)
+* 8 [Share Device](#8-Share-Device) 
+* 9 [Family](#9-Family)
+    * 9.1 [Family management](#91-Family-management)
         * 9.1.1 [Get family room list(Without device Info)](#911-Get-family-room-list-Without-device-Info)
-        * 9.1.2 [Get family list (Has device Info)](#912-Get-family-list-Has-device-Info)
-        * 9.1.3 [Creat New Family](#913-Creat-New-Family)
-        * 9.1.4 [Updating Family Information](#914-Updating-Family-Information)
-        * 9.1.5 [Delete Family](#915-Delete-Family)
-    * 9.2 [Family Sharing](#92-Family-Sharing)
-        * 9.2.1 [Join a Family](#921-Join-a-Family)
-        * 9.2.2 [Leaving Family](#922-Leaving-Family)
+        * 9.1.2 [Get family list (With device Info)](#912-Get-family-list-With-device-Info)
+        * 9.1.3 [Create new family](#913-Create-new-family)
+        * 9.1.4 [Updating family Information](#914-Updating-family-Information)
+        * 9.1.5 [Delete family](#915-Delete-family)
+    * 9.2 [Family sharing](#92-Family-sharing)
+        * 9.2.1 [Join a family](#921-Join-a-family)
+        * 9.2.2 [Leaving family](#922-Leaving-family)
         * 9.2.3 [Invite members to join a family group](#923-Invite-members-to-join-a-family-group)
-        * 9.2.4 [Family Revoke Invite Member](#924-Family-Revoke-Invite-Member)
-        * 9.2.5 [Family Removal Member](#925-Family-Removal-Member])
-        * 9.2.6 [Adding family members to search by account](#926-Adding-family-members-to-search-by-account)
-        * 9.2.7 [List of Family Members](#927-List-of-Family-Members)
-        * 9.2.8 [Home Device Permission Changes](#928-Home-Device-Permission-Changes)
-        * 9.2.9 [Family Member Name Modification](#929-Family-Member-Name-Modification)
+        * 9.2.4 [Revoke member invitation](#924-Revoke-member-invitation)
+        * 9.2.5 [Remove member from family](#925-Remove-member-from-family])
+        * 9.2.6 [Adding family members by account searching](#926-Adding-family-members-by-account-searching)
+        * 9.2.7 [Family member list](#927-Family-member-list)
+        * 9.2.8 [Family device permission change](#928-Family-device-permission-change)
+        * 9.2.9 [Family member name modification](#929-Family-Member-name-modification)
     * 9.3 [Room Management](#93-Room-Management)
-        * 9.3.1 [Equipment Assignment Room](#931-Equipment-Assignment-Room)
-        * 9.3.2 [Adding a Room](#932-Adding-a-Room)
-        * 9.3.3 [Room Name Modification](#933-Room-Name-Modification)
-        * 9.3.4 [Delete Room](#934-Delete-Room)
-        * 9.3.5 [Remove devices from this room](#935-Remove-devices-from-this-room)
+        * 9.3.1 [Assign room for the device](#931-Assign-room-for-the-device)
+        * 9.3.2 [Add room](#932-Add-Room)
+        * 9.3.3 [Room name modification](#933-Room-name-modification)
+        * 9.3.4 [Delete room](#934-Delete-room)
+        * 9.3.5 [Remove devices from the room](#935-Remove-devices-from-the-room)
 * 10 [Message](#10-Message)
     * 10.1 [Get whether all devices have messages](#101-Get-whether-all-devices-have-messages)
     * 10.2 [Alarm message](#102-Alarm-message) 
-        * 10.2.1 [Get the alarm message of a certain device](#1021-Get-the-alarm-message-of-a-certain-device)
+        * 10.2.1 [Get whether the devices have alarm message](#1021-Get-whether-the-devices-have-alarm-message)
         * 10.2.2 [Get the latest alarm message list](#1022-Get-the-latest-alarm-message-list)
         * 10.2.3 [Get the number of days with alarm messages (the last 7 days)](#Get-the-number-of-days-with-alarm-messages-the-last-7-days)
-        * 10.2.4 [Get device alarm message](#1024-Get-device-alarm-message)
+        * 10.2.4 [Get device alarm message in a certain day](#1024-Get-device-alarm-message-in-a-certain-day)
         * 10.2.5 [Load alarm picture](#1025-Load-alarm-picture)
         * 10.2.6 [Delete multiple device alarm messages](#1026-Delete-multiple-device-alarm-messages)
     * 10.3 [System messages](#103-System-messages)
         * 10.3.1 [Get system messages](#1031-Get-system-messages)
-        * 10.3.2 [Delete system messages](#1032-Delete-system-messages)
+        * 10.3.2 [Batch delete system messages](#1032-Batch-delete-system-messages)
     * 10.4 [Shared messages](#104-Shared-messages)
-        * 10.4.1 [Get a list of device shared messages](#1041-Get-a-list-of-device-shared-messages)
-        * 10.4.2 [Delete device shared messages](#1042-Delete-device-shared-messages)
-        * 10.4.3 [Get a list of family shared messages](#1043-Get-a-list-of-family-shared-messages)
-        * 10.4.4 [Delete family shared messages](#1044-Delete-family-shared-messages)
-        * 10.4.5 [Deal family shared messages](#1045-Deal-family-shared-messages)
+        * 10.4.1 [Get shared messages list of the device](#1041-Get-shared-messages-list-of-the-device)
+        * 10.4.2 [Delete shared messages of the device](#1042-Delete-shared-messages-of-the-device)
+        * 10.4.3 [Get shared messages list of the family](#1043-Get-shared-messages-list-of-the-family)
+        * 10.4.4 [Delete shared messages of the family](#1044-Delete-shared-messages-of-the-family)
+        * 10.4.5 [Process shared messages of the family](#1045-Process-shared-messages-of-the-family)
         
 <center>
 
@@ -121,18 +121,18 @@
 
 </center>
 
-# 1. Functional Overview 
+# 1. Functional overview 
 
-Meari Technology APP SDK provides the interface package for communication with hardware devices and Meari Cloud to accelerate the application development process. It mainly includes the following functions:
-- Account system (login, logout, modification of user information, registration push, etc.)
+Meari Technology APP SDK provides the interface package for communication with hardware devices and Meari Cloud to accelerate the process of application development. It mainly includes the following functions:
+- Account system (login, logout, user information modification, registration push, etc.)
 - Hardware equipment related (network distribution, control, status reporting, firmware upgrade, preview playback, etc.)
 - Cloud storage service (obtaining the activation status, activation of services, creating orders, order lists, etc.)
 - Family group related (functions such as creating a family group, creating a new room, assigning a room, inviting members, etc.)
-- Message center (alarm message, device sharing message, family sharing message, system message)
+- Message center (alarm message, device share message, family share message, system message)
 
 # 2. Integration preparation
 
-Please read the server documentation first, and then proceed to the next step after obtaining the authentication information for redirection and login.
+Please read the server documentation before obtaining the authentication information for redirection and login.
 
 # 3. Integrated SDK
 
@@ -160,7 +160,7 @@ Belong to: MeariSdk tools
 ```
 ```
 【Describe】
-       After connecting through the cloud, the data obtained from the server v2/third/sdk/redirect is transferred and the SDK is initialized.
+       After the cloud to cloud connection, the data obtained from the server v2/third/sdk/redirect is transferred and the SDK is initialized.
 【Function】
        -(void)startSDKWithRedirectInfo:(NSDictionary *)info;
 【Code】
@@ -258,12 +258,12 @@ There is a phoneCode file in the Demo project that stores the corresponding coun
     
      }];
 ```
-## 4.5 APNS Message Push
+## 4.5 APNS message push
 
 ```
 【Description 】
      Sign up for Meari APNS push 
-     We need to provide our server with the P8 file, the Key ID of the P8 file, the bundle ID of the App, and the Team ID of the App issuing certificate to push APNS messages.
+     P8 file, the Key ID of the P8 file, the bundle ID of the App, and the Team ID of the App issuing certificate need to be provieded to relize APNS messages push.
       Called when logged in, that is, under the condition of [MeariUser sharedInstance].logined == YES
 
 【Function】
@@ -342,7 +342,7 @@ User-related data model.
 @property (nonatomic, assign, readonly) MeariThirdLoginType thirdLoginType; 
 ```
 
-## 4.7 User message notification 
+## 4.7 Message notification 
 
 ```
 Timely message notification means MeariSDK notifies the current user on the App side and some status of the device under the user account in time to facilitate the App side to achieve a better user experience
@@ -362,19 +362,19 @@ Timely message notification means MeariSDK notifies the current user on the App 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLoginInvalidNotification:) name:MeariUserLoginInvalidNotification object:nil];
 ```
 
-# 5. Device distribution network
+# 5. Device configuration
 
 ```
 Belong to: MeariDeviceActivator tool class
 
-The hardware module of Meari Technology supports three network distribution modes: QR code network distribution mode, hotspot mode (AP mode), and wired network distribution mode.
-The general process is-get the network tokon-give the token and wifi information to the device-wait for the device to be added successfully. The main difference between each mode is how to send the network distribution information to the device, the QR code is scanned by the camera, the hotspot mode is transmitted through the WIFI link, and the wired distribution network is searched through the LAN.
+The hardware module of Meari Technology supports three network configuration: QR code configuration, hotspot configuration (AP mode), and wired network configuration.
+The general process is-get the network tokon-give the token and wifi information to the device-wait for the device to be added successfully. The main difference between each mode is how to send the network configuration information to the device, the QR code is scanned by the camera, the hotspot mode is transmitted through the WIFI link, and the wired distribution network is searched through the LAN.
 
 ```
-## 5.1 Get distribution network token
+## 5.1 Get configuration token
 ```
 【Description 】
-     Obtain the distribution network token on the server, which needs to be passed to the device
+     Obtain the configuration token from the server, which needs to be passed to the device
 【Function】
      /** 
       token for config device 
@@ -394,11 +394,11 @@ The general process is-get the network tokon-give the token and wifi information
     }];
 
 ```
-## 5.2 QR code distribution network
+## 5.2 QR code configuration
 ```
 【Description 】
-     Generate a QR code with WIFI information and network distribution token and scan it for the device.
-      After the device emits a cuckoo sound, it indicates that the recognition is successful, and the device will enter a red light flashing state
+     Generate a QR code with WiFi information and configuration token which to be scanned by the camera
+      After the device makes a cuckoo sound, it indicates that the recognition is successful, and the device will enter the stat of red light flashing quickly
 【Function】
      /**
       @param ssid wifi name
@@ -414,7 +414,7 @@ The general process is-get the network tokon-give the token and wifi information
     UIImage *image = [[MeariDeviceActivator sharedInstance] createQRCodeWithSSID:@"Meari" pasword:@"12345678" token:token addSubDevice:NO size:CGSizeMake(300, 300)];
 
 【Description 】
-       Wait for the device to automatically add a successful message. It is recommended to manually query the device list to avoid the situation that the message is not delivered in time.
+       Wait for the successful message which the device added automatically. It is recommended to manually query the device list to avoid the situation that the message is not delivered in time.
 【Code】
     1.[MeariDeviceActivator sharedInstance].delegate = self;
     
@@ -426,7 +426,7 @@ The general process is-get the network tokon-give the token and wifi information
          }
       }
 
-    2.Before scanning the QR code for the device, record the device in the device list first, and when waiting for the callback of the successful addition of the device, you can actively call the interface for obtaining the device list to check whether a new device has been added.
+    2.Before scanning the QR code by the device, record the device in the device list, and when waiting for the callback of the successful adding of the device, you can actively call the interface for obtaining the device list to check whether a new device has been added.
     
     [[MeariUser sharedInstance] getDeviceListSuccess:^(MeariDeviceList *deviceList) {
 
@@ -439,18 +439,18 @@ The general process is-get the network tokon-give the token and wifi information
     [MeariDeviceActivator sharedInstance].delegate = self;
     [[MeariDeviceActivator sharedInstance] startConfigWiFi:MeariSearchModeAll token:token type:MeariDeviceTokenTypeQRCode nvr:NO timeout:100];
 	
-    In the above proxy method, there will be devices in the local area network
+    Devices in the Lan will be appeared in the proxy method above
 
     Stop LAN searching for other devices:
     [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
 
 ```
-## 5.3 Hotspot distribution network (Ap distribution network)
+## 5.3 Hotspot configuration (AP configuration)
 ```
 【Description 】
-     Generate a QR code with WIFI information and network distribution token, and transparently transmit it to the device through the hotspot WIFI.
+     Generate a QR code with WiFi information and configuration token which will be transparently transmitted to the device through the hotspot WiFi.
       The mobile phone needs to be connected to the hotspot issued by the device, the hotspot prefix is STRN_xxxxxxxxx
-      After the call is successful, the device will make a cuckoo sound, and then enter the blue light flashing state
+      After the call is successful, and the device will enter the stat of blue light flashing quickly
 【Function】
      /**
       @param ssid wifi name
@@ -469,7 +469,7 @@ The general process is-get the network tokon-give the token and wifi information
      }];
 
 【Description 】
-       Wait for the device to automatically add a successful message. It is recommended to manually query the device list to avoid the situation that the message is not delivered in time.
+       Wait for the successful message which the device added automatically. It is recommended to manually query the device list to avoid the situation that the message is not delivered in time.
        
 【Code】
     1.[MeariDeviceActivator sharedInstance].delegate = self;
@@ -482,7 +482,7 @@ The general process is-get the network tokon-give the token and wifi information
          }
       }
 
-    2.Before scanning the QR code for the device, record the device in the device list first, and when waiting for the callback of the successful addition of the device, you can actively call the interface for obtaining the device list to check whether a new device has been added.
+    2. Before scanning the QR code by the device, record the device in the device list, and when waiting for the callback of the successful adding of the device, you can actively call the interface for obtaining the device list to check whether a new device has been added.
     
     [[MeariUser sharedInstance] getDeviceListSuccess:^(MeariDeviceList *deviceList) {
 
@@ -495,16 +495,16 @@ The general process is-get the network tokon-give the token and wifi information
     [MeariDeviceActivator sharedInstance].delegate = self;
     [[MeariDeviceActivator sharedInstance] startConfigWiFi:MeariSearchModeAll token:token type:MeariDeviceTokenTypeQRCode nvr:NO timeout:100];
 	
-    In the above proxy method, there will be devices in the local area network
+    Devices in the Lan will be appeared in the proxy method above
 
     Stop LAN searching for other devices:
     [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
 
 ```
-## 5.4 Wired distribution network
+## 5.4 Wired network configuration
 ```
 【Description 】
-     Make sure the device is plugged into the network cable, and the phone and device are in the same local area network
+     Make sure the device is plugged with network cable, the phone and device are in the same local area network
      Search for devices in the same local area network
 
 【Function】
@@ -530,7 +530,7 @@ The general process is-get the network tokon-give the token and wifi information
     [[MeariDeviceActivator sharedInstance] stopSearchDevice];
 
 【Description 】
-     Query the adding status of the device to the server to filter some non-compliant devices
+     Query the adding status of the device from the server to filter some non-compliant devices
 【Function】
      /**
       @param devices device array 
@@ -552,7 +552,7 @@ The general process is-get the network tokon-give the token and wifi information
 
 
 【Description 】
-     Transparently transmit the distribution network token to the device
+     Transparently transmit the configuration network token to the device
 【Function】
      /**
       @param ip ip address  
@@ -569,7 +569,7 @@ The general process is-get the network tokon-give the token and wifi information
      }];
 
 【Description 】
-     Wait for the device to automatically add a successful message. It is recommended to manually query the device list to avoid the situation that the message is not delivered in time.
+     Wait for the successful message which the device added automatically. It is recommended to manually query the device list to avoid the situation that the message is not delivered in time.
 【Code】
     1.[MeariDeviceActivator sharedInstance].delegate = self;
      Implement proxy method
@@ -580,7 +580,7 @@ The general process is-get the network tokon-give the token and wifi information
          }
       }
 
-    2.Before scanning the QR code for the device, record the device in the device list first, and when waiting for the callback of the successful addition of the device, you can actively call the interface for obtaining the device list to check whether a new device has been added.
+    2. Before scanning the QR code by the device, record the device in the device list, and when waiting for the callback of the successful adding of the device, you can actively call the interface for obtaining the device list to check whether a new device has been added.
     
     [[MeariUser sharedInstance] getDeviceListSuccess:^(MeariDeviceList *deviceList) {
 
@@ -588,7 +588,7 @@ The general process is-get the network tokon-give the token and wifi information
 
     }];
 ```
-# 6. Device information
+# 6. Get device information
 ```
 Belong to：MeariUser
 ```
@@ -630,7 +630,7 @@ MeariDeviceList Attributes：
 /** Base */
 @property (nonatomic, strong) NSArray <MeariDevice *> *chimes;
 ```
-## 6.2 Device Info
+## 6.2 Device Information
 
 ```
 Belong to：MeariDevice
@@ -703,7 +703,7 @@ Belong to：MeariDevice
 
 ```
 【Description 】
-     Obtain the alarm time of a single device on a certain day
+     Get the alarm time of a single device on a certain day
 【Function】
      /**
       @param deviceID 
@@ -726,7 +726,7 @@ Belong to：MeariDevice
 
 ```
 【Description 】
-     Check if the device has a new version
+     Check Whether the device has a new version
 
 【Function】
      /**
@@ -761,7 +761,7 @@ MeariDeviceFirmwareInfo:
 
 ```
 【Description 】
-     Only supports Meari's self-developed version of the device, ie [camera supportMeariIot] == YES.
+     Only support the device which developed by Meari, ie [camera supportMeariIot] == YES.
 
 【Function】
      /**
@@ -901,7 +901,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 【Description 】
-     Before performing operations such as preview, playback, and settings on the device, you need to connect the device first
+     Before performing operations such as preview, playback, and settings, make sure the device is connceted.
 
 【Function】
      /**
@@ -925,7 +925,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 【Description 】
-     When you do not need to operate the device, you need to disconnect the device
+     Disconnect the device when you don't need to operate it.
 
 【Function】
      /**
@@ -1046,13 +1046,13 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 
-## 7.5 Play back
+## 7.5 Playback
 
 ### 7.5.1 Playback related
 ```
 【Description 】
-     Play back the video of the camera
-     Note: The SDK does not verify the playback time, so even if a time point without alarm is passed in, the interface will return success, so the upper layer needs to judge by itself
+     Playback the video of the camera
+     Note: The SDK does not verify the time of the playback, so even if a time point without an alarm is passed in, the interface will return successfully, so the upper layer needs to judge by itself
 
 【Function】
      /**
@@ -1202,7 +1202,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
     }];
 ```
 
-## 7.6 Cloud Play back 
+## 7.6 Cloud Playback 
 ```
 【Description 】
      After the device activates the cloud storage service, the records will be stored in the cloud.
@@ -1346,7 +1346,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 【Description 】
-    Voice intercom is divided into one-way intercom and two-way intercom, one-way intercom can only have one party talking at the same time.
+    The Voice intercom has a half-duplex and full-duplex, half-duplex can only have one party talking at the same time.
     
 【Be applicable】
     [device supportFullDuplex] == YES Support two-way intercom
@@ -1493,7 +1493,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 【Description 】
-     Get the parameters of the device, you must get the device parameters before operating the device
+     Get the parameters of the device, device parameters must be acquired before operating the device
 
 【Function】
      /**
@@ -1513,7 +1513,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 【Description 】
-     Rotate the camera, after starting the rotation, you need to call the Stop command to stop.
+     Rotate the camera, after starting the rotation, the stop command needs to be called to stop
 
 【Function】
      /**
@@ -1551,7 +1551,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.13 Leave message
 ```
 【Description 】
-     The doorbell device supports recording of messages, and you can choose to play the message when answering.
+     The doorbell device supports recording of messages, and the message can be played when answering.
 【Be applicable】
      Doorbell  
      camera.supportHostMessage == MeariDeviceSupportHostTypeNone  Does not support the message function
@@ -1634,8 +1634,8 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 【Description 】
      Motion detection settings 
 【Be applicable】
-     General non-low power camera
-     It can be judged by device.info.capability.caps.md == YES
+     General non-low-power consumption camera
+     It can be judged by device.info.capability.caps.md == YES whether it supports the function.
 【Function】
      /**
      Set alarm level
@@ -1658,11 +1658,11 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ### 7.14.2 Human detection
 ```
 【Description】
-     Set the doorbell single PIR (human detection) level
+     Set single PIR (human detection) level of doorbell
 【Be applicable】
-     General low-power camera
-     It can be judged by device.supportPir == YES
-     Get whether the device supports multi-gear adjustment through device.supportPirSensitivity
+     General low-power consumption camera
+     It can be judged by device.supportPir == YES whether it supports human dection
+     Get whether the device supports multi-level adjustment through device.supportPirSensitivity
      Get the specific supported level of the device from device.supportPirLevel
     
 【Function】
@@ -1687,8 +1687,8 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 【Description】
      Set the alarm interval
 【Be applicable】
-      General low-power camera
-      It can be judged by device.supportAlarmInterval
+      General low-power consumption camera
+      It can be judged by device.supportAlarmInterval whether it supports alarm interval
       An array of supported alarm intervals can be obtained through [self.device supportAlarmFrequencyIntervalLevels]
     
 【Function】
@@ -1767,7 +1767,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 【Description 】
-     Check if the latest version is available from the server
+     Check whether the latest version is available from the server
 【Function】
      /**
       @param deviceSn  
@@ -1785,7 +1785,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      }];
 
 【Description 】
-      To obtain and upgrade the firmware information, click the upgrade device and the upgrade operation will be carried out immediately
+      To obtain and upgrade the firmware information, click the upgrade device and the upgrade operation will be operated immediately
 【Function】
 
      /**
@@ -1961,7 +1961,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 【Description 】
-     Get the music status of the device, control the device to play music, you need a memory card to play
+     Get the music status of the device, control the device to play music, Music can only be played when a SD card inserted
 
 【Function】
 
@@ -2061,7 +2061,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 【Function】
 
      /**
-      Get the output volume of the music camera
+      Get the output music volume of the camera
 
       @param success Successful callback, return value: device output volume, 0-100
       @param failure  
@@ -2236,7 +2236,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ```
 【Description 】
-     Set a time period for the device. When the device is in the set time period, the device will turn on the light, and when the time is up, the control light will turn off
+     Set a time period for the device. When the device is in the set time period, the device will turn on the light, and when the time is up, the control light will be turned off
     
 【Function】
      /**
@@ -2257,7 +2257,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
     }];
 ```
 
-### 7.23.4 Switch lights on and off according to alarm events
+### 7.23.4 Turn on and off lights according to alarm events
 
 ```
 【Description 】
@@ -2295,6 +2295,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 - 1 Receive doorbell call messages
 > Press the doorbell, receive the doorbell call mqtt message callback or push message
 > Register notification to receive call information for notification callback
+
 ```
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceHasVisitorNotification:) name:MeariDeviceHasVisitorNotification object:nil];
 - (void)deviceHasVisitorNotification:(NSNotification *)sender {
@@ -2307,6 +2308,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 - 3 answer or hang up
 > Handle the logic of answering, hanging up, etc
 > Answering is similar to previewing
+
 ```
 /**
  // Used to answer the doorbell, must be used with "requestReleaseAnswerAuthorityWithID"
@@ -2332,12 +2334,13 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 
 # 8. Share Device
+
 ```
 Belong to: MeariUser
 
-    You can share your device with other users, and you can view the camera after the other users agree. The shareee will receive MQTT messages and APNS push notifications.
-
+   The device can be shared with other users, they can check the camera after they agree with the share. The shareed users will receive MQTT messages and APNS push notifications.
 ```
+
 ```
 【Description 】
      Get the shared list of a single device
@@ -2352,10 +2355,9 @@ Belong to: MeariUser
 
 【Code】
      [[MeariUser sharedInstance] getShareListForDeviceWithDeviceID:camera.info.ID success:^(NSArray<MeariFriendInfo *> *friends) {
-            
-     } failure:^(NSError *error) {
-
-     }];
+ 		} failure:^(NSError *error) {
+    
+   		}];
 
 【Description 】
      Cancel device share
@@ -2371,7 +2373,7 @@ Belong to: MeariUser
      [[MeariUser sharedInstance] cancelShareDeviceWithDeviceID:camera.info.ID success:^{
             
      } failure:^(NSError *error) {
-
+    
      }];
 
 【Description 】
@@ -2390,11 +2392,11 @@ Belong to: MeariUser
      [[MeariUser sharedInstance] shareDeviceWithDeviceID:camera.info.ID shareAccount:@"test@meari.com" authSign:0 success:^{
             
      } failure:^(NSError *error) {
-
+    
      }];
 
 【Description 】
-     Modify the permissions of the shared person
+     Modify the permissions of the shared user
 【Function】
      /**
       @param deviceID 
@@ -2409,7 +2411,7 @@ Belong to: MeariUser
      [[MeariUser sharedInstance] changeShareDeviceWithDeviceID:camera.info.ID shareAccount:@"test@meari.com" authSign:1 success:^{
             
      } failure:^(NSError *error) {
-
+    
      }];
 
 
@@ -2428,7 +2430,7 @@ Belong to: MeariUser
      [[MeariUser sharedInstance] searchUserWithDeviceID:camera.info.ID shareAccount:@"test@meari.com" success:^(MeariShareInfo *shareInfo){
             
      } failure:^(NSError *error) {
-
+    
      }];
 
 【Description 】
@@ -2445,7 +2447,7 @@ Belong to: MeariUser
       [[MeariUser sharedInstance] getAllDeviceShareSuccess:^(NSArray<MeariShareCameraInfo *> *shareCameraList) {
 
       } failure:^(NSError *error) {
-
+    
       }];
 
 【Description 】
@@ -2494,12 +2496,15 @@ Belong to: MeariUser
 
 ```
 # 9. Family
+
 ```
 Belong to：MeariFamily
 ```
 
 ## 9.1 Family Management
+
 ### 9.1.1 Get family room list(Without device Info)
+
 ```
 Return：MeariFamilyModel
 ```
@@ -2515,7 +2520,7 @@ Return：MeariFamilyModel
      [[MeariFamily sharedInstance] getFamilyListSuccess:^(NSArray<MeariFamilyModel *> *familyList) {
       
       } failure:^(NSError *error) {
-
+    
       }];
 ```
 
@@ -2563,7 +2568,7 @@ MeariFamilyModel property：
     }];
 ```
 
-### 9.1.3 Creat New Family
+### 9.1.3 Create New Family
 
 ```
 【Function】
@@ -2580,7 +2585,7 @@ MeariFamilyModel property：
         MR_HUD_SHOW_ERROR(error)
     }];
 ```
-### 9.1.4 Updating Family Information
+### 9.1.4 Update Family Information
 
 
 ```
@@ -2665,7 +2670,7 @@ MeariFamilyModel property：
     
     }];
 ```
-### 9.2.4 Family Revoke Invite Member
+### 9.2.4 Revoke member invitation
 
 ```
 【Function】
@@ -2682,7 +2687,7 @@ MeariFamilyModel property：
     
     }];
 ```
-### 9.2.5 Family Removal Member
+### 9.2.5 Remove member from family
 
 ```
 
@@ -2701,7 +2706,7 @@ MeariFamilyModel property：
     
     }];
 ```
-### 9.2.6 Adding family members to search by account
+### 9.2.6 Adding family members by account searching
 ```
 Return：MeariMemberModel
 ```
@@ -2745,7 +2750,7 @@ MeariMemberModel property:
 
 @property (nonatomic, copy) NSArray<MeariFamilyModel *> *homes;
 ```
-### 9.2.7 List of Family Members
+### 9.2.7 Family member list
 ```
 Return：MeariMemberModel
 ```
@@ -2762,7 +2767,7 @@ Return：MeariMemberModel
     
     }];
 ```
-### 9.2.8 Home Device Permission Changes
+### 9.2.8 family device permission change
 
 ```
 
@@ -2780,7 +2785,7 @@ Return：MeariMemberModel
     
     }];
 ```
-### 9.2.9 Family Member Name Modification
+### 9.2.9 Family member name modification
 
 ```
 
@@ -2799,8 +2804,8 @@ Return：MeariMemberModel
     
     }];
 ```
-## 9.3 Room Management 
-### 9.3.1 Equipment Assignment Room
+## 9.3 Room management 
+### 9.3.1 Assign room for the device
 
 ```
 【Function】
@@ -2818,7 +2823,7 @@ Return：MeariMemberModel
     
     }];
 ```
-### 9.3.2 Adding a Room
+### 9.3.2 Adding room
 
 ```
 
@@ -2837,7 +2842,7 @@ Return：MeariMemberModel
     
     }];
 ```
-### 9.3.3 Room Name Modification
+### 9.3.3 Room name modification
 
 
 ```
@@ -2874,7 +2879,7 @@ Return：MeariMemberModel
     
     }];
 ```
-### 9.3.5 Remove devices from this room
+### 9.3.5 Remove devices from the room
 
 ```
 
@@ -2904,7 +2909,7 @@ Return：MeariMemberModel
 Belong to：MeariMessageInfo
 ```
 ```
-Note: The alarm message of the device, once pulled by the owner of the device, the server will delete the message, so it needs to be saved locally. If the person being shared pulls the alarm message of the device, the server will not delete it. Pay attention to the owner and being shared here. The difference between people
+Note: Once the alarm message is pulled by the owner of the device, the server will delete the message, so it needs to be saved locally. If the user being shared pulls the alarm message of the device, the server will not delete it. Pay attention to the difference of the owner and the shared user. 
 ```
 ## 10.1 Get whether all devices have messages 
 
@@ -2924,18 +2929,18 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     [[MeariUser sharedInstance] getAlarmMessageListSuccess:^(NSArray<MeariMessageInfoAlarm *> *msgs) {
 
     } failure:^(NSError *error) {
-
+    
     }];
 【Precautions】
     If the message is pulled by the owner, the server will not save the message, and the shared user will not see the message.
 ```
 ## 10.2 Alarm message 
-### 10.2.1  Get the alarm message of a certain device 
+### 10.2.1  Get whether the devices have alarm message 
 
 ```
 【Description 】
-     Get the alarm message of a certain device, every time the latest 20 messages on the server will be pulled
-     After the master pulls, the message record will be deleted from the server, and then the sharer will not be able to get the message
+     Get the alarm message of a certain device, the latest 20 messages on the server will be pulled every time 
+     The message record will be deleted from the server after the owner pulled, and then the shared user will not be able to get the message
 
 【Function】
     /**
@@ -2949,7 +2954,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     [[MeariUser sharedInstance] getAlarmMessageListForDeviceWithDeviceID:_deviceID success:^(NSArray<MeariMessageInfoAlarmDevice *> *msgs, MeariDevice *device) {
 
     } failure:^(NSError *error) {
-
+    
     }];
 【Precautions】
      If the message is pulled by the owner, the server will not save the message, and the shared friend will not see the message.
@@ -2957,7 +2962,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 ### 10.2.2 Get the latest alarm message list 
 ```
 【Description】
-    Get the latest alarm message list of the device owned by the user
+    Get the latest alarm message list of the devices which owned by the user
     After the device alarm message is pulled, the message record will be deleted from the server, and then the interface will no longer return the latest alarm message of the device
 
 【Function】
@@ -2970,7 +2975,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     [[MeariUser sharedInstance] getAlarmLatestMessageListForDeviceListSuccess:^(NSArray<MeariMessageLatestAlarm *> *msgs) {
 
     } failure:^(NSError *error) {
-
+    
     }];
  【Precautions】
      If the message is pulled by the owner, the server will not save the message, and the shared friend will not see the message.
@@ -2991,12 +2996,13 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
      [[MeariUser sharedInstance] getAlarmMessageRecentDaysWithDeviceID:_deviceID channel:device.channel success:^(NSArray *msgHas) {
 	
      } failure:^(NSError *error) {
-
+    
      }];
 
-     
+
+​     
 ```
-### 10.2.4 Get device alarm message
+### 10.2.4 Get device alarm message in a certain day
 ```
 【Description 】 
       Get the device's alarm message on a certain day
@@ -3016,7 +3022,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
      } failure:^(NSError *error) {
         
      }];
-     
+
 ```
 ### 10.2.5 Load alarm picture
 ```
@@ -3064,7 +3070,8 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
        }];
     }
 
-     
+
+​     
 ```
 
 ### 10.2.6 Delete multiple device alarm messages 
@@ -3085,7 +3092,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     [[MeariUser sharedInstance] deleteAlarmMessagesWithDeviceIDs:@[deviceID,devviceID] success:^{
 
     } failure:^(NSError *error) {
-
+    
     }];
 
 ```
@@ -3107,11 +3114,11 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     [[MeariUser sharedInstance] getSystemMessageListSuccess:^(NSArray<MeariMessageInfoSystem *> *msgs) {
 
     } failure:^(NSError *error) {
-
+    
     }];
 ```
 
-### 10.3.2 Delete system messages
+### 10.3.2 Batch delete system messages
 
 ```
 【Description 】
@@ -3129,12 +3136,13 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
     [[MeariUser sharedInstance] deleteSystemMessages:arr success:^{
 
     } failure:^(NSError *error) {
-
+    
     }];
 ```
 
 ## 10.4 Shared messages
-### 10.4.1 Get a list of device shared messages
+### 10.4.1 Get shared messages list of the device
+
 ```
 【Description 】
 	Get all shared messages
@@ -3152,7 +3160,9 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
         
     }];
 ```
- ### 10.4.2 Delete device shared messages
+
+ ### 10.4.2 Delete shared messages of the device
+ 
 ```
 【Description 】
 	  Delete shared message
@@ -3168,12 +3178,14 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
      [[MeariUser sharedInstance] deleteShareRequestListWithMsgIDArray:@[model.shareInfo.msgID] success:^{
 
      } failure:^(NSError *error) {
-
+    
      }];
 
 
 ```
-### 10.4.3  Get a list of family shared messages
+
+### 10.4.3  Get shared messages list of the family
+
 ```
 【Description】
       Get family sharing messages
@@ -3185,10 +3197,12 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
      [[MeariFamily sharedInstance] getFamilyShareListSuccess:^(NSArray<MeariMessageFamilyShare *> *familyMessageList) {
      
      } failure:^(NSError *error) {
-
+    
      }];
 ```
-### 10.4.4 Delete family shared messages
+
+### 10.4.4 Delete shared messages of the family
+
 ```
 【Description】
       Delete family shared messages
@@ -3196,7 +3210,7 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
 【Function】
      /**
       Delete family shared messages
- 
+
       @param msgIDList List of message ID
       @param success Successful callback 
       @param failure failure callback
@@ -3208,13 +3222,15 @@ Note: The alarm message of the device, once pulled by the owner of the device, t
      [[MeariFamily sharedInstance] removeFamilyInviteMessageWithMsgIDList:@[model.shareInfo.msgID] success:^{
 
      } failure:^(NSError *error) {
-
+    
      }];
 ```
-### 10.4.5  Deal family shared messages
+
+### 10.4.5  Process shared messages of the family
+
 ```
 【Description】
-      Deal family shared messages
+      Process shared messages
 
 【Function】
      /**
