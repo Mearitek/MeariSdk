@@ -4,43 +4,43 @@
 [TOC]
 ```
 
-* 1 [Function Overview](#1-Function-Overview)
+* 1 [Function overview](#1-Function-overview)
 * 2 [Integration preparation](#2-Integration-preparation)
 * 3 [Integrated SDK](#3-Integrated-SDK)
     * 3.1 [Integration Process](#31-Integration-Process)
         * 3.1.1 [Import the sdk package](#311-Import-the-sdk-package)
-        * 3.1.2 [Configuring build.gradle](#312-Configuring-build.gradle)
-        * 3.1.3 [Configuring AndroidManifest.xml](#313-Configuring-AndroidManifest.xml)
-    * 3.2 [Initializing the SDK](#32-Initializing-the-SDK)
+        * 3.1.2 [Configure build.gradle](#312-Configure-buildgradle)
+        * 3.1.3 [Configure AndroidManifest.xml](#313-Configure-AndroidManifestxml)
+    * 3.2 [Initialize the SDK](#32-Initialize-the-SDK)
 * 4 [User Management](#4-User-Management)
     * 4.1 [User login](#41-User-login)
     * 4.2 [Log out](#42-Log-out)
     * 4.3 [Upload user avatar](#43-Upload-user-avatar)
-    * 4.4 [Change nickname](#44-Change-nickname)
+    * 4.4 [Modify nickname](#44-Modify-nickname)
 * 5 [Add device](#5-Add-device)
     * 5.1 [Add device via QR code](#51-Add-device-via-QR-code)
         * 5.1.1 [Generate QR Code](#511-Generate-QR-Code)
         * 5.1.2 [Search and add device](#512-Search-and-add-device)
-    * 5.2 [Add device via AP](#52-Add-device-via-AP)
-        * 5.2.1 [Connect to AP](#521-Connect-to-AP)
+    * 5.2 [Add device via AP mode](#52-Add-device-via-AP-mode)
+        * 5.2.1 [Connect to device hotspot](#521-Connect-to-device-hotspot)
         * 5.2.2 [Search and add device](#522-Search-and-add-device)
-    * 5.3 [Wired distribution network to add device](#53-Wired-distribution-network-to-add-device)
-        * 5.3.1 [Searching for devices](#531-Searching-for-devices)
+    * 5.3 [Add device via wired network](#53-Add-device-via-wired-network)
+        * 5.3.1 [Search device](#531-Search-device)
         * 5.3.2 [Add device](#532-Add-device)
 * 6 [Device Control](#6-Device-Control)
-    * 6.1 [Basic Device operation](#61-Basic-Device-operation)
-        * 6.1.1 [Introduction to device-related classes](#611-Introduction-to-device-related-classes)
+    * 6.1 [Basic device operations](#61-Basic-device-operations)
+        * 6.1.1 [Introduction of device-related classes](#611-Introduction-of-device-related-classes)
         * 6.1.2 [Get device information list](#612-Get-device-information-list)
         * 6.1.3 [Device removal](#613-Device-removal)
-        * 6.1.4 [Device Nickname Modification](614#-Device-Nickname-Modification)
-        * 6.1.5 [Get device alarm message time segment](#615-Get-device-alarm-message-time-segment)
+        * 6.1.4 [Device nickname modification](#614-Device-nickname-modification)
+        * 6.1.5 [Get time segment of device alarm message](#615-Get-time-segment-of-device-alarm-message)
     * 6.2 [Device preview and playback](#62-Device-preview-and-playback)
-        * 6.2.1 [Device Preview](#621-Device-Preview)
+        * 6.2.1 [Device preview](#621-Device-preview)
         * 6.2.2 [Device SD card playback](#622-Device-SD-card-playback)
     * 6.3 [Device related](#63-Device-related)
-        * 6.3.1 [Doorbell Answering Process](#631-Doorbell-Answering-Process) 
+        * 6.3.1 [Doorbell answering process](#631-Doorbell-answering-process) 
 * 7 [Share device](#7-Share-device)
-    * 7.1 [Related Classes](#71-Related-Classes)
+    * 7.1 [Introduction of related class](#71-Introduction-of-related-class)
     * 7.2 [Get device share list](#72-Get-device-share-list)
     * 7.3 [Get history share list](#73-Get-history-share-list)
     * 7.4 [Get shared results of all devices](#74-Get-shared-results-of-all-devices)
@@ -49,87 +49,87 @@
     * 7.7 [Cancel shared device](#77-Cancel-shared-device)
     * 7.8 [Delete history shared user](#78-Delete-history-shared-user)
     * 7.9 [Processing shared messages](#79-Processing-shared-messages)
-* 8 [Message Center](#8-Message-Center)
+* 8 [Message center](#8-Message-center)
     * 8.1 [Device shared messages](#81-Device-shared-messages)
-        * 8.1.1 [Get shared message list of device](#811-Get-shared-message-list-of-device)
+        * 8.1.1 [Get list of the device shared message](#811-Get-list-of-the-device-shared-message)
         * 8.1.2 [Delete shared messages of device](#812-Delete-shared-messages-of-device)
-    * 8.2 [Alarm message of device](#82-Alarm-message-of-device)
-        * 8.2.1 [Get all devices whether have messages](#821-Get-all-devices-whether-have-messages)
+    * 8.2 [Device alarm message](#82-Device-alarm-message)
+        * 8.2.1 [Get whether all devices have messages](#821-Get-whether-all-devices-have-messages)
         * 8.2.2 [Get alarm messages of a single device](#822-Get-alarm-messages-of-a-single-device)
-    * 8.3 [System Message](#83-System-Message)
+    * 8.3 [System message](#83-System-message)
         * 8.3.1 [Get system message list](#831-Get-system-message-list)
         * 8.3.2 [Delete system messages](#832-Delete-system-messages)
-* 9 [Camera settings](#9-Camera-settings)
-    * 9.1 [device Capability](#91-device-Capability)
-    * 9.2 [device parameters](#92-device-parameters)
-    * 9.3 [Format SD Card of device](#93-Format-SD-Card-of-device)
-    * 9.4 [Upgrade Device Firmware](#94-Upgrade-Device-Firmware)
+* 9 [Device settings](#9-Device-settings)
+    * 9.1 [Device capability](#91-Device-capability)
+    * 9.2 [Device parameters](#92-Device-parameters)
+    * 9.3 [Format device SD Card](#93-Format-device-SD-Card)
+    * 9.4 [Upgrade device firmware](#94-Upgrade-device-firmware)
     * 9.5 [Basic parameter settings](#95-Basic-parameter-settings)
-        * 9.5.1 [Get the parameters of the device](#951-Get-the-parameters-of-the-device)
+        * 9.5.1 [Get device parameters](#951-Get-device-parameters)
         * 9.5.2 [Device LED light switch control](#952-Device-LED-light-switch-control)
-        * 9.5.3 [Flip control of device preview video](#953-Flip-control-of-device-preview-video)
-        * 9.5.4 [Local recording settings of device](#954-Local-recording-settings-of-device)
-        * 9.5.5 [Day and night mode setting of device](#955-Day-and-night-mode-setting-of-device)
-        * 9.5.6 [Sleep mode setting of device](#956-Sleep-mode-setting-of-device)
-        * 9.5.7 [Scheduled sleep period setting of device](#957-Scheduled-sleep-period-setting-of-device)
-        * 9.5.8 [Motion detection setting of device](#958-Motion-detection-setting-of-device)
-        * 9.5.9 [PIR detection setting of device](#959-PIR-detection-setting-of-device)
-        * 9.5.10 [Noise detection setting of device](#9510-Noise-detection-setting-of-device)
-        * 9.5.11 [Cry alarm setting of device](9511#-Cry-alarm-setting-of-device)
-        * 9.5.12 [Human tracking setting of Device](#9512-Human-tracking-setting-of-Device)
-        * 9.5.13 [Human detection alarm setting of device](#9513-Human-detection-alarm-setting-of-device)
-        * 9.5.14 [Humanoid frame setting of device](#9514-Humanoid-frame-setting-of-device)
-        * 9.5.15 [Onvif setting of device](#9515-Onvif-setting-of-device)
-        * 9.5.16 [Video encoding format setting of device](#9516-Video-encoding-format-setting-of-device)
+        * 9.5.3 [Device preview video flip control](#953-Device-preview-video-flip-control)
+        * 9.5.4 [Device local recording setting](#954-Device-local-recording-setting)
+        * 9.5.5 [Device day and night mode setting](#955-Device-day-and-night-mode-setting)
+        * 9.5.6 [Device sleep mode setting](#956-Device-sleep-mode-setting)
+        * 9.5.7 [Device scheduled sleep period setting](#957-Device-scheduled-sleep-period-setting)
+        * 9.5.8 [Device motion detection setting](#958-Device-motion-detection-setting)
+        * 9.5.9 [Device PIR detection setting](#959-Device-PIR-detection-setting)
+        * 9.5.10 [Device noise detection setting](#9510-Device-noise-detection-setting)
+        * 9.5.11 [Device cry alarm setting](#9511-Device-cry-alarm-setting)
+        * 9.5.12 [Device human tracking setting](#9512-Device-human-tracking-setting)
+        * 9.5.13 [Device human detection alarm setting](#9513-Device-human-detection-alarm-setting)
+        * 9.5.14 [Device humanoid frame setting](#9514-Device-humanoid-frame-setting)
+        * 9.5.15 [Device Onvif setting](#9515-Device-Onvif-setting)
+        * 9.5.16 [Device video encoding format setting](#9516-Device-video-encoding-format-setting)
         * 9.5.17 [Device rotation control](#9517-Device-rotation-control)
         * 9.5.18 [Device alarm plan time period setting](#9518-Device-alarm-plan-time-period-setting)
         * 9.5.19 [Device push message switch setting](#9519-Device-push-message-switch-setting)
         * 9.5.20 [Alarm frequency setting](#9520-Alarm-frequency-setting)
-        * 9.5.21 [Multi-level PIR setting](#9521-Multi-level-PIR-setting)
+        * 9.5.21 [PIR level setting](#9521-PIR-level-setting)
         * 9.5.22 [SD card recording type and time setting](#9522-SD-card-recording-type-and-time-setting)
-    * 9.6 [Parameter setting of doorbell](#96-Parameter-setting-of-doorbell)
-        * 9.6.1 [Intercom volume settings of device](#961-Intercom-volume-settings-of-device)
-        * 9.6.2 [Unlocking the battery lock](#962-Unlocking-the-battery-lock)
-        * 9.6.3 [Binding Wireless Chime](#963-Binding-Wireless-Chime)
-        * 9.6.4 [Unbinding Wireless Chime](#964-Unbinding-Wireless-Chime)
-        * 9.6.5 [Whether the wireless chime works](#965-Whether-the-wireless-chime-works)
-        * 9.6.6 [Volume setting of wireless chime](#966-Volume-setting-of-wireless-chime)
-        * 9.6.7 [Ringtone setting of wireless chime](#967-Ringtone-setting-of-wireless-chime)
-        * 9.6.8 [Whether the mechanical chime works](#968-Whether-the-mechanical-chime-works)
+    * 9.6 [Doorbell parameter setting](#96-Doorbell-parameter-setting)
+        * 9.6.1 [Device Intercom volume settings](#961-Device-Intercom-volume-settings)
+        * 9.6.2 [Unlock the battery lock](#962-Unlock-the-battery-lock)
+        * 9.6.3 [Bind Wireless Chime](#963-Bind-Wireless-Chime)
+        * 9.6.4 [Unbind Wireless Chime](#964-Unbind-Wireless-Chime)
+        * 9.6.5 [Whether the wireless chime works setting](#965-Whether-the-wireless-chime-works-setting)
+        * 9.6.6 [Wireless chime volume setting](#966-Wireless-chime-volume-setting)
+        * 9.6.7 [Wireless chime ringtone setting](#967-Wireless-chime-ringtone-setting)
+        * 9.6.8 [Whether the mechanical chime works setting](#968-Whether-the-mechanical-chime-works-setting)
     * 9.7 [Flight camera parameter setting](#97-Flight-camera-parameter-setting)
-        * 9.7.1 [light switch](#971-light-switch)
-        * 9.7.2 [Alarm switch](#972-Alarm-switch)
-        * 9.7.3 [Linkage lighting](#973-Linkage-lighting)
-        * 9.7.4 [Linkage lighting duration](#974-Linkage-lighting-duration)
-        * 9.7.5 [Lighting schedule](#975-Lighting-schedule)
-        * 9.7.6 [Lighting brightness](#976-Lighting-brightness)
-        * 9.7.7 [Manual lighting duration](#977-Manual-lighting-duration)
-        * 9.7.8 [Linkage Alarm](#978-Linkage-Alarm)
+        * 9.7.1 [Light swtitch setting](#971-Light-switch-setting)
+        * 9.7.2 [Alarm switch setting](#972-Alarm-switch-setting)
+        * 9.7.3 [Camera trigger light swtich setting](#973-Camera-trigger-light-swtich-setting)
+        * 9.7.4 [Camera trigger lighting duration setting](#974-Camera-trigger-lighting-duration-setting)
+        * 9.7.5 [Lighting schedule setting](#975-Lighting-schedule-setting)
+        * 9.7.6 [Lighting brightness setting](#976-Lighting-brightness-setting)
+        * 9.7.7 [Manual lighting duration setting](#977-Manual-lighting-duration-setting)
+        * 9.7.8 [Camera trigger alarm setting](#978-Camera-trigger-alarm-setting)
 * 10 [Family](#10-Family)
-    * 10.1 [Family Operation](#101-Family-Operation)
+    * 10.1 [Family operation](#101-Family-operation)
         * 10.1.1 [Get family list](#1011-Get-family-list)
-        * 10.1.2 [Create Family](#1012-Create-Family)
-        * 10.1.3 [Update Family Information](#1013-Update-Family-Information)
-        * 10.1.4 [Delete Family](#1014-Delete-Family)
-    * 10.2 [Family Sharing](#102-Family-Sharing)
-        * 10.2.1 [Search for member accounts to add](#1021-Search-for-member-accounts-to-add)
-        * 10.2.2 [Search for a family account to join](#1022-Search-for-a-family-account-to-join)
+        * 10.1.2 [Create family](#1012-Create-family)
+        * 10.1.3 [Update family information](#1013-Update-family-information)
+        * 10.1.4 [Delete family](#1014-Delete-family)
+    * 10.2 [Family Share](#102-Family-Share)
+        * 10.2.1 [Search for member accounts to be added](#1021-Search-for-member-accounts-to-be-added)
+        * 10.2.2 [Search for the family account to be joined](#1022-Search-for-the-family-account-to-be-joined)
         * 10.2.3 [Add member to the family](#1023-Add-member-to-the-family)
-        * 10.2.4 [Join a family](#-1024Join-a-family)
-        * 10.2.5 [Get family sharing Messages](#1025-Get-family-sharing-Messages)
-        * 10.2.6 [Handling family shared messages](#1026-Handling-family-shared-messages)
-        * 10.2.7 [Get a list of family members](#1027-Get-a-list-of-family-members)
+        * 10.2.4 [Join a family](#1024-Join-a-family)
+        * 10.2.5 [Get family shared messages](#1025-Get-family-shared-messages)
+        * 10.2.6 [Handle family shared messages](#1026-Handle-family-shared-messages)
+        * 10.2.7 [Get family member list](#1027-Get-family-member-list)
         * 10.2.8 [Modify device permissions of the family member](#1028-Modify-device-permissions-of-the-family-member)
-        * 10.2.9 [Remove a member from the family](#1029-Remove-a-member-from-the-family)
+        * 10.2.9 [Remove member from the family](#1029-Remove-a-member-from-the-family)
         * 10.2.10 [Revoke member invitation](#10210-Revoke-member-invitation)
         * 10.2.11 [Leave family](#10211-Leave-family)
     * 10.3 [Room Operation](#103-Room-Operation)
-        * 10.3.1 [Add room to the family](#1031-Add-room-to-the-family)
+        * 10.3.1 [Add a room](#1031-Add-a-room)
         * 10.3.2 [Modify room information](#1032-Modify-room-information)
-        * 10.3.3 [Delete room from the family](#1033-Delete-room-from-the-family)
+        * 10.3.3 [Delete room](#1033-Delete-room)
         * 10.3.4 [Add device to the room](#1034-Add-device-to-the-room)
         * 10.3.5 [Remove device from the room](#1035-Remove-device-from-the-room)
-        * 10.3.6 [Batch delete devices](#1036-Batch-delete-devices)
+        * 10.3.6 [Batch remove devices](#1036-Batch-remove-devices)
     * 10.4 [Family Related Classes](#104-Family-Related-Classes)
         * 10.4.1 [MeariFamily](#1041-MeariFamily)
         * 10.4.2 [MeariRoom](#1042-MeariRoom)
@@ -159,15 +159,15 @@ Version number | Development team | Update date | Notes
 
 <center>
 
-# 1 Function Overview
+# 1 Function overview
 
-The Meari SDK provides interface of communicating with hardware devices and Merai Cloud to accelerate the application development process, including the following functions:
+The Meari SDK provides interface of communicating with hardware devices and Meari Cloud to accelerate the application development process, including the following functions:
 
 - Account System
-- Add Decvice
+- Add Device
 - Device Control
 - Device Settings
-- Share Device
+- Share Devices
 - Family
 - Message Center
 
@@ -182,12 +182,12 @@ The Meari SDK provides interface of communicating with hardware devices and Mera
 
 # 3 Integrated SDK
 ## 3.1 Integration Process
-### 3.1.1 Import the sdk package
+### 3.1.1 Import the SDK package
 ```
 Import the so files and aar files from libs directory into your own project, you can partialy or fully import so files base on your project.
 ```
 
-### 3.1.2 Configuring build.gradle
+### 3.1.2 Configure build.gradle
 ```
 Add the following configuration to the build.gradle file:
 
@@ -236,7 +236,7 @@ dependencies {
 }
 ```
 
-### 3.1.3 Configuring AndroidManifest.xml
+### 3.1.3 Configure AndroidManifest.xml
 ```
 Configure appkey and appSecret in the AndroidManifest.xml file, configure the corresponding permissions, etc.
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
@@ -270,7 +270,7 @@ Configure appkey and appSecret in the AndroidManifest.xml file, configure the co
 ```
 
 
-## 3.2 Initializing the SDK
+## 3.2 Initialize the SDK
 
 ```
 【description】
@@ -405,7 +405,7 @@ MeariUser.getInstance (). UploadUserAvatar (path, new IAvatarCallback () {
 });
 ```
 
-## 4.4 Change nickname
+## 4.4 Modify nickname
 ```
 【description】
 Modify user nickname.
@@ -496,8 +496,8 @@ MeariUser.getInstance (). CreateQRCode (wifiName, pwd, token, new ICreateQRCodeC
 ### 5.1.2 Search and add device
 ```
 【description】
-After the device is found, the status of the device is detected. If automatic addition is not supported, you should call interface to add device.
-If automatic addition is supported, waiting for the mqtt message to verify it's successful or fail.
+After the device is found, the status of the device is detected. If automatic addition is not supported, you should call the interface to add the device.
+If automatic addition is supported, waiting for the mqtt message to verify it's successful or fails.
 There may be a delay in the mqtt message. In order to improve the experience, you can periodically call the getDeviceList() and check whether there are more new devices to determine whether the addition was successful.
 
 [Function call]
@@ -601,17 +601,17 @@ public void addDeviceFailed (String message) {
 }
 ```
 
-## 5.2 Add device via AP
+## 5.2 Add device via AP mode
 
 ```
-Turning device to the AP mode, connet to the AP of the device, send configuration to device, connect to the original network, setting is successful if you hear a beep and the device turns to blue light.
-Then you can start searching and waiting for the device addition to complete.
+Turning the device to the AP mode, connect to the hotspot of the device, after the token is updated and configuration information is sent, connect to the original network,the setting is successful if you hear a beep and the indicator LED light turns to blue.
+Then searching and waiting for the device configuration complete.
 ```
-### 5.2.1 Connect to AP
+### 5.2.1 Connect to device hotspot
 ```
 【description】
-Turning device to the AP mode, connet to the AP of the device, send configuration to device, connect to the original network, setting is successful if you hear a beep and the device turns to blue light.
-Then you can start searching and waiting for the device addition to complete.
+Turning the device to the AP mode, connect to the hotspot of the device, after the token is updated and configuration information is sent, connect to the original network,the setting is successful if you hear a beep and the indicator LED light turns to blue.
+Then searching and waiting for the device configuration complete.
 
 [Function call]
 
@@ -661,14 +661,14 @@ deviceController.setAp(mSsid, mPwd, new MeariDeviceListener() {
 see 5.1.2
 ```
 
-## 5.3 Wired distribution network to add devices
+## 5.3 Add device via wired network
 ```
-Make the wired device and the mobile phone in the same local area network and start searching for the device. If it is a wired device, start to detect the device status. If the device can be added, start adding the device.
+Make sure the wired device and the mobile phone are in the same local area network and start searching for the device. If it is a wired device, start to check status of the device. If the device can be added, start adding the device.
 ```
-### 5.3.1 Searching for devices
+### 5.3.1 Search device
 ```
 【description】
-Search for devices in the local area network, if it is a wired device, determine the device status
+Search for devices in the local area network, whether it is a wired device, check the status of the device
 
 【Code example】
 MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(null, null, 0, new CameraSearchListener() {
@@ -742,9 +742,9 @@ public void addDevice(CameraInfo info) {
 
 # 6 Device Control
 
-## 6.1 Basic Device operation
+## 6.1 Basic Device operations
 
-### 6.1.1 Introduction to device-related classes
+### 6.1.1 Introduction of device-related classes
 
 MeariDevice (manages the list of devices)
 
@@ -770,7 +770,7 @@ CameraInfo extends BaseDeviceInfo (device information class)
 ### 6.1.2 Get device information list
 ```
 【description】
-Meari SDK provides multiple interface for developers to achieve device information acquisition and management capabilities (removal, etc.). The device data is notified to the recipient using an asynchronous message.
+Meari SDK provides multiple interfaces for developers to achieve device information acquisition and management capabilities (removal, etc.). The device data is notified to the recipient using an asynchronous message.
 We use the EventBus to implement message notification. Therefore, the notification object needs to be registered and destroyed on each device operation page. For details, please refer to the demo implementation.
 
 [Function call]
@@ -832,7 +832,7 @@ MeariUser.getInstance (). DeleteDevice (cameraInfo.getDeviceID (), DeviceType.IP
 ));
 ```
 
-### 6.1.4 Device Nickname Modification
+### 6.1.4 Device nickname modification
 ```
 【description】
 Device nickname modification
@@ -862,7 +862,7 @@ MeariUser.getInstance (). RenameDeviceNickName (cameraInfo.getDeviceID (), Devic
 ));
 ```
 
-### 6.1.5 Get device alarm message time segment
+### 6.1.5 Get time segment of device alarm message
 ```
 【description】
 Get time segment of device alarm message
@@ -894,8 +894,8 @@ MeariUser.getInstance().GetDeviceAlarmMessageTimeForDate (deviceID, dayTime, new
 ### 6.2.1 Device Preview
 ```
 【description】
-One device corresponds to one CameraInfo and one MeariDeviceController. When performing multiple operations on the same device, ensure that you use the same object and do not create it repeatedly.
-CameraInfo and a MeariDeviceController can be stored in the MeariUser class and retrieved when needed. You need to recreate and save when operating another device.
+One device corresponds to one CameraInfo and one MeariDeviceController. When performing multiple operations on the same device, ensure to use the same object and do not create it repeatedly.
+CameraInfo and MeariDeviceController can be stored in the MeariUser class and retrieved when needed. You need to recreate and save when operating another device.
 
 [Function call]
 /**
@@ -1012,7 +1012,7 @@ deviceController.stopConnect (new MeariDeviceListener () {
 ### 6.2.2 Device SD card playback
 ```
 【description】
-After the SD is inserted into device, it will record the video and save it to the SD card, and then you can view the video from SD card. The playback operation can only be performed after the device is successfully connected.
+After the SD card is inserted into the device, it will record the video and save it to the SD card, and then you can view the video from the SD card. The playback operation can only be performed after the device is successfully connected.
 
 [Function call]
 
@@ -1183,7 +1183,7 @@ deviceController.stopPlaybackSDCard (new MeariDeviceListener () {
 ```
 
 ## 6.3 Device related
-### 6.3.1 Doorbell Answering Process
+### 6.3.1 Doorbell answering process
 
 - 1 Receive doorbell call message
 > Press the doorbell, receive the doorbell call mqtt message callback or push message
@@ -1256,7 +1256,7 @@ MeariUser.getInstance().postHangUpBell(bellInfo.getDeviceID(), new IResultCallba
 
 # 7 Share device
 
-## 7.1 Related Classes
+## 7.1 Introduction of related class
 
 ShareUserInfo Share user information
 -String userAccount; User account
@@ -1325,7 +1325,7 @@ MeariUser.getInstance (). GetHistoryShare (cameraInfo.getDeviceID (), new IShare
 ## 7.4 Get shared results of all devices
 ```
 【description】
-Get sharing results of all devices
+Get shared results of all devices
 
 [Function call]
 /**
@@ -1459,7 +1459,7 @@ MeariUser.getInstance (). DeleteHistoryShare (accountArray, deviceID, new IResul
 ## 7.9 Processing shared messages
 ```
 【description】
-Handling shared messages
+Processing shared messages
 
 [Function call]
 /**
@@ -1486,10 +1486,10 @@ MeariUser.getInstance (). DealShareMessage (msgID, dealFlag, new IResultCallback
 # 8 Message Center
 ## 8.1 Device shared messages
 
-### 8.1.1 Get shared message list of device
+### 8.1.1 Get list of the device shared message
 ```
 【description】
-Get shared message list of device
+Get list of device shared message
 
 [Function call]
 /**
@@ -1545,12 +1545,12 @@ MeariUser.getInstance (). DeleteShareMessage (msgIDList, new IResultCallback () 
     }
 });
 ```
-## 8.2 Alarm message of device
+## 8.2 Device shared message
 
-### 8.2.1 Get all devices whether have messages
+### 8.2.1 Get whether all devices have messages
 ```
 【description】
-Gets all devices whether have messages
+Get whether all devices have messages
 
 [Function call]
 /**
@@ -1589,7 +1589,7 @@ Get alarm messages of a single device
 
 [Function call]
 /**
- * Get the alarm message of a single device (get the latest 20 at a time, after the device owner pulls it, the server deletes the data, pay attention to save the data)
+ * Get the alarm message of a single device (get the latest 20 messages at a time, after the device owner pulls it, the server deletes the data, pay attention to save the data)
  *
  * @param deviceId device id
  * @param day date yyyyMMdd
@@ -1700,12 +1700,12 @@ MeariUser.getInstance (). DeleteSystemMessage (msgIdList, new IResultCallback ()
 
 
 
-# 9 Camera settings
-Used to set the camera's detection alarm, sleep mode, local playback and so on.
+# 9 Device settings
+Used to set the camera's detection alarm, sleep mode, local playback, etc.
 Whether different devices support a certain setting can be judged by the device's capability set.
 
 
-## 9.1 device Capability
+## 9.1 Device capability
 If (cameraInfo.getLed() == 1) {
     / / Support switch settings such as LED
 } else {
@@ -1727,7 +1727,7 @@ device Capability
 - int pdt; humanoid detection: 0-not supported; bit0-support switch setting; bit1-support picture frame setting; bit2-support night filter switch setting; bit3-support day filter switch setting
 - int ptz; pan-tilt: 0-not supported; 1-support left/right; 2-support top/bottom; 3-support left/top/right/bottom
 
-## 9.2 device parameters
+## 9.2 Device parameters
 
 - String firmwareCode; firmware code ppstrong-c2-neutral-1.0.0.20190617
 - String firmwareVersion; firmware version 1.0.0
@@ -1769,7 +1769,7 @@ device Capability
 - String wirelessChimeSongs; song list of wireless bell: ["song1", "song2", "song3"]
 
 
-## 9.3 Format SD Card of device
+## 9.3 Format device SD Card
 ```
 【description】
 The device formats the SD card. After the formatting is successful, the formatting progress is obtained through the mqtt message.
@@ -1959,7 +1959,7 @@ MeariUser.getInstance().getDeviceFirmwareVersion(cameraInfo.getDeviceID(), new I
 
 ## 9.5 Basic parameter settings
 
-### 9.5.1 Get the parameters of the device
+### 9.5.1 Get device parameters
 ```
 【description】
 Get all parameters of the device
@@ -2010,7 +2010,7 @@ MeariUser.getInstance().setLED(ledEnable, new ISetDeviceParamsCallback() {
 });
 ```
 
-### 9.5.3 Flip control of device preview video
+### 9.5.3 Device preview video flip control
 ```
 【description】
 Device preview video flip control
@@ -2036,10 +2036,10 @@ MeariUser.getInstance().setMirror(mirrorEnable, new ISetDeviceParamsCallback() {
 });
 ```
 
-### 9.5.4 Local recording settings of device
+### 9.5.4 Device local recording setting
 ```
 【description】
-Local recording type and the time of event recoding segment setting of device
+Local recording type and time of event recoding segment setting of the device
 
 [function call]
 /**
@@ -2063,7 +2063,7 @@ MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDevicePar
 });
 ```
 
-### 9.5.5 Day and night mode setting of device
+### 9.5.5 Device day and night mode setting
 ```
 【description】
 Day and night mode setting of device
@@ -2089,7 +2089,7 @@ MeariUser.getInstance().setDayNightMode(mode, new ISetDeviceParamsCallback() {
 });
 ```
 
-### 9.5.6 Sleep mode setting of device
+### 9.5.6 Device sleep mode setting
 ```
 【description】
 Sleep mode setting of device
@@ -2115,7 +2115,7 @@ MeariUser.getInstance (). SetSleepMode (sleepMode, new ISetDeviceParamsCallback 
 });
 ```
 
-### 9.5.7 Scheduled sleep period setting of device
+### 9.5.7 Device scheduled sleep period setting
 ```
 【description】
 Scheduled sleep period setting of device
@@ -2160,7 +2160,7 @@ MeariUser.getInstance (). SetSleepModeTimes (timeList, new ISetDeviceParamsCallb
 });
 ```
 
-### 9.5.8 Motion detection setting of device
+### 9.5.8 Device motion detection setting
 ```
 【description】
 Motion detection setting of device
@@ -2187,7 +2187,7 @@ MeariUser.getInstance (). SetMotionDetection (motionDetEnable, motionDetSensitiv
 });
 ```
 
-### 9.5.9 PIR detection setting of device
+### 9.5.9 Device PIR detection setting
 ```
 【description】
 PIR detection setting of device
@@ -2214,7 +2214,7 @@ MeariUser.getInstance (). SetPirDetection (pirDetEnable, pirDetSensitivity, new 
 });
 ```
 
-### 9.5.10 Noise detection setting of device
+### 9.5.10 Device noise detection setting
 ```
 【description】
 Noise detection setting of device
@@ -2241,7 +2241,7 @@ MeariUser.getInstance (). SetSoundDetection (soundDetEnable, soundDetSensitivity
 });
 ```
 
-### 9.5.11 Cry alarm setting of device
+### 9.5.11 Device cry alarm setting
 ```
 【description】
 Cry alarm setting of device
@@ -2267,7 +2267,7 @@ MeariUser.getInstance (). SetCryDetection (cryDetEnable, new ISetDeviceParamsCal
 });
 ```
 
-### 9.5.12 Human tracking setting of Device
+### 9.5.12 Device human tracking setting
 ```
 【description】
 Human tracking setting of Device
@@ -2293,7 +2293,7 @@ MeariUser.getInstance (). SetHumanTrack (humanTrackEnable, new ISetDeviceParamsC
 });
 ```
 
-### 9.5.13 Human detection alarm setting of device
+### 9.5.13 Device human detection alarm setting
 ```
 【description】
 Human detection alarm setting of device
@@ -2319,7 +2319,7 @@ MeariUser.getInstance (). SetHumanDetection (humanDetEnable, new ISetDeviceParam
 });
 ```
 
-### 9.5.14 Humanoid frame setting of device
+### 9.5.14 Device humanoid frame setting
 ```
 【description】
 Humanoid frame setting of device
@@ -2345,7 +2345,7 @@ MeariUser.getInstance (). SetHumanFrame (humanFrameEnable, new ISetDeviceParamsC
 });
 ```
 
-### 9.5.15 Onvif setting of device
+### 9.5.15 Device Onvif setting
 ```
 【description】
 Onvif setting of device
@@ -2372,7 +2372,7 @@ MeariUser.getInstance (). SetOnvif (enable, password, new ISetDeviceParamsCallba
 });
 ```
 
-### 9.5.16 Video encoding format setting of device
+### 9.5.16 Device video encoding format setting
 ```
 【description】
 Video encoding format setting of device
@@ -2546,10 +2546,10 @@ MeariUser.getInstance().setAlarmFrequency(setValue, new ISetDeviceParamsCallback
 });
 ```
 
-### 9.5.21 Multi-level PIR setting
+### 9.5.21 PIR level setting
 ```
 【description】
-Multi-level PIR setting
+PIR level setting
 
 【Function call】
 /**
@@ -2632,8 +2632,8 @@ MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDevicePar
 });
 ```
 
-## 9.6 Parameter setting of doorbell
-### 9.6.1 Intercom volume settings of device
+## 9.6 Doorbell parameter setting
+### 9.6.1 Device Intercom volume settings
 ```
 【description】
 Intercom volume setting of Device
@@ -2659,14 +2659,14 @@ MeariUser.getInstance (). SetSpeakVolume (volume, new ISetDeviceParamsCallback (
 });
 ```
 
-### 9.6.2 Unlocking the battery lock
+### 9.6.2 Unlock the battery lock
 ```
 【description】
-Unlocking the battery lock
+Unlock the battery lock
 
 [Function call]
 /**
- * Unlocking the battery lock
+ * Unlock the battery lock
  *
  * @param callback Function callback
  * /
@@ -2684,14 +2684,14 @@ MeariUser.getInstance (). UnlockBattery (new ISetDeviceParamsCallback () {
 });
 ```
 
-### 9.6.3 Binding Wireless Chime
+### 9.6.3 Bind Wireless Chime
 ```
 【description】
-Binding Wireless Chime
+Bind Wireless Chime
 
 [Function call]
 /**
-  * Binding Wireless Chime
+  * Bind Wireless Chime
   *
   * @param callback Function callback
   * /
@@ -2709,14 +2709,14 @@ MeariUser.getInstance (). BindWirelessChime (new ISetDeviceParamsCallback () {
 });
 ```
 
-### 9.6.4 Unbinding Wireless Chime
+### 9.6.4 Unbind Wireless Chime
 ```
 【description】
-Unbinding Wireless Chime
+Unbind Wireless Chime
 
 [Function call]
 /**
-  * Unbinding Wireless Chime
+  * Unbind Wireless Chime
   *
   * @param callback Function callback
   * /
@@ -2734,7 +2734,7 @@ MeariUser.getInstance (). UnbindWirelessChime (new ISetDeviceParamsCallback () {
 });
 ```
 
-### 9.6.5 Whether the wireless chime works
+### 9.6.5 Whether the wireless chime works setting
 ```
 【description】
 Whether the wireless chime works
@@ -2761,7 +2761,7 @@ MeariUser.getInstance (). SetWirelessChimeEnable (enable, new ISetDeviceParamsCa
 ```
 
 
-### 9.6.6 Volume setting of wireless chime
+### 9.6.6 Wireless chime volume setting
 ```
 【description】
 Volume setting of wireless chime
@@ -2787,7 +2787,7 @@ MeariUser.getInstance (). SetWirelessChimeVolume (volume, new ISetDeviceParamsCa
 });
 ```
 
-### 9.6.7 Ringtone setting of wireless chime
+### 9.6.7 Wireless chime ringtone setting
 ```
 【description】
 Ringtone setting of wireless chime
@@ -2813,7 +2813,7 @@ MeariUser.getInstance (). SetWirelessChimeSong (song, new ISetDeviceParamsCallba
 });
 ```
 
-### 9.6.8 Whether the mechanical chime works
+### 9.6.8 Whether the mechanical chime works setting
 ```
 【description】
 Whether the mechanical chime works
@@ -2839,7 +2839,7 @@ MeariUser.getInstance (). SetMechanicalChimeEnable (enable, new ISetDeviceParams
 });
 ```
 ## 9.7 Flight camera parameter setting
-### 9.7.1 light switch
+### 9.7.1 Light switch setting
 ```
 【description】
 Light switch
@@ -2864,7 +2864,7 @@ MeariUser.getInstance().setFlightLightStatus(enable, new ISetDeviceParamsCallbac
     }
 });
 ```
-### 9.7.2 Alarm switch
+### 9.7.2 Alarm switch setting
 ```
 【description】
 Alarm switch
@@ -2889,14 +2889,14 @@ MeariUser.getInstance().setFlightSirenEnable(status, new ISetDeviceParamsCallbac
     }
 });
 ```
-### 9.7.3 Linkage lighting
+### 9.7.3 Camera trigger light swtich setting
 ```
 【description】
-Linkage lighting
+Camera trigger light swtich setting
 
 【Function call】
 /**
- * Linkage lighting
+ * Camera trigger light swtich setting
  *
  * @param status  0-off; 1-on
  * @param callback Function callback
@@ -2914,14 +2914,14 @@ MeariUser.getInstance().setFlightLinkLightingEnable(status, new ISetDeviceParams
     }
 });
 ```
-### 9.7.4 Linkage lighting duration
+### 9.7.4 Camera trigger lighting duration setting
 ```
 【description】
-Linkage lighting duration
+Camera trigger lighting duration setting
 
 【Function call】
 /**
- * Linkage lighting duration
+ * Camera trigger lighting duration setting
  *
  * @param duration duration
  * @param callback Function callback
@@ -2939,7 +2939,7 @@ MeariUser.getInstance().setFlightPirDuration(duration, new ISetDeviceParamsCallb
     }
 });
 ```
-### 9.7.5 Lighting schedule
+### 9.7.5 Lighting schedule setting
 ```
 【description】
 Lighting schedule
@@ -2966,7 +2966,7 @@ MeariUser.getInstance().setFlightSchedule(enable, from, to, new ISetDeviceParams
     }
 });
 ```
-### 9.7.6 Lighting brightness
+### 9.7.6 Lighting brightness setting
 ```
 【description】
 Lighting brightness
@@ -2991,7 +2991,7 @@ MeariUser.getInstance().setFlightBrightness(brightness, new ISetDeviceParamsCall
     }
 });
 ```
-### 9.7.7 Manual lighting duration
+### 9.7.7 Manual lighting duration setting
 ```
 【description】
 Manual lighting duration
@@ -3016,14 +3016,14 @@ MeariUser.getInstance().setFlightManualLightingDuration(duration, new ISetDevice
     }
 });
 ```
-### 9.7.8 Linkage Alarm
+### 9.7.8 Camera trigger alarm setting
 ```
 【description】
-Linkage Alarm
+Camera trigger alarm setting
 
 【Function call】
 /**
- * Linkage Alarm
+ * Camera trigger alarm setting
  *
  * @param status  0-off; 1-on
  * @param callback Function callback
@@ -3073,11 +3073,11 @@ MeariUser.getInstance().getFamilyList(new IFamilyListCallback() {
 ### 10.1.2 Create Family
 ```
 【description】
-Create a home with up to 10 rooms 
+Create a family with up to 10 rooms 
 
 【Function call】
 /**
- * Create a home with up to 10 rooms 
+ * Create a family with up to 10 rooms 
  *
  * @param callback callback
  */
@@ -3145,16 +3145,16 @@ MeariUser.getInstance().deleteFamily(familyId, new IStringResultCallback() {
 });
 ```
 
-## 10.2 Family Sharing
+## 10.2 Family Share
 
-### 10.2.1 Search for member accounts to add 
+### 10.2.1 Search for member accounts to be added
 ```
 【description】
-Search for member accounts to add 
+Search for member accounts to be added
 
 【Function call】
 /**
- * Search for member accounts to add 
+ * Search for member accounts to be added
  *
  * @param account account
  * @param familyId  familyId
@@ -3173,7 +3173,7 @@ MeariUser.getInstance().searchContactForAddFamilyMember(account, familyId, new I
 });
 ```
 
-### 10.2.2 Search for a family account to join 
+### 10.2.2 Search for the family account to be joined
 ```
 【description】
 Search for a family account to join 
@@ -3252,14 +3252,14 @@ MeariUser.getInstance().joinFamily(familyIdList, new IResultCallback() {
 });
 ```
 
-### 10.2.5 Get family sharing Messages
+### 10.2.5 Get family shared messages
 ```
 【description】
-Get family sharing Messages
+Get family shared messages
 
 【Function call】
 /**
- * Get family sharing Messages
+ * Get family shared Messages
  */
 public void getFamilyShareMessages(IBaseModelCallback<List<FamilyShareMsg>> callback)
 
@@ -3275,10 +3275,10 @@ MeariUser.getInstance().getFamilyShareMessages(new IBaseModelCallback<List<Famil
 });
 ```
 
-### 10.2.6 Handling family shared messages 
+### 10.2.6 Handle family shared messages 
 ```
 【description】
-Handling family shared messages
+Handle family shared messages
 
 【Function call】
 /**
@@ -3298,14 +3298,14 @@ MeariUser.getInstance().dealFamilyShareMessage(msgIDList, dealFlag, new IResultC
 });
 ```
 
-### 10.2.7 Get a list of family members
+### 10.2.7 Get family member list
 ```
 【description】
-Get a list of family members 
+Get family member list
 
 【Function call】
 /**
- * Get a list of family members 
+ * Get family member list
  *
  * @param callback callback
  */
@@ -3420,9 +3420,9 @@ MeariUser.getInstance().leaveFamily(familyId, new IResultCallback() {
     }
 });
 ```
-## 10.3 Room Operation
+## 10.3 Room operation
 
-### 10.3.1 Add room to the family
+### 10.3.1 Add a room
 ```
 【description】
 Add room to the family
@@ -3470,7 +3470,7 @@ MeariUser.getInstance().updateRoom(familyId, roomId, roomName, new IStringResult
 });
 ```
 
-### 10.3.3 Delete room from the family
+### 10.3.3 Delete room
 ```
 【description】
 Delete room from the family
@@ -3545,10 +3545,10 @@ MeariUser.getInstance().removeDeviceFromRoom(familyId, roomId, deviceList, new I
 });
 ```
 
-### 10.3.6 Batch delete devices
+### 10.3.6 Batch remove devices
 ```
 【description】
-Batch delete devices
+Batch remove devices
 
 【Function call】
 /**
