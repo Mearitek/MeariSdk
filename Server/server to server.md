@@ -130,3 +130,5 @@
          "resultCode":"1001"
      }
      ```
+ - Network request status code
+[Network request status code](../Common/Code-ENGLISH.md)
