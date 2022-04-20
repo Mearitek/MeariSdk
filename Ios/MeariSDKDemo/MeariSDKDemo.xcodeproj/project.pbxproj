@@ -25,6 +25,7 @@
 		8C90AEF024F6088100E156CF /* MRCloudServerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C90AEEE24F6088100E156CF /* MRCloudServerVC.m */; };
 		8C90AEF124F6088100E156CF /* MRCloudServerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C90AEEF24F6088100E156CF /* MRCloudServerVC.xib */; };
 		8C90AEF624F64C0800E156CF /* MRAliWebPayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C90AEF524F64C0800E156CF /* MRAliWebPayVC.m */; };
+		8CCB4AE5280FE7EA00B0B889 /* MeariKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD3CDE842488C5F000F1B940 /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CD3CDE672488C1E000F1B940 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3CDE662488C1E000F1B940 /* AppDelegate.m */; };
 		CD3CDE6D2488C1E000F1B940 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3CDE6C2488C1E000F1B940 /* LoginVC.m */; };
 		CD3CDE702488C1E000F1B940 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD3CDE6E2488C1E000F1B940 /* Main.storyboard */; };
@@ -35,7 +36,6 @@
 		CD3CDE832488C44B00F1B940 /* DeviceListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = CD3CDE822488C44B00F1B940 /* DeviceListVC.m */; };
 		CDE129672488EBB80081EAFD /* DeviceOperationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = CDE129652488EBB80081EAFD /* DeviceOperationVC.m */; };
 		CDE129682488EBB80081EAFD /* DeviceOperationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDE129662488EBB80081EAFD /* DeviceOperationVC.xib */; };
-		DD2FFAF9266E49A200A1CC21 /* MeariKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD3CDE842488C5F000F1B940 /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,7 +45,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DD2FFAF9266E49A200A1CC21 /* MeariKit.framework in CopyFiles */,
+				8CCB4AE5280FE7EA00B0B889 /* MeariKit.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

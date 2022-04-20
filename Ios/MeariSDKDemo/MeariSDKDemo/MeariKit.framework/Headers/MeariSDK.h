@@ -36,9 +36,9 @@ typedef void(^Failure)(NSString *failure);
 
  @param appKey appKey
  @param secretKey secret
+ @param secretKey source App
  */
-- (void)startWithAppKey:(NSString *)appKey secretKey:(NSString *)secretKey;
-
+- (void)startWithAppKey:(NSString *)appKey secretKey:(NSString *)secretKey sourceApp:(NSString *)source;
 
 /**
  Set debug print level
