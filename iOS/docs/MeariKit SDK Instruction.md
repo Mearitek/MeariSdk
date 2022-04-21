@@ -109,6 +109,10 @@
         * 10.4.3 [Get shared messages list of the family](#1043-Get-shared-messages-list-of-the-family)
         * 10.4.4 [Delete shared messages of the family](#1044-Delete-shared-messages-of-the-family)
         * 10.4.5 [Process shared messages of the family](#1045-Process-shared-messages-of-the-family)
+* 11 [Cloud storage service](#11-Cloud-storage-service)
+    * 11.1 [Cloud storage service status](#111-Cloud-storage-service-status)
+    * 11.2 [Cloud storage trial](#112-Cloud-storage-trial)
+    * 11.3 [Cloud storage activation code](#113-Cloud-storage-activation-code)
         
 <center>
 
@@ -159,7 +163,7 @@ Use cocospod to import AWSS3 required by the framework, as shown below
 Belong to: MeariSdk tools
 ```
 ```
-【Describe】
+【Description】
        After the cloud to cloud connection, the data obtained from the server v2/third/sdk/redirect is transferred and the SDK is initialized.
 【Function】
        -(void)startSDKWithRedirectInfo:(NSDictionary *)info;
@@ -180,7 +184,7 @@ There is a phoneCode file in the Demo project that stores the corresponding coun
 
 ## 4.1 User login 
 ```
-【Description 】
+【Description】
          After the cloud-to-cloud connection, the data obtained from the server v2/third/sdk/login is transferred to the SDK to realize the login operation.
          Note: Before calling loginUidWithExtraParamInfo each time, you need to call the startSDKWithRedirectInfo method first
 【Function】
@@ -201,7 +205,7 @@ There is a phoneCode file in the Demo project that stores the corresponding coun
 ## 4.2 User logout 
 
 ```
-【Description 】
+【Description】
      Account logout
 【Function】
      /**
@@ -219,7 +223,7 @@ There is a phoneCode file in the Demo project that stores the corresponding coun
 ## 4.3 User upload avatar 
 
 ```
-【Description 】
+【Description】
      User upload avatar
  
 【Function】
@@ -240,7 +244,7 @@ There is a phoneCode file in the Demo project that stores the corresponding coun
 ## 4.4 Modify nickname 
 
 ```
-【Description 】
+【Description】
      Modify user nickname.
  
 【Function】
@@ -261,7 +265,7 @@ There is a phoneCode file in the Demo project that stores the corresponding coun
 ## 4.5 APNS message push
 
 ```
-【Description 】
+【Description】
      Sign up for Meari APNS push 
      P8 file, the Key ID of the P8 file, the bundle ID of the App, and the Team ID of the App issuing certificate need to be provieded to relize APNS messages push.
       Called when logged in, that is, under the condition of [MeariUser sharedInstance].logined == YES
@@ -280,7 +284,7 @@ There is a phoneCode file in the Demo project that stores the corresponding coun
      }];
 
 
-【Description 】
+【Description】
      Turn off push sound
 【Function】
      /**
@@ -299,7 +303,7 @@ There is a phoneCode file in the Demo project that stores the corresponding coun
 
      }];
 
-【Description 】
+【Description】
 	 Turn off device push
 【Function】
     /**
@@ -373,7 +377,7 @@ The general process is-get the network tokon-give the token and wifi information
 ```
 ## 5.1 Get configuration token
 ```
-【Description 】
+【Description】
      Obtain the configuration token from the server, which needs to be passed to the device
 【Function】
      /** 
@@ -396,7 +400,7 @@ The general process is-get the network tokon-give the token and wifi information
 ```
 ## 5.2 QR code configuration
 ```
-【Description 】
+【Description】
      Generate a QR code with WiFi information and configuration token which to be scanned by the camera
       After the device makes a cuckoo sound, it indicates that the recognition is successful, and the device will enter the stat of red light flashing quickly
 【Function】
@@ -413,7 +417,7 @@ The general process is-get the network tokon-give the token and wifi information
 【Code】
     UIImage *image = [[MeariDeviceActivator sharedInstance] createQRCodeWithSSID:@"Meari" pasword:@"12345678" token:token addSubDevice:NO size:CGSizeMake(300, 300)];
 
-【Description 】
+【Description】
        Wait for the successful message which the device added automatically. It is recommended to manually query the device list to avoid the situation that the message is not delivered in time.
 【Code】
     1.[MeariDeviceActivator sharedInstance].delegate = self;
@@ -447,7 +451,7 @@ The general process is-get the network tokon-give the token and wifi information
 ```
 ## 5.3 Hotspot configuration (AP configuration)
 ```
-【Description 】
+【Description】
      Generate a QR code with WiFi information and configuration token which will be transparently transmitted to the device through the hotspot WiFi.
       The mobile phone needs to be connected to the hotspot issued by the device, the hotspot prefix is STRN_xxxxxxxxx
       After the call is successful, and the device will enter the stat of blue light flashing quickly
@@ -468,7 +472,7 @@ The general process is-get the network tokon-give the token and wifi information
 
      }];
 
-【Description 】
+【Description】
        Wait for the successful message which the device added automatically. It is recommended to manually query the device list to avoid the situation that the message is not delivered in time.
        
 【Code】
@@ -503,7 +507,7 @@ The general process is-get the network tokon-give the token and wifi information
 ```
 ## 5.4 Wired network configuration
 ```
-【Description 】
+【Description】
      Make sure the device is plugged with network cable, the phone and device are in the same local area network
      Search for devices in the same local area network
 
@@ -529,7 +533,7 @@ The general process is-get the network tokon-give the token and wifi information
 	 // Stop searching for LAN devices
     [[MeariDeviceActivator sharedInstance] stopSearchDevice];
 
-【Description 】
+【Description】
      Query the adding status of the device from the server to filter some non-compliant devices
 【Function】
      /**
@@ -551,7 +555,7 @@ The general process is-get the network tokon-give the token and wifi information
        }];
 
 
-【Description 】
+【Description】
      Transparently transmit the configuration network token to the device
 【Function】
      /**
@@ -568,7 +572,7 @@ The general process is-get the network tokon-give the token and wifi information
            
      }];
 
-【Description 】
+【Description】
      Wait for the successful message which the device added automatically. It is recommended to manually query the device list to avoid the situation that the message is not delivered in time.
 【Code】
     1.[MeariDeviceActivator sharedInstance].delegate = self;
@@ -597,7 +601,7 @@ Belong to：MeariUser
 Belong to：MeariDeviceList
 ```
 ```
-【Description 】
+【Description】
      After the device is added, obtain the device list through the interface of the MeariUser tool class and return it in the form of a model
 The device information is the info attribute of the device object (MeariDeviceInfo)
 
@@ -654,7 +658,7 @@ Belong to：MeariDevice
 ## 6.3 Delete device 
 
 ```
-【Description 】
+【Description】
      Delete device
 
 【Function】
@@ -677,7 +681,7 @@ Belong to：MeariDevice
 ## 6.4 Device nickname modification 
 
 ```
-【Description 】
+【Description】
     Device nickname modification
 
 【Function】
@@ -702,7 +706,7 @@ Belong to：MeariDevice
 ## 6.5 Device alarm time point 
 
 ```
-【Description 】
+【Description】
      Get the alarm time of a single device on a certain day
 【Function】
      /**
@@ -725,7 +729,7 @@ Belong to：MeariDevice
 ## 6.6 Query device version 
 
 ```
-【Description 】
+【Description】
      Check Whether the device has a new version
 
 【Function】
@@ -760,7 +764,7 @@ MeariDeviceFirmwareInfo:
 ## 6.7 Query device online status 
 
 ```
-【Description 】
+【Description】
      Only support the device which developed by Meari, ie [camera supportMeariIot] == YES.
 
 【Function】
@@ -799,7 +803,7 @@ MeariDeviceFirmwareInfo:
 ## 6.8 Remote wake up doorbell 
 
 ```
-【Description 】
+【Description】
      Remote wake up doorbell
 
 【Function】
@@ -823,7 +827,7 @@ MeariDeviceFirmwareInfo:
 ## 6.9 Upload doorbell message 
 
 ```
-【Description 】
+【Description】
       Upload doorbell message
 
 【Function】
@@ -847,7 +851,7 @@ MeariDeviceFirmwareInfo:
 ## 6.10 Download doorbell message 
 
 ```
-【Description 】
+【Description】
      Download doorbell message Download the message to the specified location
 
 【Function】
@@ -870,7 +874,7 @@ MeariDeviceFirmwareInfo:
 ## 6.11 Delete doorbell message 
 
 ```
-【Description 】
+【Description】
      Delete doorbell message
 
 【Function】
@@ -900,7 +904,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.1 Connect the device 
 
 ```
-【Description 】
+【Description】
      Before performing operations such as preview, playback, and settings, make sure the device is connceted.
 
 【Function】
@@ -924,7 +928,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.2 Disconnect device 
 
 ```
-【Description 】
+【Description】
      Disconnect the device when you don't need to operate it.
 
 【Function】
@@ -946,7 +950,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.3 Get bit rate
 
 ```
-【Description 】
+【Description】
      Get the bit rate of the device
 
 【Function】
@@ -963,7 +967,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.4 Preview 
 
 ```
-【Description 】
+【Description】
    Get the resolution supported by the device 
 
 【Code】
@@ -984,7 +988,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      MeariDeviceVideoStream_NEW_FHD       ========   @"2/NEW_FHD/xxx"
      MeariDeviceVideoStream_NEW_UHD       ========   @"3/NEW_UHD/xxx"
 
-【Description 】
+【Description】
     Take real-time streaming to the camera
     
 【Function】
@@ -1050,7 +1054,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ### 7.5.1 Playback related
 ```
-【Description 】
+【Description】
      Playback the video of the camera
      Note: The SDK does not verify the time of the playback, so even if a time point without an alarm is passed in, the interface will return successfully, so the upper layer needs to judge by itself
 
@@ -1204,7 +1208,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 ## 7.6 Cloud Playback 
 ```
-【Description 】
+【Description】
      After the device activates the cloud storage service, the records will be stored in the cloud.
 
 【Function】
@@ -1282,7 +1286,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
         
       }];
 
-【Description 】
+【Description】
       Cloud playback player, used to play m3u8 files, support playback, recording, Seek and other operations
 【Function】
       MeariCloudPlayer   
@@ -1326,7 +1330,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.7 Mute
 
 ```
-【Description 】
+【Description】
      Set mute
 
 【Function】
@@ -1345,7 +1349,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
 
 ```
-【Description 】
+【Description】
     The Voice intercom has a half-duplex and full-duplex, half-duplex can only have one party talking at the same time.
     
 【Be applicable】
@@ -1422,7 +1426,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.9 Screenshots 
 
 ```
-【Description 】
+【Description】
      Capture video pictures
 
 【Function】
@@ -1448,7 +1452,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.10 Video
 
 ```
-【Description 】
+【Description】
    Video recording
 
 【Function】
@@ -1492,7 +1496,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.11 Get all the parameters of the device
 
 ```
-【Description 】
+【Description】
      Get the parameters of the device, device parameters must be acquired before operating the device
 
 【Function】
@@ -1512,7 +1516,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.12 PTZ control 
 
 ```
-【Description 】
+【Description】
      Rotate the camera, after starting the rotation, the stop command needs to be called to stop
 
 【Function】
@@ -1550,7 +1554,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ```
 ## 7.13 Leave message
 ```
-【Description 】
+【Description】
      The doorbell device supports recording of messages, and the message can be played when answering.
 【Be applicable】
      Doorbell  
@@ -1558,7 +1562,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      camera.supportHostMessage == MeariDeviceSupportHostTypeOne   Support a message up to 30 seconds
      camera.supportHostMessage == MeariDeviceSupportHostTypeMultiple  Support 3 messages, each of up to 10 seconds
 
-【Description 】
+【Description】
      Get device message list
 【Function】
      /**
@@ -1574,7 +1578,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      }];
 
 
-【Description 】
+【Description】
      To start recording a message, you need to obtain microphone permissions.
 【Function】
      /**
@@ -1584,7 +1588,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 【Code】 
       [camera startRecordVoiceMailWithPath:@"xxxx/record.wav"];
 
-【Description 】
+【Description】
      End recording
 【Function】
       /**
@@ -1593,7 +1597,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      - (void)stopRecordVoiceMailSuccess:(MeariDeviceSuccess_RecordAutio)success;
 【Code】 
      [camera startRecordVoiceMailWithPath:@"xxxx/record.wav"];
-【Description 】
+【Description】
      Mobile phone playback and recording
 【Function】
      /**
@@ -1607,7 +1611,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
           
       }];
 
-【Description 】
+【Description】
     After pressing the doorbell, control the device to play the message
 
 【Function】
@@ -1631,7 +1635,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.14 Detect alarm 
 ### 7.14.1 Motion Detection
 ```
-【Description 】
+【Description】
      Motion detection settings 
 【Be applicable】
      General non-low-power consumption camera
@@ -1713,7 +1717,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.15 Storage (SD card)
 
 ```
-【Description 】
+【Description】
      Information acquisition and formatting of the memory card
 【Function】
      /**
@@ -1766,7 +1770,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.16 Firmware upgrade
 
 ```
-【Description 】
+【Description】
      Check whether the latest version is available from the server
 【Function】
      /**
@@ -1784,7 +1788,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 
      }];
 
-【Description 】
+【Description】
       To obtain and upgrade the firmware information, click the upgrade device and the upgrade operation will be operated immediately
 【Function】
 
@@ -1865,7 +1869,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.17 Sleep mode 
 
 ```
-【Description 】
+【Description】
      Set different modes to control the device lens
      MeariDeviceSleepmodeLensOn ： Lens open
      MeariDeviceSleepmodeLensOff ： Lens off
@@ -1931,7 +1935,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.18 Temperature and humidity 
 
 ```
-【Description 】
+【Description】
       Get all parameter information of the device
 
 【Function】
@@ -1960,7 +1964,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.19 Music 
 
 ```
-【Description 】
+【Description】
      Get the music status of the device, control the device to play music, Music can only be played when a SD card inserted
 
 【Function】
@@ -2055,7 +2059,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.20 Device volume 
 
 ```
-【Description 】
+【Description】
      Obtaining and setting the output music volume of the device
 
 【Function】
@@ -2098,7 +2102,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.21 Doorbell volume
 
 ```
-【Description 】
+【Description】
     Obtaining and setting doorbell output volume
  
 【Function】
@@ -2122,7 +2126,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ## 7.22 Bell settings 
 
 ```
-【Description 】
+【Description】
      Set up wireless bell
 
 【Function】
@@ -2142,7 +2146,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      } failure:^(NSError *error) {
 
      }];
-【Description 】
+【Description】
      Wireless bell pairing Please refer to the specific instructions for how to operate the bell device
 
 【Function】
@@ -2160,7 +2164,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      } failure:^(NSError *error) {
 
      }];
-【Description 】
+【Description】
      Please refer to the specific instructions for how to operate the wireless bell device
 
 【Function】
@@ -2184,7 +2188,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ### 7.23.1 Switch lights
 
 ```
-【Description 】
+【Description】
      Control the light switch
   
 
@@ -2210,7 +2214,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ### 7.23.2 Sound alarm switch
 
 ```
-【Description 】
+【Description】
      The switch of the alarm is controlled by the device to achieve the function of warning
     
 【Function】
@@ -2235,7 +2239,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ### 7.23.3 Turn on/off the lights according to the time period
 
 ```
-【Description 】
+【Description】
      Set a time period for the device. When the device is in the set time period, the device will turn on the light, and when the time is up, the control light will be turned off
     
 【Function】
@@ -2260,7 +2264,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 ### 7.23.4 Turn on/off lights according to alarm events
 
 ```
-【Description 】
+【Description】
     Turn on the movement alarm and turn on the light, and the device will detect the movement of the human body and turn on the light, and then turn it off after a period of time.
     
 【Function】
@@ -2342,7 +2346,7 @@ Belong to: MeariUser
 ```
 
 ```
-【Description 】
+【Description】
      Get the shared list of a single device
 【Function】
      /**
@@ -2359,7 +2363,7 @@ Belong to: MeariUser
     
    		}];
 
-【Description 】
+【Description】
      Cancel device share
 【Function】
      /**
@@ -2376,7 +2380,7 @@ Belong to: MeariUser
     
      }];
 
-【Description 】
+【Description】
      Share the device to other users and set permissions (you can realize the function display of different permissions by yourself)
 【Function】
      /**
@@ -2395,7 +2399,7 @@ Belong to: MeariUser
     
      }];
 
-【Description 】
+【Description】
      Modify the permissions of the shared user
 【Function】
      /**
@@ -2415,7 +2419,7 @@ Belong to: MeariUser
      }];
 
 
-【Description 】
+【Description】
      Search for users
 【Function】
      /**
@@ -2433,7 +2437,7 @@ Belong to: MeariUser
     
      }];
 
-【Description 】
+【Description】
      Get the shared results of all devices
 【Function】
      /**
@@ -2450,7 +2454,7 @@ Belong to: MeariUser
     
       }];
 
-【Description 】
+【Description】
       Ask others to share his device with you. For example, when a device of another person is found in the local area network, you can request to share the device of another person with yourself.
       The requested account will receive MQTT notification and APNS message prompt
 【Function】
@@ -2468,7 +2472,7 @@ Belong to: MeariUser
        
      }];
 
-【Description 】
+【Description】
      Processing the shared message, you can accept or reject it.
 【Function】
      /**
@@ -2487,7 +2491,7 @@ Belong to: MeariUser
         
      }];
 
-【Description 】
+【Description】
      Can monitor App internal notification messages 
 
      MeariDeviceCancelSharedNotification   (Device cancel unshared)
@@ -2914,7 +2918,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 ## 10.1 Get whether all devices have messages 
 
 ```
-【Description 】
+【Description】
     Get whether all devices have messages
     belong to：MeariMessageInfoAlarm
 
@@ -2938,7 +2942,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 ### 10.2.1  Get whether the devices have alarm message 
 
 ```
-【Description 】
+【Description】
      Get the alarm message of a certain device, the latest 20 messages on the server will be pulled every time 
      The message record will be deleted from the server after the owner pulled, and then the shared user will not be able to get the message
 
@@ -2982,7 +2986,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 ```
 ### 10.2.3 Get the number of days with alarm messages (the last 7 days)
 ```
-【Description 】 
+【Description】 
      Get the number of days with alarms in the last 7 days
 【Function】
      /**
@@ -3004,7 +3008,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 ```
 ### 10.2.4 Get device alarm message in a certain day
 ```
-【Description 】 
+【Description】 
       Get the device's alarm message on a certain day
 【Function】
      /**
@@ -3026,7 +3030,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 ```
 ### 10.2.5 Load alarm picture
 ```
-【Description 】 
+【Description】 
      The alarm pictures of the device are stored in Alibaba Cloud and Amazon Cloud
 
 【Function】
@@ -3077,7 +3081,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 ### 10.2.6 Delete multiple device alarm messages 
 
 ```
-【Description 】
+【Description】
      Delete multiple device alarm messages in batch
 
 【Function】
@@ -3100,7 +3104,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 ### 10.3.1 Get system messages 
 
 ```
-【Description 】
+【Description】
     Belong to：MeariMessageInfoSystem
 
 【Function】
@@ -3121,7 +3125,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 ### 10.3.2 Batch delete system messages
 
 ```
-【Description 】
+【Description】
      Delete system messages
 
 【Function】
@@ -3144,7 +3148,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 ### 10.4.1 Get shared messages list of the device
 
 ```
-【Description 】
+【Description】
 	Get all shared messages
 
 【Function】
@@ -3164,7 +3168,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
  ### 10.4.2 Delete shared messages of the device
  
 ```
-【Description 】
+【Description】
 	  Delete shared message
 
 【Function】
@@ -3251,3 +3255,66 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
         }];
 ```
 
+
+# 11 Cloud storage service
+## 11.1 Cloud storage service status
+```
+【Description】
+      Get cloud storage service status
+
+【Function】
+       /**
+          Get cloud storage status (new)
+          @param deviceID device ID 
+          @param success Successful callback 
+          @param failure failure callback
+        */
+        - (void)cloudGetStatusWithDeviceID:(NSInteger)deviceID success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+【Code】      
+        [[MeariUser sharedInstance] cloudGetStatusWithDeviceID:self.camera.info.ID success:^(NSDictionary *dict) {
+        
+        } failure:^(NSError *error) {
+
+        }];
+```
+## 11.2 Cloud storage trial
+```
+【Description】
+      Try cloud storage services
+
+【Function】
+        /**
+          Cloud storage trial
+          @param deviceID  device ID 
+          @param success Successful callback 
+          @param failure failure callback 
+        */
+        - (void)cloudTryWithDeviceID:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
+【Code】
+        [[MeariUser sharedInstance] cloudTryWithDeviceID:self.camera.info.ID success:^{
+        
+        } failure:^(NSError *error) {
+
+        }];
+```
+## 11.3 Cloud storage activation code
+```
+【Description】
+      Activate cloud storage service via activation code
+
+【Function】
+        /**    
+          Cloud storage Activation code
+          @param deviceID  device ID 
+          @param code Activation code 
+          @param success Successful callback 
+          @param failure failure callback
+        */
+        - (void)cloudActivationWithDeviceID:(NSInteger)deviceID code:(NSString *)code success:(MeariSuccess)success failure:(MeariFailure)failure;
+【Code】
+        [[MeariUser sharedInstance] cloudActivationWithDeviceID:self.camera.info.ID code:code success:^{
+        
+        } failure:^(NSError *error) {
+
+        }];
+```
