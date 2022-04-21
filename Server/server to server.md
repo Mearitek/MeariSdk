@@ -138,4 +138,4 @@
  - Encryption rules
 
     please strictly follow the following references:
-    [Server interface authentication method](../Common/Server-interface-authentication-method.md)
+    [Server interface authentication method](Server-interface-authentication-method.md)
