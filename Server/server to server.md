@@ -131,11 +131,11 @@
      }
      ```
  - Network request status code
-[Network request status code](../Common/Code-ENGLISH.md)
+ 
+    [Network request status code](../Common/Code-ENGLISH.md)
 
 
  - Encryption rules
 
- please strictly follow the following references:
- 
-[Server interface authentication method](../Common/Server-interface-uthentication-method.md)
+    please strictly follow the following references:
+    [Server interface authentication method](../Common/Server-interface-authentication-method.md)
