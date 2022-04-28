@@ -4049,6 +4049,8 @@ MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IR
 ```
 
 # 13 更新说明
+```
 2020-03-13 wu: 2.2.0 SDK接入指南初稿完成
 2022-03-31 wu: 4.1.0 家庭接口文档初稿完成
 2022-04-28 wu: 4.1.0 新增云存储文档
+```

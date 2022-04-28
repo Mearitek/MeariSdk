@@ -3973,6 +3973,8 @@ See Demo for details
 ```
 
 # 13 Release Notes
+```
 2020-03-13 wu: 2.2.0 Initial draft of SDK access guide completed
 2022-03-31 wu: 4.1.0 The first draft of the family interface document is completed
 2022-04-28 wu: 4.1.0 Add cloud storage documents
+```
