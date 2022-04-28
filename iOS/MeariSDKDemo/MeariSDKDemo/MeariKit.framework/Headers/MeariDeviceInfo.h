@@ -366,6 +366,8 @@ typedef NS_ENUM(NSUInteger, MeariDeviceAuthority) {
 @property (nonatomic, assign) NSInteger tmz;
 /** 是否支持重启*/
 @property (nonatomic, assign) NSInteger rbt;
+/**是否支持报警总开关 */
+@property (nonatomic, assign) NSInteger gal;
 
 @end
 
