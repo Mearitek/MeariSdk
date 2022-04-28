@@ -107,6 +107,10 @@
         * 10.4.3 [获取家庭分享消息列表](#1043-获取家庭分享消息列表)
         * 10.4.4 [删除家庭分享消息](#1044-删除家庭分享消息)
         * 10.4.5 [处理家庭分享消息](#1045-处理家庭分享消息)
+* 11 [云存储服务](#10-云存储服务)
+    * 11.1 [云存储服务状态](#111-云存储服务状态)
+    * 11.2 [云存储试用](#112-云存储试用)
+    * 11.3 [云存储激活码](#113-云存储激活码)
 
 <center>
 
@@ -3258,6 +3262,72 @@ MeariMemberModel属性
                                     failure:(MeariFailure)failure;
 【代码范例】
      [[MeariFamily sharedInstance] dealFamilyShareMessageWithMsgIDList:@[model.msgID] flag:accept success:{
+        } failure:^(NSError *error) {
+
+        }];
+```
+
+# 11 云存储服务
+## 11.1 云存储服务状态
+```
+【描述】
+      获取云存储服务状态
+
+【函数调用】
+       /**
+          Get cloud storage status (new)
+          获取云存储状态 (新)
+          @param deviceID device ID (设备ID)
+          @param success Successful callback (成功回调)
+          @param failure failure callback (失败回调)
+        */
+        - (void)cloudGetStatusWithDeviceID:(NSInteger)deviceID success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+【代码范例】      
+        [[MeariUser sharedInstance] cloudGetStatusWithDeviceID:self.camera.info.ID success:^(NSDictionary *dict) {
+        
+        } failure:^(NSError *error) {
+
+        }];
+```
+## 11.2 云存储试用
+```
+【描述】
+      试用云存储服务
+
+【函数调用】
+        /**
+          Cloud storage trial
+          云存储试用
+          @param deviceID  device ID (设备ID)
+          @param success Successful callback (成功回调)
+          @param failure failure callback (失败回调)
+        */
+        - (void)cloudTryWithDeviceID:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
+【代码范例】
+        [[MeariUser sharedInstance] cloudTryWithDeviceID:self.camera.info.ID success:^{
+        
+        } failure:^(NSError *error) {
+
+        }];
+```
+## 11.3 云存储激活码
+```
+【描述】
+      通过激活码激活云存储服务
+
+【函数调用】
+        /**    
+          Cloud storage Activation code
+          云存储激活码
+          @param deviceID  device ID (设备ID)
+          @param code Activation code (激活码)
+          @param success Successful callback (成功回调)
+          @param failure failure callback (失败回调)
+        */
+        - (void)cloudActivationWithDeviceID:(NSInteger)deviceID code:(NSString *)code success:(MeariSuccess)success failure:(MeariFailure)failure;
+【代码范例】
+        [[MeariUser sharedInstance] cloudActivationWithDeviceID:self.camera.info.ID code:code success:^{
+        
         } failure:^(NSError *error) {
 
         }];

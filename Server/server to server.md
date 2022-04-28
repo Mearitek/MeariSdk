@@ -130,3 +130,12 @@
          "resultCode":"1001"
      }
      ```
+ - Network request status code
+ 
+    [Network request status code](../Common/Code-ENGLISH.md)
+
+
+ - Encryption rules
+
+    please strictly follow the following references:
+    [Server interface authentication method](Server%20interface%20authentication%20method.md)
