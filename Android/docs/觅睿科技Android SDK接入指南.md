@@ -148,7 +148,12 @@
         * 11.2.3 [MsgItem](#1123-MsgItem)
     * 11.3 [集成谷歌推送](#113-集成谷歌推送)
     * 11.4 [集成其他推送](#114-集成其他推送)
-* [更新说明：](#12-更新说明：)
+* 12 [云存储服务](#12-云存储服务)
+    * 12.1 [云存储服务状态](#121-云存储服务状态)
+    * 12.2 [云存储试用](#122-云存储试用)
+    * 12.3 [云存储激活码使用](#123-云存储激活码使用)
+    * 12.4 [云存储购买](#124-云存储购买)
+* [更新说明：](#13-更新说明：)
 
 <center>
 
@@ -3912,6 +3917,137 @@ boolean isCheck; 是否选中
 联系服务器配置其他推送
 ```
 
-# 12 更新说明：
+# 12 云存储服务
+## 12.1 云存储服务状态
+```
+【描述】
+获取云存储信息
+
+【函数调用】
+/**
+ * 获取云存储信息
+ *
+ * @param deviceID deviceID
+ * @param callback callback
+ */
+public void getCloudServiceInfo(String deviceID, ICloudServiceCallback callback)
+
+【代码范例】
+MeariUser.getInstance().getCloudServiceInfo(mCameraInfo.getDeviceID(), new ICloudServiceCallback() {
+    @Override
+    public void onSuccess(CloudServiceInfo serviceInfo) {
+        
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+
+
+// 1、未开通可试用；2、未开通不可试用；3、已开通；4、已过期。
+int cloudStatus =  mCameraInfo.getCloudStatus();
+
+CloudServiceInfo：
+
+// 云服务事件录像价格信息
+private CloudPriceInfo eventCloudPriceInfo;
+// 云服务全天录像价格信息
+private CloudPriceInfo continueCloudPriceInfo;
+// 视频保存时间
+private int storageTime;
+// 价格符号：￥ $
+private String currencySymbol;
+// 云服务可以试用的时间。默认为7
+private int tryTime = 7;
+// 云服务试用时间的单位。默认为天。
+private String tryUnit = "D";
+// 云服务的截止日期
+private long dueDate=0;
+
+
+CloudPriceInfo：
+
+// 3天包月价格
+private BigDecimal threeM;
+// 3天包季价格
+private BigDecimal threeS;
+// 3天包年价格
+private BigDecimal threeY;
+// 7天包月价格
+private BigDecimal sevenM;
+// 7天包季价格
+private BigDecimal sevenS;
+// 7天包年价格
+private BigDecimal sevenY;
+// 30天包月价格
+private BigDecimal thirtyM;
+// 30天包季价格
+private BigDecimal thirtyS;
+// 30天包年价格
+private BigDecimal thirtyY;
+```
+## 12.2 云存储试用
+```
+【描述】
+云存储试用
+
+【函数调用】
+/**
+ * 云存储试用
+ *
+ * @param deviceID deviceID
+ * @param callback callback
+ */
+public void freeTrialCloudService(String deviceID, IResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().freeTrialCloudService(mCameraInfo.getDeviceID(), new IResultCallback() {
+    @Override
+    public void onSuccess() {
+        
+    }
+
+    @Override
+    public void onError(int code, String error) {
+        
+    }
+});
+```
+## 12.3 云存储激活码使用
+```
+【描述】
+云存储激活码使用
+
+【函数调用】
+/**
+ * 云存储激活码使用
+ *
+ * @param actCode activation code
+ * @param deviceID deviceID
+ * @param callback callback
+ */
+public void requestActive(String actCode, String deviceID, final IResultCallback callback, Object tag)
+
+【代码范例】
+MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IResultCallback() {
+    @Override
+    public void onSuccess() {
+
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+}, this);
+```
+## 12.4 云存储购买
+```
+详见Demo
+```
+
+# 13 更新说明：
 2020-03-13 wu: 2.2.0 SDK接入指南初稿完成
 2022-03-31 wu: 4.1.0 家庭接口文档初稿完成

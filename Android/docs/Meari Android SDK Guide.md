@@ -147,7 +147,12 @@
         * 11.2.3 [MsgItem](#1123-MsgItem)
     * 11.3 [Integrated FCM Push](#113-Integrated-FCM-Push)
     * 11.4 [Integration with other pushes](#114-Integration-with-other-pushes)
-* 12 [Release Notes:](#12-Release-Notes:)
+* 12 [Cloud storage service](#12-Cloud-storage-service)
+    * 12.1 [Cloud storage service status](#121-Cloud-storage-service-status)
+    * 12.2 [Cloud Storage Trial](#122-Cloud-Storage-Trial)
+    * 12.3 [Cloud storage activation code usage](#123-Cloud-storage-activation-code-usage)
+    * 12.4 [Cloud storage purchases](#124-Cloud-storage-purchases)
+* [Release Notes:](#13-Release-Notes:)
 
 <center>
 
@@ -3835,6 +3840,138 @@ call MeariUser.getInstance().uploadToken(1, token, callback) to upload your fcm 
 Contact the server to configure other pushes
 ```
 
-# 12 Release Notes:
+# 12 Cloud storage service
+## 12.1 Cloud storage service status
+```
+【description】
+Get cloud storage information
+
+【Function call】
+/**
+ * Get cloud storage information
+ *
+ * @param deviceID deviceID
+ * @param callback callback
+ */
+public void getCloudServiceInfo(String deviceID, ICloudServiceCallback callback)
+
+【Code example】
+MeariUser.getInstance().getCloudServiceInfo(mCameraInfo.getDeviceID(), new ICloudServiceCallback() {
+    @Override
+    public void onSuccess(CloudServiceInfo serviceInfo) {
+        
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+
+
+// 1. not activated,it can be tried ; 2. not activated,it cannot be tried; 
+// 3. It has been activated; 4. It has expired.
+int cloudStatus =  mCameraInfo.getCloudStatus();
+
+CloudServiceInfo：
+
+// Cloud service event recording price information
+private CloudPriceInfo eventCloudPriceInfo;
+// Cloud service all-day video price information
+private CloudPriceInfo continueCloudPriceInfo;
+// Video save time
+private int storageTime;
+// price symbol：￥ $
+private String currencySymbol;
+// The time the cloud service can be tried. Default is 7
+private int tryTime = 7;
+// The unit of cloud service trial time. The default is days.
+private String tryUnit = "D";
+// Deadline for cloud services
+private long dueDate=0;
+
+
+CloudPriceInfo：
+
+// Three days of package month
+private BigDecimal threeM;
+// Three days of package quarter
+private BigDecimal threeS;
+// Three days of package year
+private BigDecimal threeY;
+// Video 7-day cycle package month
+private BigDecimal sevenM;
+// Video 7-day cycle package quarter
+private BigDecimal sevenS;
+// Video 7-day cycle package year
+private BigDecimal sevenY;
+// Video 30-day cycle package month
+private BigDecimal thirtyM;
+// Video 30-day cycle package quarter
+private BigDecimal thirtyS;
+// Video 30-day cycle package year
+private BigDecimal thirtyY;
+```
+## 12.2 Cloud Storage Trial
+```
+【description】
+Cloud Storage Trial
+
+【Function call】
+/**
+ * Cloud Storage Trial
+ *
+ * @param deviceID deviceID
+ * @param callback callback
+ */
+public void freeTrialCloudService(String deviceID, IResultCallback callback)
+
+【Code example】
+MeariUser.getInstance().freeTrialCloudService(mCameraInfo.getDeviceID(), new IResultCallback() {
+    @Override
+    public void onSuccess() {
+        
+    }
+
+    @Override
+    public void onError(int code, String error) {
+        
+    }
+});
+```
+## 12.3 Cloud storage activation code usage
+```
+【description】
+Cloud storage activation code usage
+
+【Function call】
+/**
+ * Cloud storage activation code usage
+ *
+ * @param actCode activation code
+ * @param deviceID deviceID
+ * @param callback callback
+ */
+public void requestActive(String actCode, String deviceID, final IResultCallback callback, Object tag)
+
+【Code example】
+MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IResultCallback() {
+    @Override
+    public void onSuccess() {
+
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+}, this);
+```
+## 12.4 Cloud storage purchases
+```
+See Demo for details
+```
+
+# 13 Release Notes:
 2020-03-13 wu: 2.2.0 Initial draft of SDK access guide completed
 2022-03-31 wu: 4.1.0 The first draft of the family interface document is completed 
