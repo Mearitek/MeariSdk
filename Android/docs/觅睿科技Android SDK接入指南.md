@@ -370,6 +370,7 @@ MeariUser.getInstance().logout(new ILogoutCallback() {
     @Override
     public void onSuccess() {
         //清除用户信息，断开mqtt连接等操作
+        MeariUser.getInstance().removeUserInfo();
         MqttMangerUtils.getInstance().disConnectService();
     }
 

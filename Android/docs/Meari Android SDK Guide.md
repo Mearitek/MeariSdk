@@ -371,6 +371,7 @@ MeariUser.getInstance (). Logout (new ILogoutCallback () {
     @Override
     public void onSuccess () {
         // Clear user information, disconnect mqtt connection, etc.
+        MeariUser.getInstance().removeUserInfo();
         MqttMangerUtils.getInstance (). DisConnectService ();
     }
 
