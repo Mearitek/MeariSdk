@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Login problem</title>
+  <link href="../help.en.css" rel="stylesheet" />
+  <style>
+  .more {
+    background: rgba(255,255,255,1);
+  }
+  .more-content {
+    line-height:20pt;
+  }
+  </style>
+</head>
+<body class="more">
+  <script src="../mithril/1.1.6/mithril.min.js"></script>
+  <script src="../help.js"></script>
+  <script>
+    var data = [
+    {
+      title:"Login problem",
+      content:[
+      '1.Please check if the cellular network is normal.','<br />',
+      '2.Indicates whether the appropriate country code should be selected.','<br />',
+      '3.Whether the account and password were entered correctly.','<br />',
+      '4.Uninstall and reinstall.','<br />',
+      ]
+    }
+    ]
+    help.more(data)
+  </script>
+</body>
+</html>

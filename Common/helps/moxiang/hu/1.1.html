@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+  <title>Miért nem adhatok hozzá eszközt vagy konfigurálhatom a hálózatot</title>
+  <link href="../help.en.css" rel="stylesheet"/>
+  <style>
+    .more {
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .more-content {
+      line-height: 20pt;
+    }
+  </style>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title: "Miért nem adhatok hozzá eszközt vagy konfigurálhatom a hálózatot?",
+      content: [
+        "Az eszköz kijelzőjének állapotával fel lehet mérni a hálózati konfigurációs hiba okát és megoldását. Kérjük, hogy egymás után levelezzenek.", '<br />',
+        "1.Eszköz hozzáadása előtt ellenőrizze, hogy az eszköz lassan (másodpercenként kétszer) villog-e pirosan. Ha a kijelző állapota rendellenes, hajtsa végre a gyári visszaállítást (hosszan nyomja meg a készülék RESET gombját, amíg meg nem hallja a sípoló hangot és engedje fel).", '<br />',
+        "2.A következő modellek támogatják az 5 GHz-es Wi-Fi-t: Minicam、PTcam、INDOOR1S、DOME1S, több modell támogatja az 5GHz-es Wi-Fi-t a jövőben. Más modellek csak a 2,4 GHz-es Wi-Fi-t támogatják, az 5 GHz-es Wi-Fi-t átmenetileg nem.", '<br />',
+        "3.A WLAN jelszót helyesen kell megadni, és nem tartalmazhat különösebben összetett speciális karaktereket.", '<br />',
+        "4.Győződjön meg arról, hogy a jelenlegi WiFi hálózat zökkenőmentesen működik. Javasoljuk, hogy próbálkozzon az útválasztó újraindítása után.", '<br />',
+      ]
+    }
+  ];
+  help.more(data);
+</script>
+</body>
+</html>

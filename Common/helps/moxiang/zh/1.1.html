@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>为什么添加不了设备或者无法配置网络</title>
+  <link href="../help.cn.css" rel="stylesheet" />
+  <style>
+    .more {
+      background: rgba(255,255,255,1);
+    }
+    .more-content {
+      line-height:20pt;
+    }
+  </style>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title:"为什么添加不了设备或者无法配置网络?",
+      content:[
+        "根据设备指示灯的状态，可以判断配网失败的原因和解决办法，请一一对应.",'<br />',
+        "1.添加设备之前，保证设备处于红灯慢闪状态（1秒钟2次），如果指示灯状态异常，请将设备恢复出厂设置（长按住设备RESET复位键，直到听到嘟嘟声后松手）。",'<br />',
+        "2.以下机型支持5GHz Wi-Fi：Minicam、PTcam、INDOOR1S、DOME1S，未来更多机型将支持5GHz Wi-Fi。 其他机型仅支持2.4GHz Wi-Fi，暂不支持5GHz Wi-Fi。",'<br />',
+        "3.WiFi密码必须正确输入，且不能有特别复杂的特殊字符。",'<br />',
+        "4.注意当前WiFi网络流畅，建议重启路由器后尝试。",'<br />',
+      ]
+    }
+  ]
+  help.more(data)
+</script>
+</body>
+</html>

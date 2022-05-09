@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>カメラインジケーターライトのステータスの説明</title>
+  <link href="../help.cn.css" rel="stylesheet" />
+  <style>
+    .more {
+      background: rgba(255,255,255,1);
+    }
+    .more-content {
+      line-height:20pt;
+    }
+  </style>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title:"カメラインジケーターライトの状態はどうなっていますか？",
+      card: [
+        {
+          left:'<img src="../img/gif_redLightFlashShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_01.png"/>インジケーターライトは常に点灯しています',
+            '<font color="#848484">ステータス：異常なカメラまたは異常なネットワーク</font>',
+            '解決策：デバイスのリセットボタンを長押ししてリセットし、ネットワークへの接続を再試行してください'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_camera_wifi.gif"/>',
+          right: [
+            '<img src="../img/xh-img_02.png"/>インジケーターライトがゆっくりと赤く点滅します',
+            '<font color="#848484">ステータス：カメラはネットワーク構成可能モードです</font>',
+            '解決策：ネットワークへの接続を開始してください'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/png_blueLightFlashlongShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_03.png"/>青いインジケーターライトは常に点灯しています',
+            '<font color="#848484">ステータス：カメラは正常に動作しています</font>',
+            '解決策：カメラの使用を開始してください'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow.gif"/>',
+          right: [
+            '<img src="../img/xh-img_04.png"/>青いインジケーターライトがゆっくり点滅します',
+            '<font color="#848484">ステータス：カメラがAPネットワーク設定モードに入るか、プレビュー中です</font>',
+            '解決策：カメラは正常な状態です'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow-quick.gif"/>',
+          right: [
+            '<img src="../img/xh-img_05.png"/>インジケーターライトが赤/青にすばやく点滅します',
+            '<font color="#848484">ステータス：カメラはネットワークに接続しています</font>',
+            '解決策：カメラは正常な状態です'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+      ]
+    }
+  ]
+  help.more(data)
+</script>
+</body>
+</html>

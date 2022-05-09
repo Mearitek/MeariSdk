@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>A kamera jelzőfényének állapotleírása</title>
+  <link href="../help.en.css" rel="stylesheet" />
+  <style>
+    .more {
+      background: rgba(255,255,255,1);
+    }
+    .more-content {
+      line-height:20pt;
+    }
+  </style>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title:"A kamera jelzőfényének állapotleírása?",
+      card: [
+        {
+          left:'<img src="../img/gif_redLightFlashShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_01.png"/>A jelzőfény mindig világít',
+            '<font color="#848484">Állapot: rendellenes kamera vagy rendellenes hálózat</font>',
+            'Megoldás: A visszaállításhoz nyomja meg hosszan az eszköz visszaállítása gombot, és próbálja újra csatlakozni a hálózathoz'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_camera_wifi.gif"/>',
+          right: [
+            '<img src="../img/xh-img_02.png"/>A jelzőlámpa lassan pirosan villog',
+            '<font color="#848484">Állapot: A kamera hálózatban konfigurálható üzemmódban van</font>',
+            'Megoldás: Először próbáljon meg csatlakozni a hálózathoz'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/png_blueLightFlashlongShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_03.png"/>A kék jelzőfény mindig világít',
+            '<font color="#848484">Állapot: A kamera normálisan működik</font>',
+            'Megoldás: Kérjük, indítsa el a kamerát'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow.gif"/>',
+          right: [
+            '<img src="../img/xh-img_04.png"/>A kék jelzőfény lassan villog',
+            '<font color="#848484">Állapot: A kamera belép az AP hálózati konfigurációs módba, vagy előnézetet mutat</font>',
+            'Megoldás: A kamera normál állapotban van'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow-quick.gif"/>',
+          right: [
+            '<img src="../img/xh-img_05.png"/>A jelzőlámpa gyorsan piros / kék színnel villog',
+            '<font color="#848484">Állapot: A kamera csatlakozik a hálózathoz</font>',
+            'Megoldás: A kamera normál állapotban van'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+      ]
+    }
+  ]
+  help.more(data)
+</script>
+</body>
+</html>

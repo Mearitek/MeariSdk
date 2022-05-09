@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>Keine Antwort auf das Scannen von QR-Codes</title>
+    <link href="../help.en.css" rel="stylesheet" />
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+    var data = [
+        {
+            title:"Keine Antwort auf das Scannen von QR-Codes?",
+            content: [
+                "1.Stellen Sie sicher, dass der QR-Code des Mobiltelefons 15 bis 20 cm vom Kameraobjektiv entfernt ist, wenn Sie den Code scannen. Sie können versuchen, den Code aus mehreren Winkeln zu scannen." ,'<br />',
+                "2.Der vom Mobiltelefon generierte QR-Code kann abnormal sein. Diese Situation tritt häufig bei neuen Mobiltelefonen oder Modellen mit geringem Marktanteil auf. Zu diesem Zeitpunkt erhalten Sie einen Screenshot des QR-Codes und der Systemversion des Mobiltelefons." ,'<br />',
+                "3.Um sicherzustellen, dass das Objektiv sauber ist, können Sie die AP-Netzwerkkonfiguration ausprobieren und prüfen, ob das Objektiv nach dem Herstellen einer Verbindung zum Internet über virtuellen Klebstoff verfügt." ,'<br />',
+                "4.Wenn alle Netzwerkverteilungsmethoden nicht übereinstimmen und das Gerät während der Netzwerkkonfiguration nicht reagiert, ist das Gerät möglicherweise abnormal. Bitte kontaktieren Sie uns.",'<br />',
+            ]
+        },
+    ]
+    help.more(data)
+</script>
+</body>
+</html>

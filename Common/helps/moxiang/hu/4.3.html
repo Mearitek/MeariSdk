@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Regisztrációs probléma</title>
+  <link href="../help.en.css" rel="stylesheet" />
+  <style>
+  .more {
+    background: rgba(255,255,255,1);
+  }
+  .more-content {
+    line-height:20pt;
+  }
+  </style>
+</head>
+<body class="more">
+  <script src="../mithril/1.1.6/mithril.min.js"></script>
+  <script src="../help.js"></script>
+  <script>
+    var data = [
+    {
+      title:"Regisztrációs probléma",
+      content:[
+      '1.Kérjük, adja meg telefonjának modelljét és rendszerváltozatát.','<br />',
+      '2.Töltsön le egy alkalmazást más rendszerekhez. Ha jelenleg iPhone-t használ, sikeresen regisztrálhat egy Android telefonon ugyanabban a hálózati környezetben?','<br />',
+      '3.Sikeresen regisztrál, amikor megpróbál másik WiFi hálózatra váltani?','<br />',
+      ]
+    }
+    ]
+    help.more(data)
+  </script>
+</body>
+</html>

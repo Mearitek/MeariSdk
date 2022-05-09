@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>Cannot add camera for the first time</title>
+    <link href="../help.en.css" rel="stylesheet" />
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+    var data = [
+        {
+            title:"Cannot add camera for the first time?",
+            content: [
+                "The first time you add a camera, make sure the camera is turned on and the working status indicator is slowly flashing red." ,'<br />',
+                "1.Make sure the WIFI account and password are correct." ,'<br />',
+                "2.The following models support 5GHz Wi-Fi: Minicam、PTcam、INDOOR1S、DOME1S, more models will support 5GHz Wi-Fi in the future. Other models only support 2.4GHz Wi-Fi, do not support 5GHz Wi-Fi temporarily. " ,'<br />',
+                "3.When adding a camera, make sure the network is working properly. It is recommended to work near the router." ,'<br />',
+                "4.If the QR code in the network configuration is unsuccessful, try configuring the network manually. Try not to make the password as complicated as possible and try not to use special characters like \\ '." ,'<br />',
+                "5.If the two methods still do not match the internet, it is recommended to restart the router and try again." ,'<br />',
+                "6.Provide the router's nameplate.",'<br />'
+            ]
+        },
+    ]
+    help.more(data)
+</script>
+</body>
+</html>
