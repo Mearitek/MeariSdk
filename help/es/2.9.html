@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+  <title>Why the camera cannot detect moving objects</title>
+  <link href="../help.en.css" rel="stylesheet"/>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title: "Why the camera cannot detect moving objects?",
+      content: [
+        "1.Check that all motion detection settings are enabled in the app.", '<br />',
+        "2.If you need to recognize animals, you need to turn off \"Alert when only people appear\".", '<br />',
+        "3.It is recommended to install the camera at a height of 2-3 meters and tilt it down about 15 degrees to enlarge the area of motion detection.", '<br />',
+        "4.Increase the sensitivity of motion detection.", '<br />',
+        "5.The range of motion detection is limited. Moving objects that are 8 meters away from the camera are difficult to detect successfully.", '<br />',
+        "6.It is not recommended to install the camera in a small space as it will greatly affect the motion detection area.", '<br />',
+      ]
+    },
+  ];
+  help.more(data);
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Status der Kontrollleuchte</title>
+  <link href="../help.en.css" rel="stylesheet" />
+</head>
+<body class="more">
+  <script src="../mithril/1.1.6/mithril.min.js"></script>
+  <script src="../help.pl.js"></script>
+  <script>
+    var data = [
+    {
+      title:"Status der Kontrollleuchte ?",
+      content: [
+      "1. rotes Licht immer an: Die Kamera funktioniert nicht richtig und kann nicht eingeschaltet werden." ,'<br />',
+      "2. rotes Licht blinkt langsam (zweimal pro Sekunde): Die Kamera befindet sich in der Netzwerkkonfiguration und ist bereit, Kameras hinzuzufügen." ,'<br />',
+      "3. rotes Licht blinkt schnell (viermal pro Sekunde): Die Kamera stellt eine Verbindung zum Netzwerk her. Das rote Licht blinkt schnell (viermal pro Sekunde): Die Kamera verbindet sich mit dem Netzwerk. Wenn sie weiterhin schnell leuchtet, ist die Kamera nicht in der Lage, eine Verbindung zum Internet herzustellen. Sie müssen die Kamera zurücksetzen und erneut hinzufügen." ,'<br />',
+      "4. blaues Licht: Die Kamera funktioniert normal.",'<br />',
+      ]
+    },
+    ]
+    help.more(data)
+  </script>
+</body>
+</html>

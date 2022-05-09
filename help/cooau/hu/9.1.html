@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>Miért nem ismeri fel a kamera a mozgó tárgyakat</title>
+    <link href="../help.en.css" rel="stylesheet" />
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+    var data = [
+        {
+            title:"Miért nem ismeri fel a kamera a mozgó tárgyakat?",
+            content: [
+                "1. Ellenőrizze, hogy az APP összes mozgásérzékelési beállítása engedélyezve van-e." ,'<br />',
+                "2. Ha fel kell fedeznie az állatokat, ki kell kapcsolnia a \"Riasztás, amikor csak emberek jelennek meg\" lehetőséget." ,'<br />',
+                "3. Javasoljuk, hogy a kamerát 2-3 méter magasságban helyezze el, és kb. 15 fokkal döntse le, hogy növelje a mozgásérzékelés tartományát." ,'<br />',
+                "4. Állítsa magasabbra a mozgásérzékelés érzékenységét." ,'<br />',
+                "5. A mozgásérzékelés tartománya korlátozott. A kamerától 8 méterre mozgó tárgyakat nehéz felismerni." ,'<br />',
+                "6. Nem ajánlott a kamerát kis helyre telepíteni, ami nagyban befolyásolja a mozgásérzékelési tartományt.",'<br />',
+            ]
+        },
+    ]
+    help.more(data)
+</script>
+</body>
+</html>

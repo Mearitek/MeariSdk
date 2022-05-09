@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Status description of the camera indicator light</title>
+  <link href="../help.en.css" rel="stylesheet" />
+  <style>
+    .more {
+      background: rgba(255,255,255,1);
+    }
+    .more-content {
+      line-height:20pt;
+    }
+  </style>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title:"Status description of the camera indicator light?",
+      card: [
+        {
+          left:'<img src="../img/gif_redLightFlashShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_01.png"/>The indicator light is always on',
+            '<font color="#848484">Status: abnormal camera or abnormal network</font>',
+            'Solution: To reset, long press the device reset button and try connecting to the network again'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_camera_wifi.gif"/>',
+          right: [
+            '<img src="../img/xh-img_02.png"/>The indicator lamp slowly flashes red',
+            '<font color="#848484">Status: The camera is in a network-configurable mode</font>',
+            'Solution: First try to connect to the network'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/png_blueLightFlashlongShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_03.png"/>The blue indicator light is always on',
+            '<font color="#848484">Status: The camera is working normally</font>',
+            'Solution: Please start the camera'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow.gif"/>',
+          right: [
+            '<img src="../img/xh-img_04.png"/>Blue indicator light flashes slowly',
+            '<font color="#848484">Status: The camera is entering the AP network configuration mode or showing a preview</font>',
+            'Solution: The camera is in normal condition'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow-quick.gif"/>',
+          right: [
+            '<img src="../img/xh-img_05.png"/>The indicator lamp flashes red / blue quickly',
+            '<font color="#848484">Status: The camera is connecting to the network</font>',
+            'Solution: The camera is in normal condition'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+      ]
+    }
+  ]
+  help.more(data)
+</script>
+</body>
+</html>

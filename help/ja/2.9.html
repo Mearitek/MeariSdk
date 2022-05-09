@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>カメラが動く物体を検出できない理由</title>
+    <link href="../help.cn.css" rel="stylesheet" />
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+    var data = [
+        {
+            title:"カメラが動く物体を検出できない理由？",
+            content: [
+                "1、アプリのすべてのモーション検出設定がオンになっているかどうかを確認します。" ,'<br />',
+                "2、動物を検出する必要がある場合は、「人だけが表示されたときにアラームを鳴らす」をオフにする必要があります。" ,'<br />',
+                "3、カメラを2〜3メートルの高さに設置し、約15度下に傾けて、動きの検出範囲を広げることをお勧めします。" ,'<br />',
+                "4、モーション検知の感度を上げます。" ,'<br />',
+                "5、動きの検出範囲は限られており、カメラから8メートル離れた場所にある物体をうまく検出することは困難です。" ,'<br />',
+                "6、狭い場所にカメラを設置することはお勧めできません。動きの検出範囲に大きく影響します。",'<br />',
+            ]
+        },
+    ]
+    help.more(data)
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>给摄像机配置网络指示灯状态</title>
+  <link href="../help.cn.css" rel="stylesheet" />
+  <style>
+    .more {
+      background: rgba(255,255,255,1);
+    }
+    .more-content {
+      line-height:20pt;
+    }
+  </style>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title:"给摄像机配置网络指示灯状态？",
+      content:[
+        '<b>设备指示灯变成蓝灯，APP搜索不到设备？</b>',
+        '<br />',
+        '1.请尝试用其他模式添加设备',
+        '<br />',
+        '2.如果多次尝试后，依然是蓝灯常亮搜索不到设备，请联系客服人员，寻求技术帮助。', '<br />',
+        '注：任何一次添加失败后，需要重新配网时，都必须先将设备恢复出厂设置。',
+        '<br />',
+        '<b>设备指示灯一直红色快闪，没有变成蓝灯？</b>',
+        '<br />',
+        '1.设备不支持5GHz WiFi，请确保添加设备时，手机连接的是2.4GHz WiFi',
+        '<br />',
+        '2.WiFi密码必须正确输入，且不能有特别复杂的特殊字符',
+        '<br />',
+        '3.注意当前WiFi网络流畅，建议重启路由器后尝试',
+        '<br />',
+        '<b>设备指示灯没有变成红色快闪或者没有听到“布谷”声？</b>',
+        '<br />',
+        '1.注意手机屏幕与设备镜头平行对准，并距离保持在15cm左右',
+        '<br />',
+        '2.尝试前后调整手机屏幕与设备的距离，并在每个位置保持2秒左右不动',
+        '<br />',
+        '3.请检查设备镜头表面是否有污点',
+        '<br />',
+        '4.确保手机屏幕清晰、无裂痕、无反光',
+        '<br />',
+        '5.更换其他方式配网'
+      ]
+    }
+  ]
+  help.more(data)
+</script>
+</body>
+</html>

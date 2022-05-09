@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>アラーム画像が後ろからしか撮影できない理由</title>
+    <link href="../help.cn.css" rel="stylesheet" />
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+    var data = [
+        {
+            title:"アラーム画像が後ろからしか撮影できない理由？",
+            content: [
+                "PIRは移動するオブジェクトを検出すると、カメラをアクティブにし、1秒以内にスクリーンショットの撮影を開始します。" ,'<br />',
+                "1、動きが速すぎると、背中しか撮れない可能性が高くなります。" ,'<br />',
+                "2、動き検出感度を調整して、検出範囲を広げます。" ,'<br />',
+                "3、カメラをできるだけオープンな環境に向けるようにしてください。これは、検出の空間範囲を広げるのに役立ちます。",'<br />'
+            ]
+        },
+    ]
+    help.more(data)
+</script>
+</body>
+</html>

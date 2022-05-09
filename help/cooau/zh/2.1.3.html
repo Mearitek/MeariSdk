@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>如何判断手机连接的WIFI是2.4G还是5G</title>
+  <link href="../help.cn.css" rel="stylesheet" />
+  <style>
+    .more {
+      background: rgba(255,255,255,1);
+    }
+    .more-content {
+      line-height:20pt;
+    }
+  </style>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title:"如何判断手机连接的WIFI是2.4G还是5G?",
+      content:[
+        "默认状态下，双频路由器会发出两个SSID名称，比如:",
+        "“<b>XXXX_2.4G</b>”&nbsp;&nbsp;&nbsp;“<b>XXXX_5G</b>”，",
+        "手机选择“<b>XXXX_2.4G</b>”，代表连接的是2.4G WIFI（非双频路由器不会有两个SSID）",
+        "若您之前手动修改过路由器默认的SSID，请在路由器设置界面去判断哪个SSID对应2.4G WIFI。"      ]
+    }
+  ]
+  help.more(data)
+</script>
+</body>
+</html>

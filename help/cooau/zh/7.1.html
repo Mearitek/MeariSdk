@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>首次无法添加摄像头</title>
+    <link href="../help.cn.css" rel="stylesheet" />
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+    var data = [
+        {
+            title:"首次无法添加摄像头？",
+            content: [
+                "首次添加相机，确保相机已开机，且工作状态灯是红色慢闪。" ,'<br />',
+                "1、确保WIFI账号和密码正确。" ,'<br />',
+                "2、相机仅支持2.4GHZ的WIFI，不支持5G频段，请勿使用5G的wifi来配置网络。Minicam 支持 5GHz WiFi，未来会有更多机型支持 5GHz WiFi。" ,'<br />',
+                "3、添加相机时，确保网络流畅，建议靠近路由器操作。" ,'<br />',
+                "4、若二维码配网不成功，尝试手动配网；密码尽量不要设置复杂，且不含有\\'等特殊字符。" ,'<br />',
+                "5、若两种方式还是配不上网，建议重启路由器后再尝试。" ,'<br />',
+                "6、提供路由器的铭牌标签",'<br />'
+            ]
+        },
+    ]
+    help.more(data)
+</script>
+</body>
+</html>

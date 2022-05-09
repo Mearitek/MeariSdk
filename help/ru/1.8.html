@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Configure the network display status for the camera</title>
+  <link href="../help.en.css" rel="stylesheet" />
+  <style>
+    .more {
+      background: rgba(255,255,255,1);
+    }
+    .more-content {
+      line-height:20pt;
+    }
+  </style>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title:"Configure the network display status for the camera?",
+      content:[
+        '<b>The device indicator lights up blue and the APP cannot search for the device?</b>',
+        '<br />',
+        '1.Please try adding the device in a different mode',
+        '<br />',
+        '2.If after repeated attempts, the blue light is still on and the device cannot be searched, contact customer service for technical assistance.', '<br />',
+        'Note: If you need to reconfigure the network after a failed add, you must first reset the device to the factory settings.',
+        '<br />',
+        '<b>The device indicator flashes red quickly, but does not turn blue?</b>',
+        '<br />',
+        '1.The device does not support 5 GHz WiFi. Make sure the phone is connected to 2.4GHz WiFi when adding the device',
+        '<br />',
+        '2.The WLAN password must be entered correctly and must not contain any particularly complex special characters',
+        '<br />',
+        '3.Make sure that the current WiFi network is working smoothly. It is recommended to try after restarting the router',
+        '<br />',
+        '<b>The device display does not flash red or does not hear the "cuckoo"?</b>',
+        '<br />',
+        '1.Make sure that the phone screen is parallel to the lens of the device and that the distance is approximately 15 cm',
+        '<br />',
+        '2.Try adjusting the distance between the phone screen and the device, holding it still for about 2 seconds in each position',
+        '<br />',
+        '3.Please check whether there are any stains on the surface of the device lens',
+        '<br />',
+        '4.Make sure the phone\'s screen is clear, crack-free, and non-reflective',
+        '<br />',
+        '5.Switch to other sales networks'
+      ]
+    }
+  ]
+  help.more(data)
+</script>
+</body>
+</html>

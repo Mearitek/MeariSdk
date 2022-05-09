@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #f4f4f4;
+  padding-top: 5pt;
+  padding-left: 10pt;
+  padding-right: 10pt;
+}
+
+.online-help-page {
+  background-color: #4f81bd;
+  color: #fff;
+  position: relative;
+  border: 2px solid #385d8a;
+}
+
+.title {
+  padding-top: 40pt;
+  padding-bottom: 25pt;
+  text-align: center;
+  font-size: 20pt;
+  font-weight: 600;
+}
+
+.tel-box {
+  padding-left: 10pt;
+  padding-right: 8pt;
+  padding-bottom: 5pt;
+  display: flex;
+  line-height: 20pt;
+}
+
+.tel-title {
+  width: 50pt;
+  font-size: 16pt;
+  font-weight: 600;
+}
+
+.email-title {
+  width: 70pt;
+}
+
+.tel-content {
+  flex: 1;
+  font-size: 14pt;
+}
+
+.email-click {
+  font-size: 13pt;
+  text-decoration: underline;
+  color: #0c15fa;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.address {
+  padding-top: 100pt;
+  padding-bottom: 30pt;
+  padding-right: 20pt;
+  text-align: right;
+  font-size: 12pt;
+}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>動いている物体はないが、なぜアラームが頻繁に送信される</title>
+    <link href="../help.cn.css" rel="stylesheet" />
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+    var data = [
+        {
+            title:"動いている物体はないが、なぜアラームが頻繁に送信される？",
+            content: [
+                "PIRが誤検知されました。動作中のエアコンや車など、アラームを簡単に起動できるオブジェクトが動作検出範囲内にある可能性があります。 解決策：" ,'<br />',
+                "1.道路脇や混雑したシーンにカメラを設置しないことをお勧めします。 " ,'<br />',
+                "2.誤検知されないように、外付けのエアコンと同じような熱源にカメラを向けないようにしてください。 " ,'<br />',
+                "3.カメラのレンズが太陽光線に直接面しないようにして、誤検知を避けます。 " ,'<br />',
+                "4.モーション検知の感度を調整して、カメラのモーション検知範囲が小さくなり、アラーム頻度が下がることが可能です。 " ,'<br />',
+                "5.カメラアラームの期間を合理的に分割するようにアラームプランを設定できます。 " ,'<br />',
+                "6.カメラのアラーム間隔は、アラームが途切れないように設定できます。 " ,'<br />',
+                "7.カメラの最大撮影時間を10秒に設定することをお勧めします。",'<br />',
+            ]
+        },
+    ]
+    help.more(data)
+</script>
+</body>
+</html>

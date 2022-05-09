@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+  <title>Warum kann ich kein Gerät hinzufügen oder das Netzwerk konfigurieren</title>
+  <link href="../help.en.css" rel="stylesheet"/>
+  <style>
+    .more {
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .more-content {
+      line-height: 20pt;
+    }
+  </style>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title: "Warum kann ich kein Gerät hinzufügen oder das Netzwerk konfigurieren?",
+      content: [
+        "Anhand des Status der Geräteanzeige können Ursache und Lösung des Netzwerkkonfigurationsfehlers beurteilt werden. Bitte korrespondieren Sie nacheinander.", '<br />',
+        "1.Stellen Sie vor dem Hinzufügen eines Geräts sicher, dass das Gerät langsam rot blinkt (zweimal pro Sekunde). Wenn der Anzeigestatus nicht normal ist, stellen Sie das Gerät auf die Werkseinstellungen zurück (drücken Sie lange die RESET-Taste des Geräts, bis Sie höre den Piepton und lass los).", '<br />',
+        "2.Die folgenden Modelle unterstützen 5-GHz-WLAN: Minicam、PTcam、INDOOR1S、DOME1S, weitere Modelle werden in Zukunft 5-GHz-WLAN unterstützen. Andere Modelle unterstützen nur 2,4-GHz-WLAN, unterstützen vorübergehend kein 5-GHz-WLAN.", '<br />',
+        "3.Das WLAN-Passwort muss korrekt eingegeben werden und darf keine besonders komplexen Sonderzeichen enthalten.", '<br />',
+        "4.Beachten Sie, dass das aktuelle WLAN-Netzwerk reibungslos funktioniert. Es wird empfohlen, es nach dem Neustart des Routers zu versuchen.", '<br />',
+      ]
+    }
+  ];
+  help.more(data);
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>为什么报警图片只能拍到背影</title>
+    <link href="../help.cn.css" rel="stylesheet" />
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+    var data = [
+        {
+            title:"为什么报警图片只能拍到背影？",
+            content: [
+                "PIR检测到移动物体后，启动摄像头，并在一秒钟内开始截图。" ,'<br />',
+                "1、如果物体移动速度太快，大概率只能拍到背影。" ,'<br />',
+                "2、调节移动侦测灵敏度，提高侦测范围。 " ,'<br />',
+                "3、尽量将摄像头对着空旷的环境，有利于提高侦测的空间范围。",'<br />'
+            ]
+        },
+    ]
+    help.more(data)
+</script>
+</body>
+</html>

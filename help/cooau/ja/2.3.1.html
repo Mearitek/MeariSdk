@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>カメラ指示灯の状態説明</title>
+  <link href="../help.cn.css" rel="stylesheet" />
+</head>
+<body class="more">
+  <script src="../mithril/1.1.6/mithril.min.js"></script>
+  <script src="../help.js"></script>
+  <script>
+    var data = [
+    {
+      title:"カメラ指示灯の状態説明？",
+      card: [
+        {
+          left:'<img src="../img/gif_redLightFlashShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_01.png"/>指示灯は常に点灯する',
+            '<font color="#848484">状態:カメラ異常またはネットワーク異常</font>',
+            '解決策:装置のresetボタンを長押ししてリセットした後、再度ネットワークへの接続を試みてください'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_camera_wifi.gif"/>',
+          right: [
+            '<img src="../img/xh-img_02.png"/>ランプが点滅する',
+            '<font color="#848484">状態:カメラは可変網モードにある</font>',
+            '解決策:インターネットへの接続を試みてください'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/png_blueLightFlashlongShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_03.png"/>ランプは青ランプが常時点灯している',
+            '<font color="#848484">状態:カメラが正常に動作する</font>',
+            '解決策:カメラを使い始めてください'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow.gif"/>',
+          right: [
+            '<img src="../img/xh-img_04.png"/>ランプは青ランプがスロー',
+            '<font color="#848484">状態:カメラがAP配網モードに入ったりプレビューしている</font>',
+            '解決策:カメラは正常です'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow-quick.gif"/>',
+          right: [
+            '<img src="../img/xh-img_05.png"/>ランプが赤ランプ/青ランプがフラッシュ',
+            '<font color="#848484">状態:カメラがネットワークに接続されている</font>',
+            '解決策:カメラは正常です'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+      ]
+    }
+    ]
+    help.more(data)
+  </script>
+</body>
+</html>

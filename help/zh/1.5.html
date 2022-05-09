@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>如何将设备恢复出厂设置</title>
+  <link href="../help.cn.css" rel="stylesheet" />
+  <style>
+    .more {
+      background: rgba(255,255,255,1);
+    }
+    .more-content {
+      line-height:20pt;
+    }
+  </style>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title:"如何将设备恢复出厂设置？",
+      card: [
+        {
+          left:'<img src="../img/ic_step_first.png"/>',
+          right: [
+            '找到设备的Reset键，长按至指示灯熄灭后松开，听到“布谷”声，等待设备重新启动，指示灯亮起。',
+          ],
+          leftCol: 3,
+          rightCol: 9,
+        }
+      ]
+    }
+  ]
+  help.more(data)
+</script>
+</body>
+</html>

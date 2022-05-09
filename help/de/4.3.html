@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Registrierungsproblem</title>
+  <link href="../help.en.css" rel="stylesheet" />
+  <style>
+  .more {
+    background: rgba(255,255,255,1);
+  }
+  .more-content {
+    line-height:20pt;
+  }
+  </style>
+</head>
+<body class="more">
+  <script src="../mithril/1.1.6/mithril.min.js"></script>
+  <script src="../help.js"></script>
+  <script>
+    var data = [
+    {
+      title:"Registrierungsproblem",
+      content:[
+      '1.Bitte geben Sie Ihr Telefonmodell und Ihre Systemversion an.','<br />',
+      '2.Laden Sie eine APP für andere Systeme herunter. Wenn Sie derzeit ein iPhone verwenden, können Sie sich erfolgreich mit einem Android-Telefon in derselben Netzwerkumgebung registrieren?','<br />',
+      '3.Können Sie sich erfolgreich registrieren, wenn Sie versuchen, zu einem anderen WiFi-Netzwerk zu wechseln.','<br />',
+      ]
+    }
+    ]
+    help.more(data)
+  </script>
+</body>
+</html>

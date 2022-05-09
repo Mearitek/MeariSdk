@@ -1,0 +1,79 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Privacy</title>
+  <style type="text/css">
+    html,body{
+      padding: 0px;
+      margin: 0px auto;
+      font-size: 1em;
+      line-height: 1.5em;
+    }
+    .container{
+      padding: 10px;
+      overflow: hidden;
+    }
+    .title-wrapper{
+
+    }
+
+    .item-title{
+      font-size: 1.2em;
+      font-weight: bold;
+      line-height: 2em;
+    }
+
+    .item-content{
+
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="title-wrapper">
+    This software respects and protects the personal privacy rights of all users of the service. In order to provide you with more accurate and personalized services, the software will use and disclose your personal information in accordance with the provisions of this privacy policy. However, this software will treat this information with a high degree of diligence and prudence. Except as otherwise provided in this Privacy Policy, the Software will not disclose this information to third parties or provide it to third parties without your prior permission. This software will update this privacy policy from time to time. When you agree to this software service use agreement, you are deemed to have agreed to the entire content of this privacy policy. This privacy policy is an integral part of this software service use agreement.
+  </div>
+  <div class="item-title">
+    1.Scope of application
+  </div>
+  <div class="item-content">
+    a)a) When you use this software network service, the software automatically receives and records the information on your mobile phone, including but not limited to your health data, language used, date and time of access, software and hardware characteristics information, and your needs. Web records and other data.
+  </div>
+  <div class="item-title">
+    2.Use of information
+  </div>
+  <div class="item-content">
+    a)After obtaining your data, the software will upload it to the server to generate your leaderboard data so that you can better use the service.
+
+  </div>
+
+  <div class="item-title">
+    3.Information disclosure
+  </div>
+  <div class="item-content">
+    <p>a)The software will not disclose your information to untrusted third parties.</p>
+    <p>b)according to the relevant provisions of the law, or the requirements of administrative or judicial institutions, to disclose to third parties or administrative or judicial institutions.</p>
+    <p>c)If you violate China's relevant laws, regulations or related rules, you need to disclose it to a third party.</p>
+
+  </div>
+
+  <div class="item-title">
+    4.Information storage and exchange
+  </div>
+  <div class="item-content">
+    The information and materials collected by the software about you will be stored on the server of the software and / or its affiliates. Such information and materials may be transferred to your country, region or outside the place where the software collects the information and materials and in Accessed, stored and displayed overseas.
+
+  </div>
+  <div class="item-title">
+    5.Information security
+  </div>
+  <div class="item-content">
+    a) When using this software network service for online transactions, you must inevitably disclose your personal information, such as contact information or postal address, to the counterparty or potential counterparty. Please protect your personal information and provide it to others only when necessary. If you find your personal information is leaked, please contact the software customer service immediately so that the software can take corresponding measures.
+
+  </div>
+</div>
+</body>
+</html>

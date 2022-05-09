@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Statusbeschreibung der Kamera-Anzeigelampe</title>
+  <link href="../help.en.css" rel="stylesheet" />
+  <style>
+    .more {
+      background: rgba(255,255,255,1);
+    }
+    .more-content {
+      line-height:20pt;
+    }
+  </style>
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+  var data = [
+    {
+      title:"Statusbeschreibung der Kamera-Anzeigelampe?",
+      card: [
+        {
+          left:'<img src="../img/gif_redLightFlashShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_01.png"/>Die Kontrollleuchte leuchtet immer',
+            '<font color="#848484">Status: abnormale Kamera oder abnormales Netzwerk</font>',
+            'Lösung: Drücken Sie zum Zurücksetzen lange die Taste zum Zurücksetzen des Geräts und versuchen Sie erneut, eine Verbindung zum Netzwerk herzustellen'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_camera_wifi.gif"/>',
+          right: [
+            '<img src="../img/xh-img_02.png"/>Die Anzeigelampe blinkt langsam rot',
+            '<font color="#848484">Status: Die Kamera befindet sich in einem netzwerkkonfigurierbaren Modus</font>',
+            'Lösung: Versuchen Sie zunächst, eine Verbindung zum Netzwerk herzustellen'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/png_blueLightFlashlongShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_03.png"/>Blaue Kontrollleuchte leuchtet immer',
+            '<font color="#848484">Status: Die Kamera funktioniert normal</font>',
+            'Lösung: Bitte starten Sie die Kamera'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow.gif"/>',
+          right: [
+            '<img src="../img/xh-img_04.png"/>Blaue Anzeigelampe blinkt langsam',
+            '<font color="#848484">Status: Die Kamera wechselt in den AP-Netzwerkkonfigurationsmodus oder zeigt eine Vorschau an</font>',
+            'Lösung: Die Kamera befindet sich in einem normalen Zustand'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow-quick.gif"/>',
+          right: [
+            '<img src="../img/xh-img_05.png"/>Die Anzeigelampe blinkt schnell rot / blau',
+            '<font color="#848484">Status: Die Kamera stellt eine Verbindung zum Netzwerk her</font>',
+            'Lösung: Die Kamera befindet sich in einem normalen Zustand'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+      ]
+    }
+  ]
+  help.more(data)
+</script>
+</body>
+</html>

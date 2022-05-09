@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>Indicator status description</title>
+    <link href="../help.en.css" rel="stylesheet" />
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+
+    var data = [
+        {
+            title:"Indicator status description？",
+            content: [
+                "1. The red light is always on: The camera is out of order and cannot be turned on " ,'<br />',
+                "2. The red light flashes slowly (twice a second): the camera enters the network configuration state, ready to add the camera. " ,'<br />',
+                "3. Red light flashes quickly (flashing four times a second): The camera is connecting to the network. If it keeps flashing quickly, it means that the camera has failed to connect to the Internet. You need to reset and add the camera again. " ,'<br />',
+                "4. Blue light: the camera is working normally.",'<br />',
+            ]
+        },
+    ]
+    help.more(data)
+</script>
+</body>
+</html>

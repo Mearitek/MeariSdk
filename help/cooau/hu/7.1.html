@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>A fényképezőgépet nem lehet először hozzáadni</title>
+    <link href="../help.en.css" rel="stylesheet" />
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+    var data = [
+        {
+            title:"Nem lehet először hozzáadni a kamerát?",
+            content: [
+                "A fényképezőgép első hozzáadásakor győződjön meg arról, hogy a kamera be van kapcsolva, és a működési állapotjelző lámpa lassan, pirosan villog." ,'<br />',
+                "1. Ellenőrizze, hogy a WIFI felhasználói név és jelszó helyes-e." ,'<br />',
+                "2. A kamera csak a 2,4 GHz-es WIFI-t támogatja, az 5 g-os sáv nem támogatott. kérjük, ne használja az 5G wifit a hálózat konfigurálásához. A Minicam támogatja az 5 GHz -es WiFi -t, a jövőben több modell támogatja az 5 GHz -es WiFi -t." ,'<br />',
+                "3. Kamera hozzáadásakor győződjön meg arról, hogy a hálózat zökkenőmentes, és ajánlott a lehető legnagyobb mértékben az útválasztó közelében csatlakozni." ,'<br />',
+                "4. Ha a QR-kód sikertelen a hálózati konfigurációban, próbálja meg manuálisan konfigurálni a hálózatot; ne próbáljon meg összetett WIFI jelszót beállítani, és ne tartalmazzon speciális karaktereket, például \\ '. stb" ,'<br />',
+                "5. Ha a két módszer továbbra sem felel meg az internetnek, javasoljuk, hogy indítsa újra az útválasztót, és próbálkozzon újra." ,'<br />',
+                "6. Adja meg az útválasztó adattáblájának címkéjét"
+            ]
+        },
+    ]
+    help.more(data)
+</script>
+</body>
+</html>

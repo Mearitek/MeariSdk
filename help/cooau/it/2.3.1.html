@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Indicator light status</title>
+  <link href="../help.en.css" rel="stylesheet" />
+</head>
+<body class="more">
+  <script src="../mithril/1.1.6/mithril.min.js"></script>
+  <script src="../help.js"></script>
+  <script>
+    var data = [
+    {
+      title:"Indicator light status?",
+      card: [
+        {
+          left:'<img src="../img/gif_redLightFlashShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_01.png"/>Red light solid on',
+            '<font color="#848484">State: camera or network is abnormal.</font>',
+            'Solution: reset the device and connect the network again.'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_camera_wifi.gif"/>',
+          right: [
+            '<img src="../img/xh-img_02.png"/>Red light blinks slowly',
+            '<font color="#848484">State: await for network configuration.</font>',
+            'Solution: please connect the network.'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/png_blueLightFlashlongShow.png"/>',
+          right: [
+            '<img src="../img/xh-img_03.png"/>Blue light solid on',
+            '<font color="#848484">State: camera performs normally.</font>',
+            'Solution: start to use it.'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow.gif"/>',
+          right: [
+            '<img src="../img/xh-img_04.png"/>Blue light blinks slowly',
+            '<font color="#848484">State: camera is in Manual configuration mode or is being previewed.</font>',
+            'Solution: normal state.'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+        {
+          left:'<img src="../img/gif_blueLightFlashShow-quick.gif"/>',
+          right: [
+            '<img src="../img/xh-img_05.png"/>Red light/blue light blinks fast',
+            '<font color="#848484">State: camera is connecting the network</font>',
+            'Solution: normal state'
+          ],
+          leftCol: 3, rightCol: 9
+        },
+      ]
+    },
+    ]
+    help.more(data)
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>Nincs válasz a QR-kódok beolvasására</title>
+    <link href="../help.en.css" rel="stylesheet" />
+</head>
+<body class="more">
+<script src="../mithril/1.1.6/mithril.min.js"></script>
+<script src="../help.js"></script>
+<script>
+    var data = [
+        {
+            title:"Nincs válasz a QR-kódok beolvasására?",
+            content: [
+                "1.A kód beolvasásakor ellenőrizze, hogy a mobiltelefon QR-kódja 15–20 cm-re van-e a kamera lencséjétől. Megpróbálhatja több szögből beolvasni a kódot." ,'<br />',
+                "2.A mobiltelefon által generált QR-kód rendellenes lehet. Ez a helyzet gyakran fordul elő új mobiltelefonok vagy alacsony piaci részesedéssel rendelkező modellek esetében. Ekkor kap egy képernyőképet a QR-kódról és a mobiltelefon rendszerváltozatáról." ,'<br />',
+                "3.Annak érdekében, hogy a lencse tiszta legyen, kipróbálhatja az AP hálózati konfigurációt, és megnézheti, hogy van-e a lencsén virtuális ragasztó, miután csatlakozott az internethez." ,'<br />',
+                "4.Ha az összes hálózati terjesztési módszer nem egyezik, és az eszköz nem reagál a hálózat konfigurálása során, akkor az eszköz rendellenes lehet. Kérjük, vegye fel velünk a kapcsolatot.",'<br />',
+            ]
+        },
+    ]
+    help.more(data)
+</script>
+</body>
+</html>

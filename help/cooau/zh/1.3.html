@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>注册问题</title>
+  <link href="../help.cn.css" rel="stylesheet" />
+  <style>
+  .more {
+    background: rgba(255,255,255,1);
+  }
+  .more-content {
+    line-height:20pt;
+  }
+  </style>
+</head>
+<body class="more">
+  <script src="../mithril/1.1.6/mithril.min.js"></script>
+  <script src="../help.js"></script>
+  <script>
+    var data = [
+    {
+      title:"注册问题",
+      content:[
+      '1、请提供您手机的型号、系统版本。','<br />',
+      '2、下载个其他系统的APP，如您当前使用iPhone手机，在同样的网络环境下使用安卓手机是否能注册成功。','<br />',
+      '3、更换其他的WiFi网络尝试能否注册成功。','<br />',
+      ]
+    }
+    ]
+    help.more(data)
+  </script>
+</body>
+</html>
