@@ -153,7 +153,14 @@
     * 12.2 [云存储试用](#122-云存储试用)
     * 12.3 [云存储激活码使用](#123-云存储激活码使用)
     * 12.4 [云存储购买](#124-云存储购买)
-* 13 [更新说明](#13-更新说明)
+* 13 [NVR](#13-NVR)
+    * 13.1 [添加NVR](#131-添加NVR)
+    * 13.2 [添加摄像机到NVR通道](#132-添加摄像机到NVR通道)
+        * 13.2.1 [添加在线摄像机](#1321-添加在线摄像机)
+        * 13.2.2 [连接NVR添加摄像机](#1322-连接NVR添加摄像机)
+        * 13.2.3 [连接路由器添加摄像机](#1323-连接路由器添加摄像机)
+    * 13.3 [NVR相关类和方法说明](#133-NVR相关类和方法说明)
+* 14 [更新说明](#13-更新说明)
 
 <center>
 
@@ -4049,7 +4056,218 @@ MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IR
 详见Demo
 ```
 
-# 13 更新说明
+# 13 NVR
+
+## 13.1 添加NVR
+```
+详见：有线配网添加设备
+```
+## 13.2 添加摄像机到NVR通道
+
+### 13.2.1 添加在线摄像机
+```
+【描述】
+如果摄像机已经在线，使摄像机和NVR处于同一个局域网，摄像机开启允许被发现，5分钟内，NVR搜索并添加摄像机到通道
+
+【函数调用】
+/**
+ * 获取允许被nvr发现的状态
+ */
+public void getNvrConnectableStatus(INvrConnectableCallback callback)
+/**
+ * 设置是否允许被nvr连接：0-不可以；1-可以
+ * 开启后5分钟自动关闭
+ */
+public void setNvrConnectable(int enable, IStringResultCallback callback)
+/**
+ * 获取允许被nvr连接的剩余时间，单位秒
+ */
+public void getNvrConnectableTimeLeft(IIntegerPropertyCallback callback)
+
+/**
+ * nvr开始搜索设备
+ */
+public void nvrStartSearchDevice(IStringResultCallback callback)
+/**
+ * nvr获取搜索结果
+ */
+public void nvrGetSearchResult(INVRSearchCallback callback)
+/**
+ * nvr添加meari设备
+ * ip-搜索到设备的IP地址
+ */
+public void nvrAddDevice(String ip, INVRAddCallback callback)
+/**
+ * nvr添加onvif设备
+ * ip-搜索到设备的IP地址；user-onvif用户名；pwd-onvif密码
+ */
+public void nvrAddOnvifDevice(String ip, String user, String pwd, INVRAddCallback callback)
+
+【代码范例】
+
+// 摄像机是否支持允许被Nvr连接
+if (cameraInfo.getCpn() > 0) {
+}
+
+MeariUser.getInstance().getNvrConnectableStatus(new INvrConnectableCallback() {
+    @Override
+    public void onSuccess(NvrConnectableInfo nvrConnectableInfo) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+NvrConnectableInfo：
+// 摄像机是否已经添加到NVR
+private boolean isAdded;
+// 摄像机是否可以被NVR连接
+private int connectable;
+// 摄像机连接的NVR的ID
+private String NvrId;
+
+MeariUser.getInstance().setNvrConnectable(1, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+
+MeariUser.getInstance().getNvrConnectableTimeLeft(new IIntegerPropertyCallback() {
+    @Override
+    public void onSuccess(int value) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().nvrStartSearchDevice(new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().nvrGetSearchResult(new INVRSearchCallback() {
+    @Override
+    public void onSuccess(boolean finish, List<NvrAddInfo> nvrAddInfoList) {
+        // finish：false-正在搜索，继续获取结果；true-搜索结束,停止获取结果
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+NvrAddInfo：
+// 0-Meari摄像机; 1-onvif摄像机
+private int type;
+// Meari摄像机 sn
+private String sn;
+// 摄像机 IP 地址
+private String ip;
+// 0-未添加；1-已添加；2-添加失败
+private int addStatus;
+
+MeariUser.getInstance().nvrAddDevice(nvrAddInfo.getIp(), new INVRAddCallback() {
+    @Override
+    public void onSuccess(NvrAddInfo nvrAddInfo) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+
+MeariUser.getInstance().nvrAddOnvifDevice(nvrAddInfo.getIp(), "user", "pwd", new INVRAddCallback() {
+    @Override
+    public void onSuccess(NvrAddInfo nvrAddInfo) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+### 13.2.2 连接NVR添加摄像机
+```
+【描述】
+如果摄像机不在线，获取NVR的token生成二维码，摄像机扫码后，将连接NVR，并添加到NVR通道
+
+【函数调用】
+/**
+ * 创建Token二维码
+ */
+public void createNvrTokenQRCode(String token, ICreateQRCodeCallback callback)
+
+【代码范例】
+
+MeariUser.getInstance().getDeviceParams(new IGetDeviceParamsCallback() {
+    @Override
+    public void onSuccess(DeviceParams deviceParams) {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().createNvrTokenQRCode(deviceParams.nvrNeutralParams.getQrCodeToken(), new ICreateQRCodeCallback() {
+    @Override
+    public void onSuccess(Bitmap bitmap) {
+    }
+});
+
+```
+### 13.2.3 连接路由器添加摄像机
+```
+【描述】
+如果摄像机不在线，获取NVR的key和wifi名、密码生成二维码，摄像机扫码后，将连接路由器，使摄像机和NVR处于同一个局域网，NVR搜索并添加摄像机到通道
+
+【函数调用】
+/**
+ * 创建key二维码
+ * ssid-WiFi名称；password-WiFi密码；key-nvr Key
+ */
+public void createNvrKeyQRCode(String ssid, String password, String key, ICreateQRCodeCallback callback)
+
+【代码范例】
+
+MeariUser.getInstance().createNvrKeyQRCode("wifi_name", "pwd", deviceParams.nvrNeutralParams.getQrCodeKey(), new ICreateQRCodeCallback() {
+    @Override
+    public void onSuccess(Bitmap bitmap) {
+        
+    }
+});
+
+// 搜索和添加设备见：添加在线摄像机
+
+```
+
+## 13.3 NVR相关类和方法说明
+```
+// 判断NVR设备
+if (DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID()) {
+}
+
+// 判断NVR通道
+if (DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() && cameraInfo.getNvrChannelId() > 0) {
+}
+```
+
+# 14 更新说明
 
 ## 2022-06-21(4.1.0)
 ```
