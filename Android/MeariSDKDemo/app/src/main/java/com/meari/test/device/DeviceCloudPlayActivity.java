@@ -30,7 +30,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -124,8 +126,13 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
             cloudPlayerController = new CloudPlayerController(DeviceCloudPlayActivity.this, mVideoView, this);
         }
 
-        getCloudVideoTimeRecordInDay(2020, 9, 21);
-        postEventTime(2020, 9, 14);
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DATE);
+
+        getCloudVideoTimeRecordInDay(year, month, day);
+        postEventTime(year, month, day);
 
     }
 
