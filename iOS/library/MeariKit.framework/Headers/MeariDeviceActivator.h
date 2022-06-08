@@ -83,6 +83,19 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  */
 - (UIImage *)createQRCodeWithSSID:(NSString *)ssid pasword:(NSString *)password token:(NSString *)token addSubDevice:(BOOL)subDevice size:(CGSize)size;
 
+
+//
+- (UIImage *)createQRCodeWithSSID:(NSString *)ssid pasword:(NSString *)password token:(NSString *)token addSubDevice:(BOOL)subDevice size:(CGSize)size encryption:(BOOL)encryption;
+/**
+ Generate NVR QR code
+ 生成NVR配网二维码
+
+ @param ssid wifi name(wifi名称)
+ @param password wifi password(wifi密码)
+ @param size QR code size(二维码大小)
+ @return QR code image(二维码图片)
+ */
+- (UIImage *)createNVRQRCodeWithSSID:(NSString *)ssid pasword:(NSString *)password key:(NSString *)key size:(CGSize)size;
 /**
  Generate QR code
  生成二维码
@@ -103,6 +116,19 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  @param failure failure callback (失败回调)
  */
 - (void)configApModeWithSSID:(NSString *)ssid password:(NSString *)password token:(NSString *)token relay:(BOOL)relayDevice success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+
+/**
+ AP配网传递的参数
+
+ @param ssid wifi name (wifi名称)
+ @param password wifi password (wifi密码)
+ @param token config token (获取的配网APtoken)
+ @param encryption encryption (是否加密)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)configApModeWithSSID:(NSString *)ssid password:(NSString *)password token:(NSString *)token relay:(BOOL)relayDevice encryption:(BOOL)encryption success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  有线配网传递的参数
@@ -202,6 +228,12 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  @param failure 失败回调
  */
 - (void)getConfigRelayDeviceTokenType:(MeariDeviceGatewayTokenType)type success:(MeariSuccess_Token)success failure:(MeariFailure)failure;
+
+
+#pragma mark - Encryption  Qrcode
+
+- (char *)qrcodeMeariEncryption:(NSString *)content;
+- (NSString *)qrcodeMeariDecryption:(char *)content length:(NSInteger)length;
 
 @end
 

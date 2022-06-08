@@ -51,6 +51,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param failure  failure callback (失败回调)
 - (void)bindDeviceWithDeviceId:(NSInteger)deviceID bindDeviceID:(NSInteger)bindDeviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
 
+/// unbind device
+/// @param deviceID jingle id
+/// @param success Successful callback (成功回调)
+/// @param failure  failure callback (失败回调)
+- (void)unBindDeviceWithDeviceId:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
+
 @end
 
 NS_ASSUME_NONNULL_END

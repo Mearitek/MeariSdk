@@ -38,9 +38,10 @@ typedef void(^MeariDeviceSuccess_Storage)(MeariDeviceParamStorage *storage);
 typedef void(^MeariDeviceSuccess_StoragePercent)(NSInteger percent);
 typedef void(^MeariDeviceSuccess_UpgradeMode)(MeariDeviceOtaUpgradeMode otaUpgradeMode);
 typedef void(^MeariDeviceSuccess_Version)(NSString *version);
-typedef void(^MeariDeviceSuccess_VersionPercent)(NSInteger totalPercent, NSInteger downloadPercent, NSInteger updatePercent);
+typedef void(^MeariDeviceSuccess_VersionPercent)(NSInteger totalPercent, NSInteger downloadPercent, NSInteger updatePercent,MeariDeviceOtaUpgradeMode mode);
 typedef void(^MeariDeviceSuccess_LightState)(BOOL on);
 typedef void(^MeariDeviceSuccess_SirenTimeout)(NSInteger second);
+typedef void(^MeariDeviceSuccess_NightLightOn)(BOOL isOn);
 typedef void(^MeariDeviceSuccess_Param)(MeariDeviceParam *param);
 typedef void(^MeariDeviceSuccess_TRH)(CGFloat temperature, CGFloat humidity);
 typedef void(^MeariDeviceSuccess_Volume)(CGFloat volume);
@@ -826,6 +827,11 @@ Start record sound(开始录音)
  */
 - (void)setHumanDetectionEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+/// human level       1-n
+/// @param level  1-n
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)setHumanDetectionLevel:(NSInteger)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
  设置报警间隔级别
@@ -910,7 +916,7 @@ Start record sound(开始录音)
  // camera work mode
  // 工作模式
  
- @param mode 0 : power saving mode  1: performance mode 2:custom mode
+ @param mode 0 : power saving mode  1: performance mode 2:custom mode 3:normal mode
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
@@ -979,7 +985,8 @@ Start record sound(开始录音)
 
 
 /**
- Get firmware upgrade percentage(获取固件升级百分比)
+ Get firmware upgrade percentage(获取固件升级百分比) (MeariDeviceOtaUpgradeMode 只在 supportMeariIot == YES 时生效)
+ (MeariDeviceOtaUpgradeMode only valid when supportMeariIot == YES)
  
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
@@ -1564,6 +1571,12 @@ Start record sound(开始录音)
 /// @param failure  failure callback (失败回调)
 - (void)getFloodCameraSirenTimeoutSuccess:(MeariDeviceSuccess_SirenTimeout)success failure:(MeariDeviceFailure)failure;
 
+/// 获取灯具摄像机（RGB灯）的开关灯状态
+/// Get Flood Camera Switch on Status
+/// @param success Successful callback (成功回调)
+/// @param failure  failure callback (失败回调)
+-(void)getFloodCameraRGBSwitchOnStatusSuccess:(MeariDeviceSuccess_NightLightOn)success failure:(MeariDeviceFailure)failure;
+
 /// 设置声光报警使能开关
 /// Set sound and light alarm enable switch
 /// @param enable 是否开启
@@ -1577,6 +1590,20 @@ Start record sound(开始录音)
 /// @param success 成功回调
 /// @param failure 失败回调
 - (void)setFloodCameraVoiceLightAlarmType:(MeariDeviceVoiceLightType)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+#pragma mark --- NVR
+/// 设置NVR无线抗干扰开关
+/// Set sound and light alarm enable switch
+/// @param enable 是否开启
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setNVRAntijammingEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// NVR删除子设备通道
+/// Set sound and light alarm enable switch
+/// @param channel 通道
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)deleteNVRChannel:(NSInteger)channel success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 #pragma mark --- Jing4
 /// set jingle sleepmode enable
@@ -1895,7 +1922,12 @@ Determine whether it is a face
 /// @param success Successful callback (成功回调)
 /// @param failure failure callback (失败回调)
 + (void)getIotInfoWithSnList:(NSArray<NSString *> *)snList dpList:(NSArray<NSString *> *)dpList success:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
-
+/// 获取Nvr dp属性
+/// @param snList sn list
+/// @param dpList  dp list
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
++ (void)getNvrInfoWithSnList:(NSArray<NSString *> *)snList dpList:(NSArray<NSString *> *)dpList success:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
 #pragma mark - 耳机
 /**
   Whether current phone is using head device or bluetooth device.

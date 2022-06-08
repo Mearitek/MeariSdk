@@ -117,6 +117,8 @@ typedef NS_ENUM(NSInteger, MeariShareMessageType) {
 @property (nonatomic, assign)NSInteger userID; //user id (用户ID)
 @property (nonatomic, assign)NSInteger ownerID; // //owner id (设备所有人ID)
 
+@property (nonatomic, assign)NSInteger cloudImgType; //AWS Image
+
 @end
 
 @interface MeariMessageInfoVisitor : MeariMessageInfo

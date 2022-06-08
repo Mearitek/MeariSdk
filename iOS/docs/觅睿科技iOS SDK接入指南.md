@@ -111,7 +111,14 @@
     * 11.1 [云存储服务状态](#111-云存储服务状态)
     * 11.2 [云存储试用](#112-云存储试用)
     * 11.3 [云存储激活码](#113-云存储激活码)
-
+    * 11.4 [云存储购买](#114-云存储购买)
+* 12 [NVR](#12-NVR)
+    * 12.1 [添加NVR](#121-添加NVR)
+    * 12.2 [添加摄像机到NVR通道](#122-添加摄像机到NVR通道)
+        * 12.2.1 [添加在线摄像机](#1221-添加在线摄像机)
+        * 12.2.2 [连接NVR添加摄像机](#1222-连接NVR添加摄像机)
+        * 12.2.3 [连接路由器添加摄像机](#1223-连接路由器添加摄像机)
+    * 12.3 [NVR相关类和方法说明](#123-NVR相关类和方法说明)
 <center>
 
 ---
@@ -119,7 +126,8 @@
 | ------ | ------ | ------ | ------ |
 | 2.0.1 | 觅睿技术团队 | 2019.06.25 | 优化
 | 3.1.0 | 觅睿技术团队 | 2021.07.05 | 优化
-| 4.1.0 | 觅睿技术团队 | 2021.03.23 | 优化
+| 4.1.0 | 觅睿技术团队 | 2022.03.23 | 家庭
+| 4.4.0 | 觅睿技术团队 | 2022.06.08 | NVR
 </center>
 
 # 1. 功能概述 
@@ -1264,7 +1272,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
         
       // 获取具体片段的m3u8 url  24小时制
-      // 时间以半个小时为间隔 例如:12：00 - 12：30  , 13:30-14:00
+      // 时间以半个小时为间隔 例如:12：00 - 12：30  , 12:30-14:00
       // m3u8文件只有半个小时有效性 过期自动失效
       NSDateComponents * startTime = [[NSDateComponents alloc]init];
       startTime.year = 2021;
@@ -1555,7 +1563,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     }];
 
 ```
-## 7.13 留言
+## 7.12 留言
 ```
 【描述】
      门铃设备支持录制留言，可以在接听的时候选择播放留言操作。
@@ -3331,4 +3339,211 @@ MeariMemberModel属性
         } failure:^(NSError *error) {
 
         }];
+```
+## 11.4 云存储购买
+```
+详见Demo
+```
+
+# 12 NVR
+
+## 12.1 添加NVR
+```
+详见：有线配网添加设备
+```
+## 12.2 添加摄像机到NVR通道
+
+### 12.2.1 添加在线摄像机
+```
+【描述】
+    如果摄像机已经在线，使摄像机和NVR处于同一个局域网，摄像机开启允许被发现，5分钟内，NVR搜索并添加摄像机到通道
+
+【函数调用】
+    /**
+    获取设备允许被发现状态：Get Sub Device Found Permission
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)getSubDeviceFoundPermissionWithSuccess:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
+    /**
+     设置设备允许被发现状态：Set Sub Device Found Permission
+    @param enable  0-不允许 1-允许
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)setSubDeviceFoundPermission:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+    /**
+     获取设备允许被发现剩余时长,单位秒：Get Sub Device Found Permission Time
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)getSubDeviceFoundRemainTimeWithSuccess:(MeariDeviceSuccess_Str)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    开始搜索：Start Search Nvr Sub Device
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)startSearchNvrSubDeviceWithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    /**
+    获取搜索结果：Get Nvr Sub Device Result
+    @param success Successful callback (成功回调)：返回搜索到的设备
+    @param failure failure callback (失败回调)
+    */
+    - (void)getSearchedNvrSubDeviceWithSuccess:(void(^)(BOOL finish, NSArray* searchArray))success failure:(MeariDeviceFailure)failure;
+
+    /**
+     Nvr添加meari子设备(app内绑定)
+     
+     @param ip 搜索到设备的IP地址
+     @param success Successful callback (成功回调)
+     @param failure failure callback (失败回调)
+     */
+    - (void)bindNvrSubDeviceWithIp:(NSString *)ip success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+    /**
+     Add child device through Nvr (onvif binding)
+     Nvr添加子设备(onvif协议设备)
+     
+     @param ip 搜索到设备的IP地址
+     @param user onvif 用户
+     @param password onvif密码
+     @param success Successful callback (成功回调)
+     @param failure failure callback (失败回调)
+     */
+    - (void)bindNvrSubDeviceWithIp:(NSString *)ip user:(NSString *)user password:(NSString *)password success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+【代码范例】
+
+    // 摄像机是否支持允许被Nvr连接
+    if (self.camera.supportFoundPermission) {
+    }
+
+    [self.camera getSubDeviceFoundPermissionWithSuccess:^(NSDictionary *dic) {
+        BOOL enable = dic[@"enable"];
+        NSString *sn = dic[@"nav_name"];//已被添加的NVR sn
+    } failure:^(NSError *error) {
+        
+    }];
+    
+    [self.camera getSubDeviceFoundRemainTimeWithSuccess:^(NSString *str) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+
+    [self.camera setSubDeviceFoundPermission:sender.isOn success:^{
+        NSLog(@"set success");
+    } failure:^(NSError *error) {
+    }];
+    
+    //开始搜索
+    [self.camera startSearchNvrSubDeviceWithSuccess:^{
+        [self.camera getSearchedNvrSubDeviceWithSuccess:^(BOOL finish, NSArray * _Nonnull searchArray) {
+            NSLog(@"%@",searchArray);
+        } failure:^(NSError *error) {
+            
+        }];
+    } failure:^(NSError *error) {
+        
+    }];
+    //获取搜索的结果
+    [self.camera getSearchedNvrSubDeviceWithSuccess:^(BOOL finish, NSArray * _Nonnull searchArray) {
+        // finish：false-正在搜索，继续获取结果；true-搜索结束,停止获取结果
+        dictionary keys:
+        //type: 0-Meari摄像机; 1-onvif摄像机
+        //sn: Meari摄像机 sn
+        //ip: 摄像机 IP 地址
+        //add_status 0-未添加；1-添加中；2-添加成功； 3-添加失败 
+        NSLog(@"%@",searchArray);
+    } failure:^(NSError *error) {
+            
+    }];
+    
+
+    [self.camera bindNvrSubDeviceWithIp:ip success:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+
+
+    [self.camera bindNvrSubDeviceWithIp:ip user:user password:pwd success:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+```
+### 12.2.2 连接NVR添加摄像机
+```
+【描述】
+    如果摄像机不在线，获取NVR的token生成二维码，摄像机扫码后，将连接NVR，并添加到NVR通道
+
+【函数调用】
+/**
+ Generate QR code
+ 生成二维码
+
+ @param text QR code info(二维码信息)
+ @param size QR code size(二维码大小)
+ @return QR code image(二维码图片)
+ */
+- (UIImage *)createQRCodeWithText:(NSString *)text size:(CGSize)size;
+
+【代码范例】
+
+    NSString *token = [NSString decodeBase64String:self.camera.param.nvr.networkConfig];
+
+    UIImage *image =  [[MeariDeviceActivator sharedInstance] createQRCodeWithText:token size:CGSizeMake(Meari_ScreenWidth, Meari_ScreenWidth)];
+
+```
+### 12.2.3 连接路由器添加摄像机
+```
+【描述】
+如果摄像机不在线，获取NVR的key和wifi名、密码生成二维码，摄像机扫码后，将连接路由器，使摄像机和NVR处于同一个局域网，NVR搜索并添加摄像机到通道
+
+【函数调用】
+/**
+ Get  Nvr Net Config Key
+ 获取Nvr添加子设备扫码所需key
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getNVRNetConfigKeyWithSucess:(MeariDeviceSuccess_Str)sucess failure:(MeariDeviceFailure)failure ;
+
+/**
+ Generate NVR QR code
+ 生成NVR配网二维码
+
+ @param ssid wifi name(wifi名称)
+ @param password wifi password(wifi密码)
+@param key nvr Key
+ @param size QR code size(二维码大小)
+ @return QR code image(二维码图片)
+ */
+- (UIImage *)createNVRQRCodeWithSSID:(NSString *)ssid pasword:(NSString *)password key:(NSString *)key size:(CGSize)size;
+
+【代码范例】
+    [self.camera getNVRNetConfigKeyWithSucess:^(NSString *str) {
+        NSLog(@"key: %@",str);
+    } failure:^(NSError *error) {
+        
+    }];
+
+    UIImage *image =  [[MeariDeviceActivator sharedInstance] createNVRQRCodeWithSSID:wifiname pasword:pwd key:key size:CGSizeMake(Meari_ScreenWidth, Meari_ScreenWidth)];
+
+// 搜索和添加设备见：添加在线摄像机
+
+```
+
+## 12.3 NVR相关类和方法说明
+```
+// 判断NVR设备
+if (self.camera.isNvr && self.camera.channel == 0) {
+}
+
+// 判断NVR通道
+if (self.camera.isNvrSubDevice) {
+}
 ```

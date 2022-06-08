@@ -103,9 +103,13 @@ typedef NS_ENUM (NSInteger, MRBabyMusicPlayMode) {
 };
 
 typedef NS_ENUM(NSInteger, MeariDeviceOtaUpgradeMode) {
-    MeariDeviceOtaUpgradeModeNormal,  // status normal (正常)
+    MeariDeviceOtaUpgradeModeNormal = 0,  // status normal (正常)
     MeariDeviceOtaUpgradeModeUpgrading, // status upgrading (升级中)
-    MeariDeviceOtaUpgradeModeWaitReboot // status upgraded and wait reboot (升级完成等待重启)
+    MeariDeviceOtaUpgradeModeWaitReboot, // status upgraded and wait reboot (升级完成等待重启)
+    MeariDeviceOtaUpgradeModeDownloadError, // status upgrade download error (升级失败因下载失败)
+    MeariDeviceOtaUpgradeModeWriteError, // status upgrade write error (升级失败因写flash失败)
+    MeariDeviceOtaUpgradeModeFormatError, // status upgrade format error (升级失败因包格式问题)
+    MeariDeviceOtaUpgradeModeWaitLowPower // status upgrade low power (电量低无法升级)
 };
 // 响铃时间间隔
 typedef NS_ENUM(NSInteger, MeariDeviceSnoozeTime) {
@@ -572,6 +576,7 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 @property (nonatomic,   copy) NSString *network; //配网信息
 @property (nonatomic,   copy) NSArray <MeariDeviceParamStorage *> *storages; //磁盘信息
 @property (nonatomic, assign) NSInteger channel; // 通道数
+@property (nonatomic, assign) BOOL antiJamming; // wifi抗干扰开关
 @property (nonatomic,   copy) NSString *tp; // 通道数
 @property (nonatomic,   copy) NSString *networkConfig; // 配网信息
 @property (nonatomic,   copy) NSString *firVersion; // 固件版本号
@@ -632,6 +637,7 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 @property (nonatomic, strong) MeariDeviceParamMotion *motion_detect;
 
 @property (nonatomic, strong) MeariDeviceParamPeopleDetect *people_detect;
+@property (nonatomic, assign) NSInteger *people_detectLevel;
 @property (nonatomic, strong) MeariDeviceParamCryDetect *cry_detect;
 @property (nonatomic, strong) MeariDeviceParamPeopleTrack *people_track;
 @property (nonatomic, strong) MeariDeviceParamSleepGeographic *home_geographic;
@@ -710,6 +716,9 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 @property (nonatomic, assign) BOOL recordAudio; // 录像声音
 @property (nonatomic, assign) BOOL speaker; // 扬声器
 @property (nonatomic, assign) BOOL microphone; // 设备麦克风
+
+/** 灯具摄像机（RGB灯）的开关灯状态(只读)，最终状态以这个为准 */
+@property (nonatomic, assign) BOOL nightLightOn;
 
 @property (nonatomic, copy) NSString *iccID;
 @property (nonatomic, copy) NSString *iemi;

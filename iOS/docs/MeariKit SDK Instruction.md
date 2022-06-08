@@ -113,7 +113,14 @@
     * 11.1 [Cloud storage service status](#111-Cloud-storage-service-status)
     * 11.2 [Cloud storage trial](#112-Cloud-storage-trial)
     * 11.3 [Cloud storage activation code](#113-Cloud-storage-activation-code)
-        
+    * 11.4 [Cloud storage purchases](#114-Cloud-storage-purchases)
+* 12 [NVR](#12-NVR)
+    * 12.1 [Add NVR](#121-Add-NVR)
+    * 12.2 [Add camera to NVR channel](#122-Add-camera-to-NVR-channel)
+        * 12.2.1 [Add an online camera](#1221-Add-an-online-camera)
+        * 12.2.2 [Connect NVR to add camera](#1222-Connect-NVR-to-add-camera)
+        * 12.2.3 [Connect the router to add camera](#1223-Connect-the-router-to-add-camera)
+    * 12.3 [Description of NVR related classes and methods](#123-Description-of-NVR-related-classes-and-methods)     
 <center>
 
 ---
@@ -121,8 +128,8 @@
 | ------ | ------ | ------ | ------ |
 | 2.0.1 | Meari Technology | 2019.06.25 | optimization
 | 3.1.0 | Meari Technology | 2021.07.05 | optimization
-| 4.1.0 | Meari Technology | 2021.03.23 | optimization
-
+| 4.1.0 | Meari Technology | 2022.03.23 | Family
+| 4.4.0 | Meari Technology | 2022.06.08 | NVR
 </center>
 
 # 1. Functional overview 
@@ -3317,4 +3324,208 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
         } failure:^(NSError *error) {
 
         }];
+```
+## 11.4 Cloud storage purchases
+```
+See Demo for details
+```
+
+# 12 NVR
+
+## 12.1 Add NVR
+```
+See: Wired distribution network to add equipment
+```
+## 12.2 Add camera to NVR channel
+
+### 12.2.1 Add an online camera
+```
+【Description】
+    If the camera is already online, make the camera and the NVR in the same local area network, the camera is turned on and allowed to be discovered, within 5 minutes, the NVR searches and adds the camera to the channel
+
+【Function】
+    /**
+    Get Sub Device Found Permission
+    @param success Successful callback
+    @param failure failure callback
+    */
+    - (void)getSubDeviceFoundPermissionWithSuccess:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
+    /**
+     Set Sub Device Found Permission
+    @param enable  0-not allowed 1-allow
+    @param success Successful callback
+    @param failure failure callback 
+    */
+    - (void)setSubDeviceFoundPermission:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+    /**
+     Get Sub Device Found Permission Time (unit second)
+    @param success Successful callback 
+    @param failure failure callback 
+    */
+    - (void)getSubDeviceFoundRemainTimeWithSuccess:(MeariDeviceSuccess_Str)success failure:(MeariDeviceFailure)failure;
+
+    /**
+    Start Search Nvr Sub Device
+    @param success Successful callback 
+    @param failure failure callback 
+    */
+    - (void)startSearchNvrSubDeviceWithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    /**
+    Get Nvr Sub Device Result
+    @param success Successful callback
+    @param failure failure callback 
+    */
+    - (void)getSearchedNvrSubDeviceWithSuccess:(void(^)(BOOL finish, NSArray* searchArray))success failure:(MeariDeviceFailure)failure;
+
+    /**
+     Nvr adds meari sub-device (in-app binding)
+     
+     @param ip Searched device's ip
+     @param success Successful callback 
+     @param failure failure callback 
+     */
+    - (void)bindNvrSubDeviceWithIp:(NSString *)ip success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+    /**
+     Add child device through Nvr (onvif binding)
+    
+     @param ip Searched device's ip
+     @param user onvif user
+     @param password onvif password
+     @param success Successful callback 
+     @param failure failure callback 
+     */
+    - (void)bindNvrSubDeviceWithIp:(NSString *)ip user:(NSString *)user password:(NSString *)password success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+【Code】
+
+    // Whether the camera supports allowing to be connected by Nvr
+    if (self.camera.supportFoundPermission) {
+    }
+
+    [self.camera getSubDeviceFoundPermissionWithSuccess:^(NSDictionary *dic) {
+        BOOL enable = dic[@"enable"];
+        NSString *sn = dic[@"nav_name"];//has been added NVR sn
+    } failure:^(NSError *error) {
+        
+    }];
+    
+    [self.camera getSubDeviceFoundRemainTimeWithSuccess:^(NSString *str) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+
+    [self.camera setSubDeviceFoundPermission:sender.isOn success:^{
+        NSLog(@"set success");
+    } failure:^(NSError *error) {
+    }];
+    
+    //Start search
+    [self.camera startSearchNvrSubDeviceWithSuccess:^{
+        [self.camera getSearchedNvrSubDeviceWithSuccess:^(BOOL finish, NSArray * _Nonnull searchArray) {
+            NSLog(@"%@",searchArray);
+        } failure:^(NSError *error) {
+            
+        }];
+    } failure:^(NSError *error) {
+        
+    }];
+    //Get search results
+    [self.camera getSearchedNvrSubDeviceWithSuccess:^(BOOL finish, NSArray * _Nonnull searchArray) {
+        // finish：false-Searching, keep getting results；true-Search ends, stop getting results
+        dictionary keys:
+        //type: 0-Meari camera; 1-onvif camera
+        //sn: Meari camera sn
+        //ip: camera IP 
+        //add_status 0-not added；1-adding；2-add success； 3-add failure
+        NSLog(@"%@",searchArray);
+    } failure:^(NSError *error) {
+            
+    }];
+    
+
+    [self.camera bindNvrSubDeviceWithIp:ip success:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+
+
+    [self.camera bindNvrSubDeviceWithIp:ip user:user password:pwd success:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+```
+### 12.2.2 Connect NVR to add camera
+```
+【Description】
+    
+    If the camera is not online, obtain the NVR token to generate a QR code. After the camera scans the code, it will connect to the NVR and add it to the NVR channel.
+
+【Function】
+/**
+ Generate QR code
+
+ @param text QR code info
+ @param size QR code size
+ @return QR code image
+ */
+- (UIImage *)createQRCodeWithText:(NSString *)text size:(CGSize)size;
+
+【Code】
+
+    NSString *token = [NSString decodeBase64String:self.camera.param.nvr.networkConfig];
+
+    UIImage *image =  [[MeariDeviceActivator sharedInstance] createQRCodeWithText:token size:CGSizeMake(Meari_ScreenWidth, Meari_ScreenWidth)];
+
+```
+### 12.2.3 Connect the router to add camera
+```
+【Description】
+    If the camera is not online, obtain the key and wifi name and password of the NVR to generate a QR code. After the camera scans the code, it will connect to the router so that the camera and the NVR are in the same local area network. The NVR searches and adds the camera to the channel.
+
+【Function】
+/**
+ Get  Nvr Net Config Key
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)getNVRNetConfigKeyWithSucess:(MeariDeviceSuccess_Str)sucess failure:(MeariDeviceFailure)failure ;
+
+/**
+ Generate NVR QR code
+
+ @param ssid wifi name
+ @param password wifi password
+@param key nvr Key
+ @param size QR code size
+ @return QR code image
+ */
+- (UIImage *)createNVRQRCodeWithSSID:(NSString *)ssid pasword:(NSString *)password key:(NSString *)key size:(CGSize)size;
+
+【Code】
+    [self.camera getNVRNetConfigKeyWithSucess:^(NSString *str) {
+        NSLog(@"key: %@",str);
+    } failure:^(NSError *error) {
+        
+    }];
+
+    UIImage *image =  [[MeariDeviceActivator sharedInstance] createNVRQRCodeWithSSID:wifiname pasword:pwd key:key size:CGSizeMake(Meari_ScreenWidth, Meari_ScreenWidth)];
+
+// For searching and adding devices, see: Add an online camera
+
+```
+
+## 12.3 Description of NVR related classes and methods
+```
+// Judge NVR Device
+if (self.camera.isNvr && self.camera.channel == 0) {
+}
+
+// Judge the NVR channel
+if (self.camera.isNvrSubDevice) {
+}
 ```

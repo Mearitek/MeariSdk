@@ -28,12 +28,8 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** device params*/
 /** 控制功能的参数信息*/
 @property (nonatomic, strong) MeariDeviceParam *param;
-/** device channel*/
-/** nvr 设备通道*/
-@property (nonatomic, assign) NSInteger channel;
-/** device onvif*/
-/** nvr 子设备是否onvif接入*/
-@property (nonatomic, assign) BOOL isOnvif;
+
+
 /** normal device*/
 /** 是否是普通摄像机*/
 @property (nonatomic, assign, readonly, getter = isIpcCommon) BOOL ipcCommon;
@@ -58,12 +54,6 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** jingle*/
 /** 铃铛jingle*/
 @property (nonatomic, assign, readonly, getter = isJing) BOOL jing;
-/** nvr network storage*/
-/** 是否是网络存储器（NVR）*/
-@property (nonatomic, assign, readonly, getter = isNvr) BOOL nvr;
-/** Whether the device is bound to the NVR*/
-/** 是否绑定了网络存储器*/
-@property (nonatomic, assign) BOOL hasBindedNvr;
 /** Whether the device is support iot*/
 /** 是否iOT设备*/
 @property (nonatomic, assign) BOOL iotDevice;
@@ -242,6 +232,8 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 @property (nonatomic, assign, readonly) BOOL supportAlarmPlanCrossDays;
 /** pir等级设置，用于多级设置开关1-N档 返回最大支持等级， 0不支持*/
 @property (nonatomic, assign, readonly) NSInteger supportPirLevel;
+/** 人形检测灵敏度设置，用于多级设置开关1-N档 返回最大支持等级， 0不支持*/
+@property (nonatomic, assign, readonly) NSInteger supportHumanLevel;
 /** 是否支持视频预览出图 (语音门铃使用) */
 @property (nonatomic, assign, readonly) BOOL supportPreviewImage;
 /** 是否防拆报警 */
@@ -260,8 +252,12 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 @property (nonatomic, assign, readonly) BOOL supportUploadAccountInfo;
 /**是否支持 ptz 巡逻*/
 @property (nonatomic, assign, readonly) BOOL supportPtzPatrol;
-
+/**是否支持工作模式*/
 @property (nonatomic, assign, readonly) BOOL supportMotionMode;
+/**是否支持持续录像模式*/
+@property (nonatomic, assign, readonly) BOOL supportCommonMode;
+/**是否支持报警总开关*/
+@property (nonatomic, assign, readonly) BOOL supportAlarmWhole;
 /** baby是否支持rgb*/
 @property (nonatomic, assign, readonly) BOOL supportRGB;
 /** 是否支持移动侦测*/
@@ -302,11 +298,15 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 @property (nonatomic, assign, readonly) BOOL supportMaxSirenTime;
 /** 是否支持 亮灯时长设置 flight*/
 @property (nonatomic, assign, readonly) BOOL supportLightDuration;
+/** 是否支持 亮灯计划 flight*/
+@property (nonatomic, assign, readonly) BOOL supportLightSchedule;
 /** 是否支持时区设置*/
 @property (nonatomic, assign, readonly) BOOL supportTimeZone;
 /** 是否重启设置*/
 @property (nonatomic, assign, readonly) BOOL supportReboot;
 
+/** 是否连接私有协议NVR,允许被发现功能*/
+@property (nonatomic, assign, readonly) BOOL supportFoundPermission;
 @end
 
 @interface MeariDeviceList : MeariBaseModel

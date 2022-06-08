@@ -119,6 +119,8 @@ UIKIT_EXTERN NSString *const MeariIotCustomerServerMessageRead ; //Customer Serv
 
 UIKIT_EXTERN NSString *const MeariIotCustomerServerFeedBackRemind ; //Customer service feedback message reminder（客服反馈消息提醒）
 UIKIT_EXTERN NSString *const MeariIotCustomerServerRemind ; //Customer service message reminder（客服聊天消息提醒）
+
+UIKIT_EXTERN NSString *const MeariIotCustomerServerChange ; //Customer service change（客服聊天切换客服）
 @interface MeariUser : NSObject
  
 + (instancetype)sharedInstance;
@@ -1052,8 +1054,8 @@ deviceList.count must  ==  modeList.count
 - (void)getAlarmMessageListForDeviceWithDeviceID:(NSInteger)deviceID success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
 
 /**
- Get the latest alarm message list
- (获取用户所拥有设备最新的一条报警消息列表)
+ get all the alarm messgae List
+ (获取某个设备报警消息)
  
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
@@ -1232,6 +1234,26 @@ get all the alarm messgae of one device  by day
 @return 解密完成的数据 (image data)
 */
 - (NSData *)decryptImageDataWith:(NSString *)deviceSN imageData:(NSData *)imageData;
+
+/**
+// Determine whether the picture ends with jepx1. If it is in the format ending with jepx1, it needs to be decrypted.
+// 判断图片是否是以jepx2结尾 如果是以jepx2结尾的格式 需要进行解密操作
+
+@param deviceSN 设备的SN(device.info.sn)
+@param imageData  图片的二进制数据 (image data)
+@return 解密完成的数据 (image data)
+*/
+- (NSData *)decryptImageDataV2With:(NSString *)deviceSN imageData:(NSData *)imageData;
+
+/**
+//Check if the v2 version of the Key matches the image
+// 判断图片是以jepx2版本的Key是否与图片匹配
+
+@param url 图片url
+@param password  用户设置的密码
+@return 解密完成的数据 (image data)
+*/
+- (BOOL)checkImageV2EncryKey:(NSString *)url password:(NSString *)password;
 
 /**
  Get list of shared messages
@@ -1450,6 +1472,13 @@ get all the alarm messgae of one device  by day
 /// get quick Guide Url
 /// @param lowPower 是否低功耗设备 is lowpower
 - (NSString *)getQuickGuideUrl:(BOOL)lowPower;
+
+/**
+ service iot token  update
+ 获取用户协议与用户隐私协议
+*/
+- (void)getUserAgreeProtocolCountryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode version:(NSInteger)version success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
 
 #pragma mark - Other
 /**
@@ -1745,4 +1774,24 @@ Get User Preference
  执行用户迁移
 */
 - (void)startUserMigrationSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ getUserThirdLoginBindEmailState
+ 获取用户三方登录邮箱绑定状态
+*/
+- (void)getUserThirdLoginBindEmailStateSucess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ bind user email
+ 用户三方登录绑定邮箱
+*/
+- (void)bindEmailWithEmail:(NSString *)email verifyCode:(NSString *)verifyCode password:(NSString *)password sucess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ update binded email
+ 验证用户三方登录邮箱密码
+*/
+- (void)verfyBindedEmailPassword:(NSString *)password email:(NSString *)email sucess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ update binded email
+ 验证用户三方登录邮箱验证码
+*/
+- (void)verfyBindedEmailCode:(NSString *)code email:(NSString *)email sucess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 @end

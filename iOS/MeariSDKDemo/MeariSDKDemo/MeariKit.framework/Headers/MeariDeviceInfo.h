@@ -366,6 +366,16 @@ typedef NS_ENUM(NSUInteger, MeariDeviceAuthority) {
 @property (nonatomic, assign) NSInteger tmz;
 /** 是否支持重启*/
 @property (nonatomic, assign) NSInteger rbt;
+/** NVR删除则设备ipc*/
+@property (nonatomic, assign) NSInteger dpc;
+/** 无线抗干扰开关*/
+@property (nonatomic, assign) NSInteger ajs;
+/** 人形检测灵敏度*/
+@property (nonatomic, assign) NSInteger pds;
+/** 低功耗亮灯计划能力*/
+@property (nonatomic, assign) NSInteger fls;
+/** 是否支持连接NVR私有协议能力*/
+@property (nonatomic, assign) NSInteger cpn;
 /**是否支持报警总开关 */
 @property (nonatomic, assign) NSInteger gal;
 
@@ -502,8 +512,10 @@ typedef NS_ENUM(NSUInteger, MeariDeviceAuthority) {
 /** AWS iot thingName */
 @property (nonatomic, copy) NSString *awsThingName;
 @property (nonatomic, assign) NSInteger iotType;
-@property (nonatomic, assign) NSInteger cloudType;
-@property (nonatomic, assign) NSInteger awsCloudCompat;
+@property (nonatomic, assign) NSInteger cloudType; // 新版本已废弃（deprecated）
+@property (nonatomic, assign) NSInteger awsCloudCompat;//新版本已废弃（deprecated）
+
+@property (nonatomic, strong) NSDictionary *cloudConfig; //云回放的获取方式
 
 /** Whether device is shared by friends */
 /** 是否来自好友分享 */

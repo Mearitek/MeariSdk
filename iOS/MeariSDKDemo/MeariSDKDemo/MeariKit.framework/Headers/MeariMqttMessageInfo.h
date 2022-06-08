@@ -77,6 +77,8 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
     MeariMqttCodeTypeFeedBackMsgRemind          = 225,
     MeariMqttCodeTypeClientServerMsgRemind      = 226,
     
+    MeariMqttCodeTypeClientServerChangeServer   = 227,
+    
     MeariMqttCodeTypeNotice                     = 200,
     MeariMqttCodeTypeSomebodyCall               = 201,
     MeariMqttCodeTypeDeviceUpgradeFormat        = 803,
@@ -126,11 +128,13 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, assign) NSInteger upgradeTotalPercent;      // Upgrade firmware percentage (升级固件百分比)
 @property (nonatomic, assign) NSInteger upgradeDownloadPercent;   // Upgrade package download percentage (升级包下载百分比)
 @property (nonatomic, assign) NSInteger upgradeUploadPercent;     // Upgrade package upload percentage (升级包上传百分比)
+@property (nonatomic, assign) MeariDeviceOtaUpgradeMode upgradeMode;     // Upgrade package upload state (升级状态) (only support MeariIot device)
 @property (nonatomic, assign) NSInteger wifiStrength;             // Wi-Fi signal strength (Wi-Fi信号强度)
 @property (nonatomic, assign) NSInteger temperature;              // 温度
 @property (nonatomic, assign) NSInteger humidity;                 // 湿度
 @property (nonatomic, strong) MeariDeviceParamStorage *sdcard;    // sd卡
 @property (nonatomic, assign) BOOL      floodCameraStatus;        // 灯具摄像机开关状态
+@property (nonatomic, assign) BOOL      floodCameraRGBSwitchStatus;        // 灯具摄像机RGB开关状态
 @property (nonatomic, assign) NSInteger sirenTimeout;             // 警报倒计时
 @property (nonatomic, assign) NSDictionary *musicStateDic;        // 音乐下载进度
 @property (nonatomic,   copy) NSString  *lisenceID;               // 
@@ -139,6 +143,7 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, assign, readonly) BOOL hasWifiStrength;             // 是否存在Wi-Fi信号强度
 @property (nonatomic, assign, readonly) BOOL hasTempAndHumidity;          // 是否存在温度
 @property (nonatomic, assign, readonly) BOOL hasFloodCameraStatus;        // 是否存在灯具摄像机开关状态
+@property (nonatomic, assign, readonly) BOOL hasFloodCameraRGBSwitchStatus;        // 是否存在灯具摄像机RGB开关状态
 @property (nonatomic, assign, readonly) BOOL hasChangeSd;                 // 是否sd卡状态改变
 @property (nonatomic, assign, readonly) BOOL hasFloodCameraSirenTimeout;  // 是否灯具警报倒计时
 @property (nonatomic, assign, readonly) BOOL isBindToChime;               // 是否绑定上了中继设备
