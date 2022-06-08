@@ -159,7 +159,14 @@
         * 13.2.1 [添加在线摄像机](#1321-添加在线摄像机)
         * 13.2.2 [连接NVR添加摄像机](#1322-连接NVR添加摄像机)
         * 13.2.3 [连接路由器添加摄像机](#1323-连接路由器添加摄像机)
-    * 13.3 [NVR相关类和方法说明](#133-NVR相关类和方法说明)
+    * 13.3 [NVR和通道的判断](#133-NVR和通道的判断)
+    * 13.4 [NVR设置](#134-NVR设置)
+        * 13.4.1 [NVR获取参数](#1341-NVR获取参数)
+        * 13.4.2 [NVR磁盘管理](#1342-NVR磁盘管理)
+    * 13.5 [NVR通道摄像机](#135-NVR通道摄像机)
+        * 13.5.1 [NVR通道摄像机信息](#1351-NVR通道摄像机信息)
+        * 13.5.2 [NVR通道摄像机参数](#1352-NVR通道摄像机参数)
+        * 13.5.3 [NVR通道摄像机固件升级](#1353-NVR通道摄像机固件升级)
 * 14 [更新说明](#13-更新说明)
 
 <center>
@@ -233,7 +240,7 @@ dependencies {
     implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    // implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
     implementation 'com.alibaba:fastjson:1.1.67.android'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.zxing:core:3.3.3'
@@ -4067,7 +4074,7 @@ MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IR
 ### 13.2.1 添加在线摄像机
 ```
 【描述】
-如果摄像机已经在线，使摄像机和NVR处于同一个局域网，摄像机开启允许被发现，5分钟内，NVR搜索并添加摄像机到通道
+如果摄像机已经在线，使摄像机和NVR处于同一个局域网，摄像机开启允许被Nvr连接，5分钟内，NVR搜索并添加摄像机到通道
 
 【函数调用】
 /**
@@ -4171,6 +4178,8 @@ MeariUser.getInstance().nvrGetSearchResult(new INVRSearchCallback() {
 });
 
 NvrAddInfo：
+// 唯一标志
+private String id;
 // 0-Meari摄像机; 1-onvif摄像机
 private int type;
 // Meari摄像机 sn
@@ -4256,7 +4265,7 @@ MeariUser.getInstance().createNvrKeyQRCode("wifi_name", "pwd", deviceParams.nvrN
 
 ```
 
-## 13.3 NVR相关类和方法说明
+## 13.3 NVR和通道的判断
 ```
 // 判断NVR设备
 if (DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID()) {
@@ -4264,6 +4273,152 @@ if (DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID()) {
 
 // 判断NVR通道
 if (DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() && cameraInfo.getNvrChannelId() > 0) {
+}
+```
+
+## 13.4 NVR设置
+### 13.4.1 NVR获取参数
+```
+【描述】
+获取nvr通道、硬盘等参数信息
+
+【函数调用】
+/**
+ * Get the params of the device
+ * 获取设备的参数
+ *
+ * @param callback Function callback
+ */
+public void getDeviceParams(IGetDeviceParamsCallback callback)
+
+【代码范例】
+// 操作同一个设备只需设置一次
+MeariUser.getInstance().setCameraInfo(cameraInfo);
+// 获取设备参数
+MeariUser.getInstance().getDeviceParams(new IGetDeviceParamsCallback() {
+    @Override
+    public void onSuccess(DeviceParams deviceParams) {
+        NvrNeutralParams nvrNeutralParams = deviceParams.nvrNeutralParams;
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+NvrNeutralParams：
+// nvr最大通道数
+private int maxChannelNumber;
+// nvr二维码Token
+private String qrCodeToken;
+// nvr二维码key
+private String qrCodeKey;
+// 是否开启全天录像
+private int allDayRecordEnable;
+// 通道信息
+private List<NvrNeutralChannel> channels = new ArrayList<>();
+// 硬盘信息
+private List<NvrNeutralDisk> disks = new ArrayList<>();
+// 通道能力集
+private List<String> caps = new ArrayList<>();
+
+NvrNeutralChannel：
+private int id;
+private String name;
+// state: 0-未绑定；1-在线；2-离线；3-休眠；
+private int state;
+// 0-私有协议；1-onvif协议
+private int type;
+
+NvrNeutralDisk：
+private int name;
+// 0：无SD卡；1：正常使用；2：卡读写异常；3：格式化中；4：文件系统不支持；5：卡正在识别；6：未格式化；7：其他错误；
+private int state;
+// 总容量
+private String total;
+// 剩余容量
+private String free;
+// 使用容量
+private String used;
+
+```
+### 13.4.2 NVR磁盘管理
+```
+【描述】
+NVR格式化硬盘
+
+【函数调用】
+/**
+ * 开始格式化硬盘
+ * @param seq 硬盘序号，从1开始
+ */
+public void startSDCardFormat(int seq, ISDCardFormatCallback callback)
+/**
+ * 获取格式化硬盘进度
+ */
+public void getSDCardFormatPercent(ISDCardFormatPercentCallback callback)
+
+【代码范例】
+MeariUser.getInstance().startSDCardFormat(1, new ISDCardFormatCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().getSDCardFormatPercent(new ISDCardFormatPercentCallback() {
+    @Override
+    public void onSuccess(int percent) {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+
+## 13.5 NVR通道摄像机
+```
+NVR通道摄像机的使用和普通摄像机基本一致，使用 NVR 通道摄像机信息的 CameraInfo ，可以预览、回放、设置，具体流程参考普通摄像机的预览、回放、设置。
+NVR通道摄像机不支持云回放。
+不同之处下面会详细说明。
+```
+
+### 13.5.1 NVR通道摄像机信息
+```
+// 获取 NVR 通道摄像机信息
+if (DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID()) {
+    List<CameraInfo> channelCameraInfoList = cameraInfo.getNvrChannelList();
+}
+```
+
+### 13.5.2 NVR通道摄像机参数
+```
+// 操作同一个NVR通道只需设置一次
+MeariUser.getInstance().setCameraInfo(channelCameraInfo);
+// 获取设备参数
+MeariUser.getInstance().getDeviceParams(new IGetDeviceParamsCallback() {
+    @Override
+    public void onSuccess(DeviceParams deviceParams) {
+        DeviceParams channelDeviceParams = deviceParams;
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 13.5.3 NVR通道摄像机固件升级
+```
+// checkNewFirmwareForDev 中的 sn 和 tp获取方式不同
+if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() && cameraInfo.getNvrChannelId() > 0) {
+    sn = channelDeviceParams.getSnNum();
+    tp = channelDeviceParams.getTp();
 }
 ```
 
