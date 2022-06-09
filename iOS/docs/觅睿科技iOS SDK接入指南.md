@@ -118,7 +118,14 @@
         * 12.2.1 [添加在线摄像机](#1221-添加在线摄像机)
         * 12.2.2 [连接NVR添加摄像机](#1222-连接NVR添加摄像机)
         * 12.2.3 [连接路由器添加摄像机](#1223-连接路由器添加摄像机)
-    * 12.3 [NVR相关类和方法说明](#123-NVR相关类和方法说明)
+    * 12.3 [NVR和通道的判断](#123-NVR和通道的判断)
+    * 12.4 [NVR设置](#124-NVR设置)
+        * 12.4.1 [NVR获取参数](#1241-NVR获取参数)
+        * 12.4.2 [NVR磁盘管理](#1242-NVR磁盘管理)
+    * 12.5 [NVR通道摄像机](#125-NVR通道摄像机)
+        * 12.5.1 [NVR通道摄像机信息](#1251-NVR通道摄像机信息)
+        * 12.5.2 [NVR删除通道摄像机](#1252-NVR删除通道摄像机)
+        * 12.5.3 [NVR通道摄像机固件升级](#1253-NVR通道摄像机固件升级)
 <center>
 
 ---
@@ -3537,7 +3544,7 @@ MeariMemberModel属性
 
 ```
 
-## 12.3 NVR相关类和方法说明
+## 12.3 NVR和通道设备的判断
 ```
 // 判断NVR设备
 if (self.camera.isNvr && self.camera.channel == 0) {
@@ -3546,4 +3553,139 @@ if (self.camera.isNvr && self.camera.channel == 0) {
 // 判断NVR通道
 if (self.camera.isNvrSubDevice) {
 }
+```
+## 12.4 NVR设置
+### 12.4.1 NVR参数相关
+```
+MeariDeviceParamNvr：
+@property (nonatomic, strong) NSArray *channels; //通道数
+@property (nonatomic,   copy) NSArray <MeariDeviceParamChannelState *> *channelState;; //通道状态
+@property (nonatomic,   copy) NSString *network; //配网信息
+@property (nonatomic,   copy) NSArray <MeariDeviceParamStorage *> *storages; //磁盘信息
+@property (nonatomic, assign) NSInteger channel; // 通道数
+@property (nonatomic, assign) BOOL antiJamming; // wifi抗干扰开关
+@property (nonatomic,   copy) NSString *tp; // 通道数
+@property (nonatomic,   copy) NSString *networkConfig; // 配网信息
+@property (nonatomic,   copy) NSString *firVersion; // 固件版本号
+@property (nonatomic,   copy) NSString *platformModel; // 型号
+@property (nonatomic,   copy) NSString *platformCode; // 平台代号
+@property (nonatomic, assign) NSInteger onlineTime; //在线时长
+
+MeariDeviceParamChannelState：
+@property (nonatomic, assign) NSInteger channel; //通道
+@property (nonatomic, assign) NSInteger state; //状态
+@property (nonatomic, assign) BOOL type; // 0-normal 1-onvif
+
+MeariDeviceParamStorage：
+/** Storage Name */
+/** 存储名 */
+@property (nonatomic, assign)NSInteger name;
+/** Total storage space */
+/** 总存储空间 */
+@property (nonatomic, copy)NSString *totalSpace;
+/** used storage space */
+/** 已使用空间 */
+@property (nonatomic, copy)NSString *usedSpace;
+/** Remaining storage space */
+/** 剩余存储空间 */
+@property (nonatomic, copy)NSString *freeSpace;
+/** Is formatting ? */
+/** 是否正在格式化 */
+@property (nonatomic, assign)BOOL isFormatting;
+/** Is there an SD card ? */
+/** 没有SD卡 */
+@property (nonatomic, assign)BOOL hasSDCard;
+/** Is the SD card not supported ? */
+/** 不支持的SD卡 */
+@property (nonatomic, assign)BOOL unSupported;
+/** ID card is being recognized */
+/** 正在识别SD卡 */
+@property (nonatomic, assign)BOOL isReading;
+/** 未知状态 */
+@property (nonatomic, assign)BOOL unKnown;
+/** 空间不足 */
+@property (nonatomic, assign)BOOL noSpace;
+
+```
+### 12.4.2 NVR磁盘管理
+```
+【描述】
+NVR格式化硬盘
+
+【函数调用】
+/**
+ Format memory card(格式化硬盘)
+ @param channel 硬盘通道号
+ @param success Successful callback (成功回调)
+ @param failure 失败回道
+ */
+- (void)startHardDiskFormatWithChannel:(NSInteger)channel Success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ Get memory card formatting percentage(获取格式化百分比)
+ 
+ @param success Successful callback (成功回调),return formatting percentage(返回格式化百分比)
+ @param failure failure callback (失败回调)
+ */
+- (void)getSDCardFormatPercentSuccess:(MeariDeviceSuccess_StoragePercent)success failure:(MeariDeviceFailure)failure;
+
+【代码范例】
+    
+    [self.camera startHardDiskFormatWithChannel:_storage.name Success:^{
+       
+    } failure:^(NSError *error) {
+       
+    }];
+
+    [self.camera getSDCardFormatPercentSuccess:^(NSInteger percent) {
+        
+    } failure:^(NSError *error) {
+            
+    }];
+```
+
+## 12.5 NVR通道摄像机
+```
+NVR通道摄像机的使用和普通摄像机基本一致，使用 NVR 通道摄像机信息的 CameraInfo ，可以预览、回放、设置，具体流程参考普通摄像机的预览、回放、设置。
+NVR通道摄像机不支持云回放。
+不同之处下面会详细说明。
+```
+
+### 12.5.1 NVR通道摄像机信息
+```
+【描述】
+ 获取NVR通道摄像机信息
+
+【函数调用】
+/**
+  获取NVR通道摄像机
+ @param hasUnBind 是否返回未绑定摄像机信息的通道信息
+ @param success Successful callback (成功回调)
+ @param failure 失败回道
+ */
+- (NSMutableArray *)nvrSubDevicesWithUnBind:(BOOL)hasUnBind;
+
+
+【代码范例】
+
+    [camera nvrSubDevicesWithUnBind:NO];
+```
+
+### 12.5.2 NVR删除通道摄像机
+```
+    [self.camera deleteNVRChannel:self.camera.channel success:^{
+   
+    } failure:^(NSError *error) {
+                    
+    }];
+```
+
+### 12.5.3 NVR通道摄像机固件升级
+```
+    // checkNewFirmware 中的 sn 和 tp获取方式不同
+    NSString *deviceSN = self.camera.channel > 0 ? self.camera.param.licenseID : self.camera.info.sn;
+    NSString *tp = self.camera.channel > 0 ? self.camera.param.tp : self.camera.info.tp;
+    [[MeariUser sharedInstance] checkNewFirmwareWith:deviceSN tp:tp currentFirmware:version success:^(MeariDeviceFirmwareInfo *info) {
+        MeariDo_Block_Safe_Main4(update, info.needUpgrade, info.forceUpgrade, info.upgradeDescription,info.appProtocolVer);
+    } failure:^(NSError *error) {
+    }];
 ```

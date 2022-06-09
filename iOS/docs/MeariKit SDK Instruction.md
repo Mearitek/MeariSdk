@@ -120,7 +120,14 @@
         * 12.2.1 [Add an online camera](#1221-Add-an-online-camera)
         * 12.2.2 [Connect NVR to add camera](#1222-Connect-NVR-to-add-camera)
         * 12.2.3 [Connect the router to add camera](#1223-Connect-the-router-to-add-camera)
-    * 12.3 [Description of NVR related classes and methods](#123-Description-of-NVR-related-classes-and-methods)     
+    * 12.3 [Judgment of NVR and channel equipment](#123-Judgment-of-NVR-and-channel-equipment)
+    * 12.4 [NVR settings](#124-NVR-settings)
+        * 12.4.1 [NVR parameter related](#1241-NVR-parameter-related)
+        * 12.4.2 [NNVR disk management](#1242-NVR-disk-management)
+    * 12.5 [NVR channel camera](#125-NVR-channel-camera)
+        * 12.5.1 [NVR channel camera information](#1251-NVR-channel-camera-information)
+        * 12.5.2 [NVR delete channel camera](#1252-NVR-delete-channel-camera)
+        * 12.5.3 [NVR channel camera firmware upgrade](#1253-NVR-channel-camera-firmware-upgrade)     
 <center>
 
 ---
@@ -3519,7 +3526,7 @@ See: Wired distribution network to add equipment
 
 ```
 
-## 12.3 Description of NVR related classes and methods
+## 12.3 Judgment of NVR and channel equipment
 ```
 // Judge NVR Device
 if (self.camera.isNvr && self.camera.channel == 0) {
@@ -3528,4 +3535,131 @@ if (self.camera.isNvr && self.camera.channel == 0) {
 // Judge the NVR channel
 if (self.camera.isNvrSubDevice) {
 }
+```
+## 12.4 NVR settings
+### 12.4.1 NVR parameter related
+```
+MeariDeviceParamNvr：
+@property (nonatomic, strong) NSArray *channels; //Array of channels
+@property (nonatomic,   copy) NSArray <MeariDeviceParamChannelState *> *channelState;; //Array of channel status
+@property (nonatomic,   copy) NSString *network; //Distribution network information
+@property (nonatomic,   copy) NSArray <MeariDeviceParamStorage *> *storages; //disk information
+@property (nonatomic, assign) NSInteger channel; // number of channels
+@property (nonatomic, assign) BOOL antiJamming; // wifi anti-jamming switch
+@property (nonatomic,   copy) NSString *tp; // tp
+@property (nonatomic,   copy) NSString *networkConfig; // Distribution network information
+@property (nonatomic,   copy) NSString *firVersion; // Firmware version number
+@property (nonatomic,   copy) NSString *platformModel; // Model
+@property (nonatomic,   copy) NSString *platformCode; // platform code
+@property (nonatomic, assign) NSInteger onlineTime; //Online Time
+
+MeariDeviceParamChannelState：
+@property (nonatomic, assign) NSInteger channel; //channel
+@property (nonatomic, assign) NSInteger state; //State
+@property (nonatomic, assign) BOOL type; // 0-normal 1-onvif
+
+MeariDeviceParamStorage：
+/** Storage Name */
+@property (nonatomic, assign)NSInteger name;
+/** Total storage space */
+@property (nonatomic, copy)NSString *totalSpace;
+/** used storage space */
+@property (nonatomic, copy)NSString *usedSpace;
+/** Remaining storage space */
+@property (nonatomic, copy)NSString *freeSpace;
+/** Is formatting ? */
+@property (nonatomic, assign)BOOL isFormatting;
+/** Is there an SD card ? */
+@property (nonatomic, assign)BOOL hasSDCard;
+/** Is the SD card not supported ? */
+@property (nonatomic, assign)BOOL unSupported;
+/** ID card is being recognized */
+@property (nonatomic, assign)BOOL isReading;
+/** Unknown status */
+@property (nonatomic, assign)BOOL unKnown;
+/** not enough space */
+@property (nonatomic, assign)BOOL noSpace;
+
+```
+### 12.4.2 NVR disk management
+```
+【Description】
+NVR formatted hard drive
+
+【Function】
+/**
+ Format memory card
+ @param channel HDD channel number
+ @param success Successful callback 
+ @param failure failure callback
+ */
+- (void)startHardDiskFormatWithChannel:(NSInteger)channel Success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ Get memory card formatting percentage
+ 
+ @param success Successful callback ,return formatting percentage
+ @param failure failure callback 
+ */
+- (void)getSDCardFormatPercentSuccess:(MeariDeviceSuccess_StoragePercent)success failure:(MeariDeviceFailure)failure;
+
+【Code】
+    
+    [self.camera startHardDiskFormatWithChannel:_storage.name Success:^{
+       
+    } failure:^(NSError *error) {
+       
+    }];
+
+    [self.camera getSDCardFormatPercentSuccess:^(NSInteger percent) {
+        
+    } failure:^(NSError *error) {
+            
+    }];
+```
+
+## 12.5 NVR channel camera
+```
+The use of the NVR channel camera is basically the same as that of the ordinary camera. Using the CameraInfo of the NVR channel camera information, you can preview, playback, and set. For the specific process, refer to the preview, playback, and setting of the ordinary camera.
+NVR channel cameras do not support cloud playback.
+The differences are detailed below.
+```
+
+### 12.5.1 NVR channel camera information
+```
+【Description】
+ Get NVR channel camera information Array
+
+【Function】
+/**
+   Get NVR channel camera information Array
+ @param hasUnBind Whether to return the channel information of the unbound camera information
+ @param success Successful callback 
+ @param failure Failure callback
+ */
+- (NSMutableArray *)nvrSubDevicesWithUnBind:(BOOL)hasUnBind;
+
+
+【Code】
+
+    [camera nvrSubDevicesWithUnBind:NO];
+```
+
+### 12.5.2 NVR delete channel camera
+```
+    [self.camera deleteNVRChannel:self.camera.channel success:^{
+   
+    } failure:^(NSError *error) {
+                    
+    }];
+```
+
+### 12.5.3 NVR channel camera firmware upgrade
+```
+    // The sn and tp in checkNewFirmware are obtained in different ways
+    NSString *deviceSN = self.camera.channel > 0 ? self.camera.param.licenseID : self.camera.info.sn;
+    NSString *tp = self.camera.channel > 0 ? self.camera.param.tp : self.camera.info.tp;
+    [[MeariUser sharedInstance] checkNewFirmwareWith:deviceSN tp:tp currentFirmware:version success:^(MeariDeviceFirmwareInfo *info) {
+        MeariDo_Block_Safe_Main4(update, info.needUpgrade, info.forceUpgrade, info.upgradeDescription,info.appProtocolVer);
+    } failure:^(NSError *error) {
+    }];
 ```
