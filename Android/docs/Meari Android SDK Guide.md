@@ -1628,7 +1628,7 @@ device Capability
 - int bcd; crying detection: 0-not supported; 1-support
 - int ptr; humanoid tracking: 0-not supported; 1-support
 - int pdt; humanoid detection: 0-not supported; bit0-support switch setting; bit1-support picture frame setting; bit2-support night filter switch setting; bit3-support day filter switch setting
-- int ptz; pan-tilt: 0-not supported; 1-support left/right; 2-support top/bottom; 3-support left/top/right/bottom
+- int ptz; pan-tilt: 0-not supported; 1-support left/top/right/bottom; 2-support top/bottom; 3-support left/right
 
 ## 9.2 device parameters
 
