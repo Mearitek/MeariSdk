@@ -102,6 +102,6 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)getNVRNetConfigKeyWithSucess:(MeariDeviceSuccess_Str)sucess failure:(MeariDeviceFailure)failure ;
+- (void)getNVRNetConfigKeyWithSucess:(MeariDeviceSuccess_Str)success failure:(MeariDeviceFailure)failure;
 @end
 

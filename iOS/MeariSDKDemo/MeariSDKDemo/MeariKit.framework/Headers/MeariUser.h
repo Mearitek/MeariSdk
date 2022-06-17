@@ -642,11 +642,11 @@ Getting device online status for Meari iot device
  Add device
  添加设备 (4G)
  
- @param licenseID 扫码得到的licenseID
+ @param uuid 扫码得到的唯一识别符
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)add4GDeviceWithLicenseID:(NSString *)licenseID success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+- (void)add4GDeviceWithUUID:(NSString *)uuid success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
 /**
  Remove the device(移除设备)

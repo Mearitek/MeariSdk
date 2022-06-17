@@ -637,7 +637,7 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 @property (nonatomic, strong) MeariDeviceParamMotion *motion_detect;
 
 @property (nonatomic, strong) MeariDeviceParamPeopleDetect *people_detect;
-@property (nonatomic, assign) NSInteger *people_detectLevel;
+@property (nonatomic, assign) NSInteger people_detectLevel;
 @property (nonatomic, strong) MeariDeviceParamCryDetect *cry_detect;
 @property (nonatomic, strong) MeariDeviceParamPeopleTrack *people_track;
 @property (nonatomic, strong) MeariDeviceParamSleepGeographic *home_geographic;
