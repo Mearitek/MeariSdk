@@ -101,6 +101,18 @@ public class LoginActivity extends AppCompatActivity {
 //            }
 //        });
 
+//        MeariUser.getInstance().loginWithAccount("UC", "1", "UUID", 1, new ILoginCallback() {
+//            @Override
+//            public void onSuccess(UserInfo userInfo) {
+//
+//            }
+//
+//            @Override
+//            public void onError(int i, String s) {
+//
+//            }
+//        });
+
     }
 
     private void goToMain() {

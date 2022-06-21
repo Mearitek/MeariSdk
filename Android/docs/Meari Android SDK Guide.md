@@ -1731,7 +1731,7 @@ device Capability
 - int bcd; crying detection: 0-not supported; 1-support
 - int ptr; humanoid tracking: 0-not supported; 1-support
 - int pdt; humanoid detection: 0-not supported; bit0-support switch setting; bit1-support picture frame setting; bit2-support night filter switch setting; bit3-support day filter switch setting
-- int ptz; pan-tilt: 0-not supported; 1-support left/right; 2-support top/bottom; 3-support left/top/right/bottom
+- int ptz; pan-tilt: 0-not supported; 1-support left/top/right/bottom; 2-support top/bottom; 3-support left/right
 
 ## 9.2 Device parameters
 
@@ -3974,8 +3974,24 @@ See Demo for details
 ```
 
 # 13 Release Notes
+
+## 2022-06-21(4.1.0)
 ```
-2020-03-13 wu: 2.2.0 Initial draft of SDK access guide completed
-2022-03-31 wu: 4.1.0 The first draft of the family interface document is completed
-2022-04-28 wu: 4.1.0 Add cloud storage documents
+1. Fix Android 12 crash problem, need to comment: // implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+2. ptz capability set error description modification
+```
+
+## 2022-04-28(4.1.0)
+```
+Add cloud storage documents
+```
+
+## 2022-03-31(4.1.0)
+```
+The first draft of the family interface document is completed
+```
+
+## 2020-03-13(2.2.0)
+```
+Initial draft of SDK access guide completed
 ```
