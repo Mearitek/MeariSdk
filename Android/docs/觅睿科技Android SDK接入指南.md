@@ -34,6 +34,7 @@
         * 6.1.3 [设备移除](#613-设备移除)
         * 6.1.4 [设备昵称修改](#614-设备昵称修改)
         * 6.1.5 [获取设备报警消息时间片段](#615-获取设备报警消息时间片段)
+        * 6.1.6 [获取设备在线状态](#616-获取设备在线状态)
     * 6.2 [设备预览和回放](#62-设备预览和回放)
         * 6.2.1 [设备预览](#621-设备预览)
         * 6.2.2 [设备SD卡回放](#622-设备SD卡回放)
@@ -909,6 +910,26 @@ MeariUser.getInstance().getDeviceAlarmMessageTimeForDate(deviceID, dayTime, new 
 });
 ```
 
+### 6.1.6 获取设备在线状态
+```
+【描述】
+获取设备在线状态
+
+【函数调用】
+
+/**
+ * 获取设备在线状态
+ *
+ * String 截取的SN，cameraInfo.getSnNum().substring(4)
+ * Integer 0-连接中；1-在线；2-离线；3-休眠
+ */
+public Map<String, Integer> queryDeviceStatus();
+
+【代码范例】
+// 获取了设备列表后，循环获取设备状态，如果状态有改变，则更新设备状态
+Map<String, Integer> temStatus = MeariIotController.getInstance().queryDeviceStatus();
+```
+
 ## 6.2 设备预览和回放
 ### 6.2.1 设备预览
 ```
@@ -953,6 +974,8 @@ deviceController.startConnect(new MeariDeviceListener() {
         // 保存对象，避免重复创建
         MeariUser.getInstance().setCameraInfo(cameraInfo);
         MeariUser.getInstance().setController(deviceController);
+        // 获取码率
+        String mBitRate = deviceController.getBitRate() + "KB/s";
     }
 
     @Override
@@ -4423,6 +4446,14 @@ if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() &&
 ```
 
 # 14 更新说明
+
+## 2022-06-22(4.4.0)
+```
+1. 修复Android 12 奔溃问题，需要注释：// implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+2. ptz 能力集描述错误修改
+3. 获取设备在线状态
+4. 获取码率
+```
 
 ## 2022-06-21(4.1.0)
 ```

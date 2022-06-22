@@ -34,6 +34,7 @@
         * 6.1.3 [Device removal](#613-Device-removal)
         * 6.1.4 [Device nickname modification](#614-Device-nickname-modification)
         * 6.1.5 [Get time segment of device alarm message](#615-Get-time-segment-of-device-alarm-message)
+        * 6.1.6 [Get device online status](#616-Get-device-online-status)
     * 6.2 [Device preview and playback](#62-Device-preview-and-playback)
         * 6.2.1 [Device preview](#621-Device-preview)
         * 6.2.2 [Device SD card playback](#622-Device-SD-card-playback)
@@ -896,6 +897,26 @@ MeariUser.getInstance().GetDeviceAlarmMessageTimeForDate (deviceID, dayTime, new
 });
 ```
 
+### 6.1.6 Get device online status
+```
+【description】
+Get device online status
+
+[Function call]
+
+/**
+ * Get device online status
+ *
+ * String Intercepted SN，cameraInfo.getSnNum().substring(4)
+ * Integer 0-connecting; 1-online; 2-offline; 3-sleep
+ */
+public Map<String, Integer> queryDeviceStatus();
+
+[Code example]
+// After obtaining the device list, obtain the device state in a loop, and update the device state if the state changes
+Map<String, Integer> temStatus = MeariIotController.getInstance().queryDeviceStatus();
+```
+
 ## 6.2 Device preview and playback
 ### 6.2.1 Device Preview
 ```
@@ -940,6 +961,8 @@ deviceController.startConnect (new MeariDeviceListener () {
         // Save the object and avoid duplicate creation
         MeariUser.getInstance (). SetCameraInfo (cameraInfo);
         MeariUser.getInstance (). SetController (deviceController);
+        // Get bit rate
+        String mBitRate = deviceController.getBitRate() + "KB/s";
     }
 
     @Override
@@ -3974,6 +3997,14 @@ See Demo for details
 ```
 
 # 13 Release Notes
+
+## 2022-06-22(4.4.0)
+```
+1. Fix Android 12 crash problem, need to comment: // implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+2. ptz capability set error description modification
+3. Get device online status
+4. Get bit rate
+```
 
 ## 2022-06-21(4.1.0)
 ```
