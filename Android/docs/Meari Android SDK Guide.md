@@ -153,7 +153,7 @@
     * 12.2 [Cloud Storage Trial](#122-Cloud-Storage-Trial)
     * 12.3 [Cloud storage activation code usage](#123-Cloud-storage-activation-code-usage)
     * 12.4 [Cloud storage purchases](#124-Cloud-storage-purchases)
-* 13 [Release Notes](#13-Release-Notes)
+* 14 [Release Notes](#14-Release-Notes)
 
 <center>
 
@@ -3996,7 +3996,7 @@ MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IR
 See Demo for details
 ```
 
-# 13 Release Notes
+# 14 Release Notes
 
 ## 2022-06-22(4.4.0)
 ```
