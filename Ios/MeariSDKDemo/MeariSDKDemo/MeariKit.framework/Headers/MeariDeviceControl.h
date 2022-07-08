@@ -41,6 +41,7 @@ typedef void(^MeariDeviceSuccess_Version)(NSString *version);
 typedef void(^MeariDeviceSuccess_VersionPercent)(NSInteger totalPercent, NSInteger downloadPercent, NSInteger updatePercent);
 typedef void(^MeariDeviceSuccess_LightState)(BOOL on);
 typedef void(^MeariDeviceSuccess_SirenTimeout)(NSInteger second);
+typedef void(^MeariDeviceSuccess_NightLightOn)(BOOL isOn);
 typedef void(^MeariDeviceSuccess_Param)(MeariDeviceParam *param);
 typedef void(^MeariDeviceSuccess_TRH)(CGFloat temperature, CGFloat humidity);
 typedef void(^MeariDeviceSuccess_Volume)(CGFloat volume);
@@ -582,6 +583,57 @@ Start record sound(开始录音)
  */
 - (void)setLEDOn:(BOOL)on success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+#pragma mark - Flicker
+
+/**
+  set  Flicker(设置抗闪烁)
+ 
+ @param on 是否打开Flicker
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setFLickerLevel:(MeariDeviceFlickerLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+#pragma mark -- 夜灯设置
+/**
+ LED灯开关（RGB灯）
+
+ @param open 是否开启
+ @param success 成功回调
+ @param failure 失败回调
+ */
+-(void)setNightLightSwitch:(BOOL)open success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ 亮灯定时计划（RGB灯）
+
+ @param enable 是否开启
+ @param from     开始事件
+ @param to          结束时间
+ @param success 成功回调
+ @param failure 失败回调
+ */
+-(void)setNightLightSchedule:(BOOL)enable from:(NSString *)from to:(NSString *)to success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ 亮灯模式控制（RGB灯）
+
+ @param mode  0：正常模式；1：跑马灯模式；2：呼吸模式
+ @param success 成功回调
+ @param failure 失败回调
+ */
+-(void)setNightLightMode:(NSInteger)mode success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ LED灯颜色（RGB灯）
+
+ @param red  红
+ @param green  绿
+ @param blue  蓝
+ @param success 成功回调
+ @param failure 失败回调
+ */
+-(void)setNightLightColorWithRed:(NSInteger)red green:(NSInteger)green blue:(NSInteger)blue success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
 #pragma mark -- 日夜模式
 
 /**
@@ -592,7 +644,18 @@ Start record sound(开始录音)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setDayNightModeType:(MeariDeviceDayNightType)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)setDayNightModeType:(MeariDeviceNightVisionMode)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/**
+ // Set full color mode,
+ // 设置全彩模式
+
+ @param type  MeariDeviceFullColorMode(夜视模式)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setFullColorModeType:(MeariDeviceFullColorMode)type success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
 #pragma mark -- 噪声检测
 
 /**
@@ -698,6 +761,11 @@ Start record sound(开始录音)
  */
 - (void)setHumanDetectionEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+/// human level       1-n
+/// @param level  1-n
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)setHumanDetectionLevel:(NSInteger)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
  设置报警间隔级别
@@ -708,7 +776,7 @@ Start record sound(开始录音)
 */
 - (void)setAlarmInterval:(MeariDeviceCapabilityAFQ)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure ;
 /**
- 设置报警计划
+ 设置人形画框
 
  // Whether human borders  are on
  // 人形边框是否开启
@@ -1087,6 +1155,24 @@ Start record sound(开始录音)
  */
 - (void)setSpeakVolume:(NSInteger)volume success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+/// 设置设备扬声器是否开启
+/// @param enable 是否开启
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setDeviceSpeakerEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// 设置手机麦克风是否开启
+/// @param enable 是否开启
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setMicrophoneEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+/// 是否录制声音
+/// @param enable 是否开启
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setRecordAudioEnable:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
 /**
  Set the doorbell PIR (human body detection) alarm type (设置门铃单PIR(人体侦测)报警类型) warning : level can contain MeariDeviceLevelOff
  
@@ -1411,6 +1497,12 @@ Start record sound(开始录音)
 /// @param failure  failure callback (失败回调)
 - (void)getFloodCameraSirenTimeoutSuccess:(MeariDeviceSuccess_SirenTimeout)success failure:(MeariDeviceFailure)failure;
 
+/// 获取灯具摄像机（RGB灯）的开关灯状态
+/// Get Flood Camera Switch on Status
+/// @param success Successful callback (成功回调)
+/// @param failure  failure callback (失败回调)
+-(void)getFloodCameraRGBSwitchOnStatusSuccess:(MeariDeviceSuccess_NightLightOn)success failure:(MeariDeviceFailure)failure;
+
 /// 设置声光报警使能开关
 /// Set sound and light alarm enable switch
 /// @param enable 是否开启
@@ -1685,6 +1777,32 @@ Determine whether it is a face
 -(void)getInstallGuideVideoUrlWithTp:(NSString *)tp                 success:(MeariDeviceSuccess_Dictionary)success
                              failure:(MeariDeviceFailure)failure;
 
+#pragma mark -  Device Statistics
+/**
+ Get real-time information statistics of the device
+ 获取设备实时的信息统计信息 (预览时间（单位秒）、唤醒时间（单位秒）、报警次数、误报次数)
+ @param deviceSN 设备SN
+ @param dps  数据点
+ @param start  开始时间 1626682956
+ @param end  结束时间 1626769356
+ @param page  当前页数 1
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+*/
+- (void)getDeviceRealTimeStatisticsInfoSuccess:(void(^)(NSDictionary *dic))success failure:(MeariDeviceFailure)failure;
+
+/**
+ Obtain statistics based on dp points (Currently supported part)
+ 根据dp点获取统计数据 （目前支持部分）按天/月 设备wif强度以及电池信息
+ @param deviceSN 设备SN
+ @param dps  数据点
+ @param start  开始时间 1626682956
+ @param end  结束时间 1626769356
+ @param page  当前页数 1
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+*/
++ (void)getDeviceIntervalStatisticsWithDeviceSN:(NSString *)deviceSN dps:(NSArray *)dps startTime:(long long)start endTime:(long long)end page:(NSInteger)page success:(void(^)(BOOL complete,NSDictionary *dic))success failure:(MeariDeviceFailure)failure;
 #pragma mark - 耳机
 /**
   Whether current phone is using head device or bluetooth device.

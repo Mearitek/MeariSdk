@@ -42,6 +42,11 @@
 - (void)initSet {
     self.title = @"setting";
     [self.view addSubview:self.tableView];
+    [self.camera getDeviceParamsSuccess:^(MeariDeviceParam *param) {
+        NSLog(@"get device param success");
+    } failure:^(NSError *error) {
+        NSLog(@"get device param failure");
+    }];
 }
 
 #pragma mark --- Network

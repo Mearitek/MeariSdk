@@ -106,6 +106,9 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** Get Supported SDK alarm frequency interval*/
 /** 获取支持的SDK报警间隔类型*/
 - (NSArray *)supportAlarmFrequencyIntervalLevels;
+/** Get Supported munal light duration */
+/** 获取支持的SDK手动亮灯时长*/
+- (NSArray <NSNumber *>*)supportLightDurationSeconds;
 /** Whether to support two-way voice intercom */
 /** 是否支持双向语音对讲 */
 @property (nonatomic, assign, readonly) BOOL supportFullDuplex;
@@ -227,6 +230,8 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 @property (nonatomic, assign, readonly) BOOL supportAlarmPlanCrossDays;
 /** pir等级设置，用于多级设置开关1-N档 返回最大支持等级， 0不支持*/
 @property (nonatomic, assign, readonly) NSInteger supportPirLevel;
+/** 人形检测灵敏度设置，用于多级设置开关1-N档 返回最大支持等级， 0不支持*/
+@property (nonatomic, assign, readonly) NSInteger supportHumanLevel;
 /** 是否支持视频预览出图 (语音门铃使用) */
 @property (nonatomic, assign, readonly) BOOL supportPreviewImage;
 /** 是否防拆报警 */
@@ -245,8 +250,60 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 @property (nonatomic, assign, readonly) BOOL supportUploadAccountInfo;
 /**是否支持 ptz 巡逻*/
 @property (nonatomic, assign, readonly) BOOL supportPtzPatrol;
-
+/**是否支持工作模式*/
 @property (nonatomic, assign, readonly) BOOL supportMotionMode;
+/**是否支持报警总开关*/
+@property (nonatomic, assign, readonly) BOOL supportAlarmWhole;
+
+/**是否支持持续录像模式*/
+@property (nonatomic, assign, readonly) BOOL supportCommonMode;
+/** baby是否支持rgb*/
+@property (nonatomic, assign, readonly) BOOL supportRGB;
+/** 是否支持移动侦测*/
+@property (nonatomic, assign, readonly) BOOL supportMotion;
+/** 是否支持哭声侦测*/
+@property (nonatomic, assign, readonly) BOOL supportCryDetect;
+/** 是否支持噪声侦测*/
+@property (nonatomic, assign, readonly) BOOL supportNoiseDetect;
+/** 是否支持抗闪烁*/
+@property (nonatomic, assign, readonly) BOOL supportFlicker;
+/** 是否支持自动更新*/
+@property (nonatomic, assign, readonly) BOOL supportAutoUpdate;
+/** 是否支持实时信息统计*/
+@property (nonatomic, assign, readonly) BOOL supportRealTimeStatistics;
+/** 是否支持天/月信息统计*/
+@property (nonatomic, assign, readonly) BOOL supportIntervalStatistics;
+/** 是否支持鸣笛报警*/
+@property (nonatomic, assign, readonly) BOOL supportSiren;
+/** 是否支持设备扬声器*/
+@property (nonatomic, assign, readonly) BOOL supportDeviceSpeaker;
+/** 是否支持麦克风*/
+@property (nonatomic, assign, readonly) BOOL supportMicrophone;
+/** 是否支持开关暖光灯*/
+@property (nonatomic, assign, readonly) BOOL supportOnOffWarmLight;
+/** 是否支持开关非暖光灯*/
+@property (nonatomic, assign, readonly) BOOL supportOnOffUnWarmLight;
+/** 是否支持录像声音开关*/
+@property (nonatomic, assign, readonly) BOOL supportRecordVoice;
+/** 是否支持全天录像*/
+@property (nonatomic, assign, readonly) BOOL supportFullRecord;
+/** 是否支持事件录像*/
+@property (nonatomic, assign, readonly) BOOL supportEventRecord;
+/** 彩色日夜模式*/
+@property (nonatomic, assign, readonly) MeariDeviceDayNightMode dayNightType;
+/** 设备链接加密*/
+@property (nonatomic, assign, readonly) BOOL supportConnectEncryption;
+/** 是否支持最大警报时长 flight*/
+@property (nonatomic, assign, readonly) BOOL supportMaxSirenTime;
+/** 是否支持 亮灯时长设置 flight*/
+@property (nonatomic, assign, readonly) BOOL supportLightDuration;
+/** 是否支持 亮灯计划 flight*/
+@property (nonatomic, assign, readonly) BOOL supportLightSchedule;
+/** 是否支持时区设置*/
+@property (nonatomic, assign, readonly) BOOL supportTimeZone;
+/** 是否重启设置*/
+@property (nonatomic, assign, readonly) BOOL supportReboot;
+
 @end
 
 @interface MeariDeviceList : MeariBaseModel
