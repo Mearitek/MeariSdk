@@ -10,11 +10,13 @@
 ## 2. 与服务器云云对接
   对接步骤详情见 Server 目录下文档:
   
-  [How to do integrate with Mearisdk](Server/How%20to%20do%20integrate%20with%20Mearisdk.md)
+    [How to do integrate with Mearisdk](Server/How%20to%20do%20integrate%20with%20Mearisdk.md)
     
-  [Server interface authentication method](Server/Server%20interface%20authentication%20method.md)
+    [Server interface authentication method](Server/Server%20interface%20authentication%20method.md)
     
-  [server to server](Server/server%20to%20server.md)
+    [server to server](Server/server%20to%20server.md)
+  
+    [app QR code token interface](Server/app%20QR%20code%20token%20interface.md)
   
 ## 3. 接入App SDK
 

@@ -16,6 +16,8 @@ Welcome to Meari Developer Kit (SDK). In order to facilitate developers to debug
     
   [server to server](Server/server%20to%20server.md)
   
+  [app QR code token interface](Server/app%20QR%20code%20token%20interface.md)
+  
 ## 3. App SDK
 
 Android SDK Document:
