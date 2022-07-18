@@ -121,6 +121,8 @@ UIKIT_EXTERN NSString *const MeariIotCustomerServerFeedBackRemind ; //Customer s
 UIKIT_EXTERN NSString *const MeariIotCustomerServerRemind ; //Customer service message reminder（客服聊天消息提醒）
 
 UIKIT_EXTERN NSString *const MeariIotCustomerServerChange ; //Customer service change（客服聊天切换客服）
+UIKIT_EXTERN NSString *const MeariIotDeviceAlarmFrequentNotification ; //device alarm frequent （设备报警频繁）
+UIKIT_EXTERN NSString *const MeariIotDeviceAlarmDistortNotification ;//device alarm distort （设备报警误报频繁）
 @interface MeariUser : NSObject
  
 + (instancetype)sharedInstance;

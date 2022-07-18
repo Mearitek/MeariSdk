@@ -126,6 +126,7 @@
         * 12.5.1 [NVR通道摄像机信息](#1251-NVR通道摄像机信息)
         * 12.5.2 [NVR删除通道摄像机](#1252-NVR删除通道摄像机)
         * 12.5.3 [NVR通道摄像机固件升级](#1253-NVR通道摄像机固件升级)
+        * 12.5.4 [NVR设备全天录像](#1254-NVR设备全天录像)
 <center>
 
 ---
@@ -3398,7 +3399,7 @@ MeariMemberModel属性
     @param success Successful callback (成功回调)：返回搜索到的设备
     @param failure failure callback (失败回调)
     */
-    - (void)getSearchedNvrSubDeviceWithSuccess:(void(^)(BOOL finish, NSArray* searchArray))success failure:(MeariDeviceFailure)failure;
+   - (void)getSearchedNvrSubDeviceWithSuccess:(void(^)(BOOL finish, NSArray<MeariSearchNVRSubDeviceModel *>* searchArray))success failure:(MeariDeviceFailure)failure;
 
     /**
      Nvr添加meari子设备(app内绑定)
@@ -3456,13 +3457,13 @@ MeariMemberModel属性
         
     }];
     //获取搜索的结果
-    [self.camera getSearchedNvrSubDeviceWithSuccess:^(BOOL finish, NSArray * _Nonnull searchArray) {
+    [self.camera [self.camera getSearchedNvrSubDeviceWithSuccess:^(BOOL finish, NSArray<MeariSearchNVRSubDeviceModel *> *searchArray) {
         // finish：false-正在搜索，继续获取结果；true-搜索结束,停止获取结果
         dictionary keys:
-        //type: 0-Meari摄像机; 1-onvif摄像机
+        //addType: 0-Meari摄像机; 1-onvif摄像机
         //sn: Meari摄像机 sn
         //ip: 摄像机 IP 地址
-        //add_status 0-未添加；1-添加中；2-添加成功； 3-添加失败 
+        //addStatus 0-未添加；1-添加中；2-添加成功； 3-添加失败 
         NSLog(@"%@",searchArray);
     } failure:^(NSError *error) {
             
@@ -3540,7 +3541,35 @@ MeariMemberModel属性
 
     UIImage *image =  [[MeariDeviceActivator sharedInstance] createNVRQRCodeWithSSID:wifiname pasword:pwd key:key size:CGSizeMake(Meari_ScreenWidth, Meari_ScreenWidth)];
 
-// 搜索和添加设备见：添加在线摄像机
+【描述】
+    搜索路由方式添加的摄像机
+【函数调用】
+/**
+ 搜索路由器流程添加子设备至的准备操作
+@param success Successful callback (成功回调)：返回搜索到的设备
+@param failure failure callback (失败回调)
+*/
+- (void)readyForSearchRouterNvrSubDeviceWithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+获取搜索结果：Get Nvr Sub Device Result (添加子设备至路由器流程)
+@param success Successful callback (成功回调)：返回搜索到的设备
+@param failure failure callback (失败回调)
+*/
+- (void)searchRouterNvrSubDeviceWithSuccess:(void(^)(NSArray<MeariSearchNVRSubDeviceModel *>* searchArray))success failure:(MeariDeviceFailure)failure;
+
+
+【代码范例】
+    [self.nvrDevice readyForSearchRouterNvrSubDeviceWithSuccess:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+
+    [self.nvrDevice searchRouterNvrSubDeviceWithSuccess:^(NSArray<MeariSearchNVRSubDeviceModel *> *searchArray) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
 
 ```
 
@@ -3689,3 +3718,26 @@ NVR通道摄像机不支持云回放。
     } failure:^(NSError *error) {
     }];
 ```
+### 12.5.4 NVR设备全天录像
+```
+【描述】
+    设置NVR设备全天录像功能
+
+【函数调用】
+    /**
+    设置NVR设备全天录像：Set Nvr All Day Record
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)setNVRAllDayRecord:(BOOL)enable WithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+【代码范例】
+
+    [self.camera setNVRAllDayRecord:s.on WithSuccess:^{
+        NSLog(@"设置成功");
+        
+    } failure:^(NSError *error) {
+        NSLog(@"设置失败");
+    }];
+```
+

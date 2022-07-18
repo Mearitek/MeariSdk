@@ -7,6 +7,7 @@
 //
 
 #import <MeariKit/MeariKit.h>
+#import "MeariSearchNVRSubDeviceModel.h"
 
 typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
     MeariDeviceChannelStateUnbind  = 0,
@@ -39,6 +40,13 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
 @property (nonatomic, assign, readonly) BOOL supportDeleteIpc;
 /** 是否支持无线抗干扰*/
 @property (nonatomic, assign, readonly) BOOL supportAntijamming;
+
+/** 是否支持生成Camera连接NVR的二维码(NVR设置页）*/
+@property (nonatomic, assign, readonly) BOOL supportSetNVRQRcode;
+/** 是否支持生成Camera连接NVR的二维码(NVR展示页面)*/
+@property (nonatomic, assign, readonly) BOOL supportAddNVRQRcode;
+/** 是否支持camera连接路由器的二维码(NVR展示页面)*/
+@property (nonatomic, assign, readonly) BOOL supportAddRouterQRcode;
 
 
 - (NSMutableArray *)nvrSubDevicesWithUnBind:(BOOL)hasUnBind;
@@ -75,7 +83,7 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
 @param success Successful callback (成功回调)：返回搜索到的设备
 @param failure failure callback (失败回调)
 */
-- (void)getSearchedNvrSubDeviceWithSuccess:(void(^)(BOOL finish, NSArray* searchArray))success failure:(MeariDeviceFailure)failure;
+- (void)getSearchedNvrSubDeviceWithSuccess:(void(^)(BOOL finish, NSArray<MeariSearchNVRSubDeviceModel *>* searchArray))success failure:(MeariDeviceFailure)failure;
 /**
  Add child device through Nvr (in-app binding)
  Nvr添加子设备(app内绑定)
@@ -103,5 +111,25 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
  @param failure failure callback (失败回调)
  */
 - (void)getNVRNetConfigKeyWithSucess:(MeariDeviceSuccess_Str)success failure:(MeariDeviceFailure)failure;
+
+/**
+获取搜索结果：Get Nvr Sub Device Result (添加子设备至路由器流程)
+@param success Successful callback (成功回调)：返回搜索到的设备
+@param failure failure callback (失败回调)
+*/
+- (void)searchRouterNvrSubDeviceWithSuccess:(void(^)(NSArray<MeariSearchNVRSubDeviceModel *>* searchArray))success failure:(MeariDeviceFailure)failure;
+/**
+获取搜索结果：Get Nvr Sub Device Result
+@param success Successful callback (成功回调)：返回搜索到的设备
+@param failure failure callback (失败回调)
+*/
+- (void)initaddRouterNvrSubDeviceWithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+设置NVR设备全天录像：Set Nvr All Day Record
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setNVRAllDayRecord:(BOOL)enable WithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
 @end
 

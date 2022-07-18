@@ -128,6 +128,7 @@
         * 12.5.1 [NVR channel camera information](#1251-NVR-channel-camera-information)
         * 12.5.2 [NVR delete channel camera](#1252-NVR-delete-channel-camera)
         * 12.5.3 [NVR channel camera firmware upgrade](#1253-NVR-channel-camera-firmware-upgrade)     
+        * 12.5.4 [NVR all day recording](#1254-NVR-all-day-recording)
 <center>
 
 ---
@@ -3383,7 +3384,7 @@ See: Wired distribution network to add equipment
     @param success Successful callback
     @param failure failure callback 
     */
-    - (void)getSearchedNvrSubDeviceWithSuccess:(void(^)(BOOL finish, NSArray* searchArray))success failure:(MeariDeviceFailure)failure;
+       - (void)getSearchedNvrSubDeviceWithSuccess:(void(^)(BOOL finish, NSArray<MeariSearchNVRSubDeviceModel *>* searchArray))success failure:(MeariDeviceFailure)failure;
 
     /**
      Nvr adds meari sub-device (in-app binding)
@@ -3440,13 +3441,13 @@ See: Wired distribution network to add equipment
         
     }];
     //Get search results
-    [self.camera getSearchedNvrSubDeviceWithSuccess:^(BOOL finish, NSArray * _Nonnull searchArray) {
+       [self.camera [self.camera getSearchedNvrSubDeviceWithSuccess:^(BOOL finish, NSArray<MeariSearchNVRSubDeviceModel *> *searchArray) {
         // finish：false-Searching, keep getting results；true-Search ends, stop getting results
         dictionary keys:
-        //type: 0-Meari camera; 1-onvif camera
+        //addType: 0-Meari camera; 1-onvif camera
         //sn: Meari camera sn
         //ip: camera IP 
-        //add_status 0-not added；1-adding；2-add success； 3-add failure
+        //addStatus 0-not added；1-adding；2-add success； 3-add failure
         NSLog(@"%@",searchArray);
     } failure:^(NSError *error) {
             
@@ -3522,7 +3523,36 @@ See: Wired distribution network to add equipment
 
     UIImage *image =  [[MeariDeviceActivator sharedInstance] createNVRQRCodeWithSSID:wifiname pasword:pwd key:key size:CGSizeMake(Meari_ScreenWidth, Meari_ScreenWidth)];
 
-// For searching and adding devices, see: Add an online camera
+【Description】
+    Search for cameras added by routing
+【Function】
+/**
+ Preparing for adding sub-devices in the process of searching for routers
+@param success Successful callback 
+@param failure failure callback 
+*/
+- (void)readyForSearchRouterNvrSubDeviceWithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+Search router process add child device
+@param success Successful callback
+@param failure failure callback 
+*/
+- (void)searchRouterNvrSubDeviceWithSuccess:(void(^)(NSArray<MeariSearchNVRSubDeviceModel *>* searchArray))success failure:(MeariDeviceFailure)failure;
+
+
+【Code】
+    [self.nvrDevice readyForSearchRouterNvrSubDeviceWithSuccess:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+
+    [self.nvrDevice searchRouterNvrSubDeviceWithSuccess:^(NSArray<MeariSearchNVRSubDeviceModel *> *searchArray) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
 
 ```
 
@@ -3661,5 +3691,27 @@ The differences are detailed below.
     [[MeariUser sharedInstance] checkNewFirmwareWith:deviceSN tp:tp currentFirmware:version success:^(MeariDeviceFirmwareInfo *info) {
         MeariDo_Block_Safe_Main4(update, info.needUpgrade, info.forceUpgrade, info.upgradeDescription,info.appProtocolVer);
     } failure:^(NSError *error) {
+    }];
+```
+### 12.5.4 NVR all day recording
+```
+【Description】
+    Set the all-day recording function of the NVR device
+
+【Function】
+    /**
+    Set Nvr All Day Record
+    @param success Successful callback 
+    @param failure failure callback 
+    */
+    - (void)setNVRAllDayRecord:(BOOL)enable WithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+
+【Code】
+
+    [self.camera setNVRAllDayRecord:s.on WithSuccess:^{
+        NSLog(@"set successfully");
+        
+    } failure:^(NSError *error) {
+        NSLog(@"set failed");
     }];
 ```
