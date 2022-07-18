@@ -532,8 +532,13 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param failure failure callback (失败回调)
  */
 - (void)stopVoicetalkSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
-
-
+/**
+ Stop voice intercom voice change type / 设置语音对讲变声类型
+ @param type     voice change type
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setVoiceTalkSoundType:(NSInteger)type Success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 /**
  Turn on two-way voice speakers
  开启双向语音扬声器

@@ -111,6 +111,9 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** Get Supported SDK alarm frequency interval*/
 /** 获取支持的SDK报警间隔类型*/
 - (NSArray *)supportAlarmFrequencyIntervalLevels;
+/** Get Supported munal light duration */
+/** 获取支持的SDK手动亮灯时长*/
+- (NSArray <NSNumber *>*)supportLightDurationSeconds;
 /** Whether to support two-way voice intercom */
 /** 是否支持双向语音对讲 */
 @property (nonatomic, assign, readonly) BOOL supportFullDuplex;

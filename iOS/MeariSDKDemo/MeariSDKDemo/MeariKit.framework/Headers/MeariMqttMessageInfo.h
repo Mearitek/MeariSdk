@@ -78,6 +78,8 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
     MeariMqttCodeTypeClientServerMsgRemind      = 226,
     
     MeariMqttCodeTypeClientServerChangeServer   = 227,
+    MeariMqttCodeTypeDeviceAlarmFrequent        = 228,
+    MeariMqttCodeTypeDeviceAlarmDistort         = 229,
     
     MeariMqttCodeTypeNotice                     = 200,
     MeariMqttCodeTypeSomebodyCall               = 201,
@@ -189,7 +191,7 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 
 @property (nonatomic, copy) NSString *leaveTopic;
 @property (nonatomic, copy) NSString *snNum;
-
+@property (nonatomic, assign) double endTime;
 @property (nonatomic, copy) NSString *workOrderNo;
 @property (nonatomic, copy) NSString *customerId;
 @property (nonatomic, assign) NSInteger cloudType;

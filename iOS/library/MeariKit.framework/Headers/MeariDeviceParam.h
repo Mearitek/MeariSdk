@@ -577,6 +577,7 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 @property (nonatomic,   copy) NSArray <MeariDeviceParamStorage *> *storages; //磁盘信息
 @property (nonatomic, assign) NSInteger channel; // 通道数
 @property (nonatomic, assign) BOOL antiJamming; // wifi抗干扰开关
+@property (nonatomic, assign) BOOL allDayRecord; // 全天录像
 @property (nonatomic,   copy) NSString *tp; // 通道数
 @property (nonatomic,   copy) NSString *networkConfig; // 配网信息
 @property (nonatomic,   copy) NSString *firVersion; // 固件版本号

@@ -160,7 +160,12 @@ typedef NS_ENUM(NSUInteger, MeariDeviceAuthority) {
     MeariDeviceAuthorityControl, // 允许控制
     MeariDeviceAuthorityUnUseAble, // 不可使用
 };
-
+typedef NS_ENUM(NSUInteger, MeariAddSubDeviceMode) {
+    MeariAddSubDeviceModeSetNVRQRcode = 0b1, // 是否支持生成Camera连接NVR的二维码(NVR设置页）
+    MeariAddSubDeviceModeSetRouterQRcode = 0b10, // 是否支持camera连接路由器的二维码(NVR设置页面)
+    MeariAddSubDeviceModeAddNVRQRcode = 0b100, // 是否支持生成Camera连接NVR的二维码(NVR展示页面)
+    MeariAddSubDeviceModeAddRouterQRcode = 0b1000, // 是否支持camera连接路由器的二维码(NVR展示页面)
+};
 @interface MeariDeviceInfoCapabilityFunc : MeariBaseModel
 // Voice intercom type
 /** 语音对讲类型 */
@@ -378,6 +383,8 @@ typedef NS_ENUM(NSUInteger, MeariDeviceAuthority) {
 @property (nonatomic, assign) NSInteger cpn;
 /**是否支持报警总开关 */
 @property (nonatomic, assign) NSInteger gal;
+/** 是否支持生成配网的二维码*/
+@property (nonatomic, assign) NSInteger rwm;
 
 @end
 

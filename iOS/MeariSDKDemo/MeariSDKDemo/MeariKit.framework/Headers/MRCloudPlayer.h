@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <UIKit/UIKit.h>
 /**
  播放状态
 
@@ -78,13 +78,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) MeariCloudRecordState recordState; // record state(录制状态)
 
 @property (nonatomic, assign, readonly, getter = isPlaying) BOOL playing; // Whether it is playing (是否正在播放)
-@property (nonatomic, assign) BOOL muted; // mute (是否静音) 默认为NO
-@property (nonatomic, assign) float speed; // 播放速率 // 支持0到4的速度  默认为1
+@property (nonatomic, assign) BOOL muted; // mute (是否静音)
+// 支持0到4的速度  默认为1
+@property (nonatomic, assign) float speed; // 播放速率
 
 - (BOOL)snapToPath:(NSString *)path; // Screenshot path : save path (截图,保存路径)
 - (BOOL)startRecord:(NSString *)path; // Record path : save path (录制,保存路径)
 - (void)stopRecord; //End recording (结束录制)
 - (void)play; // start play (开始播放)
+- (void)playWithPostion:(double)pos; //start play with postion (开始从第几秒开始播放)
 - (void)stop; // stop play (停止播放)
 - (void)pause; // pause (暂停)
 - (void)resetPlayerComplete:(void(^)(void))complete; // Turn off playback (关闭播放)
@@ -94,6 +96,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSTimeInterval)getVideoDuration;         // Duration (unit: second)   (时长（单位：秒）)
 + (BOOL)checkPasswordCorrectWithUrl:(NSURL *)url time:(NSString *)time password:(NSString *)password;//检测当前的密码是否匹配
 
+- (void)seekTime:(double)time;
+//下载m3u8 转为ts文件
+//会堵塞当前线程
++ (int)downloadUrlToTsFile:(NSURL *)url password:(NSString *)password filePath:(NSString *)localPath;
+//检验url中的密码是否匹配 取一个Ts的url即可
++ (BOOL)checkEncryKey:(NSString *)file password:(NSString *)password;
+
++ (int)transformTsToMp4:(NSString *)tsFile filePath:(NSString *)mp4Path;
 @end
 
 NS_ASSUME_NONNULL_END
