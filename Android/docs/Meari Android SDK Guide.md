@@ -3857,7 +3857,7 @@ boolean isCheck; Is it checked
 
 ## 11.3 Integrated FCM Push
 First, You can follow these guides: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) and [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), then go to firebase setting page, geneating the admin sdk file，provide the file to meari,
-call MeariUser.getInstance().uploadToken(1, token, callback) to upload your fcm token to meari server.
+call MeariUser.getInstance().postPushToken(1, token, callback) to upload your fcm token to meari server.
 
 ## 11.4 Integration with other pushes
 ```
