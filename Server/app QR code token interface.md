@@ -1,4 +1,4 @@
-### Activate the device and add
+### App QR Code Token Interface
 
 - http request method
     ```
