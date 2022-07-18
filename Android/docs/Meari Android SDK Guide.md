@@ -88,6 +88,7 @@
         * 9.5.20 [Alarm frequency setting](#9520-Alarm-frequency-setting)
         * 9.5.21 [PIR level setting](#9521-PIR-level-setting)
         * 9.5.22 [SD card recording type and time setting](#9522-SD-card-recording-type-and-time-setting)
+        * 9.5.23 [Device Full Color Mode setting](#9523-Device-Full-Color-Mode-setting)
     * 9.6 [Doorbell parameter setting](#96-Doorbell-parameter-setting)
         * 9.6.1 [Device Intercom volume settings](#961-Device-Intercom-volume-settings)
         * 9.6.2 [Unlock the battery lock](#962-Unlock-the-battery-lock)
@@ -221,13 +222,13 @@ repositories {
 dependencies {
      // Required libraries
     // aar required
-    implementation(name: 'core-sdk-device-20220326', ext: 'aar')
-    implementation(name: 'core-sdk-meari-20220326', ext: 'aar')
+    implementation(name: 'core-sdk-device-440-20220718', ext: 'aar')
+    implementation(name: 'core-sdk-meari-440-20220718', ext: 'aar')
 
     implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-    // implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+//    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
     implementation 'com.alibaba:fastjson:1.1.67.android'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.zxing:core:3.3.3'
@@ -1747,7 +1748,7 @@ device Capability
 - int pir; human detection: 0-not supported; 1-support pir switch and high/medium/low setting; 2-support pir switch only; 3-reserved; 4-support pir switch and high/low setting; 5-support double pir(left/right) switch and global sensitivity setting(high/low)(for normal power device); 6-support double pir(left/right) switch and global sensitivity setting(high/low)(for low power consumption device); 7- support pir switch and pir sensitivity setting(10 levels); 8-support pir switch and pir sensitivity setting(refer to plv), defalut is 10
 - int plv; pir level: 0-not supported; 10-support level 10(1-10)
 - int md; motion detection: 0-not supported; 1-support
-- int cst; cloud storage : 0 - not supported; 1 - support
+- int cst; cloud storage : 0 - not supported; 1 - support night vision mode; 2 - support Full Color Mode
 - int dnm; day and night mode: 0-not supported; 1-support
 - int led; LED lights : 0 - not supported; 1 - support
 - int flp; video flip: 0-not supported; 1-support
@@ -1768,6 +1769,7 @@ device Capability
 - int sdRecordType; SD card recording type: 0-event recording; 1-all day recording;
 - int sdRecordDuration; SD card recording time (seconds): 20, 30, 40, 60, 120, 180
 - int dayNightMode; day-night mode: 0-automatic; 1-day mode; 2-night mode;
+- int fullColorMode; Full Color Mode: 0-Intelligent vision；1-Full color night vision；2-Black and white night vision；
 - int sleepMode; sleep mode: 0-not sleep; 1-sleep; 2-timed sleep; 3-geo fencing sleep;
 - String sleepTimeList; List of sleep time: json array
 - String sleepWifi; Geo-fencing sleep WiFi
@@ -2107,6 +2109,7 @@ Day and night mode setting of device
 public void setDayNightMode(int mode, ISetDeviceParamsCallback callback);
 
 [code example]
+int currentMode = deviceParams.getDayNightMode()
 MeariUser.getInstance().setDayNightMode(mode, new ISetDeviceParamsCallback() {
     @Override
     public void onSuccess() {
@@ -2651,6 +2654,33 @@ int currentDuration = deviceParams.getSdRecordDuration()
 
 // set type or time
 MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.23 Device Full Color Mode setting
+```
+【description】
+Full Color Mode setting of device
+
+[function call]
+/**
+ * Full Color Mode setting of device
+ *
+ * @param mode mode
+ * @param callback Function callback
+ */
+public void setFullColorMode(int mode, ISetDeviceParamsCallback callback);
+
+[code example]
+int currentMode = deviceParams.getFullColorMode()
+MeariUser.getInstance().setFullColorMode(mode, new ISetDeviceParamsCallback() {
     @Override
     public void onSuccess() {
     }
@@ -3998,12 +4028,14 @@ See Demo for details
 
 # 14 Release Notes
 
-## 2022-06-22(4.4.0)
+## 2022-07-18(4.4.0)
 ```
 1. Fix Android 12 crash problem, need to comment: // implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 2. ptz capability set error description modification
 3. Get device online status
 4. Get bit rate
+5. NVR support
+6. Full Color Mode support
 ```
 
 ## 2022-06-21(4.1.0)

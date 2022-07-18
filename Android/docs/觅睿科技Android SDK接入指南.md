@@ -89,6 +89,7 @@
         * 9.5.20 [报警频率设置](#9520-报警频率设置)
         * 9.5.21 [多档PIR设置](#9521-多档PIR设置)
         * 9.5.22 [SD卡录像类型和时间设置](#9522-SD卡录像类型和时间设置)
+        * 9.5.23 [设备全彩模式设置](#9523-设备全彩模式设置)
     * 9.6 [门铃参数设置](#96-门铃参数设置)
         * 9.6.1 [设备对讲音量设置](#961-设备对讲音量设置)
         * 9.6.2 [解锁电池锁](#962-解锁电池锁)
@@ -234,14 +235,14 @@ repositories {
 }
 
 dependencies {
-    // 必需依赖库
-    implementation(name: 'core-sdk-device-20220326', ext: 'aar')
-    implementation(name: 'core-sdk-meari-20220326', ext: 'aar')
+    // aar 必需依赖库
+    implementation(name: 'core-sdk-device-440-20220718', ext: 'aar')
+    implementation(name: 'core-sdk-meari-440-20220718', ext: 'aar')
 
     implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-    // implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+//    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
     implementation 'com.alibaba:fastjson:1.1.67.android'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.zxing:core:3.3.3'
@@ -1837,7 +1838,7 @@ if (cameraInfo.getLed() == 1) {
 - int plv；pir等级设置使能开关，用于多级设置开关1-N档，0-不支持，10-支持10档（1-10）
 - int md;  移动侦测：0-不支持；1-支持
 - int cst; 云存储  ：0-不支持；1-支持
-- int dnm; 日夜模式：0-不支持；1-支持
+- int dnm; 日夜模式：0-不支持；1-支持日夜模式(自动，彩色，黑白)；2-支持全彩模式(智能夜视，全彩夜视，黑白夜视)
 - int led; LED灯   ：0-不支持；1-支持
 - int flp; 视频翻转：0-不支持；1-支持
 - int bcd; 哭声检测：0-不支持；1-支持
@@ -1860,6 +1861,7 @@ DeviceParams
 - int sdRecordType;  SD卡录像类型：0-事件录像；1-全天录像；
 - int sdRecordDuration;  SD卡录像时间(秒)：20，30，40，60，120，180
 - int dayNightMode;  日夜模式：0-自动；1-白天模式；2-夜间模式；
+- int fullColorMode;  全彩模式：0-智能夜视；1-全彩模式；2-黑白夜视模式；
 - int sleepMode;  休眠模式：0-不休眠；1-休眠；2-定时休眠；3-地理围栏休眠；
 - String sleepTimeList;  定时休眠时间列表：json数组
 - String sleepWifi;   地理围栏休眠的WiFi
@@ -2197,6 +2199,7 @@ MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDevicePar
 public void setDayNightMode(int mode, ISetDeviceParamsCallback callback);
 
 【代码范例】
+int currentMode = deviceParams.getDayNightMode()
 MeariUser.getInstance().setDayNightMode(mode, new ISetDeviceParamsCallback() {
     @Override
     public void onSuccess() {
@@ -2741,6 +2744,33 @@ int currentDuration = deviceParams.getSdRecordDuration()
 
 // 设置类型或时间
 MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.23 设备全彩模式设置
+```
+【描述】
+设备全彩模式设置
+
+【函数调用】
+/**
+ * 设置全彩模式
+ *
+ * @param mode mode
+ * @param callback Function callback
+ */
+public void setFullColorMode(int mode, ISetDeviceParamsCallback callback);
+
+【代码范例】
+int currentMode = deviceParams.getFullColorMode()
+MeariUser.getInstance().setFullColorMode(mode, new ISetDeviceParamsCallback() {
     @Override
     public void onSuccess() {
     }
@@ -4266,7 +4296,7 @@ MeariUser.getInstance().createNvrTokenQRCode(deviceParams.nvrNeutralParams.getQr
 ### 13.2.3 连接路由器添加摄像机
 ```
 【描述】
-如果摄像机不在线，获取NVR的key和wifi名、密码生成二维码，摄像机扫码后，将连接路由器，使摄像机和NVR处于同一个局域网，NVR搜索并添加摄像机到通道
+如果摄像机不在线，获取NVR的key和wifi名、密码生成二维码，摄像机扫码后，将连接路由器，NVR将自动添加设备到通道，搜索添加结果，并显示。
 
 【函数调用】
 /**
@@ -4274,6 +4304,10 @@ MeariUser.getInstance().createNvrTokenQRCode(deviceParams.nvrNeutralParams.getQr
  * ssid-WiFi名称；password-WiFi密码；key-nvr Key
  */
 public void createNvrKeyQRCode(String ssid, String password, String key, ICreateQRCodeCallback callback)
+/**
+ * 获取NVR添加结果
+ */
+MeariUser.getInstance().nvrGetAddResult(new INVRGetAddResultCallback()
 
 【代码范例】
 
@@ -4284,7 +4318,39 @@ MeariUser.getInstance().createNvrKeyQRCode("wifi_name", "pwd", deviceParams.nvrN
     }
 });
 
-// 搜索和添加设备见：添加在线摄像机
+// 设置超时时间(130s)，循环获取添加结果。超时添加失败，停止搜索
+MeariUser.getInstance().nvrGetAddResult(new INVRGetAddResultCallback() {
+    @Override
+    public void onSuccess(List<NvrAddInfo> nvrAddInfoList) {
+        List<NvrAddInfo> list = filterOnvif(nvrAddInfoList);
+        if (list.size() > 0) {
+            // 添加成功，显示结果
+        } else {
+            if (!isFinishSearch) {
+                nvrGetAddResult();
+            }
+        }
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+        if (!isFinishSearch) {
+            nvrGetAddResult();
+        }
+    }
+});
+
+private List<NvrAddInfo> filterOnvif(List<NvrAddInfo> nvrAddInfoList) {
+    List<NvrAddInfo> list = new ArrayList<>();
+    if (nvrAddInfoList != null && nvrAddInfoList.size() > 0) {
+        for (NvrAddInfo nvrAddInfo : nvrAddInfoList) {
+            if (nvrAddInfo.getType() == 0) {
+                list.add(nvrAddInfo);
+            }
+        }
+    }
+    return list;
+}
 
 ```
 
@@ -4447,12 +4513,14 @@ if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() &&
 
 # 14 更新说明
 
-## 2022-06-22(4.4.0)
+## 2022-07-18(4.4.0)
 ```
 1. 修复Android 12 奔溃问题，需要注释：// implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 2. ptz 能力集描述错误修改
 3. 获取设备在线状态
 4. 获取码率
+5. NVR支持
+6. 全彩模式支持
 ```
 
 ## 2022-06-21(4.1.0)
