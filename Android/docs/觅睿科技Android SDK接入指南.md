@@ -90,6 +90,7 @@
         * 9.5.21 [多档PIR设置](#9521-多档PIR设置)
         * 9.5.22 [SD卡录像类型和时间设置](#9522-SD卡录像类型和时间设置)
         * 9.5.23 [设备全彩模式设置](#9523-设备全彩模式设置)
+        * 9.5.24 [设备声光报警设置](#9524-设备声光报警设置)
     * 9.6 [门铃参数设置](#96-门铃参数设置)
         * 9.6.1 [设备对讲音量设置](#961-设备对讲音量设置)
         * 9.6.2 [解锁电池锁](#962-解锁电池锁)
@@ -1845,6 +1846,7 @@ if (cameraInfo.getLed() == 1) {
 - int ptr; 人形跟踪：0-不支持；1-支持
 - int pdt; 人形检测：0-不支持；bit0=支持开关设置；bit1=支持画框开关设置；bit2=支持夜间过滤开关设置；bit3=支持白天过滤开关设置
 - int ptz; 云台：0-不支持；1-支持上下左右；2-支持上下；3-支持左右
+- int sla; 声光报警：0-不支持；1-支持
 
 
 ## 9.2 设备参数
@@ -1890,6 +1892,8 @@ DeviceParams
 - int wirelessChimeEnable;  无线铃铛使能开关：0-关；1-开
 - int wirelessChimeVolume;  无线铃铛音量：0-100
 - String wirelessChimeSongs;  无线铃铛歌曲列表：["song1", "song2", "song3"]
+- int soundLightEnable;  声光报警开关：0-关；1-开；
+- int soundLightType;  声光报警方式：0-声音报警；1-白光灯报警；2-声光报警；
 
 
 ## 9.3 格式化设备SD卡
@@ -2738,9 +2742,9 @@ if (cameraInfo.getVer() >= 57){
 }
 
 // 当前事件类型
-int currenttype = deviceParams.getSdRecordType()
+int currenttype = deviceParams.getSdRecordType();
 // 当前事件录像的时间
-int currentDuration = deviceParams.getSdRecordDuration()
+int currentDuration = deviceParams.getSdRecordDuration();
 
 // 设置类型或时间
 MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDeviceParamsCallback() {
@@ -2769,8 +2773,53 @@ MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDevicePar
 public void setFullColorMode(int mode, ISetDeviceParamsCallback callback);
 
 【代码范例】
-int currentMode = deviceParams.getFullColorMode()
+int currentMode = deviceParams.getFullColorMode();
 MeariUser.getInstance().setFullColorMode(mode, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.24 设备声光报警设置
+```
+【描述】
+设备声光报警设置
+
+【函数调用】
+/**
+ * 设置声光报警开关
+ *
+ * @param enable enable
+ * @param callback Function callback
+ */
+public void setFloodCameraVoiceLightAlarmEnable(int enable, ISetDeviceParamsCallback callback)
+/**
+ * 设置声光报警方式
+ *
+ * @param alarmType alarmType
+ * @param callback Function callback
+ */
+public void setFloodCameraVoiceLightAlarmType(int alarmType, ISetDeviceParamsCallback callback)
+
+【代码范例】
+int currentEnable = deviceParams.getSoundLightEnable();
+MeariUser.getInstance().setFloodCameraVoiceLightAlarmEnable(enable, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+int currentType = deviceParams.getSoundLightType();
+MeariUser.getInstance().setFloodCameraVoiceLightAlarmType(type, new ISetDeviceParamsCallback() {
     @Override
     public void onSuccess() {
     }
@@ -4521,6 +4570,7 @@ if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() &&
 4. 获取码率
 5. NVR支持
 6. 全彩模式支持
+7. 声光报警支持
 ```
 
 ## 2022-06-21(4.1.0)

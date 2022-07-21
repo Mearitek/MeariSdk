@@ -89,6 +89,7 @@
         * 9.5.21 [PIR level setting](#9521-PIR-level-setting)
         * 9.5.22 [SD card recording type and time setting](#9522-SD-card-recording-type-and-time-setting)
         * 9.5.23 [Device Full Color Mode setting](#9523-Device-Full-Color-Mode-setting)
+        * 9.5.24 [Device sound and light alarm setting](#9524-Device-sound-and-light-alarm-setting)
     * 9.6 [Doorbell parameter setting](#96-Doorbell-parameter-setting)
         * 9.6.1 [Device Intercom volume settings](#961-Device-Intercom-volume-settings)
         * 9.6.2 [Unlock the battery lock](#962-Unlock-the-battery-lock)
@@ -1756,6 +1757,7 @@ device Capability
 - int ptr; humanoid tracking: 0-not supported; 1-support
 - int pdt; humanoid detection: 0-not supported; bit0-support switch setting; bit1-support picture frame setting; bit2-support night filter switch setting; bit3-support day filter switch setting
 - int ptz; pan-tilt: 0-not supported; 1-support left/top/right/bottom; 2-support top/bottom; 3-support left/right
+- int sla; sound and light alarm: 0-not supported; 1-support
 
 ## 9.2 Device parameters
 
@@ -1798,7 +1800,8 @@ device Capability
 - int wirelessChimeEnable; wireless bell switch: 0-off; 1-on
 - int wirelessChimeVolume; volume of wireless bell: 0-100
 - String wirelessChimeSongs; song list of wireless bell: ["song1", "song2", "song3"]
-
+- int soundLightEnable; sound and light alarm switch: 0-off; 1-on;
+- int soundLightType; sound and light alarm mode: 0-sound alarm; 1-white light alarm; 2-sound and light alarm;
 
 ## 9.3 Format device SD Card
 ```
@@ -2648,9 +2651,9 @@ if (cameraInfo.getVer() >= 57){
 }
 
 // current event type
-int currenttype = deviceParams.getSdRecordType()
+int currenttype = deviceParams.getSdRecordType();
 // The time of the current event recording
-int currentDuration = deviceParams.getSdRecordDuration()
+int currentDuration = deviceParams.getSdRecordDuration();
 
 // set type or time
 MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDeviceParamsCallback() {
@@ -2679,8 +2682,53 @@ Full Color Mode setting of device
 public void setFullColorMode(int mode, ISetDeviceParamsCallback callback);
 
 [code example]
-int currentMode = deviceParams.getFullColorMode()
+int currentMode = deviceParams.getFullColorMode();
 MeariUser.getInstance().setFullColorMode(mode, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.24 Device sound and light alarm setting
+```
+【description】
+Device sound and light alarm setting
+
+[function call]
+/**
+ * Set sound and light alarm switch
+ *
+ * @param enable enable
+ * @param callback Function callback
+ */
+public void setFloodCameraVoiceLightAlarmEnable(int enable, ISetDeviceParamsCallback callback)
+/**
+ * Set sound and light alarm mode
+ *
+ * @param alarmType alarmType
+ * @param callback Function callback
+ */
+public void setFloodCameraVoiceLightAlarmType(int alarmType, ISetDeviceParamsCallback callback)
+
+[code example]
+int currentEnable = deviceParams.getSoundLightEnable();
+MeariUser.getInstance().setFloodCameraVoiceLightAlarmEnable(enable, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+int currentType = deviceParams.getSoundLightType();
+MeariUser.getInstance().setFloodCameraVoiceLightAlarmType(type, new ISetDeviceParamsCallback() {
     @Override
     public void onSuccess() {
     }
@@ -4036,6 +4084,7 @@ See Demo for details
 4. Get bit rate
 5. NVR support
 6. Full Color Mode support
+7. sound and light alarm support
 ```
 
 ## 2022-06-21(4.1.0)
