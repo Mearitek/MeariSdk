@@ -121,7 +121,7 @@
 | ------ | ------ | ------ | ------ |
 | 2.0.1 | Meari Technology | 2019.06.25 | optimization
 | 3.1.0 | Meari Technology | 2021.07.05 | optimization
-| 4.1.0 | Meari Technology | 2021.03.23 | optimization
+| 4.1.0 | Meari Technology | 2022.03.23 | optimization
 
 </center>
 
