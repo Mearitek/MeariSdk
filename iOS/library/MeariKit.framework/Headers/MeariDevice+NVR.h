@@ -113,17 +113,17 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
 - (void)getNVRNetConfigKeyWithSucess:(MeariDeviceSuccess_Str)success failure:(MeariDeviceFailure)failure;
 
 /**
+ 搜索路由器流程添加子设备至的准备操作
+@param success Successful callback (成功回调)：返回搜索到的设备
+@param failure failure callback (失败回调)
+*/
+- (void)readyForSearchRouterNvrSubDeviceWithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
 获取搜索结果：Get Nvr Sub Device Result (添加子设备至路由器流程)
 @param success Successful callback (成功回调)：返回搜索到的设备
 @param failure failure callback (失败回调)
 */
 - (void)searchRouterNvrSubDeviceWithSuccess:(void(^)(NSArray<MeariSearchNVRSubDeviceModel *>* searchArray))success failure:(MeariDeviceFailure)failure;
-/**
-获取搜索结果：Get Nvr Sub Device Result
-@param success Successful callback (成功回调)：返回搜索到的设备
-@param failure failure callback (失败回调)
-*/
-- (void)initaddRouterNvrSubDeviceWithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 /**
 设置NVR设备全天录像：Set Nvr All Day Record
 @param success Successful callback (成功回调)

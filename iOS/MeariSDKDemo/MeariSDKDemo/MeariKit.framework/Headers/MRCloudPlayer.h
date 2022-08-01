@@ -104,6 +104,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)checkEncryKey:(NSString *)file password:(NSString *)password;
 
 + (int)transformTsToMp4:(NSString *)tsFile filePath:(NSString *)mp4Path;
+
+///  根据帧数 绘制生成对应的图片
+/// @param filePath 视频文件路径
+/// @param index 帧数
+/// @param rectArray rectArray中为CGRect的NSValue 类型
+/// @param colors 颜色数组 默认为红色
+/// @param imagePath 输出图片路径
++ (int)creatDrawRectangleImageWith:(NSString *)filePath frameIndex:(int)index rectangleArray:(NSArray <NSValue *>*)rectArray colors:(NSArray <UIColor *>*)colors imagePath:(NSString *)imagePath;
 @end
 
 NS_ASSUME_NONNULL_END
