@@ -223,8 +223,8 @@ repositories {
 dependencies {
      // Required libraries
     // aar required
-    implementation(name: 'core-sdk-device-440-20220718', ext: 'aar')
-    implementation(name: 'core-sdk-meari-440-20220718', ext: 'aar')
+    implementation(name: 'core-sdk-device-440-20220805', ext: 'aar')
+    implementation(name: 'core-sdk-meari-440-20220805', ext: 'aar')
 
     implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
@@ -4076,7 +4076,7 @@ See Demo for details
 
 # 14 Release Notes
 
-## 2022-07-18(4.4.0)
+## 2022-08-05(4.4.0)
 ```
 1. Fix Android 12 crash problem, need to comment: // implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 2. ptz capability set error description modification

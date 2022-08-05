@@ -1,10 +1,18 @@
 package com.meari.test.device;
 
+import static android.view.MotionEvent.ACTION_CANCEL;
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.meari.sdk.MeariDeviceController;
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.bean.CameraInfo;
+import com.meari.sdk.bean.MeariMoveDirection;
 import com.meari.sdk.bean.VideoTimeRecord;
 import com.meari.sdk.callback.IDeviceAlarmMessageTimeCallback;
 import com.meari.sdk.callback.IPlaybackDaysCallback;
@@ -47,6 +56,7 @@ public class DeviceMonitorActivity extends AppCompatActivity {
     private CameraInfo cameraInfo;
     private MeariDeviceController deviceController;
     private ImageView imgMute, imgSpeak;
+    private LinearLayout ll_video_view;
 
     private int position = 0;// 0-preview; 1-playback;
 
@@ -89,7 +99,7 @@ public class DeviceMonitorActivity extends AppCompatActivity {
         int width = widthDisplay < heightDisplay ? widthDisplay : heightDisplay;
         int height = heightDisplay > widthDisplay ? heightDisplay : widthDisplay;
 
-        LinearLayout ll_video_view = findViewById(R.id.ll_video);
+        ll_video_view = findViewById(R.id.ll_video);
         videoSurfaceView = new PPSGLSurfaceView(this, width, height);
         videoSurfaceView.setKeepScreenOn(true);
         ll_video_view.addView(videoSurfaceView);
@@ -216,6 +226,8 @@ public class DeviceMonitorActivity extends AppCompatActivity {
                 }
             }
         });
+
+        initGestureDetector();
 
         // connect Device
         connect();
@@ -633,6 +645,168 @@ public class DeviceMonitorActivity extends AppCompatActivity {
             return 2;
         }
     }
+
+    private ScaleGestureDetector mScaleGestureDetector;
+    private GestureDetector mGestureDetector;
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void initGestureDetector() {
+        mScaleGestureDetector = new ScaleGestureDetector(this, scaleGestureListener);
+        mGestureDetector = new GestureDetector(this, simpleOnGestureListener);
+        ll_video_view.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case ACTION_DOWN:
+                    break;
+                case ACTION_CANCEL:
+                case ACTION_UP:
+                    isPtzControl = false;
+                    MeariUser.getInstance().stopPTZControl();
+                    break;
+                default:
+                    break;
+            }
+//            if (getCurrentPosition() == SingleVideoPlayActivity.TYPE_PLAYBACK_CLOUD) {
+//                return super.onTouchEvent(event);
+//            }
+            mScaleGestureDetector.onTouchEvent(event);
+            mGestureDetector.onTouchEvent(event);
+            return true;
+        });
+//        video_view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onVideoClick();
+//            }
+//        });
+    }
+
+    private float mScale = 1.0f;// 缩放倍数
+    private float mSpan;
+    private final double EPSINON = 0.000001;
+    /**
+     * 控制云台时只有滑动大于MOVE_DISTANCE才算有效滑动
+     */
+    private final int MOVE_DISTANCE = 10;
+    /**
+     * 是否正在控制摄像头
+     */
+    private boolean isPtzControl;
+
+    /**
+     * Gesture detection
+     */
+    ScaleGestureDetector.OnScaleGestureListener scaleGestureListener = new ScaleGestureDetector.OnScaleGestureListener() {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            // 两个触点的前一次距离
+            mSpan = detector.getScaleFactor();
+
+            if (mSpan > 1) {
+                mSpan = (mSpan - 1) / 15 + 1;
+            } else {
+                mSpan = (mSpan - 1) / 7 + 1;
+            }
+            if (scaleThread != null) {
+                scaleThread.interrupt();
+            }
+            scaleThread = new Thread(scaleRunnable);
+            scaleThread.start();
+            return false;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector detector) {
+        }
+    };
+    GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+//            onVideoClick();
+            return super.onSingleTapConfirmed(e);
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            /**
+             * 如果不是不是预览返回
+             */
+//            if (getCurrentPosition() == SingleVideoPlayActivity.TYPE_PLAYBACK_CLOUD || getCurrentPosition() == SingleVideoPlayActivity.TYPE_PLAYBACK) {
+//                return super.onScroll(e1, e2, distanceX, distanceY);
+//            }
+//            if (presenter.getPlayVideoMode(SingleVideoPlayActivity.TYPE_LIVE) == null) {
+//                return super.onScroll(e1, e2, distanceX, distanceY);
+//            }
+            if (Math.abs(mScale - 1) < EPSINON && e2.getPointerCount() == 1 && e1.getPointerCount() == 1) {
+                moveCamera(e2.getX() - e1.getX(), e2.getY() - e1.getY());
+            } else {
+                if (Math.abs(mScale - 1) < EPSINON) {
+                    return true;
+                }
+                if (deviceController != null) {
+                    deviceController.moveVideo(distanceX, distanceY);
+                }
+                return true;
+            }
+            Logger.i("tag", "onScroll: " + distanceX + ", " + distanceY);
+//            ll_preview.setY(distanceY);
+//            ll_preview.setTranslationY(distanceY);
+//            yy += distanceY;
+//            if (yy < 0) {
+//                yy = 0;
+//            }
+//            if (yy >300) {
+//                yy = 300;
+//            }
+//            ll_preview.scrollTo(0, yy);
+//            return true;
+            return super.onScroll(e1, e2, distanceX, distanceY);
+        }
+    };
+
+    public void moveCamera(float moveX, float moveY) {
+        boolean isEffectiveSliding = isEffectiveSliding(moveX, moveY);
+        if (deviceController != null && isEffectiveSliding && !this.isPtzControl) {
+            this.isPtzControl = true;
+            if ((moveX) > 10 && Math.abs(moveY) < 30) {
+                // 右
+                MeariUser.getInstance().startPTZControl(MeariMoveDirection.RIGHT);
+            } else if ((moveX) < -10 && Math.abs(moveY) < 30) {
+                // 左
+                MeariUser.getInstance().startPTZControl(MeariMoveDirection.LEFT);
+            } else if ((moveY) > 10 && Math.abs(moveX) < 30) {
+                //下
+                MeariUser.getInstance().startPTZControl(MeariMoveDirection.DOWN);
+            } else if ((moveY) < -10 && Math.abs(moveX) < 30) {
+                // 上
+                MeariUser.getInstance().startPTZControl(MeariMoveDirection.UP);
+            }
+        }
+    }
+
+    private boolean isEffectiveSliding(float moveX, float moveY) {
+        return (Math.abs(moveY) > MOVE_DISTANCE || Math.abs(moveX) > MOVE_DISTANCE);
+    }
+
+    private Thread scaleThread;
+    private final Runnable scaleRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mScale = mScale * mSpan;
+            if (mScale > 8) {
+                mScale = 8;
+            } else if (mScale < 1) {
+                mScale = 1;
+            }
+            if (deviceController != null) {
+                deviceController.zoomVideo(mScale);
+            }
+        }
+    };
 
 
 }

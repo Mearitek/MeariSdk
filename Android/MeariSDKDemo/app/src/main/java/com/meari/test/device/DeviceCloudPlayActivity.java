@@ -122,6 +122,9 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
         });
 
         mVideoView = findViewById(R.id.video_view);
+        // 开启移动和缩放
+        mVideoView.enableMoveAndScale();
+
         if (cloudPlayerController == null) {
             cloudPlayerController = new CloudPlayerController(DeviceCloudPlayActivity.this, mVideoView, this);
         }

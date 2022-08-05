@@ -237,8 +237,8 @@ repositories {
 
 dependencies {
     // aar 必需依赖库
-    implementation(name: 'core-sdk-device-440-20220718', ext: 'aar')
-    implementation(name: 'core-sdk-meari-440-20220718', ext: 'aar')
+    implementation(name: 'core-sdk-device-440-20220805', ext: 'aar')
+    implementation(name: 'core-sdk-meari-440-20220805', ext: 'aar')
 
     implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
@@ -4562,7 +4562,7 @@ if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() &&
 
 # 14 更新说明
 
-## 2022-07-18(4.4.0)
+## 2022-08-05(4.4.0)
 ```
 1. 修复Android 12 奔溃问题，需要注释：// implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 2. ptz 能力集描述错误修改

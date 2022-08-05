@@ -17,7 +17,7 @@ public class MeariApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        MeariSdk.init(MeariApplication.this, new MyMessageHandler());
+        MeariSdk.init(MeariApplication.this, 8, new MyMessageHandler());
         meariLog.createlibrarylog();
         meariLog.getInstance().setlevel(0);
         // set Debug model

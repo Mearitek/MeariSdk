@@ -50,8 +50,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // aar required
-    implementation(name: 'core-sdk-device-440-20220718', ext: 'aar')
-    implementation(name: 'core-sdk-meari-440-20220718', ext: 'aar')
+    implementation(name: 'core-sdk-device-440-20220805', ext: 'aar')
+    implementation(name: 'core-sdk-meari-440-20220805', ext: 'aar')
 
     implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
