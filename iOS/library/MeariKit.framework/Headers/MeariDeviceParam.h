@@ -722,7 +722,7 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 @property (nonatomic, assign) BOOL nightLightOn;
 
 @property (nonatomic, copy) NSString *iccID;
-@property (nonatomic, copy) NSString *iemi;
+@property (nonatomic, copy) NSString *imei;
 
 - (instancetype)initWithIotDic:(NSDictionary *)dic device:(MeariDevice *)device;
  
