@@ -54,7 +54,7 @@ dependencies {
 //    implementation 'com.meari.sdk:sdk-core:2.0.1'
 
     // aar required
-    implementation(name: 'mearisdk-3.1.0-rubetek-20211026', ext: 'aar')
+    implementation(name: 'mearisdk-release', ext: 'aar')
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
