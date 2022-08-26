@@ -22,7 +22,10 @@ typedef NS_ENUM(NSInteger, MeariAddSubDeviceStatus){
 @interface MeariSearchNVRSubDeviceModel : NSObject
 @property(nonatomic, copy) NSString *sn;
 @property(nonatomic, copy) NSString *ip;
-@property(nonatomic, assign) MeariAddSubDeviceType addType;//0-未添加 1-添加中 2-添加成功 3-添加失败
+
+@property(nonatomic, copy) NSString *type;
+@property(nonatomic, copy) NSString *add_status;
+@property(nonatomic, assign) MeariAddSubDeviceType addType;//0-Meari 1-Onvif
 @property(nonatomic, assign) MeariAddSubDeviceStatus addStatus;//0-未添加 1-添加中 2-添加成功 3-添加失败
 @end
 

@@ -48,6 +48,7 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 #import <MeariKit/MeariCustomServerMsg.h>
 #import <MeariKit/MeariSmartSceneManager.h>
 #import <MeariKit/MeariUserAfterSaleModel.h>
+#import <MeariKit/MeariSimTrafficModel.h>
 #import <MeariKit/MeariPanelHistoryInfo.h>
 #import <MeariKit/MeariPanelHistoryInfo.h>
 #import <MeariKit/MeariIotPanel.h>
