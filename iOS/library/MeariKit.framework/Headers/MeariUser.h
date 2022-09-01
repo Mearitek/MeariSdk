@@ -30,6 +30,11 @@
 @class MeariCustomServerMsgAck;
 @class MeariCustomServerMsg;
 @class MeariUserAfterSaleModel;
+@class MeariSimTrafficOrderModel;
+@class MeariSimTrafficPlanModel;
+@class MeariSimTrafficModel;
+@class MeariSimTrafficUnuseModel;
+@class MeariSimTrafficHistoryModel;
 typedef void(^MeariSuccess)(void);
 typedef void(^MeariSuccess_Avatar)(NSString *avatarUrl);
 typedef void(^MeariSuccess_DeviceList)(MeariDeviceList *deviceList);
@@ -1796,4 +1801,15 @@ Get User Preference
  验证用户三方登录邮箱验证码
 */
 - (void)verfyBindedEmailCode:(NSString *)code email:(NSString *)email sucess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+#pragma mark - 4G
+- (void)queryDeviceTrafficWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID sucess:(void(^)(NSString *simId ,MeariSimTrafficModel *currentModel, NSArray<MeariSimTrafficUnuseModel *>* unuseArray, NSArray<MeariSimTrafficHistoryModel *>* historyArray))success failure:(MeariFailure)failure;
+
+- (void)queryDeviceTrafficPlanWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID sucess:(void(^)(NSArray<MeariSimTrafficPlanModel *>* planArray, BOOL tryStatus, NSString *maxMonth))success failure:(MeariFailure)failure;
+
+- (void)createDeviceTrafficOrderWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID packageID:(NSString *)packageID payType:(NSString *)payType payMoney:(NSInteger)payMoney paymentMethodNonce:(NSInteger)paymentMethodNonce quantity:(NSInteger)quantity sucess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+- (void)tryDeviceTrafficPlanWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID sucess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+- (void)getDeviceTrafficOrderListWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID sucess:(void(^)(NSArray<MeariSimTrafficOrderModel *>* orderArray))success failure:(MeariFailure)failure;
+
 @end

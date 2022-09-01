@@ -102,9 +102,10 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
 
  @param text QR code info(二维码信息)
  @param size QR code size(二维码大小)
+ @param code 编码格式
  @return QR code image(二维码图片)
  */
-- (UIImage *)createQRCodeWithText:(NSString *)text size:(CGSize)size;
+- (UIImage *)createQRCodeWithText:(NSString *)text size:(CGSize)size encode:(NSStringEncoding)code;
 
 /**
  AP配网传递的参数
@@ -232,7 +233,7 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
 
 #pragma mark - Encryption  Qrcode
 
-- (char *)qrcodeMeariEncryption:(NSString *)content;
+- (NSString *)qrcodeMeariEncryption:(NSString *)content;
 - (NSString *)qrcodeMeariDecryption:(char *)content length:(NSInteger)length;
 
 @end

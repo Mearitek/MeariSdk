@@ -441,6 +441,8 @@ typedef NS_ENUM(NSUInteger, MeariAddSubDeviceMode) {
 /** 用户ID */
 /** userID */
 @property (nonatomic, assign) NSInteger userID;
+// device bind sim id(the device is 4G)
+@property (nonatomic, assign) NSInteger simID;
 // device bind id(the device is jingle)
 @property (nonatomic, assign) NSInteger bindDeviceID;
 // device had be bind
