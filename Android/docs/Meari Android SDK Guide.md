@@ -223,13 +223,12 @@ repositories {
 dependencies {
      // Required libraries
     // aar required
-    implementation(name: 'core-sdk-device-440-20220901', ext: 'aar')
-    implementation(name: 'core-sdk-meari-440-20220901', ext: 'aar')
+    implementation(name: 'core-sdk-device-440-20221010', ext: 'aar')
+    implementation(name: 'core-sdk-meari-440-20221010', ext: 'aar')
 
     implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-//    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
     implementation 'com.alibaba:fastjson:1.1.67.android'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.zxing:core:3.3.3'
@@ -4076,7 +4075,7 @@ See Demo for details
 
 # 14 Release Notes
 
-## 2022-09-01(4.4.0)
+## 2022-10-10(4.4.0)
 ```
 1. Fix Android 12 crash problem, need to comment: // implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 2. ptz capability set error description modification
