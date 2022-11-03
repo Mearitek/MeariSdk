@@ -10,7 +10,7 @@
 
 @interface MeariDeviceFirmwareInfo : MeariBaseModel
 @property (nonatomic, copy) NSString *upgradeUrl;           //url for update (设备升级地址)
-@property (nonatomic, copy) NSString *latestVersion;        //latest version (设备最新版本)
+@property (nonatomic, copy) NSString *deviceLatestVersion;        //latest version (设备最新版本)
 @property (nonatomic, copy) NSString *upgradeDescription;   //latest version description (设备升级描述)
 @property (nonatomic, assign) BOOL needUpgrade;             //whether need force upgrade or not (是否需要升级)
 @property (nonatomic, assign) BOOL forceUpgrade;            //whether to force Upgrade (是否需要强制升级)

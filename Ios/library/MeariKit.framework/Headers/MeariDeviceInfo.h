@@ -324,7 +324,7 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
 @property (nonatomic, assign) MeariDeviceType type;
 /** device sub type */
 /** 设备类型子类 */
-@property (nonatomic, assign) MeariDeviceSubType subType;
+@property (nonatomic, assign) MeariDeviceSubType deviceSubType;
 /** device add status */
 /** 设备添加状态 */
 @property (nonatomic, assign) MeariDeviceAddStatus addStatus;
@@ -356,7 +356,7 @@ typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
 @property (nonatomic, assign) MeariDeviceSleepMode sleepMode;
 /** 设备编号 */
 /** device ID */
-@property (nonatomic, assign) NSInteger ID;
+@property (nonatomic, assign) NSInteger deviceID;
 /** 用户ID */
 /** userID */
 @property (nonatomic, assign) NSInteger userID;

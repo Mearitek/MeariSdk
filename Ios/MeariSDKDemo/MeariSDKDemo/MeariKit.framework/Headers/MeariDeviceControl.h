@@ -416,7 +416,7 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  
  @param muted muted is mute?(是否静音)
  */
-- (void)setMute:(BOOL)muted;
+- (void)setCameraMute:(BOOL)muted;
 
 /**
  Get mute(获取静音)

@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 @property (nonatomic, strong) MeariDeviceInfo *info;
 /** device params*/
 /** 控制功能的参数信息*/
-@property (nonatomic, strong) MeariDeviceParam *param;
+@property (nonatomic, strong) MeariDeviceParam *deviceParam;
 /** normal device*/
 /** 是否是普通摄像机*/
 @property (nonatomic, assign, readonly, getter = isIpcCommon) BOOL ipcCommon;

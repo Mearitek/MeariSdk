@@ -11,6 +11,6 @@
 
 @interface MeariPlayView : UIView
 
-@property (nonatomic, strong, readonly)MRGLView *videoView;
+@property (nonatomic, strong, readonly)MRGLView *cameraVideoView;
 
 @end

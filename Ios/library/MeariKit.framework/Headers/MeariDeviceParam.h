@@ -164,10 +164,10 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightType) {
 @property (nonatomic, copy)NSString *company;
 /** Total storage space */
 /** 总存储空间 */
-@property (nonatomic, copy)NSString *totalSpace;
+@property (nonatomic, copy)NSString *sdTotalSpace;
 /** Remaining storage space */
 /** 剩余存储空间 */
-@property (nonatomic, copy)NSString *freeSpace;
+@property (nonatomic, copy)NSString *sdFreeSpace;
 /** Is formatting ? */
 /** 是否正在格式化 */
 @property (nonatomic, assign)BOOL isFormatting;
