@@ -1,5 +1,5 @@
 
-### QR Code Token Interface
+### Delete Device Interface
 
 - http request method
     ```
@@ -8,7 +8,7 @@
     
 - URI
     ```
-    /v1/third/customer/device/token
+    /v1/third/customer/device/delete
     ```
 
 - Request parameter
@@ -16,16 +16,13 @@
    | name | type of data | instruction | for example |
    | ------ | ------ | ------ | ------ |
    | userID | string | Get in the return value of login |  |
-   | timeZone | string |  | UTC08:00 |
-   | region | string |  | Asia/Shanghai |
+   | deviceID | string | Get in the return value of device list |  |
    | sourceApp | string | Customer Number |  |
    
 - Response example
     ```
     {
-        "smart_switch":5,
-        "resultCode":"1001",
-        "token":"CN-00000gs9tttt"
+        "resultCode":"1001"
     }
     ```
 
