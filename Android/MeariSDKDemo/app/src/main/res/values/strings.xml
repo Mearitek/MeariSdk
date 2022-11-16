@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">MeariSDKDemo</string>
-    <string name="com_user_name">account</string>
-    <string name="toast_success">Success</string>
-    <string name="toast_fail">Failed</string>
-</resources>
