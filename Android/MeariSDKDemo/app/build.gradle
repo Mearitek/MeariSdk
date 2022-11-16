@@ -54,21 +54,22 @@ dependencies {
 //    implementation 'com.meari.sdk:sdk-core:2.0.1'
 
     // aar required
-    implementation(name: 'mearisdk-release', ext: 'aar')
-    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
-    implementation 'com.alibaba:fastjson:1.1.67.android'
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.google.zxing:core:3.3.3'
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-    def aws_version = "2.16.+"
-    implementation("com.amazonaws:aws-android-sdk-iot:$aws_version") {
-        exclude group: 'org.eclipse.paho'
-    }
-    implementation ("com.amazonaws:aws-android-sdk-mobile-client:$aws_version") { transitive = true }
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+//    implementation(name: 'mearisdk-release', ext: 'aar')
+//    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
+//    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+//    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+//    implementation 'com.alibaba:fastjson:1.1.67.android'
+//    implementation 'com.google.code.gson:gson:2.8.6'
+//    implementation 'com.google.zxing:core:3.3.3'
+//    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+//    def aws_version = "2.16.+"
+//    implementation("com.amazonaws:aws-android-sdk-iot:$aws_version") {
+//        exclude group: 'org.eclipse.paho'
+//    }
+//    implementation ("com.amazonaws:aws-android-sdk-mobile-client:$aws_version") { transitive = true }
+//    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
+//    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.meari:sdk_rb:3.1.0'
 
     // others
     implementation 'androidx.multidex:multidex:2.0.1'
