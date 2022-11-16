@@ -17,7 +17,7 @@ Add the Meari sdk Maven repository URL to the `build.gradle` file in the root di
 ```
 repositories {
     mavenCentral()
-	maven { url 'https://raw.githubusercontent.com/Mearitek/MeariSdk/RB-AAR' }
+    maven { url 'https://raw.githubusercontent.com/Mearitek/MeariSdk/RB-AAR' }
 }
 ```
 
