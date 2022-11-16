@@ -64,13 +64,14 @@ repositories {
 }
 
 dependencies {
-    // 必需依赖库
-    implementation(name: 'sdk-core-3.1.0-beta6', ext: 'aar')
-    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
-    implementation 'com.alibaba:fastjson:1.2.57'
-    implementation 'com.google.zxing:core:3.3.3'
+    implementation 'com.meari:sdk_rb:3.1.0'
+}
+
+添加Meari sdk Maven仓库的url到根目录的build.gradle文件中
+
+repositories {
+    mavenCentral()
+    maven { url 'https://raw.githubusercontent.com/Mearitek/MeariSdk/RB-AAR' }
 }
 ```
 
