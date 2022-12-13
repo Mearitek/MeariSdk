@@ -24,6 +24,10 @@
         "resultCode":"1001",
         "result":{
             "hostKey":"",
+            "userId":"",
+            "sourceApp":"",
+            "countryCode":"",
+            "snNum":"",
             "pfApi":{
                 "openapi":{
                     "domain":""
