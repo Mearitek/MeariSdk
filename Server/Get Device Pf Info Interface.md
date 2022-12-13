@@ -16,6 +16,7 @@
    | name | type of data | instruction | for example |
    | ------ | ------ | ------ | ------ |
    | licenseID | string | device license |  |
+   | partnerKey | string | Key (public key) |  |
    
 - Response example
     ```
