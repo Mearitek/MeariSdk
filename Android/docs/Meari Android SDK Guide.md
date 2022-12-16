@@ -64,7 +64,7 @@ repositories {
 }
 
 dependencies {
-     implementation 'com.meari:sdk_rb:3.1.0'
+     implementation 'com.meari:sdk_rb:3.1.1'
 }
 
 Add the Meari sdk Maven repository URL to the build.gradle file in the root directory.

@@ -64,7 +64,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.meari:sdk_rb:3.1.0'
+    implementation 'com.meari:sdk_rb:3.1.1'
 }
 
 添加Meari sdk Maven仓库的url到根目录的build.gradle文件中
