@@ -8,9 +8,9 @@
   <packaging>aar</packaging>
   <dependencies>
     <dependency>
-      <groupId>cloudedge-android-4.3.0.mearisdk</groupId>
+      <groupId>com.meari</groupId>
       <artifactId>sdk_rb_device</artifactId>
-      <version>unspecified</version>
+      <version>4.4.0</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
