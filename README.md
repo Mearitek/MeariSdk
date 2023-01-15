@@ -8,7 +8,7 @@ Insert the following dependency to `build.gradle` file of your project.
 
 ```
 dependencies {
-    implementation 'com.meari:sdk_rb:3.1.1'
+    implementation 'com.meari:sdk:4.6.0'
 }
 ```
 
@@ -17,7 +17,7 @@ Add the Meari sdk Maven repository URL to the `build.gradle` file in the root di
 ```
 repositories {
     mavenCentral()
-    maven { url 'https://raw.githubusercontent.com/Mearitek/MeariSdk/RB-AAR' }
+    maven { url 'https://raw.githubusercontent.com/Mearitek/MeariSdk/MEARI-SDK' }
 }
 ```
 
