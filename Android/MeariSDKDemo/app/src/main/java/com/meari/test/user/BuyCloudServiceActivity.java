@@ -359,8 +359,9 @@ public class BuyCloudServiceActivity extends AppCompatActivity implements Config
         }
         String storageTime = mRecordTimeType == 0 ? "3" : (mRecordTimeType == 1 ? "7" : "30");
         String storageType = String.valueOf(mRecordType);
+        String payType = String.valueOf(2);
         String payPalNonce = mPaymentMethodNonce.getNonce();
-        MeariUser.getInstance().createPayPalOrder(deviceID, payMoney, serverTime, mealType, storageTime, storageType, payPalNonce,
+        MeariUser.getInstance().createPayPalOrder(deviceID, payMoney, serverTime, mealType, storageTime, storageType, payType, payPalNonce,
                 new IPayCallback() {
                     @Override
                     public void onSuccess(OrderInfo orderInfo) {

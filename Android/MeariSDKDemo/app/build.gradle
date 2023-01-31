@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.meari.xtest"
-        minSdkVersion 17
-        targetSdkVersion 29
+        minSdkVersion 19
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -69,7 +69,8 @@ dependencies {
 //    implementation ("com.amazonaws:aws-android-sdk-mobile-client:$aws_version") { transitive = true }
 //    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
 //    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'com.meari:sdk_rb:3.1.1'
+//    implementation 'com.meari:sdk_rb:3.1.1'
+    implementation 'com.meari:sdk_rb_meari:4.4.0'
 
     // others
     implementation 'androidx.multidex:multidex:2.0.1'

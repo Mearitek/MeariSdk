@@ -14,23 +14,25 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.meari.sdk.CloudPlayerController;
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.bean.CameraInfo;
+import com.meari.sdk.bean.VideoTimeRecord;
 import com.meari.sdk.callback.ICloudAlarmMessageTimeCallback;
 import com.meari.sdk.callback.ICloudGetVideoCallback;
 import com.meari.sdk.callback.ICloudPlayerCallback;
 import com.meari.sdk.callback.ICloudVideoTimeRecordCallback;
 import com.meari.sdk.utils.Logger;
 import com.meari.test.R;
-import com.ppstrong.ppsplayer.VideoTimeRecord;
-import com.ppstrong.weeye.widget.media.CloudPlayerController;
 import com.ppstrong.weeye.widget.media.IjkVideoView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -120,12 +122,20 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
         });
 
         mVideoView = findViewById(R.id.video_view);
+        // 开启移动和缩放
+        mVideoView.enableMoveAndScale();
+
         if (cloudPlayerController == null) {
             cloudPlayerController = new CloudPlayerController(DeviceCloudPlayActivity.this, mVideoView, this);
         }
 
-        getCloudVideoTimeRecordInDay(2020, 9, 21);
-        postEventTime(2020, 9, 14);
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DATE);
+
+        getCloudVideoTimeRecordInDay(year, month, day);
+        postEventTime(year, month, day);
 
     }
 
@@ -136,7 +146,7 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
         mMonth = month;
         mDay = day;
         MeariUser.getInstance().getCloudVideoTimeRecordInDay(String.valueOf(cameraInfo.getDeviceID()),
-                year, month, day, new ICloudVideoTimeRecordCallback() {
+                year, month, day, "", new ICloudVideoTimeRecordCallback() {
                     @Override
                     public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
                         if (recordList == null || recordList.size() <= 0) {
@@ -165,7 +175,7 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
     }
 
     private void getCloudVideo(int index) {
-        MeariUser.getInstance().getCloudVideo(String.valueOf(cameraInfo.getDeviceID()), index, mYear, mMonth, mDay,
+        MeariUser.getInstance().getCloudVideo(String.valueOf(cameraInfo.getDeviceID()), index, mYear, mMonth, mDay, "",
                 new ICloudGetVideoCallback() {
                     @Override
                     public void onSuccess(String videoInfo, String startTime, String endTime) {
