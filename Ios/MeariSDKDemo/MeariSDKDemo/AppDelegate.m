@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import <MeariKit/MeariKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import <Braintree/BTAppSwitch.h>
+//#import <Braintree/BTAppSwitch.h>
 static  NSString *app_key = @"8a48b2105058489aba0c08b79325ef3f";
 static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
 @interface AppDelegate ()
@@ -28,7 +28,7 @@ static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
      [[MeariSDK sharedInstance] configEnvironment:env];
      [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelVerbose];
     
-     [BTAppSwitch setReturnURLScheme:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"]];
+//     [BTAppSwitch setReturnURLScheme:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"]];
     return YES;
 }
 

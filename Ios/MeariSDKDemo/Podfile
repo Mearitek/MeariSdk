@@ -2,12 +2,17 @@
 # platform :ios, '9.0'
 source 'https://github.com/aliyun/aliyun-specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
+#post_install do |installer|
+#    installer.pods_project.build_configurations.each do |config|
+#      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+#    end
+#end
 target 'MeariSDKDemo' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for MeariSDKDemo
-  pod 'Braintree/PayPal'
+#  pod 'Braintree/PayPal'
   pod 'AFNetworking', '4.0.1'
   pod 'MJExtension',  '~>3.0.17'
   pod 'AliyunOSSiOS', '~>2.10.7'

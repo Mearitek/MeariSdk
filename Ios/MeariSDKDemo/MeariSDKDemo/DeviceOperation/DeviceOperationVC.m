@@ -52,11 +52,11 @@
     
 - (IBAction)connect:(id)sender {
     if (self.camera.lowPowerDevice) {
-        [[MeariUser sharedInstance] remoteWakeUpWithDeviceID:self.camera.info.ID success:^{
-            NSLog(@"server remote device success");
-        } failure:^(NSError *error) {
-            NSLog(@"server remote device failure --- %@",error);
-        }];
+//        [[MeariUser sharedInstance] remoteWakeUpWithDeviceID:self.camera.info.ID success:^{
+//            NSLog(@"server remote device success");
+//        } failure:^(NSError *error) {
+//            NSLog(@"server remote device failure --- %@",error);
+//        }];
     }
     [self.camera startConnectSuccess:^{
         NSLog(@"connect success");
@@ -91,7 +91,7 @@
         NSLog(@"start preview failure --- %@",error);
     } close:^(MeariDeviceSleepMode sleepModeType) {
         NSLog(@"device open sleep mode  --- %ld", sleepModeType);
-    }];
+    } abnormal:nil];
     
 }
 - (IBAction)stopPreView:(id)sender {
@@ -215,7 +215,7 @@
 }
 - (IBAction)mute:(UIButton *)sender  {
     sender.selected = !sender.selected;
-    [self.camera setMute:sender.selected];
+//    [self.camera setMute:sender.selected];
 }
 
 #pragma mark ---  Tool

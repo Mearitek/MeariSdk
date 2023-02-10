@@ -36,10 +36,10 @@
     info.key = msg.data.hostKey;
     info.bellVoice = msg.data.bellVoice;
     info.nickname = msg.data.deviceName;
-    info.ID = msg.data.deviceID;
+//    info.ID = msg.data.deviceID;
     info.uuid = msg.data.deviceUUID;
     info.type = msg.data.devType;
-    info.subType = msg.data.devSubType;
+//    info.subType = msg.data.devSubType;
     info.capability = msg.data.capability;
     info.protocolVersion = msg.data.protocolVersion;
     info.tp = msg.data.tp;

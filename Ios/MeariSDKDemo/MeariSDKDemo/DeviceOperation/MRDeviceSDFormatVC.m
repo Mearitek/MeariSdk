@@ -55,9 +55,9 @@
             
         }else {
             if(storage.isFormatting){
-                weakSelf.sdcardStatusTextView.text = [NSString stringWithFormat:@"sd card isFormatting ,  %@/%@", storage.totalSpace, storage.freeSpace];
+//                weakSelf.sdcardStatusTextView.text = [NSString stringWithFormat:@"sd card isFormatting ,  %@/%@", storage.totalSpace, storage.freeSpace];
             } else {
-                weakSelf.sdcardStatusTextView.text = [NSString stringWithFormat:@"sd card normal ,  %@/%@", storage.totalSpace, storage.freeSpace];
+//                weakSelf.sdcardStatusTextView.text = [NSString stringWithFormat:@"sd card normal ,  %@/%@", storage.totalSpace, storage.freeSpace];
             }
         }
     } failure:^(NSError *error) {
