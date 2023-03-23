@@ -39,7 +39,8 @@
         * 6.2.1 [Device preview](#621-Device-preview)
         * 6.2.2 [Device SD card playback](#622-Device-SD-card-playback)
     * 6.3 [Device related](#63-Device-related)
-        * 6.3.1 [Doorbell answering process](#631-Doorbell-answering-process) 
+        * 6.3.1 [Doorbell answering process](#631-Doorbell-answering-process)
+        * 6.3.2 [Master Message](#632-Master-Message)
 * 7 [Share device](#7-Share-device)
     * 7.1 [Introduction of related class](#71-Introduction-of-related-class)
     * 7.2 [Get device share list](#72-Get-device-share-list)
@@ -1281,6 +1282,133 @@ MeariUser.getInstance().postHangUpBell(bellInfo.getDeviceID(), new IResultCallba
         // Close the hole, close the page
         ...
     }
+});
+```
+
+### 6.3.2 Master Message
+
+> Doorbell devices that support messages can record messages and choose to play them when answering the call.
+
+- 1 Determine whether to support the message function
+```
+if (MeariDeviceUtil.isSupportHostMessage(cameraInfo)) {
+}
+
+// The maximum number of master messages
+private int voiceMailMaxSize;
+// The maximum time for the owner to leave a message (seconds)
+private int voiceMailDuration = 10;
+
+if (cameraInfo.getHms() == 1) {
+    voiceMailMaxSize = 1;
+    voiceMailDuration = 30;
+} else if (cameraInfo.getHms() == 2){
+    voiceMailMaxSize = 3;
+    voiceMailDuration = 10;
+}
+```
+
+- 2 Get device message list
+```
+MeariUser.getInstance().getVoiceMailList(cameraInfo.getDeviceID(), this, new IGetVoiceMailListCallback() {
+    @Override
+    public void onSuccess(ArrayList<VoiceMailInfo> voiceMailList) {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
+- 3 To record and upload messages, microphone permission is required
+```
+private String g711uFilePath;
+private String wavFilePath;
+private String pcmFilePath;
+
+// start recording
+controller.startRecordVoiceMail(pcmFilePath, g711uFilePath);
+
+// end recording
+controller.stopRecordVoiceMail();
+
+// convert format
+controller.changeG711u2WAV(g711uFilePath, wavFilePath, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+        
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+    }
+});
+
+// upload message
+File wavFile = new File(wavFilePath);
+List<File> fileList = new ArrayList<>();
+fileList.add(wavFile);
+MeariUser.getInstance().uploadVoiceMail(cameraInfo.getDeviceID(), voiceMailName, fileList, new IUploadVoiceMailCallback() {
+    @Override
+    public void onSuccess(VoiceMailInfo voiceMailInfo) {
+        
+    }
+
+    @Override
+    public void onError(int code, String error) {
+        handler.sendEmptyMessage(MSG_UPLOAD_RECORD_FAILED);
+    }
+});
+```
+
+- 4 Control device to play message
+```
+MeariUser.getInstance().sendVoiceMail(cameraInfo.getDeviceID(), voiceMailInfo.getVoiceId(), this, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
+
+- 5 Play message on mobile phone
+```
+// download message
+MeariUser.getInstance().downloadFile(voiceMailInfo.getVoiceUrl(), destFileDir, destFileName, new IDownloadFileCallback() {
+    @Override
+    public void onSuccess(File file) {
+        changeWav2Pcm(file);
+    }
+    @Override
+    public void downloadProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
+    }
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+
+// convert format
+controller.changeG711u2Pcm(wavFilePath, pcmFilePath, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+    }
+});
+
+// play message
+AudioUtil.getInstance().playPCM(pcmFilePath);
+AudioUtil.getInstance().setOnPlayListener(flag -> {
+    // play complete
+    Message msg = Message.obtain();
+    msg.what = MSG_PLAY_RECORD_COMPLETE;
+    msg.obj = type;
+    handler.sendMessage(msg);
 });
 ```
 
@@ -3149,9 +3277,9 @@ MeariUser.getInstance().setFlightLinkSirenEnable(status, new ISetDeviceParamsCal
 ```
 # 10 Family
 
-## 10.1 Family Operation 
+## 10.1 Family Operation
 
-### 10.1.1 Get family list 
+### 10.1.1 Get family list
 ```
 【description】
 Get family list 
@@ -3201,7 +3329,7 @@ MeariUser.getInstance().createFamily(familyName, familyLocation, roomList, new I
 });
 ```
 
-### 10.1.3 Update Family Information 
+### 10.1.3 Update Family Information
 ```
 【description】
 Update family information 
@@ -3226,7 +3354,7 @@ MeariUser.getInstance().updateFamily(familyId, familyName, familyLocation, new I
 });
 ```
 
-### 10.1.4 Delete Family 
+### 10.1.4 Delete Family
 ```
 【description】
 delete family from account
@@ -3381,7 +3509,7 @@ MeariUser.getInstance().getFamilyShareMessages(new IBaseModelCallback<List<Famil
 });
 ```
 
-### 10.2.6 Handle family shared messages 
+### 10.2.6 Handle family shared messages
 ```
 【description】
 Handle family shared messages
@@ -3454,7 +3582,7 @@ MeariUser.getInstance().modifyMemberDevicePermission(familyId, memberID, permiss
 });
 ```
 
-### 10.2.9 Remove a member from the family 
+### 10.2.9 Remove a member from the family
 ```
 【description】
 Remove a member from the family 
@@ -3479,7 +3607,7 @@ MeariUser.getInstance().removeMemberFromFamily(familyId, memberID, new IStringRe
 });
 ```
 
-### 10.2.10 Revoke member invitation 
+### 10.2.10 Revoke member invitation
 ```
 【description】
 Revoke member invitation 
@@ -3674,7 +3802,7 @@ MeariUser.getInstance().deleteDeviceBatch(deviceIDList, new IResultCallback() {
 });
 ```
 
-## 10.4 Family Related Classes 
+## 10.4 Family Related Classes
 
 ### 10.4.1 MeariFamily
 ```
@@ -3904,7 +4032,7 @@ if (familyMqttMsg.getMsgId() == MqttMsgType.FAMILY_INFO_CHANGED) {
 }
 ```
 
-## 11.2 MQTT Related Classes 
+## 11.2 MQTT Related Classes
 
 ### 11.2.1 MqttMsg
 > MQTT message base class 

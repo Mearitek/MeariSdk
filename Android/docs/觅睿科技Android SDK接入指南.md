@@ -40,7 +40,8 @@
         * 6.2.2 [设备SD卡回放](#622-设备SD卡回放)
         * 6.2.3 [设备云回放](#623-设备云回放)
     * 6.3 [设备相关](#63-设备相关)
-        * 6.3.1 [门铃接听流程](#631-门铃接听流程)  
+        * 6.3.1 [门铃接听流程](#631-门铃接听流程)
+        * 6.3.2 [主人留言](#632-主人留言)
 * 7 [分享设备](#7-分享设备)
     * 7.1 [相关类介绍](#71-相关类介绍)
     * 7.2 [获取设备分享列表](#72-获取设备分享列表)
@@ -257,7 +258,7 @@ dependencies {
 }
 ```
 
-### 3.1.3 配置AndroidManifest.xml 
+### 3.1.3 配置AndroidManifest.xml
 ```
 在AndroidManifest.xml文件里配置appkey和appSecret，在配置相应的权限等
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
@@ -1372,6 +1373,133 @@ MeariUser.getInstance().postHangUpBell(bellInfo.getDeviceID(), new IResultCallba
         // 关洞，关闭页面
         ...
     }
+});
+```
+
+### 6.3.2 主人留言
+
+> 支持留言的门铃设备可以录制留言，并在接听的时候选择播放留言。
+
+- 1 判断是否支持留言功能
+```
+if (MeariDeviceUtil.isSupportHostMessage(cameraInfo)) {
+}
+
+// 主人留言的最大条数
+private int voiceMailMaxSize;
+// 主人留言的最长时间(秒)
+private int voiceMailDuration = 10;
+
+if (cameraInfo.getHms() == 1) {
+    voiceMailMaxSize = 1;
+    voiceMailDuration = 30;
+} else if (cameraInfo.getHms() == 2){
+    voiceMailMaxSize = 3;
+    voiceMailDuration = 10;
+}
+```
+
+- 2 获取设备留言列表
+```
+MeariUser.getInstance().getVoiceMailList(cameraInfo.getDeviceID(), this, new IGetVoiceMailListCallback() {
+    @Override
+    public void onSuccess(ArrayList<VoiceMailInfo> voiceMailList) {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
+- 3 录制留言并上传，需要获取麦克风权限
+```
+private String g711uFilePath;
+private String wavFilePath;
+private String pcmFilePath;
+
+// 开始录制
+controller.startRecordVoiceMail(pcmFilePath, g711uFilePath);
+
+// 结束录制
+controller.stopRecordVoiceMail();
+
+// 转换格式
+controller.changeG711u2WAV(g711uFilePath, wavFilePath, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+        
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+    }
+});
+
+// 上传留言
+File wavFile = new File(wavFilePath);
+List<File> fileList = new ArrayList<>();
+fileList.add(wavFile);
+MeariUser.getInstance().uploadVoiceMail(cameraInfo.getDeviceID(), voiceMailName, fileList, new IUploadVoiceMailCallback() {
+    @Override
+    public void onSuccess(VoiceMailInfo voiceMailInfo) {
+        
+    }
+
+    @Override
+    public void onError(int code, String error) {
+        handler.sendEmptyMessage(MSG_UPLOAD_RECORD_FAILED);
+    }
+});
+```
+
+- 4 控制设备播放留言
+```
+MeariUser.getInstance().sendVoiceMail(cameraInfo.getDeviceID(), voiceMailInfo.getVoiceId(), this, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
+
+- 5 手机播放留言
+```
+// 下载留言
+MeariUser.getInstance().downloadFile(voiceMailInfo.getVoiceUrl(), destFileDir, destFileName, new IDownloadFileCallback() {
+    @Override
+    public void onSuccess(File file) {
+        changeWav2Pcm(file);
+    }
+    @Override
+    public void downloadProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
+    }
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+
+// 转换格式
+controller.changeG711u2Pcm(wavFilePath, pcmFilePath, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+    }
+});
+
+// 播放留言
+AudioUtil.getInstance().playPCM(pcmFilePath);
+AudioUtil.getInstance().setOnPlayListener(flag -> {
+    // 播放完成
+    Message msg = Message.obtain();
+    msg.what = MSG_PLAY_RECORD_COMPLETE;
+    msg.obj = type;
+    handler.sendMessage(msg);
 });
 ```
 
