@@ -4,10 +4,10 @@
 
 欢迎使用觅睿开发者工具套件（SDK）。为方便开发者调试和接入App SDK，这里向您介绍接入SDK必须要进行的几个步骤：
 
-## 1. 获取App Key和App secret
+## 步骤1. <font color = red>获取App Key和App secret</font>
   联系[我们](https://www.meari.com/contact-us/)
     
-## 2. 与服务器云云对接
+## 步骤2. <font color = red>与服务器云云对接</font>
   对接步骤详情见 Server 目录下文档:
   
   [How to do integrate with Mearisdk](Server/How%20to%20do%20integrate%20with%20Mearisdk.md)
@@ -16,7 +16,9 @@
     
   [server to server](Server/server%20to%20server.md)
   
-## 3. 接入App SDK
+## 步骤3. <font color = red>接入App SDK</font>
+
+  对接步骤App SDK时，请确保完成了之前的步骤:
 
 Android SDK Document:
 [中文文档](Android/docs/觅睿科技Android%20SDK接入指南.md) |  [English document](Android/docs/Meari%20Android%20SDK%20Guide.md)
