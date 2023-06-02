@@ -238,8 +238,8 @@ repositories {
 
 dependencies {
     // aar 必需依赖库
-    implementation(name: 'core-sdk-device-440-20221010', ext: 'aar')
-    implementation(name: 'core-sdk-meari-440-20221010', ext: 'aar')
+    implementation(name: 'core-sdk-device-500-20230602', ext: 'aar')
+    implementation(name: 'core-sdk-meari-500-20230602', ext: 'aar')
 
     implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'

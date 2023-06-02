@@ -323,6 +323,7 @@ public class DeviceSettingActivity extends AppCompatActivity {
 
     public void startDeviceUpgrade() {
         MeariUser.getInstance().startDeviceUpgrade(mUpgradeInfo.getUpgradeUrl(), mUpgradeInfo.getNewVersion(),
+                mUpgradeInfo.getFourGModeUrl(), mUpgradeInfo.getFourGModeVersion(),
                 new IDeviceUpgradeCallback() {
                     @Override
                     public void onSuccess() {
