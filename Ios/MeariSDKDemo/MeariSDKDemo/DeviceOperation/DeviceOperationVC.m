@@ -41,8 +41,12 @@
     // 2. disconnect
     // 3. Call the "reset" method to release resources
     [self.camera stopPreviewSuccess:^{} failure:^(NSError *error) {}];
-    [self.camera stopConnectSuccess:^{} failure:^(NSError *error) {}];
-    [self.camera reset];
+    __weak typeof(self) weakSelf = self;
+    [self.camera stopConnectSuccess:^{
+        [weakSelf.camera reset];
+    } failure:^(NSError *error) {
+        [weakSelf.camera reset];
+    }];
 }
 - (void)settingAction {
     MRDeviceSettingVC *setting = [[MRDeviceSettingVC alloc] init];

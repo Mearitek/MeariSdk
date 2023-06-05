@@ -28,7 +28,11 @@ static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
     //必须先通过云云对接 通过自己的服务器和Meari服务器交互 获取到重定向信息
     //将从Meari服务器获取的数据传递给App
         
-    [[MeariSDK sharedInstance] startSDKWithRedirectInfo:@{}];
+//    [[MeariSDK sharedInstance] startSDKWithRedirectInfo:@{}];
+    NSString *json = @"";
+    NSDictionary *dic = [json JSONObject];
+    [[MeariSDK sharedInstance] startSDKWithRedirectInfo:dic];
+    
     
     [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelVerbose];
     

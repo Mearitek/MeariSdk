@@ -64,9 +64,12 @@
     
     //必须先通过云云对接 通过自己的服务器和Meari服务器交互 登录之后 才能使用登录接口
     //将从Meari服务器获取的数据传递给App
-
+        NSString *loginJson = @"";
     
-    [[MeariUser sharedInstance] loginUidWithExtraParamInfo:@{} complete:^(NSError *error) {
+        NSDictionary *dic = [loginJson JSONObject];
+    
+        [[MeariUser sharedInstance] loginUidWithExtraParamInfo:dic complete:^(NSError *error) {
+
         if (!error) {
             NSLog(@"login Success");
         }else {

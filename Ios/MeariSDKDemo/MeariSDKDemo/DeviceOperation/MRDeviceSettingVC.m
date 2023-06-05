@@ -14,6 +14,8 @@
 @interface MRDeviceSettingVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 
+
+@property (nonatomic, strong) UIButton  *button;
 @end
 
 @implementation MRDeviceSettingVC
@@ -23,6 +25,11 @@
     [super viewDidLoad];
     
     [self initSet];
+    self.button = [[UIButton alloc]initWithFrame:CGRectMake(50, 400, 60, 60)];
+    self.button.backgroundColor = [UIColor redColor];
+    [self.button addTarget:self action:@selector(changePlayback:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:self.button];
 }
 
 #pragma mark --- Lazyload
@@ -42,6 +49,37 @@
 - (void)initSet {
     self.title = @"setting";
     [self.view addSubview:self.tableView];
+    [self.camera getDeviceParamsSuccess:^(MeariDeviceParam *param) {
+        self.button.selected = self.camera.param.recordEnable;
+        BOOL recordEnable = self.camera.param.recordEnable;
+        BOOL playbackEnable = self.camera.param.playbackVideoRecord.enable;
+        NSLog(@"xxxxx recordEnable ---- %d playbackEnable --- %d",recordEnable,playbackEnable);
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)changePlayback:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    MeariDeviceRecordDuration level = sender.selected ? MeariDeviceRecordDurationOn : MeariDeviceRecordDurationOff;
+    WY_WeakSelf
+    [self.camera setPlaybackRecordVideoLevel:level success:^{
+        BOOL recordEnable = weakSelf.camera.param.recordEnable;
+        BOOL playbackEnable = weakSelf.camera.param.playbackVideoRecord.enable;
+        
+        NSLog(@"xxxxx after setPlaybackRecordVideoLevel recordEnable ---- %d playbackEnable --- %d",recordEnable,playbackEnable);
+        
+        [weakSelf.camera getDeviceParamsSuccess:^(MeariDeviceParam *param) {
+            BOOL recordEnable = weakSelf.camera.param.recordEnable;
+            BOOL playbackEnable = weakSelf.camera.param.playbackVideoRecord.enable;
+            NSLog(@"xxxxx after getDeviceParamsSuccess recordEnable ---- %d playbackEnable --- %d",recordEnable,playbackEnable);
+        } failure:^(NSError *error) {
+            
+        }];
+    } failure:^(NSError *error) {
+        
+    }];
+    
 }
 
 #pragma mark --- Network
