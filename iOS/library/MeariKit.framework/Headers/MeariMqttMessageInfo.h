@@ -58,6 +58,7 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
     MeariMqttCodeTypeDeviceShare                = 180,
     MeariMqttCodeTypeNewDeviceShareToMeRequest  = 181,
     MeariMqttCodeTypeNewDeviceShareToHimRequest = 182,
+    MeariMqttCodeTypeNewDeviceSharePermissionChange = 183,
     MeariMqttCodeTypeHasBeenAnswerCall          = 188,
     
     MeariMqttCodeTypeFamilyRefresh              = 210,
@@ -80,6 +81,18 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
     MeariMqttCodeTypeClientServerChangeServer   = 227,
     MeariMqttCodeTypeDeviceAlarmFrequent        = 228,
     MeariMqttCodeTypeDeviceAlarmDistort         = 229,
+    
+    MeariMqttCodeTypeCloudPromotion             = 230,
+
+    MeariMqttCodeTypeAIPromotion                = 231,
+
+    MeariMqttCodeTypeCloudSubscription          = 232,
+    MeariMqttCodeTypeAISubscription             = 233,
+    
+    MeariMqttCodeTypeAutoReduceSensitivity      = 241,
+    
+    MeariMqttCodeTypeSimTrafficExpired          = 250,
+    MeariMqttCodeTypeSimTrafficShortage         = 251,
     
     MeariMqttCodeTypeNotice                     = 200,
     MeariMqttCodeTypeSomebodyCall               = 201,
@@ -163,6 +176,8 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, assign) MeariMqttCodeType type;   // Message type (消息类型)
 @property (nonatomic, copy) NSString *requestID;
 @property (nonatomic, assign) NSInteger iotType;
+@property (nonatomic, assign) NSString *pushType;
+@property (nonatomic, copy) NSString *deviceUrl;
 @property (nonatomic, copy) MeariEventInfo *eventInfo; //Service incident reporting (服务事件上报)
 
 @property (nonatomic, copy) NSString *userName;
@@ -198,6 +213,7 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, copy) NSString *brand;
 @property (nonatomic, copy) NSString *tp;
 
+@property (nonatomic, assign) NSInteger discountPeriod;
 @end
 
 

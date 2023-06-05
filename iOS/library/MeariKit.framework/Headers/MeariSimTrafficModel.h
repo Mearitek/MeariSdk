@@ -16,12 +16,16 @@
 @property(nonatomic, copy) NSString *activeTime;    //激活时间
 @property(nonatomic, copy) NSString *mealType;     //套餐类型
 @property(nonatomic, copy) NSString *expireTime;    //过期时间
+@property(nonatomic, copy) NSString *money;    //套餐金额
+@property(nonatomic, assign) NSInteger unlimited;    //1 为不限量
 @end
 
 @interface MeariSimTrafficUnuseModel : NSObject
 @property(nonatomic, copy) NSString *trafficPackage;    //激活时间
 @property(nonatomic, copy) NSString *mealType;     //套餐类型
 @property(nonatomic, copy) NSString *quantity;      //套餐流量
+@property(nonatomic, copy) NSString *money;    //套餐金额
+@property(nonatomic, assign) NSInteger unlimited;    //1 为不限量
     
 @end
 
@@ -40,6 +44,7 @@
 @property(nonatomic, copy) NSString *trafficPackage;    //套餐流量单位
 @property(nonatomic, copy) NSString *currencyCode;
 @property(nonatomic, copy) NSString *currencySymbol;    //套餐金额单位
+@property(nonatomic, assign) NSInteger unlimited;    //1 为不限量
 @end
 
 @interface MeariSimTrafficOrderModel : NSObject
@@ -52,4 +57,5 @@
 @property(nonatomic, copy) NSString *trafficQuantity;   //订单流量数目
 @property(nonatomic, copy) NSString *currencyCode;
 @property(nonatomic, copy) NSString *currencySymbol;    //订单金额单位
+@property(nonatomic, assign) NSInteger unlimited;    //1 为不限量
 @end

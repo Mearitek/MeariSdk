@@ -6,7 +6,7 @@
 //  Copyright © 2022 Meari. All rights reserved.
 //
 
-#import <MeariKit/MeariKit.h>
+#import "MeariDevice.h"
 #import "MeariSearchNVRSubDeviceModel.h"
 
 typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
@@ -35,6 +35,21 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
 /** device onvif*/
 /** nvr 子设备是否onvif接入*/
 @property (nonatomic, assign) BOOL isOnvif;
+
+/** 是否支持智能检测*/
+@property (nonatomic, assign, readonly) BOOL supportIntelligentDetection;
+/** 是否支持智能检测人形*/
+@property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionPerson;
+/** 是否支持智能检测宠物*/
+@property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionPet;
+/** 是否支持智能检测车辆*/
+@property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionCar;
+/** 是否支持智能检测包裹*/
+@property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionPackage;
+/** 是否支持智能检测画框*/
+@property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionFrame;
+/** 是否支持智能检测布防时间*/
+@property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionTime;
 
 /** 是否NVR支持删除子设备*/
 @property (nonatomic, assign, readonly) BOOL supportDeleteIpc;
@@ -92,7 +107,7 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)bindNvrSubDeviceWithIp:(NSString *)ip success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)bindNvrSubDeviceWithIp:(NSString *)ip success:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
 /**
  Add child device through Nvr (onvif binding)
  Nvr添加子设备(onvif 协议设备)
@@ -103,7 +118,7 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)bindNvrSubDeviceWithIp:(NSString *)ip user:(NSString *)user password:(NSString *)password success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)bindNvrSubDeviceWithIp:(NSString *)ip user:(NSString *)user password:(NSString *)password success:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
 /**
  Get  Nvr Net Config Key
  获取Nvr添加子设备扫码所需key
@@ -131,5 +146,60 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
 */
 - (void)setNVRAllDayRecord:(BOOL)enable WithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
+/**
+ 设置设备智能侦测开关：Set device smart detection switch
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceIntelligentDetection:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ 设置设备智能侦测灵敏度：Set device smart detection level
+@param level  0-低 1-中 2-高
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceIntelligentDetectionLevel:(NSInteger)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ 设置设备智能侦测人形：Set device smart detection person
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceIntelligentDetectionPerson:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ 设置设备智能侦测宠物：Set device smart detection pet
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceIntelligentDetectionPet:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ 设置设备智能侦测车辆：Set device smart detection car
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceIntelligentDetectionCar:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ 设置设备智能侦测包裹：Set device smart detection package
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceIntelligentDetectionPackage:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ 设置设备智能侦测画框：Set device smart detection frame
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceIntelligentDetectionFrame:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+/**
+ 设置设备智能侦测开关：Set device smart detection switch
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceIntelligentDetectionStartTime:(NSString *)start endTime:(NSString *)end success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 @end
-

@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger, MeariSystemMessageType) {
     MeariSystemMessageTypeDeviceWeakSignal,    // warning for weak network signla (设备网络信号不好)
     MeariSystemMessageTypeDeviceAlarmFrequent,  // warning for alarm frequent (设备报警频繁)
     MeariSystemMessageTypeDeviceAlarmUseless,  // warning for alarm useless (设备报警误报)
+    MeariSystemMessageTypeDeviceSaftyPatrol,    // Undergoing safty patrol (正在进行安全巡视)
 };
 
 typedef NS_ENUM(NSInteger, MeariAlarmMessageType) {
@@ -32,7 +33,11 @@ typedef NS_ENUM(NSInteger, MeariAlarmMessageType) {
     MeariAlarmMessageTypeFace = 8 ,                 // face alarm (人脸报警)
     MeariAlarmMessageTypeSomeoneCall = 9,           // visitor alarm, available on ipc device, alarm when somebody tap the ring.(有人来访)
     MeariAlarmMessageTypeTear = 10,                  //Tear device alarm (强行拆除报警)
-    MeariAlarmMessageTypeHuman = 11                  //Person detected (人形过滤检测到人)
+    MeariAlarmMessageTypeHuman = 11,                  //Person detected (人形过滤检测到人)
+    MeariAlarmMessageTypeAICar = 17,                 //Intelligent detection of car (智能检测到车辆)
+    MeariAlarmMessageTypeAIPet = 18,                 //Intelligent detection of pet (智能检测到宠物)
+    MeariAlarmMessageTypeAIPackage = 19,              //Intelligent detection of package (智能检测到包裹)
+    MeariAlarmMessageTypeAIHunman = 20,               //Intelligent detection of person (智能检测到人)
 };
 
 typedef NS_ENUM(NSInteger, MeariVisitorMessageType) {
@@ -75,6 +80,9 @@ typedef NS_ENUM(NSInteger, MeariShareMessageType) {
 @property (nonatomic, copy) NSString *deviceUUID;       // device uuid (设备UUID)
 @property (nonatomic, copy) NSString *deviceIconUrl;    // device icon (设备缩略图)
 @property (nonatomic, assign) BOOL hasMsg;              // whether has alarm message or not (是否有消息)
+/** 报警方式是视频上报的设备返回此字段，是时间戳（1652428935000） */
+@property (nonatomic, copy) NSString *historyEventEnable;
+@property (nonatomic, assign) NSInteger evt;
 @end
 @interface MeariMessageLatestAlarm : MeariMessageInfo
 @property (nonatomic, assign) NSInteger deviceID;       // device id (设备ID)
@@ -87,6 +95,8 @@ typedef NS_ENUM(NSInteger, MeariShareMessageType) {
 @property (nonatomic, copy) NSString *alarmTime;       // device alarm time (消息时间)
 @property (nonatomic, assign) BOOL hasMsg;              // whether has alarm message or not (是否有消息)
 @property (nonatomic, assign) BOOL isReponse;           //是否接听
+@property (nonatomic, copy) NSString *historyEventEnable;
+@property (nonatomic, assign) NSInteger evt;
 @end
 
 @interface MeariMessageInfoAlarmDevice : MeariMessageInfo
@@ -105,7 +115,14 @@ typedef NS_ENUM(NSInteger, MeariShareMessageType) {
 @property (nonatomic, assign) NSInteger iotType;        // iot Type(Ali iOT or AWS iOT)
 @property (nonatomic, copy) NSString *day;      //alarm dat(报警日期，如:"20200804")
 @property (nonatomic, copy) NSString *callbackUser;
+
 @property (nonatomic, copy) NSString *aiInfo;             //AI
+@property (nonatomic, assign) NSInteger videoDuration;  //报警视频时长
+@property (nonatomic, strong) NSURL *m3u8Url; //播放的m3u8Url
+//@property (nonatomic, strong) NSArray <NSDictionary *>*aiVideoInfoArray; //云存储2.0的 ai信息
+@property (nonatomic, copy) NSString *aiVideoInfos; //云存储2.0的 ai信息
+@property (nonatomic, assign) NSInteger storageType; //云存储2.0的  "0"表示事件存储，"1"表示连续存储
+@property (nonatomic, assign) NSInteger defaultImage; // 云存储2.0的 "1"表示事件只传图片 "0"表示会录像
 /**
  userID/ownerID：
  Description:
@@ -144,5 +161,5 @@ typedef NS_ENUM(NSInteger, MeariShareMessageType) {
 @property (nonatomic,   copy) NSString *msgID; // message ID (消息ID)
 @property (nonatomic, assign) NSInteger deviceID;  // Device ID (设备ID)
 @property (nonatomic, assign) MeariShareMessageType msgType;  // Message type (消息类型)
-
+@property (nonatomic,   copy) NSString *tp;
 @end

@@ -14,9 +14,8 @@ typedef NS_ENUM(NSInteger, MeariAddSubDeviceType){
 };
 typedef NS_ENUM(NSInteger, MeariAddSubDeviceStatus){
     MeariAddSubDeviceStatusNone = 0,
-    MeariAddSubDeviceStatusLoad = 1,
-    MeariAddSubDeviceStatusSuccess = 2,
-    MeariAddSubDeviceStatusFailure = 3,
+    MeariAddSubDeviceStatusSuccess = 1,
+    MeariAddSubDeviceStatusFailure = 2,
 };
 
 @interface MeariSearchNVRSubDeviceModel : NSObject
@@ -26,6 +25,6 @@ typedef NS_ENUM(NSInteger, MeariAddSubDeviceStatus){
 @property(nonatomic, copy) NSString *type;
 @property(nonatomic, copy) NSString *add_status;
 @property(nonatomic, assign) MeariAddSubDeviceType addType;//0-Meari 1-Onvif
-@property(nonatomic, assign) MeariAddSubDeviceStatus addStatus;//0-未添加 1-添加中 2-添加成功 3-添加失败
+@property(nonatomic, assign) MeariAddSubDeviceStatus addStatus;//0-未添加 1--添加成功 2-添加失败
 @end
 

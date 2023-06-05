@@ -102,6 +102,16 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
 
  @param text QR code info(二维码信息)
  @param size QR code size(二维码大小)
+ @param encryption 是否加密
+ @return QR code image(二维码图片)
+ */
+- (UIImage *)createQRCodeWithText:(NSString *)text size:(CGSize)size encryption:(BOOL)encryption;
+/**
+ Generate QR code
+ 生成二维码
+
+ @param text QR code info(二维码信息)
+ @param size QR code size(二维码大小)
  @param code 编码格式
  @return QR code image(二维码图片)
  */

@@ -72,4 +72,7 @@ typedef void(^Failure)(NSString *failure);
  */
 - (void)setPrivateCloudUrl:(NSString*)url success:(Success)success failure:(Failure)failure __deprecated_msg("Not recommended for use");
 
+
+- (void)configAutoTokenTest:(BOOL)enable;
+
 @end

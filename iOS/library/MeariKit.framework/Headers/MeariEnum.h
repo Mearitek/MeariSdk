@@ -224,6 +224,7 @@ typedef NS_ENUM(NSInteger, MeariDeviceCode) {
     MeariDeviceCodeVoiceTalkFail                  = -1045,
     MeariDeviceCodeVideoClipRecording             = -1050,
     MeariDeviceCodeConnectVideoPasswordError      = -1051,
+    MeariDeviceCodeInvalidOperation               = -1200,
     MeariDeviceCodeDeviceParamFail                = -10000
 };
 

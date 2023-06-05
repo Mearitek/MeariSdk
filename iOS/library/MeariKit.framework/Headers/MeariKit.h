@@ -16,6 +16,9 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <MeariKit/PublicHeader.h>
 
+#import <MeariKit/MeariDDLog.h>
+#import <MeariKit/MeariDDLogMacros.h>
+#import <MeariKit/MeariUtilitiesVendor.h>
 #import <MeariKit/MeariEnum.h>
 #import <MeariKit/MeariSDK.h>
 #import <MeariKit/MeariBaseModel.h>
@@ -37,14 +40,17 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 #import <MeariKit/MeariFriendInfo.h>
 #import <MeariKit/MeariShareInfo.h>
 #import <MeariKit/MeariDeviceControl.h>
+#import <MeariKit/mraudio.h>
+#import <MeariKit/mrvideo.h>
+#import <MeariKit/cameraplayer_define.h>
+#import <MeariKit/ios_videotoolbox_vdec.h>
+#import <MeariKit/apple_openglview.h>
 #import <MeariKit/MeariPlayView.h>
 //#import <MeariKit/MeariCloudPlayer.h>
 #import <MeariKit/MRCloudPlayer.h>
 #import <MeariKit/MeariAppModel.h>
 #import <MeariKit/MeariDeviceActivator.h>
-#import <MeariKit/MeariDDLog.h>
-#import <MeariKit/MeariDDLogMacros.h>
-#import <MeariKit/MeariUtilitiesVendor.h>
+#import <MeariKit/MeariDeviceBluetoothActivator.h>
 #import <MeariKit/MeariCustomServerMsg.h>
 #import <MeariKit/MeariSmartSceneManager.h>
 #import <MeariKit/MeariUserAfterSaleModel.h>
@@ -55,3 +61,5 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 
 #import <MeariKit/MeariFamily.h>
 #import <MeariKit/MeariFamilyModel.h>
+
+#import <MeariKit/MeariDevicePetFeedPlanModel.h>

@@ -1,21 +1,28 @@
 //
-//  MRGLView.h
+//  AppleOpenGLView.h
 //  MRPlayer
 //
 //  Created by 陈杭峰 on 2017/5/23.
 //  Copyright © 2017年 ppstrong. All rights reserved.
 //
 
-#ifndef MRGLView_h
-#define MRGLView_h
+#ifndef Apple_OpenGL_View_h
+#define Apple_OpenGL_View_h
 #import <UIKit/UIKit.h>
+#include "mrvideo.h"
+#import "ios_videotoolbox_vdec.h"
 
-@interface MRGLView : UIView
+mrvideo_render* apple_opengl_render_create(void* hwnd);
+
+int apple_opengl_render_destory(mrvideo_render* render);
+
+@interface AppleOpenGLView : UIView
 @property (nonatomic, assign) CGFloat currentScale;
 @property (nonatomic, assign) float currentdpx;
 @property (nonatomic, assign) float currentdpy;
 @property (nonatomic, readonly) NSInteger currentdrawableWidth;
 @property (nonatomic, readonly) NSInteger currentdrawableHeight;
+@property (nonatomic, strong) Apple_HardDecoder* hw_dec;
 
 - (id) initWithFrame:(CGRect)frame;
 
@@ -27,10 +34,13 @@
 
 -(void)zoom:(float)scale;
 
-- (UIImage*)snapshot;
+- (BOOL)snapshot:(NSString*)path;
 
 - (void)deallocGLEnvironment;
 
+- (void)rotateCCW90;
+
+- (void)reset;
 @end
 
-#endif /* MRGLView_h */
+#endif /* AppleOpenGLView_h */

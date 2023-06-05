@@ -54,6 +54,14 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** jingle*/
 /** 铃铛jingle*/
 @property (nonatomic, assign, readonly, getter = isJing) BOOL jing;
+/** photoBell*/
+/** 拍照门铃 */
+@property (nonatomic, assign, readonly, getter = isPhotoBell) BOOL photoBell;
+/** hunting*/
+/** 狩猎相机*/
+@property (nonatomic, assign, readonly, getter = isHunting) BOOL hunting;
+
+
 /** Whether the device is support iot*/
 /** 是否iOT设备*/
 @property (nonatomic, assign) BOOL iotDevice;
@@ -219,8 +227,12 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 @property (nonatomic, assign, readonly) BOOL supportAlarmRoi;
 /** 是否为支持人脸识别 */
 @property (nonatomic, assign, readonly) BOOL supportFaceRecognition;
-/** 是否为支持roi区域报警 */
+/** 是否为支持声光报警 */
 @property (nonatomic, assign, readonly) BOOL supportVoiceLightAlarm;
+/** 是否为支持声光报警时间段 */
+@property (nonatomic, assign, readonly) BOOL supportVoiceLightAlarmPlan;
+/** 是否为支持声光报警铃声 */
+@property (nonatomic, assign, readonly) BOOL supportVoiceLightAlarmRing;
 /** 视频显示的类型 */
 @property (nonatomic, assign, readonly) MeariDeviceVideoType displayVideoType;
 /** 灯具摄像机类型 */
@@ -307,9 +319,56 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 @property (nonatomic, assign, readonly) BOOL supportTimeZone;
 /** 是否重启设置*/
 @property (nonatomic, assign, readonly) BOOL supportReboot;
-
 /** 是否连接私有协议NVR,允许被发现功能*/
 @property (nonatomic, assign, readonly) BOOL supportFoundPermission;
+/** 设备报警方式是否支持视频上报 */
+@property (nonatomic, assign, readonly) BOOL supportAlarmVideoReport;
+/**  支持事件报警类型设置切换 / */
+@property (nonatomic, assign, readonly) BOOL supportAlarmVideoEventSwitch;
+/** 设备视频是否支持AI处理 */
+@property (nonatomic, assign, readonly) BOOL supportAlarmAI;
+/** 噪音报警是否支持录像*/
+@property (nonatomic, assign, readonly) BOOL supportNoiseRecord;
+/** IPC是否支持显示电量*/
+@property (nonatomic, assign, readonly) BOOL supportShowIpcBattery;
+
+/** 支持多边形报警区域*/
+@property (nonatomic, assign, readonly) BOOL supportPolygonRoiAlarm;
+/** 支持长电设备低功耗模式*/
+@property (nonatomic, assign, readonly) BOOL supportIpcLowpowerMode;
+/** 支持PTZ*/
+@property (nonatomic, assign, readonly) BOOL supportPTZ;
+/** 支持回放视频下载*/
+@property (nonatomic, assign, readonly) BOOL supportVideoDownload;
+/** 支持回放视频删除*/
+@property (nonatomic, assign, readonly) BOOL supportVideoDelete;
+/** 支持回放视频倍速*/
+@property (nonatomic, assign, readonly) NSArray *supportPlayBackSpeed;
+/** 支持自适应码率*/
+@property (nonatomic, assign, readonly) BOOL supportAutoStream;
+/** 是否为宠物投食机*/
+@property (nonatomic, assign, readonly) BOOL isPetCamera;
+/** 是否支持一键投食*/
+@property (nonatomic, assign, readonly) BOOL supportPetFeed;
+/** 是否支持投食计划*/
+@property (nonatomic, assign, readonly) BOOL supportPetFeedPlan;
+/** 是否支持设置播放抛投效果音(固件写死的提示音，非主人留言)*/
+@property (nonatomic, assign, readonly) BOOL supportPetFeedVoice;
+/** 是否支持主人投食留言语音设置*/
+@property (nonatomic, assign, readonly) BOOL supportPetMasterMessageSetting;
+
+@property (nonatomic, assign, readonly) BOOL supportVopSetting ;
+@property (nonatomic, assign, readonly) BOOL supportPhotoResolutionSetting ;
+@property (nonatomic, assign, readonly) BOOL supportSnapshotsSetting;
+@property (nonatomic, assign, readonly) BOOL supportVideoResolutionSetting;
+@property (nonatomic, assign, readonly) BOOL supportRecordDurationSetting;
+@property (nonatomic, assign, readonly) BOOL supportPeriodIntervalTimeSetting;
+@property (nonatomic, assign, readonly) BOOL supportMonitoringPeriodSetting;
+@property (nonatomic, assign, readonly) BOOL supportIrLedSetting;
+@property (nonatomic, assign, readonly) BOOL supportRestoreFactorySetting;
+@property (nonatomic, assign, readonly) BOOL supportMicrophoneSetting;
+@property (nonatomic, assign, readonly) BOOL supportLanguageSetting;
+
 @end
 
 @interface MeariDeviceList : MeariBaseModel
@@ -343,4 +402,10 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** jingle */
 /** 铃铛 */
 @property (nonatomic, strong) NSArray <MeariDevice *> *jings;
+/** photobell */
+/** 拍照门铃 */
+@property (nonatomic, strong) NSArray <MeariDevice *> *photoBells;
+/** prtpDevice  */
+/** prtp设备存本地*/
+@property (nonatomic, strong) NSArray <MeariDevice *> *prtpDevices;
 @end

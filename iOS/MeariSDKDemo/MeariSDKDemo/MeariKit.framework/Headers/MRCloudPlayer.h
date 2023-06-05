@@ -54,7 +54,7 @@ typedef NS_ENUM (NSInteger, MeariCloudRecordState) {
 - (void)meariCloudVCDidStopedPlayNormally; // stop play (停止播放)
 - (void)meariCloudVCDidStopedPlayAbnormally; // play error (播放错误)
 - (void)meariCloudVCDidPlayEnd; // play error (播放结束)
-- (void)meariCloudVCDidPlayPswError:(NSTimeInterval)t; // play fail (播放密码错误)
+- (void)meariCloudVCDidPlayPswError:(NSTimeInterval)t m3u8File:(NSURL *)m3u8; // play fail (播放密码错误)
 @end
 
 
@@ -66,12 +66,14 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  初始化
 
- @param url video url (地址)
+ @param url video url (地址) m3u8文件或者本地mp4文件路径
  @param startTime start time (开始时间)
  @param superView super view (父视图)
+ @param pswArr 设备密码 默认为设备SN device.info.sn
+ @param isVideoFirst 同步机制是否以视频为主。默认NO
  @return MeariPlayer
  */
-- (instancetype)initWithURL:(NSURL *)url startTime:(NSString *)startTime superView:(UIView *)superView psw:(NSString *)psw;
+- (instancetype)initWithURL:(NSURL *)url startTime:(NSString *)startTime superView:(UIView *)superView psw:(NSArray *)pswArr isVideoFirst:(BOOL)isVideoFirst;
 
 @property (nonatomic, weak) id<MeariCloudDelegate> delegate; // delegate (代理)
 @property (nonatomic, assign, readonly) MeariCloudStatus playState; // play state (播放状态)
@@ -91,19 +93,31 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)pause; // pause (暂停)
 - (void)resetPlayerComplete:(void(^)(void))complete; // Turn off playback (关闭播放)
 - (void)hidePlayer; // hide  player (隐藏播放器)
-- (void)playVideoAtTime:(NSString *)time url:(NSURL *)url psw:(NSString *)psw;  // Play video at a certain time (seek进度)
+- (void)playVideoAtTime:(NSString *)time url:(NSURL *)url psw:(NSArray *)pswArr;  // Play video at a certain time (seek进度)
 - (NSTimeInterval)getVideoCurrentSecond;    // Current playback time (unit: second) (当前播放时间（单位：秒）)
 - (NSTimeInterval)getVideoDuration;         // Duration (unit: second)   (时长（单位：秒）)
 + (BOOL)checkPasswordCorrectWithUrl:(NSURL *)url time:(NSString *)time password:(NSString *)password;//检测当前的密码是否匹配
 
-- (void)seekTime:(double)time;
-//下载m3u8 转为ts文件
-//会堵塞当前线程
-+ (int)downloadUrlToTsFile:(NSURL *)url password:(NSString *)password filePath:(NSString *)localPath;
-//检验url中的密码是否匹配 取一个Ts的url即可
-+ (BOOL)checkEncryKey:(NSString *)file password:(NSString *)password;
+- (void)seekTime:(double)time;//废弃不使用
+/**
+ 下载在线m3u8文件 转为mp4
+ 会堵塞当前线程
 
-+ (int)transformTsToMp4:(NSString *)tsFile filePath:(NSString *)mp4Path;
+ @param url video url m3u8文件地址
+ @param password 设备密码 默认传入设备SN device.info.sn
+ @param localPath 转换完之后本地mp4文件路径
+ @return
+ */
++ (int)downloadUrlToTsFile:(NSURL *)url password:(NSString *)password filePath:(NSString *)localPath;
+/**
+ 将本地mp4文件再次转化为mp4文件
+ @param srcMp4Path 原来的mp4文件路径
+ @param targetMp4Path 转换完之后本地mp4文件路径
+ */
++ (int)transformTsToMp4:(NSString *)srcMp4Path filePath:(NSString *)targetMp4Path;
+
+//检验url中的密码是否匹配 取一个Ts的url即可
++ (BOOL)checkEncryKey:(NSString *)url password:(NSString *)password;
 
 ///  根据帧数 绘制生成对应的图片
 /// @param filePath 视频文件路径

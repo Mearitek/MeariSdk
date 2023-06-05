@@ -24,6 +24,8 @@ typedef NS_ENUM(NSInteger, MeariDeviceSubType) {
     MeariDeviceSubTypeIpcForthGeneration = 7,
     MeariDeviceSubTypeChime = 8,
     MeariDeviceSubTypeJing = 9,
+    MeariDeviceSubTypeIpcPhotoBell = 15,
+    MeariDeviceSubTypeIpcHunting = 16,
 };
 
 typedef NS_ENUM(NSInteger, MeariDeviceAddStatus) {
@@ -165,6 +167,26 @@ typedef NS_ENUM(NSUInteger, MeariAddSubDeviceMode) {
     MeariAddSubDeviceModeSetRouterQRcode = 0b10, // 是否支持camera连接路由器的二维码(NVR设置页面)
     MeariAddSubDeviceModeAddNVRQRcode = 0b100, // 是否支持生成Camera连接NVR的二维码(NVR展示页面)
     MeariAddSubDeviceModeAddRouterQRcode = 0b1000, // 是否支持camera连接路由器的二维码(NVR展示页面)
+};
+typedef NS_ENUM(NSUInteger, MeariDeviceIntelligentDetectionType) {
+    MeariDeviceIntelligentDetectionTypeTotal = 0b1, // 是否支持智能侦测总开关设置
+    MeariDeviceIntelligentDetectionTypePerson = 0b10, // 是否支持人形检测开关设置
+    MeariDeviceIntelligentDetectionTypePet = 0b100, // 是否支持宠物检测开关设置
+    MeariDeviceIntelligentDetectionTypeCar = 0b1000, // 是否支持车辆检测开关设置
+    MeariDeviceIntelligentDetectionTypePackage = 0b10000, // 是否支持包裹检测开关设置
+    MeariDeviceIntelligentDetectionTypeFrame = 0b100000, // 是否支持智能检测画框开关设置
+    MeariDeviceIntelligentDetectionTypeTime = 0b1000000, // 是否支持智能检测布防时间
+};
+typedef NS_ENUM(NSUInteger, MeariDeviceVoiceLightAlarmType) {
+    MeariDeviceVoiceLightAlarmTypeTotal = 0b1, // 是否支持声光报警总开关
+    MeariDeviceVoiceLightAlarmTypePlan = 0b10, // 是否支持声光报警时间段
+    MeariDeviceVoiceLightAlarmTypeRing = 0b100, // 是否支持声光报警铃声
+};
+
+// 是否支持日夜切换开关(自动/日/夜)的能力级
+typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
+    MeariDevicePlaybackSpeedAllFrame = 0b1, // 支持 0.5、1、 2、 4 倍速度
+    MeariDevicePlaybackSpeedSubFrame = 0b10, // 支持 8、 16 倍速度
 };
 @interface MeariDeviceInfoCapabilityFunc : MeariBaseModel
 // Voice intercom type
@@ -371,10 +393,16 @@ typedef NS_ENUM(NSUInteger, MeariAddSubDeviceMode) {
 @property (nonatomic, assign) NSInteger tmz;
 /** 是否支持重启*/
 @property (nonatomic, assign) NSInteger rbt;
+/** 是否支持语音电话，0-不支持，1-支持 */
+@property (nonatomic, assign) NSInteger voi;
+/** 是否支持噪音录像(包含sd卡录像和云存储录像)，0-不支持，1-支持 */
+@property (nonatomic, assign) NSInteger ndr;
 /** NVR删除则设备ipc*/
 @property (nonatomic, assign) NSInteger dpc;
 /** 无线抗干扰开关*/
 @property (nonatomic, assign) NSInteger ajs;
+/** 设备的事件报警方式能力级，0-图片上报(默认), 1-视频上报*/
+@property (nonatomic, assign) NSInteger evt;
 /** 人形检测灵敏度*/
 @property (nonatomic, assign) NSInteger pds;
 /** 低功耗亮灯计划能力*/
@@ -385,6 +413,78 @@ typedef NS_ENUM(NSUInteger, MeariAddSubDeviceMode) {
 @property (nonatomic, assign) NSInteger gal;
 /** 是否支持生成配网的二维码*/
 @property (nonatomic, assign) NSInteger rwm;
+/** 是否支持水印*/
+@property (nonatomic, assign) NSInteger lgo;
+/** 是否支持Ai 2.0版本*/
+@property (nonatomic, assign) NSInteger ai;
+/** IPC 设备是否支持显示电量*/
+@property (nonatomic, assign) NSInteger bat;
+/**ptz 2.0版本 */
+@property (nonatomic, assign) NSInteger ptz2;
+/**智能检测相关功能开关 */
+@property (nonatomic, assign) NSInteger idt;
+/** IPC 设备是否支持显示低功耗*/
+@property (nonatomic, assign) NSInteger lem;
+/** 支持事件报警类型设置 0-不支持, >=1-支持设置选项; 设备evt2>=1,*/
+@property (nonatomic, assign) NSInteger evt2;
+
+/** 支持多边形报警区域设置*/
+@property (nonatomic, assign) NSInteger plg;
+/** 支持多边形隐私区域设置*/
+@property (nonatomic, assign) NSInteger pva;
+/** 支持支持录像下载*/
+@property (nonatomic, assign) NSInteger avd;
+/** 支持支持录像删除*/
+@property (nonatomic, assign) NSInteger pbd;
+/** 录像倍速回放 bit0=全帧发送（0.5、1、2、4倍速）, bit1=抽帧发送（8、16倍速）*/
+@property (nonatomic, assign) NSInteger pbf;
+/** 码率自适应1.0的能力级, 0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger adb;
+/** 设备是否为宠物投食机，0-不是 1-是, 默认0*/
+@property (nonatomic, assign) NSInteger pet;
+/** 设备是否支持一键投食，0-不是 1-是, 默认0*/
+@property (nonatomic, assign) NSInteger ptf;
+/** 设备是否支持投食计划，0-不是 1-是, 默认0*/
+@property (nonatomic, assign) NSInteger pfp;
+/** 设备是否支持设置播放抛投效果音(固件写死的提示音，非主人留言),0-不是 1-是, 默认0*/
+@property (nonatomic, assign) NSInteger pfv;
+/** 是否支持主人投食留言语音设置，0-不是 1-是, 默认0*/
+@property (nonatomic, assign) NSInteger pms;
+/** 是否支持扫机身码直接添加功能, 0-不支持, 1(非0)-支持*/
+@property (nonatomic, assign) NSInteger sqr;
+
+
+
+//狩猎相机
+/** 设置唤醒后抓拍保存图像方式能力级，枚举类型 0-不支持，1-支持三个选项（录像or拍照or录像+拍照）*/
+@property (nonatomic, assign) NSInteger vop;
+/**设置拍照分辨率能力集，格式为"JSON格式的字符串"，例如{"0":"30M","1":"24M","2":"20M","3":"16M","4":"12M","5":"8M","6":"5M","7":"3M","8":"1M"},数值表示DP点中可以设置的枚举，后面带M的则是APP选择项中的标题 */
+@property (nonatomic, strong) NSString *pwh;
+/** 设置抓拍张数能力集，枚举类型 0-不支持， > 0-支持，按照bit位显示可设置的张数，bit0-1张，bit1-2张，bit2-3张，bit3-4张，bit4-5张，依次类推，限制最大支持4字节，0xffffffff*/
+@property (nonatomic, assign) NSInteger pno;
+/**设置录像分辨率能力集，格式为"JSON格式的字符串"，例如{"0":"2.5K","1":"2K","2":"1080P","3":"720P","4":"480P","5":"360P"},数值表示DP点中可以设置的枚举，后面数值的则是APP选择项中的标题 */
+@property (nonatomic, strong) NSString *vwh;
+/** 设置录像时长能力集，格式为"JSON格式的字符串"，例如{"min":"1","max":"30"}, min表示允许设置的最小值，max表示允许设置的最大值，数据单位为秒 */
+@property (nonatomic, strong) NSString *vot;
+/** 设置定时拍摄间隔能力集，格式为"JSON格式的字符串"，例如{"min":"1","max":"30"}, min表示允许设置的最小值，max表示允许设置的最大值，数据单位为秒 */
+@property (nonatomic, strong) NSString *pit;
+/** 设置监控时段能力集，枚举类型 0-不支持，1-支持设置1段时间，2-支持设置2段时间，3-支持设置3段时间。（狩猎相机中使用，目前可设置3段时间） */
+@property (nonatomic, assign) NSInteger mper;
+///** 设备是否支持用户密码设置，0-不支持，1-支持; Whether the device supports Modify User Password, 0-not supported, 1-supported;*/
+//@property (nonatomic, assign) NSInteger mup;
+/** 是否支持IR-LED设置0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger ir;
+/** 设备是否支持时间设置，时间设置包含时间格式，时区，当前时间设置。*/
+@property (nonatomic, assign) NSInteger tms;
+/**  设备是否支持恢复出厂设置功能，0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger rst;
+/** 是否支持麦克风开关，0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger mic;
+/** 是否支持语言设置，0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger lange;
+
+
+
 
 @end
 
@@ -429,6 +529,9 @@ typedef NS_ENUM(NSUInteger, MeariAddSubDeviceMode) {
 /** cloud storage State  */
 /** 云存储状态  */
 @property (nonatomic, assign) MeariDeviceCloudState cloudState;
+/** Cloud2 End Time  */
+/** 云存储2.0到期时间 */
+@property (nonatomic, copy) NSString *cloudEndTime;
 /** device capability */
 /** 设备能力级 */
 @property (nonatomic, strong) MeariDeviceInfoCapability *capability;
@@ -526,6 +629,9 @@ typedef NS_ENUM(NSUInteger, MeariAddSubDeviceMode) {
 
 @property (nonatomic, strong) NSDictionary *cloudConfig; //云回放的获取方式
 
+/** 报警方式是视频上报的设备返回此字段，是时间戳（1652428935000） */
+@property (nonatomic, copy) NSString *historyEventEnable;
+
 /** Whether device is shared by friends */
 /** 是否来自好友分享 */
 @property (nonatomic, assign) BOOL shared;
@@ -548,6 +654,7 @@ typedef NS_ENUM(NSUInteger, MeariAddSubDeviceMode) {
 /** whether device need force Update */
 /** 是否需要强制升级 */
 @property (nonatomic, assign) BOOL needForceUpdate;
+
 
 @end
 
