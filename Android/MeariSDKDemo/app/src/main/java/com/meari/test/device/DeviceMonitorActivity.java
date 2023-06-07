@@ -28,6 +28,7 @@ import com.meari.sdk.bean.CameraInfo;
 import com.meari.sdk.bean.MeariMoveDirection;
 import com.meari.sdk.bean.VideoTimeRecord;
 import com.meari.sdk.callback.IDeviceAlarmMessageTimeCallback;
+import com.meari.sdk.callback.IDeviceAlarmMessageTimeCallbackNew;
 import com.meari.sdk.callback.IPlaybackDaysCallback;
 import com.meari.sdk.json.BaseJSONArray;
 import com.meari.sdk.listener.MeariDeviceListener;
@@ -46,6 +47,7 @@ import org.json.JSONException;
 import java.io.File;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 public class DeviceMonitorActivity extends AppCompatActivity {
@@ -381,17 +383,31 @@ public class DeviceMonitorActivity extends AppCompatActivity {
         String deviceID = String.valueOf(cameraInfo.getDeviceID());
         String format = "%d%02d%02d";
         String dayTime = String.format(Locale.CHINA, format, year, month, day);
-        MeariUser.getInstance().getDeviceAlarmMessageTimeForDate(deviceID, dayTime, new IDeviceAlarmMessageTimeCallback() {
-            @Override
-            public void onSuccess(ArrayList<VideoTimeRecord> arrayList) {
+        if (cameraInfo.getEvt() == 1) {
+            MeariUser.getInstance().getDeviceAlarmMessageTimeForDate2(deviceID, dayTime, new IDeviceAlarmMessageTimeCallbackNew() {
+                @Override
+                public void onSuccess(ArrayList<VideoTimeRecord> videoTimeList, long historyEventEnable) {
 
-            }
+                }
 
-            @Override
-            public void onError(int i, String s) {
+                @Override
+                public void onError(int code, String error) {
 
-            }
-        });
+                }
+            });
+        } else {
+            MeariUser.getInstance().getDeviceAlarmMessageTimeForDate(deviceID, dayTime, new IDeviceAlarmMessageTimeCallback() {
+                @Override
+                public void onSuccess(ArrayList<VideoTimeRecord> arrayList) {
+
+                }
+
+                @Override
+                public void onError(int i, String s) {
+
+                }
+            });
+        }
     }
 
 
