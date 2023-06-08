@@ -172,7 +172,7 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
             public void screenshotSuccess(String s) {
 
             }
-        })
+        });
 
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
