@@ -22,7 +22,8 @@
 		285FA1E02489F01A005C62B9 /* MRDeviceUpgradeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 285FA1DE2489F01A005C62B9 /* MRDeviceUpgradeVC.m */; };
 		285FA1E12489F01A005C62B9 /* MRDeviceUpgradeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 285FA1DF2489F01A005C62B9 /* MRDeviceUpgradeVC.xib */; };
 		765101E5AAE701816F81572C /* Pods_MeariSDKDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 114B9A5EEC6AC613DA1DAB82 /* Pods_MeariSDKDemo.framework */; };
-		8C30FDE2299B88C200CC68C9 /* MeariKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD3CDE842488C5F000F1B940 /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8C3C30B02A2DB1CF00DDC56D /* MeariKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C4E00A92A2DB125000D0509 /* MeariKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8C4E00AA2A2DB125000D0509 /* MeariKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C4E00A92A2DB125000D0509 /* MeariKit.framework */; };
 		8C90AEF024F6088100E156CF /* MRCloudServerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C90AEEE24F6088100E156CF /* MRCloudServerVC.m */; };
 		8C90AEF124F6088100E156CF /* MRCloudServerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C90AEEF24F6088100E156CF /* MRCloudServerVC.xib */; };
 		8C90AEF624F64C0800E156CF /* MRAliWebPayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C90AEF524F64C0800E156CF /* MRAliWebPayVC.m */; };
@@ -45,7 +46,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8C30FDE2299B88C200CC68C9 /* MeariKit.framework in CopyFiles */,
+				8C3C30B02A2DB1CF00DDC56D /* MeariKit.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,6 +80,7 @@
 		285FA1DF2489F01A005C62B9 /* MRDeviceUpgradeVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MRDeviceUpgradeVC.xib; sourceTree = "<group>"; };
 		45F6E5DD48BB65D0512E9B33 /* Pods-MeariSDKDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeariSDKDemo.release.xcconfig"; path = "Target Support Files/Pods-MeariSDKDemo/Pods-MeariSDKDemo.release.xcconfig"; sourceTree = "<group>"; };
 		661937C476F41C983EDCF559 /* Pods-MeariSDKDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeariSDKDemo.debug.xcconfig"; path = "Target Support Files/Pods-MeariSDKDemo/Pods-MeariSDKDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		8C4E00A92A2DB125000D0509 /* MeariKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MeariKit.framework; sourceTree = "<group>"; };
 		8C90AEED24F6088100E156CF /* MRCloudServerVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRCloudServerVC.h; sourceTree = "<group>"; };
 		8C90AEEE24F6088100E156CF /* MRCloudServerVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRCloudServerVC.m; sourceTree = "<group>"; };
 		8C90AEEF24F6088100E156CF /* MRCloudServerVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MRCloudServerVC.xib; sourceTree = "<group>"; };
@@ -98,7 +100,6 @@
 		CD3CDE7F2488C40400F1B940 /* AddDeviceVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddDeviceVC.m; sourceTree = "<group>"; };
 		CD3CDE812488C44B00F1B940 /* DeviceListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceListVC.h; sourceTree = "<group>"; };
 		CD3CDE822488C44B00F1B940 /* DeviceListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceListVC.m; sourceTree = "<group>"; };
-		CD3CDE842488C5F000F1B940 /* MeariKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MeariKit.framework; sourceTree = "<group>"; };
 		CDE129642488EBB80081EAFD /* DeviceOperationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceOperationVC.h; sourceTree = "<group>"; };
 		CDE129652488EBB80081EAFD /* DeviceOperationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceOperationVC.m; sourceTree = "<group>"; };
 		CDE129662488EBB80081EAFD /* DeviceOperationVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceOperationVC.xib; sourceTree = "<group>"; };
@@ -109,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C4E00AA2A2DB125000D0509 /* MeariKit.framework in Frameworks */,
 				765101E5AAE701816F81572C /* Pods_MeariSDKDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,7 +156,7 @@
 		CD3CDE642488C1E000F1B940 /* MeariSDKDemo */ = {
 			isa = PBXGroup;
 			children = (
-				CD3CDE842488C5F000F1B940 /* MeariKit.framework */,
+				8C4E00A92A2DB125000D0509 /* MeariKit.framework */,
 				CD3CDE652488C1E000F1B940 /* AppDelegate.h */,
 				CD3CDE662488C1E000F1B940 /* AppDelegate.m */,
 				280806312488DDB1002104B1 /* UIAlertController+Extension.h */,
