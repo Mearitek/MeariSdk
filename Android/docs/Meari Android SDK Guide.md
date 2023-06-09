@@ -38,6 +38,7 @@
     * 6.2 [Device preview and playback](#62-Device-preview-and-playback)
         * 6.2.1 [Device preview](#621-Device-preview)
         * 6.2.2 [Device SD card playback](#622-Device-SD-card-playback)
+        * 6.2.3 [Device cloud playback](#623-Device-cloud-playback)
     * 6.3 [Device related](#63-Device-related)
         * 6.3.1 [Doorbell answering process](#631-Doorbell-answering-process)
         * 6.3.2 [Master Message](#632-Master-Message)
@@ -878,6 +879,7 @@ Get time segment of device alarm message
 
 [Function call]
 
+Use the following method if cameraInfo.getEvt() < 1:
 /**
   * Get time segment of devcie alarm message
   *
@@ -887,7 +889,19 @@ Get time segment of device alarm message
   * /
 public void getDeviceAlarmMessageTimeForDate (String deviceID, String dayTime, IDeviceAlarmMessageTimeCallback callback);
 
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * Get time segment of devcie alarm message
+ *
+ * @param deviceID device ID
+ * @param dayTime Time: "20200303"
+ * @param callback callback
+ */
+public void getDeviceAlarmMessageTimeForDate2(String deviceID, String dayTime, IDeviceAlarmMessageTimeCallbackNew callback);
+
 [Code example]
+
+Call the following mehod when cameraInfo.getEvt() < 1:
 MeariUser.getInstance().GetDeviceAlarmMessageTimeForDate (deviceID, dayTime, new IDeviceAlarmMessageTimeCallback () {
      @Override
      public void onSuccess (ArrayList <VideoTimeRecord> videoTimeList) {
@@ -896,6 +910,17 @@ MeariUser.getInstance().GetDeviceAlarmMessageTimeForDate (deviceID, dayTime, new
      @Override
      public void onError (int code, String error) {
      }
+});
+
+Call the following mehod when cameraInfo.getEvt() == 1:
+MeariUser.getInstance().getDeviceAlarmMessageTimeForDate2(deviceID, dayTime, new IDeviceAlarmMessageTimeCallbackNew() {
+    @Override
+    public void onSuccess(ArrayList<VideoTimeRecord> videoTimeList, long historyEventEnable) {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
 });
 ```
 
@@ -1107,6 +1132,42 @@ public void resumePlaybackSDCard (MeariDeviceListener deviceListener)
  * /
 public void stopPlaybackSDCard (MeariDeviceListener deviceListener);
 
+support download record when MeariDeviceUtil.isSupportDownloadSdRecord(cameraInfo) == true
+/**
+ * download record
+ *
+ * @param channelId camera channelId cameraInfo.getChannelId()
+ * @param startTime yyyyMMddHHmmss startTime must be in the record
+ * @param endTime yyyyMMddHHmmss
+ * @param filePath download path of record
+ * @param listener listener
+ */
+public void startDownloadSdRecord(int channelId, String startTime, String endTime, String filePath, @NonNull MeariDeviceSdRecordDownloadListener listener)
+
+/**
+ * progress of downloading record
+ *
+ * @param callback callback
+ */
+public void getSdRecordDownloadProgress(IProgressCallback callback)
+
+support delete record when MeariDeviceUtil.isSupportDeleteSdRecord(cameraInfo) == true
+/**
+ * delete record of one day
+ *
+ * @param channelId camera channel
+ * @param day yyyyMMdd
+ * @param listener listener
+ */
+public void deleteSdRecordOfDay(int channelId, String day, @NonNull MeariDeviceListener listener)
+
+/**
+ * status of deleting record
+ *
+ * @param callback callback
+ */
+public void getSdRecordDeleteState(IProgressCallback callback)
+
 
 [Code example]
 
@@ -1208,6 +1269,228 @@ deviceController.stopPlaybackSDCard (new MeariDeviceListener () {
 
     @Override
     public void onFailed (String errorMsg) {
+
+    }
+});
+
+// download record
+deviceController.startDownloadSdRecord(channelId, start, end, path, new MeariDeviceSdRecordDownloadListener() {
+    @Override
+    public void onSuccess(int index) {
+        MeariUser.getInstance().getSdRecordDownloadProgress()
+    }
+
+    @Override
+    public void onFailed(int code, String msg) {
+
+    }
+});
+
+// progress of downloading record
+MeariUser.getInstance().getSdRecordDownloadProgress(new IProgressCallback() {
+    @Override
+    public void onSuccess(int progress) {
+        if (progress >= 100) {
+            // stop download when download is success
+            deviceController.stopDownloadSdRecord(channel, index, new MeariDeviceListener() {
+            @Override
+            public void onSuccess(String successMsg) {
+                
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                
+            }
+        });
+
+        }
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+
+    }
+});
+
+// delete record of one day
+deviceController.deleteSdRecordOfDay(cameraInfo.getNvrChannelId(), ymd, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+        MeariUser.getInstance().getSdRecordDeleteState()
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+
+    }
+});
+
+// status of deleting record
+MeariUser.getInstanace().getSdRecordDeleteState(new IProgressCallback() {
+    @Override
+    public void onSuccess(int state) {
+        if (state == 0) {
+            // not under deleting, success
+        } else {
+            // under deleting
+        }
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+
+    }
+});
+```
+
+### 6.2.3 Device cloud playback
+
+```
+[description]
+The device can do cloud playback when it opened the cloud service.
+
+[Function call]
+
+Use the following method if cameraInfo.getEvt() < 1:
+/**
+ * get the day which has video in one month
+ * @param deviceID device id
+ * @param year year
+ * @param month month
+ * @param callback callback
+ */
+public void getCloudHaveVideoDaysInMonth(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * get the day which has video in one month
+ * @param deviceID device id
+ * @param year year
+ * @param month month
+ * @param callback callback
+ */
+public void getCloudHaveShortVideoDaysInMonth(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
+
+Use the following method if cameraInfo.getEvt() < 1:
+/**
+ * get all the video clips in one day
+ * @param deviceID device id
+ * @param year year
+ * @param month month
+ * @param day day
+ * @param callback callback
+ */
+public void getCloudVideoTimeRecordInDay(String deviceID, int year, int month, int day, ICloudVideoTimeRecordCallback callback);
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * get all the video clips in one day
+ * @param deviceID device id
+ * @param year year
+ * @param month month
+ * @param day day
+ * @param callback callback
+ */
+public void getCloudShortVideoTimeRecordInDay(String deviceID, int year, int month, int day, ICloudShortVideoTimeRecordCallback callback);
+
+Use the following method if cameraInfo.getEvt() < 1:
+/**
+ * get the video information
+ * @param deviceID device id
+ * @param index index of time  for example: 00:30:00 is 1, 01:00:00 is 2
+ * @param year year
+ * @param month month
+ * @param month day
+ * @param callback callback
+ */
+public void getCloudVideo(String deviceID, int index, int year, int month, int day, ICloudGetVideoCallback callback);
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * get the video information
+ * @param deviceID device id
+ * @param index index of time  for example: 00:20:00 is 1, 00:40:00 is 2
+ * @param year year
+ * @param month month
+ * @param month day
+ * @param callback callback
+ */
+public void getCloudShortVideo(String deviceID, int index, int year, int month, int day, ICloudGetShortVideoCallback callback);
+
+[Code example]
+
+// get the day which has video in one month
+Call the following mehod when cameraInfo.getEvt() < 1:
+MeariUser.getInstance().getCloudHaveVideoDaysInMonth(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
+    @Override
+    public void onSuccess(String yearAndMonth, ArrayList<Integer> haveVideoDays) {
+               
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+Call the following mehod when cameraInfo.getEvt() == 1:
+MeariUser.getInstance().getCloudHaveShortVideoDaysInMonth(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
+    @Override
+    public void onSuccess(String yearAndMonth, ArrayList<Integer> haveVideoDays) {
+               
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+
+// get all the video clips in one day
+Call the following mehod when cameraInfo.getEvt() < 1:
+MeariUser.getInstance().getCloudVideoTimeRecordInDay(deviceId,year, month, day, new ICloudVideoTimeRecordCallback(){
+    @Override
+    public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+Call the following mehod when cameraInfo.getEvt() == 1:
+MeariUser.getInstance().getCloudShortVideoTimeRecordInDay(deviceId,year, month, day, new ICloudShortVideoTimeRecordCallback(){
+    @Override
+    public void onSuccess(long historyEventEnable, long cloudEndTime, String todayStorageType, String yearMonthDay, ArrayList<VideoTimeRecord> recordList, ArrayList<VideoTimeRecord> eventList) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+
+// get the video information
+Call the following mehod when cameraInfo.getEvt() < 1:
+MeariUser.getInstance().getCloudVideo(deviceid, index, year, month, day, new ICloudGetVideoCallback() {
+    @Override
+    public void onSuccess(String videoInfo, String startTime, String endTime) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+Call the following mehod when cameraInfo.getEvt() == 1:
+MeariUser.getInstance().getCloudShortVideo(deviceid, index, year, month, day, new ICloudGetShortVideoCallback() {
+    @Override
+    public void onSuccess(String videoInfo, String startTime, String endTime) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
 
     }
 });
@@ -1746,6 +2029,7 @@ MeariUser.getInstance (). GetDeviceMessageStatusList (new IDeviceMessageStatusCa
 Get alarm messages of a single device
 
 [Function call]
+Use the following method if cameraInfo.getEvt() < 1:
 /**
  * Get the alarm message of a single device (get the latest 20 messages at a time, after the device owner pulls it, the server deletes the data, pay attention to save the data)
  *
@@ -1755,33 +2039,240 @@ Get alarm messages of a single device
  * /
 public void getAlertMsg (long deviceId, String day, IGetAlarmMessagesCallback callback);
 
-[Method call]
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * Get the alarm message of a single device (get the latest 20 messages at a time, the server will delete the data after 30 days if user open the cloud service, otherwise is 7 days)
+ *
+ * @param deviceId device id
+ * @param day date yyyyMMdd
+ * @param index pass "0" when direction=1, pass the eventTime of the last message when direction=0
+ * @param direction 1: refresh 0: load more
+ * @param eventType message type, for filtering
+ "1": "motion",
+ "2": "pir",
+ "3": "bell",
+ "6": "decibel",
+ "7": "cry",
+ "9": "baby",
+ "10": "tear",
+ "11": "human",
+ "12": "face",
+ "13": "safety",
+ * @param aiType ai type, for filtering
+ "0": "people"
+ "1": "pet"
+ "2": "car is comming"
+ "3": "car retention"
+ "4": "car is driving away"
+ "5": "package is dropping down"
+ "6": "package retention"
+ "7": "package has taken"
+ * @param callback function callback
+ */
+ public void getAlertMsgWithVideo(long deviceId, String day, String index, int direction, int eventType, int[] aiType, IDeviceAlarmMessagesCallback callback);
+
+
+【Method call】
 
 class DeviceAlarmMessage:
+Common fields:
 -long deviceID; // device ID
 -String deviceUuid; // device unique identifier
--String imgUrl; // Alarm picture address
 -int imageAlertType; // Alarm type (PIR and Motion)
 -int msgTypeID; // message type
 -long userID; // User Id
 -long userIDS;// if it's a shared device, the value is 0, or it will be user id
 -String createDate; // wear time
 -String isRead; // whether read
--String tumbnailPic; // Thumbnails
 -String decibel; // dB
 -long msgID; // Message Id
 
+exclusive for cameraInfo.getEvt() < 1
+-String imgUrl; // Alarm picture address
+-String tumbnailPic; // Thumbnails
 
-MeariUser.getInstance().getAlertMsg(getMsgInfo().GetDeviceID(), day, new IDeviceAlarmMessagesCallback () {
+exclusive for cameraInfo.getEvt() == 1
+- long imageUrl;  // Alarm picture address 
+- String eventTime; // event time
+- List<AiVideoInfo> aiVideoInfo // ai analysis information
+AiVideoInfo 
+name: people,car,pet,package
+event: //  "come" is default for people and pet, no ther status
+       //  package and car has 3 status:"come" "stay" "go"
+       //  "come" means package is dropping down, car is comming
+       //  "stay" means package retention, car retention
+       //  "go " means package has taken, car is driving away
+left: the distance from left in the alarm picture, for draw box
+top: the distance from top in the alarm picture, for draw box
+width: the width of box, for draw box
+height: the height of box, for draw box
+- List<VideoInfo> videoUrl // the url of alarm short video
+VideoInfo
+url: download url
+duration: the duration of the video clip
+- long historyEventEnable // the time when device update to evt==1
+
+Call the following mehod when cameraInfo.getEvt() < 1:
+MeariUser.getInstance().getAlertMsg(getMsgInfo().getDeviceID(), day, new IDeviceAlarmMessagesCallback() {
     @Override
-    public void onSuccess (List <DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
+    public void onSuccess(List<DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
 
     }
 
     @Override
-    public void onError (int code, String error) {
+    public void onError(int code, String error) {
     }
 });
+
+Call the following mehod when cameraInfo.getEvt() == 1:
+MeariUser.getInstance().getAlertMsgWithVideo(deviceId, day, index, direction, eventType, aiType, new IDeviceAlarmMessagesCallback() {
+                @Override
+                public void onSuccess(List<DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
+                
+                }
+
+                @Override
+                public void onError(int code, String error) {
+                    
+                }
+            });
+Call the following mehod to decrypt the picture
+/**
+ * decrypt the picture
+ *
+ * @param url the download url of the picture
+ * @param img byte array of the picture
+ * @param sn device sn
+ * @param device password, default it has no password, the parameter is empty set
+ * @return [byte[], bool] the picture data after decrypted, result
+ */
+Object[] result = SdkUtils.handleEncodedImage(String url, byte[] img, String sn, Set<String> allPwd)
+
+Using the following method to download short video:
+/**
+ * generate m3u8 to specified path
+ *
+ * @param videoInfoList videoUrl form DeviceAlarmMessage
+ * @param path_m3u8 output path of m3u8
+ */
+String path_m3u8 = SdkUtils.getM3U8Path(List<VideoInfo> videoInfoList, String path_m3u8)
+
+// Using the first url of video to check if the video is encrypted
+VideoInfo videoInfo = videoInfoList.get(0);
+String url = videoInfo.getUrl();
+String[] strList = url.split("__");
+String v = strList[1];
+if (v.startsWith("vn")) {
+    // not encrypted
+    SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, "")
+} else {
+    String decKey = "";
+    if (v.startsWith("v2")) {
+        // license encrypted
+        decKey = SdkUtils.formatLicenceId(cameraInfo.getSnNum());
+        SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, decKey)
+    } else {
+        Set<String> curDecKey =  the device password that is setting form user
+        keyCheckStr = v.split("-")[1];
+        for (String key: curDecKey) {
+            keyCheckStr=" + keyCheckStr + " " + MeariMediaUtil.checkVideoPwd(keyCheckStr, key));
+            if (MeariMediaUtil.checkVideoPwd(keyCheckStr, key) == 0) {
+                decKey = key;
+                SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, decKey)
+                break;
+            } else {
+                // password is not right
+            }
+        }
+    }        
+}
+
+/**
+ * download mp4 file from m3u8
+ *
+ * @param path_m3u8 path of m3u8
+ * @param path_mp4 path of mp4
+ * @param decKey password
+ */
+String path_m3u8 = SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, String decKey)
+
+// play short video
+<LinearLayout
+  android:id="@+id/ll_video_view"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/dark"
+  android:orientation="horizontal">
+  <com.ppstrong.weeye.widget.media.IjkVideoView
+    android:id="@+id/video_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center" />
+</LinearLayout>
+
+IjkVideoView mVideoView = findViewById(R.id.video_view)
+CloudPlayerController cloudPlayerController = new CloudPlayerController(context, mVideoView, new ICloudPlayerCallback() {
+            @Override
+            public void mediaPlayingCallback() {
+                // paly success
+                
+            }
+
+            @Override
+            public void mediaPauseCallback() {
+
+            }
+
+            @Override
+            public void upDateProgress(long postion) {
+                // play progress
+
+            }
+
+            @Override
+            public void mediaPlayFailedCallback(int code) {
+                // play failed
+
+            }
+
+            @Override
+            public void playNext() {
+                // play complete
+
+            }
+
+            @Override
+            public void stopRecordVideo() {
+
+            }
+
+            @Override
+            public void showStopRecordVideoView(String path) {
+
+            }
+
+            @Override
+            public void screenshotSuccess(String path) {
+
+            }
+        });
+cloudPlayerController.setPlayOther(true);
+if (!TextUtils.isEmpty(curDecKey)) {
+    Set<String> keys = new HashSet<>();
+    keys.add(curDecKey);
+    cloudPlayerController.setDecKey(keys);
+}
+// start play
+cloudPlayerController.play(path_mp4, "0");
+// play from any time(millisecond)
+if (isEnd) {
+    // play again and pass the seek time when the video is complete
+    cloudPlayerController.play(path_mp4, "0");
+    cloudPlayerController.play(path_mp4, String.valueOf(millisecond / 1000));
+} else  {
+    // seek directly
+    cloudPlayerController.seekTo(millisecond);
+}
 ```
 
 ## 8.3 System Message

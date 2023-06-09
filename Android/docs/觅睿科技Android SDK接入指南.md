@@ -27,6 +27,10 @@
     * 5.3 [有线配网添加设备](#53-有线配网添加设备)
         * 5.3.1 [搜索设备](#531-搜索设备)
         * 5.3.2 [添加设备](#532-添加设备)
+    * 5.4 [扫码即添加](#54-扫码即添加) 
+        * 5.4.1 [扫描机身码](#541-扫描机身码)
+        * 5.3.2 [获取设备状态](#542-获取设备状态)
+        * 5.3.2 [添加设备](#543-添加设备)
 * 6 [设备控制](#6-设备控制)
     * 6.1 [设备基本操作](#61-设备基本操作)
         * 6.1.1 [设备相关类介绍](#611-设备相关类介绍)
@@ -171,7 +175,17 @@
         * 13.5.1 [NVR通道摄像机信息](#1351-NVR通道摄像机信息)
         * 13.5.2 [NVR通道摄像机参数](#1352-NVR通道摄像机参数)
         * 13.5.3 [NVR通道摄像机固件升级](#1353-NVR通道摄像机固件升级)
-* 14 [更新说明](#14-更新说明)
+* 14 [4G](#14-4G) 
+    * 14.1 [添加4G](#141-添加4G)
+    * 14.2 [4G流量](#142-4G流量)
+        * 14.2.1 [流量充值套餐](#1421-流量充值套餐) 
+        * 14.2.2 [流量查询（不可频繁查询）](#1422-流量查询（不可频繁查询）)
+        * 14.2.3 [兑换流量](#1423-兑换流量)
+        * 14.2.4 [试用流量开通](#1424-试用流量开通) 
+        * 14.2.5 [流量购买](#1425-流量购买)
+        * 14.2.6 [流量订单](#1426-流量订单)
+
+* 15 [更新说明](#15-更新说明)
 
 <center>
 
@@ -180,6 +194,7 @@
 :-:|:-:|:-:|:-:
 3.1.0 | 觅睿技术团队 | 2020.07.02 | 优化
 4.1.0 | 觅睿技术团队 | 2022.03.31 | 优化
+5.0.0 | 觅睿技术团队 | 2023.06.09 | 4G,云存储2.0
 
 <center>
 
@@ -481,7 +496,7 @@ MeariUser.getInstance().renameNickname(name, new IResultCallback() {
 public void getToken(IGetTokenCallback callback);
 
 /**
- * 生成配网二维码
+ * 生成配网二维码（4G需要使用下面的加密二维码）
  *
  * @param ssid     wifi名称
  * @param password wifi密码
@@ -489,6 +504,19 @@ public void getToken(IGetTokenCallback callback);
  * @param callback callback
  */
 public void createQRCode(String ssid, String password, String token, ICreateQRCodeCallback callback);
+
+/**
+ * 生成配网加密二维码（目前仅4G使用，且必须使用）
+ *
+ * @param ssid     wifi名称
+ * @param password wifi密码
+ * @param token    配网token
+ * @param callback callback
+ * @param isChimeSubDevice  false
+ */
+public void createSecretQRCode(String ssid, String password, String token, ICreateQRCodeCallback callback, boolean isChimeSubDevice)
+
+createSecretQRCode
 
 【代码范例】
 
@@ -762,6 +790,163 @@ public void addDevice(CameraInfo info) {
 }
 ```
 
+## 5.4 扫码即添加
+```
+有线设备或者4G设备，扫描机身码，开始检测设备状态。如果设备可以添加，直接添加设备。
+```
+### 5.4.1 扫描机身码
+```
+扫描机身码，获取到机身码的值。
+
+【函数调用】
+
+/**
+ * 处理机身码，获取设备的uuid
+ *
+ * @param result      机身码结果
+ * 
+ * return  设备的uuid
+ */
+public static String dealUUiD(String result)
+
+【代码范例】
+val dealUUiD = SdkUtils.dealUUiD(result)
+
+```
+
+### 5.4.2 获取设备状态
+```
+通过uuid获取设备在线离线状态，设备在线才能继续添加，否则引导用户走通电流程
+【函数调用】
+
+/**
+ * 机身码获取设备在线状态
+ *
+ * @param uuid       设备的uuid
+ * 
+ *
+ */
+
+public void getDeviceStatus(String uuid, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().getDeviceStatus(uuid, object : IStringResultCallback {
+            override fun onSuccess(result: String) {
+                
+            }
+
+            override fun onError(code: Int, error: String) {
+                
+            }
+        })
+
+
+【JSON】
+{
+  "resultCode": "1001",
+  "result": {
+    "sn": "",
+    "licenseID": "",
+    "deviceTypeName": "",
+    "firmID": "8",
+    "capability ": "",
+    "model": "",
+    "status": 1
+  }
+}
+备注：
+status
+1: 在线
+2: 离线
+3: 休眠
+4: 未上报业务服务器信息
+5: 超时
+6: 未找到
+7: 弱绑定未复位
+8: 强绑定
+9: app账号和设备加密国家号不匹配
+
+status = 4时，该字段为空
+
+staus = 8时，返回userAccount  或 nickName(第三方登录)
+
+status = 1时，返回 capability 能力级
+
+ ```
+
+### 5.4.3 添加设备
+有线设备或者4G设备查询到在线状态，可以通过调用添加接口进行设备添加
+
+```
+【描述】
+添加设备（区分新旧机身码）
+
+【函数调用】
+
+/**
+ * 添加设备（旧码）
+ *
+ * @param result      机身码结果
+ * return      ture:新机身码    false：旧机身码
+ *
+ */
+public static boolean dealUUiDisNew(String result)
+
+【代码范例】
+SdkUtils.dealUUiDisNew(scanResult)
+
+
+
+/**
+ * 添加设备（旧码）
+ *
+ * @param sn       设备的licenseID
+ * @param sn       设备的licenseID
+ *
+ */
+
+public void add4GDeviceNew(String sn, IStringResultCallback callback) 
+
+【代码范例】
+MeariUser.getInstance().add4GDeviceNew(uuid, object : IStringResultCallback {
+            override fun onSuccess(result: String) {
+                
+            }
+
+            override fun onError(code: Int, error: String) {
+                //(返回1150是设备未激活，1013被别的绑定)
+            }
+        })
+
+
+
+/**
+ * 下发token给设备 （新码）
+ *
+ * @param licenseID       设备的licenseID
+ * 
+ *
+ */
+
+public void addDeviceServerSendToken(String licenseID,IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().getDeviceStatusGet(sn, new IGetDeviceStatusCallback() {
+            @Override
+            public void onSuccess(boolean isOnline) {
+                //仅代表添加指令发送成功，添加成功还需等待mqtt或者轮询设备列表确认是否添加成功
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+ ```
+
+
+
 
 # 6 设备控制
 
@@ -891,6 +1076,7 @@ MeariUser.getInstance().renameDeviceNickName(cameraInfo.getDeviceID(), DeviceTyp
 
 【函数调用】
 
+如果设备能力级cameraInfo.getEvt() < 1使用如下方法：
 /**
  * 获取设备的报警消息时间片段
  *
@@ -900,10 +1086,33 @@ MeariUser.getInstance().renameDeviceNickName(cameraInfo.getDeviceID(), DeviceTyp
  */
 public void getDeviceAlarmMessageTimeForDate(String deviceID, String dayTime, IDeviceAlarmMessageTimeCallback callback);
 
+如果设备能力级cameraInfo.getEvt() == 1使用如下方法：
+/**
+ * 获取设备的报警消息时间片段
+ *
+ * @param deviceID 设备ID
+ * @param dayTime  时间："20200303"
+ * @param callback callback
+ */
+public void getDeviceAlarmMessageTimeForDate2(String deviceID, String dayTime, IDeviceAlarmMessageTimeCallbackNew callback);
+
 【代码范例】
+
+如果设备能力级cameraInfo.getEvt() < 1时调用:
 MeariUser.getInstance().getDeviceAlarmMessageTimeForDate(deviceID, dayTime, new IDeviceAlarmMessageTimeCallback() {
     @Override
     public void onSuccess(ArrayList<VideoTimeRecord> videoTimeList) {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+
+如果设备能力级cameraInfo.getEvt() == 1时调用:
+MeariUser.getInstance().getDeviceAlarmMessageTimeForDate2(deviceID, dayTime, new IDeviceAlarmMessageTimeCallbackNew() {
+    @Override
+    public void onSuccess(ArrayList<VideoTimeRecord> videoTimeList, long historyEventEnable) {
     }
 
     @Override
@@ -1121,6 +1330,41 @@ public void resumePlaybackSDCard(MeariDeviceListener deviceListener)
  */
 public void stopPlaybackSDCard(MeariDeviceListener deviceListener);
 
+MeariDeviceUtil.isSupportDownloadSdRecord(cameraInfo) == true时支持下载录像
+/**
+ * 下载录像
+ *
+ * @param channelId camera channelId cameraInfo.getChannelId()
+ * @param startTime yyyyMMddHHmmss 开始时间必须在录像片段内
+ * @param endTime yyyyMMddHHmmss
+ * @param filePath 下载录像的路径
+ * @param listener 监听
+ */
+public void startDownloadSdRecord(int channelId, String startTime, String endTime, String filePath, @NonNull MeariDeviceSdRecordDownloadListener listener)
+
+/**
+ * 下载录像进度
+ *
+ * @param callback callback
+ */
+public void getSdRecordDownloadProgress(IProgressCallback callback)
+
+MeariDeviceUtil.isSupportDeleteSdRecord(cameraInfo) == true时支持删除录像
+/**
+ * 删除一天的录像
+ *
+ * @param channelId camera channel
+ * @param day yyyyMMdd
+ * @param listener 监听
+ */
+public void deleteSdRecordOfDay(int channelId, String day, @NonNull MeariDeviceListener listener)
+
+/**
+ * 删除录像状态
+ *
+ * @param callback callback
+ */
+public void getSdRecordDeleteState(IProgressCallback callback)
 
 【代码范例】
 
@@ -1225,6 +1469,76 @@ deviceController.stopPlaybackSDCard(new MeariDeviceListener() {
 
     }
 });
+
+// 下载录像
+deviceController.startDownloadSdRecord(channelId, start, end, path, new MeariDeviceSdRecordDownloadListener() {
+    @Override
+    public void onSuccess(int index) {
+        MeariUser.getInstance().getSdRecordDownloadProgress()
+    }
+
+    @Override
+    public void onFailed(int code, String msg) {
+
+    }
+});
+
+// 下载录像进度
+MeariUser.getInstance().getSdRecordDownloadProgress(new IProgressCallback() {
+    @Override
+    public void onSuccess(int progress) {
+        if (progress >= 100) {
+            // 下载成功停止下载
+            deviceController.stopDownloadSdRecord(channel, index, new MeariDeviceListener() {
+            @Override
+            public void onSuccess(String successMsg) {
+                
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                
+            }
+        });
+
+        }
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+
+    }
+});
+
+// 删除一天的录像
+deviceController.deleteSdRecordOfDay(cameraInfo.getNvrChannelId(), ymd, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+        MeariUser.getInstance().getSdRecordDeleteState()
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+
+    }
+});
+
+// 删除录像状态
+MeariUser.getInstanace().getSdRecordDeleteState(new IProgressCallback() {
+    @Override
+    public void onSuccess(int state) {
+        if (state == 0) {
+            // 不在删除状态，成功
+        } else {
+            // 正在删除中
+        }
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+
+    }
+});
 ```
 ### 6.2.3 设备云回放
 
@@ -1234,6 +1548,7 @@ deviceController.stopPlaybackSDCard(new MeariDeviceListener() {
 
 【函数调用】
 
+如果设备能力级cameraInfo.getEvt() < 1使用如下方法：
 /**
  * 获取一个月有视频的日期
  * @param deviceID 设备ID
@@ -1242,7 +1557,17 @@ deviceController.stopPlaybackSDCard(new MeariDeviceListener() {
  * @param callback 回调
  */
 public void getCloudHaveVideoDaysInMonth(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
+如果设备能力级cameraInfo.getEvt() == 1使用如下方法：
+/**
+ * 获取一个月有视频的日期
+ * @param deviceID 设备ID
+ * @param year 年
+ * @param month 月
+ * @param callback 回调
+ */
+public void getCloudHaveShortVideoDaysInMonth(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
 
+如果设备能力级cameraInfo.getEvt() < 1使用如下方法：
 /**
  * 获取一天中所有的视频片段
  * @param deviceID 设备ID
@@ -1251,21 +1576,57 @@ public void getCloudHaveVideoDaysInMonth(String deviceID, int year, int month, I
  * @param callback 回调
  */
 public void getCloudVideoTimeRecordInDay(String deviceID, int year, int month, int day, ICloudVideoTimeRecordCallback callback);
+如果设备能力级cameraInfo.getEvt() == 1使用如下方法：
+/**
+ * 获取一天中所有的视频片段
+ * @param deviceID 设备ID
+ * @param year 年
+ * @param month 月
+ * @param callback 回调
+ */
+public void getCloudShortVideoTimeRecordInDay(String deviceID, int year, int month, int day, ICloudShortVideoTimeRecordCallback callback);
 
+如果设备能力级cameraInfo.getEvt() < 1使用如下方法：
 /**
  * 获取云回放的视频信息
  * @param deviceID 设备ID
+ * @param index 时间序号 例：00:30:00 is 1, 01:00:00 is 2
  * @param year 年
  * @param month 月
  * @param month 日
  * @param callback 回调
  */
 public void getCloudVideo(String deviceID, int index, int year, int month, int day, ICloudGetVideoCallback callback);
+如果设备能力级cameraInfo.getEvt() == 1使用如下方法：
+/**
+ * 获取云回放的视频信息
+ * @param deviceID 设备ID
+ * @param index 时间序号 例：00:20:00 is 1, 00:40:00 is 2
+ * @param year 年
+ * @param month 月
+ * @param month 日
+ * @param callback 回调
+ */
+public void getCloudShortVideo(String deviceID, int index, int year, int month, int day, ICloudGetShortVideoCallback callback);
 
 【代码范例】
 
 // 获取一个月有视频的日期
+如果设备能力级cameraInfo.getEvt() < 1时调用:
 MeariUser.getInstance().getCloudHaveVideoDaysInMonth(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
+    @Override
+    public void onSuccess(String yearAndMonth, ArrayList<Integer> haveVideoDays) {
+               
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+如果设备能力级cameraInfo.getEvt() == 1时调用:
+// 获取一个月有视频的日期
+MeariUser.getInstance().getCloudHaveShortVideoDaysInMonth(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
     @Override
     public void onSuccess(String yearAndMonth, ArrayList<Integer> haveVideoDays) {
                
@@ -1278,6 +1639,7 @@ MeariUser.getInstance().getCloudHaveVideoDaysInMonth(deviceId, year, month, new 
 });
 
 // 获取一天中所有的视频片段
+如果设备能力级cameraInfo.getEvt() < 1时调用:
 MeariUser.getInstance().getCloudVideoTimeRecordInDay(deviceId,year, month, day, new ICloudVideoTimeRecordCallback(){
     @Override
     public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
@@ -1289,9 +1651,34 @@ MeariUser.getInstance().getCloudVideoTimeRecordInDay(deviceId,year, month, day, 
 
     }
 });
+如果设备能力级cameraInfo.getEvt() == 1时调用:
+MeariUser.getInstance().getCloudShortVideoTimeRecordInDay(deviceId,year, month, day, new ICloudShortVideoTimeRecordCallback(){
+    @Override
+    public void onSuccess(long historyEventEnable, long cloudEndTime, String todayStorageType, String yearMonthDay, ArrayList<VideoTimeRecord> recordList, ArrayList<VideoTimeRecord> eventList) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
 
 // 获取云回放的视频信息
+如果设备能力级cameraInfo.getEvt() < 1时调用:
 MeariUser.getInstance().getCloudVideo(deviceid, index, year, month, day, new ICloudGetVideoCallback() {
+    @Override
+    public void onSuccess(String videoInfo, String startTime, String endTime) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+如果设备能力级cameraInfo.getEvt() == 1时调用:
+MeariUser.getInstance().getCloudShortVideo(deviceid, index, year, month, day, new ICloudGetShortVideoCallback() {
     @Override
     public void onSuccess(String videoInfo, String startTime, String endTime) {
         
@@ -1837,6 +2224,7 @@ MeariUser.getInstance().getDeviceMessageStatusList(new IDeviceMessageStatusCallb
 获取单个设备的报警消息
 
 【函数调用】
+如果设备能力级cameraInfo.getEvt() < 1使用如下方法：
 /**
  * 获取单个设备的报警消息（一次获取最新的20条，设备主人拉取后，服务器删除数据，注意保存数据）
  *
@@ -1846,27 +2234,305 @@ MeariUser.getInstance().getDeviceMessageStatusList(new IDeviceMessageStatusCallb
  */
 public void getAlertMsg(long deviceID, String day, IDeviceAlarmMessagesCallback callback);
 
+如果设备能力级cameraInfo.getEvt() == 1使用如下方法：
+/**
+ * 获取单个设备的报警消息（一次获取最新的20条，如果用户开通了云存储30天后服务器删除数据，未开通云存储7天后服务器删除数据）
+ *
+ * @param deviceId device id
+ * @param day 日期 yyyyMMdd
+ * @param index direction=1时传"0", direction=0时传当前最后一条消息的eventTime
+ * @param direction 1: 刷新 0：加载更多
+ * @param eventType 消息类型，用于过滤
+ "1": "motion",
+ "2": "pir",
+ "3": "bell",
+ "6": "decibel",
+ "7": "cry",
+ "9": "baby",
+ "10": "tear",
+ "11": "human",
+ "12": "face",
+ "13": "safety",
+ * @param aiType    ai分析类型，用于过滤
+ "0": "人"
+ "1": "宠物"
+ "2": "有车辆驶来"
+ "3": "有车辆停滞"
+ "4": "有车辆驶离"
+ "5": "包裹被放下"
+ "6": "有滞留包裹"
+ "7": "包裹被拿走"
+ * @param callback function callback
+ */
+ public void getAlertMsgWithVideo(long deviceId, String day, String index, int direction, int eventType, int[] aiType, IDeviceAlarmMessagesCallback callback);
+
+
 【方法调用】
 
 class DeviceAlarmMessage:
+通用字段：
 - long deviceID;//设备ID
 - String deviceUuid;//设备唯一标识符
-- String imgUrl;// 报警图片地址
 - int imageAlertType;//报警类型（PIR和Motion）
 - int msgTypeID;//消息类型
 - long userID;//用户Id
 - long userIDS;//分享设备时为0，否则为用户Id
 - String createDate;//上传时间
 - String isRead;//是否已读
-- String tumbnailPic;//缩略图
 - String decibel;//分贝
 - long msgID;//消息Id
 
+cameraInfo.getEvt() < 1时独有字段
+- String imgUrl;// 报警图片地址
+- String tumbnailPic;//缩略图
 
+cameraInfo.getEvt() == 1时独有字段
+- long imageUrl;  // 报警图片地址 
+- String eventTime; // 报警时间点
+- List<AiVideoInfo> aiVideoInfo // ai检测的信息
+AiVideoInfo 
+name: people,car,pet,package
+event: //  人和宠物默认为“come”，无其它状态
+       //  包裹和车辆有三种状态，“come” “stay” “go”
+       //  “come”对应“包裹被放下”、“有车辆驶来”
+       //  “stay”对应 “ 有滞留包裹”、“有车辆停滞”
+       //  “go”对应 “包裹被拿走” “有车辆驶离”
+left: 报警图片中距离左边的距离 用于画框
+top: 报警图片中距离上边的距离 用于画框
+width: 框的宽度 用于画框
+height: 框的高度 用于画框
+- List<VideoInfo> videoUrl // 报警短视频的链接
+VideoInfo
+url: 下载链接
+duration：视频长度
+- long historyEventEnable // 设备升级到evt=1时的时间点
+
+如果设备能力级cameraInfo.getEvt() < 1时调用:
 MeariUser.getInstance().getAlertMsg(getMsgInfo().getDeviceID(), day, new IDeviceAlarmMessagesCallback() {
     @Override
     public void onSuccess(List<DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
 
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+
+如果设备能力级cameraInfo.getEvt() == 1时调用:
+MeariUser.getInstance().getAlertMsgWithVideo(deviceId, day, index, direction, eventType, aiType, new IDeviceAlarmMessagesCallback() {
+                @Override
+                public void onSuccess(List<DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
+                
+                }
+
+                @Override
+                public void onError(int code, String error) {
+                    
+                }
+            });
+下载下来的图片需要调用下面的方法解密：
+/**
+ * 解密方法
+ *
+ * @param url 图片下载链接
+ * @param img 图片的字节数组
+ * @param sn 设备sn
+ * @param 设备密码，设备默认没有设置密码，传空Set
+ * @return [byte[], bool] 图片数据和解密结果
+ */
+Object[] result = SdkUtils.handleEncodedImage(String url, byte[] img, String sn, Set<String> allPwd)
+
+通过下面的方法来下载短视频：
+/**
+ * 生成m3u8到指定路径
+ *
+ * @param videoInfoList DeviceAlarmMessage中的videoUrl
+ * @param path_m3u8 生成m3u8的文件路径
+ */
+String path_m3u8 = SdkUtils.getM3U8Path(List<VideoInfo> videoInfoList, String path_m3u8)
+
+// 取第一个视频的链接判断是否是加密的
+VideoInfo videoInfo = videoInfoList.get(0);
+String url = videoInfo.getUrl();
+String[] strList = url.split("__");
+String v = strList[1];
+if (v.startsWith("vn")) {
+    // 非加密
+    SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, "")
+} else {
+    String decKey = "";
+    if (v.startsWith("v2")) {
+        // license加密
+        decKey = SdkUtils.formatLicenceId(cameraInfo.getSnNum());
+        SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, decKey)
+    } else {
+        Set<String> curDecKey =  用户设置的密码
+        keyCheckStr = v.split("-")[1];
+        for (String key: curDecKey) {
+            keyCheckStr=" + keyCheckStr + " " + MeariMediaUtil.checkVideoPwd(keyCheckStr, key));
+            if (MeariMediaUtil.checkVideoPwd(keyCheckStr, key) == 0) {
+                decKey = key;
+                SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, decKey)
+                break;
+            } else {
+                // 设备加密，提醒用户输入密码
+            }
+        }
+    }        
+}
+
+/**
+ * 通过m3u8下载mp4文件
+ *
+ * @param path_m3u8 m3u8的文件路径
+ * @param path_mp4 mp4的文件路径
+ * @param decKey 解密密码
+ */
+String path_m3u8 = SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, String decKey)
+
+// 播放短视频
+<LinearLayout
+  android:id="@+id/ll_video_view"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/dark"
+  android:orientation="horizontal">
+  <com.ppstrong.weeye.widget.media.IjkVideoView
+    android:id="@+id/video_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center" />
+</LinearLayout>
+
+IjkVideoView mVideoView = findViewById(R.id.video_view)
+CloudPlayerController cloudPlayerController = new CloudPlayerController(context, mVideoView, new ICloudPlayerCallback() {
+            @Override
+            public void mediaPlayingCallback() {
+                // 播放成功
+                
+            }
+
+            @Override
+            public void mediaPauseCallback() {
+
+            }
+
+            @Override
+            public void upDateProgress(long postion) {
+                // 播放进度
+
+            }
+
+            @Override
+            public void mediaPlayFailedCallback(int code) {
+                // 播放失败
+
+            }
+
+            @Override
+            public void playNext() {
+                // 播放结束
+
+            }
+
+            @Override
+            public void stopRecordVideo() {
+
+            }
+
+            @Override
+            public void showStopRecordVideoView(String path) {
+
+            }
+
+            @Override
+            public void screenshotSuccess(String path) {
+
+            }
+        });
+cloudPlayerController.setPlayOther(true);
+if (!TextUtils.isEmpty(curDecKey)) {
+    Set<String> keys = new HashSet<>();
+    keys.add(curDecKey);
+    cloudPlayerController.setDecKey(keys);
+}
+// 开始播放
+cloudPlayerController.play(path_mp4, "0");
+// 从某一时间点(millisecond)播放
+if (isEnd) {
+    // 如果是已经结束状态就直接从seek的时间点重新开始播放
+    cloudPlayerController.play(path_mp4, "0");
+    cloudPlayerController.play(path_mp4, String.valueOf(millisecond / 1000));
+} else  {
+    cloudPlayerController.seekTo(millisecond);
+}
+```
+
+## 8.3 系统消息
+
+### 8.3.1 获取系统消息列表
+```
+【描述】
+获取系统消息列表
+
+【函数调用】
+/**
+ * 获取系统消息列表
+ *
+ * @param callback function callback
+ */
+public void getSystemMessage(ISystemMessageCallback callback);
+
+【方法调用】
+
+class SystemMessage:
+- long msgID; //消息Id
+- int msgTypeID;//消息类型
+- String isRead;//是否已读
+- Date createDate;//创建时间时间
+- Date updateDate;//更新时间
+- long userID;//用户Id
+- String userAccount;//用户账号
+- String nickName;//用户呢称
+- String delState;//是否处理
+- long deviceID;//设备Id
+- String deviceName;//设备呢称
+- String deviceUUID;//设备标识符
+- long userIDS;//请求者Id
+- String imageUrl;//头像
+
+MeariUser.getInstance().getSystemMessage(new ISystemMessageCallback() {
+    @Override
+    public void onSuccess(List<SystemMessage> systemMessageList) {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
+
+### 8.3.2 删除系统消息
+```
+【描述】
+删除系统消息
+
+【函数调用】
+/**
+ * delete system message by message ID
+ * 删除系统消息
+ *
+ * @param msgIdList   message id
+ * @param callback function callback
+ */
+public void deleteSystemMessage(List<String> msgIdList, final IResultCallback callback);
+
+【方法调用】
+
+MeariUser.getInstance().deleteSystemMessage(msgIdList, new IResultCallback() {
+    @Override
+    public void onSuccess() {
     }
 
     @Override
@@ -4687,7 +5353,327 @@ if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() &&
 }
 ```
 
-# 14 更新说明
+
+# 14 4G
+
+## 14.1 添加4G
+
+```
+添加参考(#51-二维码配网添加设备)或者(#54-扫码即添加)。
+
+```
+
+## 14.2 4G流量
+
+### 14.2.1 流量充值套餐
+```
+【描述】
+随设备绑定的SIM卡的流量充值套餐获取
+
+【函数调用】
+/**
+ * 获取4G套餐
+ * @param uuid   机身码解析的uuid
+ * @param deviceId   设备的devivceid
+ * @param payType   支付类型 1:alipay 2: paypal 3:google 4:apple
+ * deviceID和uuid传其中1个，另一个传null或""
+ */
+public void get4GDeviceFlowV2(String uuid,String deviceId,String payType, IStringResultCallback callback)
+
+
+【代码范例】
+MeariUser.getInstance().get4GDeviceFlowV2(uuid,deviceId, "1",new IStringResultCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    
+                }
+                @Override
+                public void onError(int errorCode, String errorMsg) {
+
+                }
+            });
+
+【JSON】
+{
+    "resultCode":"1001",
+    "result":{
+        "simID":"",
+        "maxMonthQuantity":12,（限制最多买多少个月）
+        "trialStatus": false,  （套餐列表中是否有试用套餐）
+        "packageList":[
+            {
+                "id":"",  （套餐id，对应packageId）
+                "mealType":"M",  （M是月套餐，S是季套餐，Y是年套餐，X是半年套餐）
+                "money":"",
+                "currencyCode": "USD",
+                "currencySymbol": "$",
+                "trafficPackage":"M",   （M是MB，G是GB）
+                "quantity":500   （数量），
+                "unlimited": 1    (显示不限量)
+                "type":0   (0是试用套餐，需要单独筛选出来)
+            },
+            {
+                "id":"",
+                "mealType":"",
+                "money":"",
+                "currencyCode": "USD",
+                "currencySymbol": "$",
+                "trafficPackage":"G",
+                "quantity":3,
+                "unlimited": 0
+            }
+        ]
+    }
+}
+
+【错误码】
+返回状态码1201，未绑定sim卡（不用展示套餐）
+返回状态码1202，无效的uuid
+
+```
+### 14.2.2 流量查询（不可频繁查询）
+```
+【描述】
+随设备绑定的SIM卡的流量查询，频繁查询会被运营商停止。
+
+【函数调用】
+/**
+ * 获取4G流量
+ * @param uuid   机身码解析的uuid
+ * @param deviceId   设备的devivceid
+ * deviceID和uuid传其中1个，另一个传null或""
+ */
+public void getTrafficNumber(String uuid, String deviceId, IStringResultCallback callback)
+
+
+【代码范例】
+MeariUser.getInstance().getTrafficNumber(uuid,deviceId, new IStringResultCallback() {
+            @Override
+            public void onSuccess(String result) {
+                
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+            }
+        });
+
+【JSON】
+{
+	"resultCode": "1001",
+	"simID": "4375345345",
+	"resultData": {
+		"subscriberQuota": { //当前使用套餐
+			"qtavalue": "2048.00", //总流量（M）
+			"qtabalance": "1960.57", //剩余流量（M）
+			"qtaconsumption": "87.43", //已使用流量（M）
+			"activeTime": "1658926803000", //激活时间
+			"mealType": "M", //套餐类型
+			"expireTime": "1658927512000", //过期时间，
+			"money": "0.01",
+			"unlimited": 1 //(显示不限量)
+		},
+		"preActivePackageList": [ //未使用套餐
+			{
+				"mealType": "",
+				"trafficPackage": "G",
+				"quantity": 3,
+				"money": "0.01",
+				"unlimited": 1 //(显示不限量)
+			}
+		],
+		"historyQuota": [{ //历史用量
+				"time": "20220720",
+				"qtaconsumption": "87.43"
+			},
+			{
+				"time": "20220721",
+				"qtaconsumption": "87.43"
+			}
+		]
+	}
+}
+
+1. 返回值中的subscriberQuota是正在使用中的套餐使用情况，如果设备从来没使用过流量，也就是没激活过sim卡，则这个值里面没有数据
+2. historyQuota中是正在使用的套餐的历史流量使用情况，但是因为提供商只能提供中国时区的按天的流量使用明细，所以流量使用明细这一块肯定是和用户本地时区的一天是对应不起来的，这个数据不准，因为时区问题，有可能返回的日期比用户本地时区还晚，有可能会出现流量明细有明天使用量的情况，这个需要app在本地加个逻辑，最少展示的时间不能超过用户本地时间
+
+```
+### 14.2.3 兑换流量
+```
+【描述】
+激活码兑换流量
+
+【函数调用】
+/**
+ * 获取4G流量
+ * @param uuid   机身码解析的uuid
+ * @param deviceId   设备的devivceid
+ * @param code       激活码
+ * deviceID和uuid传其中1个，另一个传null或""
+ */
+public void getTrafficCode(String uuid, String deviceId, String code, IStringResultCallback callback)
+
+
+【代码范例】
+MeariUser.getInstance().getTrafficCode(uuid,deviceId,code, new IStringResultCallback() {
+            @Override
+            public void onSuccess(String result) {
+            
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                showToast(CommonUtils.getRequestDesc(TrafficManagerActivity.this, errorCode));
+            }
+        });
+
+
+
+```
+### 14.2.4 试用流量开通
+```
+【描述】
+试用流量的开通
+
+【函数调用】
+/**
+ * 获取4G流量
+ * @param uuid   机身码解析的uuid
+ * @param deviceId   设备的devivceid
+ * @param code       激活码
+ * deviceID和uuid传其中1个，另一个传null或""
+ */
+public void getTrafficCode(String uuid, String deviceId, String code, IStringResultCallback callback)
+
+
+【代码范例】
+MeariUser.getInstance().getTrafficCode(uuid,deviceId,code, new IStringResultCallback() {
+            @Override
+            public void onSuccess(String result) {
+            
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                showToast(CommonUtils.getRequestDesc(TrafficManagerActivity.this, errorCode));
+            }
+        });
+
+
+
+```
+### 14.2.5 流量购买
+```
+【描述】
+流量的购买（已拥有的套餐加上正要购买的套餐不能超过流量充值套餐接口中的maxMonthQuantity，如果无值默认为12个月）
+
+【函数调用】
+/**
+ * 获取4G流量
+ * @param uuid   机身码解析的uuid
+ * @param deviceID   设备的devivceid
+ * @param packageId   套餐id 
+ * @param payMoney   支付金额 
+ * @param payType   支付类型 1:alipay 2: paypal 
+ deviceID和uuid传其中1个，另一个传null或""
+ */
+public void postTrafficPayOrderV2(String deviceID,String uuid,String packageId, String payMoney,String payType, IStringResultCallback callback)
+
+
+【代码范例】
+MeariUser.getInstance().postTrafficPayOrderV2("deviceId",
+                    "uuid",
+                    "packageId",
+                    payMoney, mPayType,
+                    new IStringResultCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String errorMsg) {
+                            
+                        }
+                    });
+
+【JSON】
+payType = 1（即支付宝支付） 
+返回
+{
+      "resultCode": "1001",
+       "result": {
+              "payMoney": "108",
+              "orderNum": "",
+               "payUrl ": " ",
+               "LeastTime ": 9906,
+               "createDate ": 167940449392
+        }
+}
+
+
+```
+
+### 14.2.6 流量订单
+```
+【描述】
+流量的订单查询
+
+【函数调用】
+/**
+ * 获取4G流量
+ * @param uuid   机身码解析的uuid
+ * @param deviceID   设备的devivceid
+ *deviceID和uuid传其中1个，另一个传null或""
+ */
+public void getTrafficOrderList(String uuid, String deviceId, IStringResultCallback callback)
+
+
+【代码范例】
+MeariUser.getInstance().getTrafficOrderList(uuid,deviceId, new IStringResultCallback() {
+            @Override
+            public void onSuccess(String result) {
+                if(!TextUtils.isEmpty(result)) {
+                    Logger.i(TAG, "--->getTrafficOrderList: " + result);
+                    trafficOrderBean = GsonUtil.fromJson(result, TrafficOrderBean.class);
+                    if(trafficOrderBean!=null){
+                        mHandler.sendEmptyMessage(GET_4G_TRAFFIC_ORDER_SUCCESS);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                mHandler.sendEmptyMessage(GET_4G_TRAFFIC_ORDER_FAIL);
+            }
+        });
+
+【JSON】
+{
+  "resultCode": "1001",
+  "result": {
+    "orderList": [
+      {
+        "orderNum": "",
+        "mealType": "M",
+        "payMoney": "",
+        "payDate": "",
+        "quantity": 3,
+        "trafficPackage": "G",
+        "trafficQuantity": 3,
+        "currencyCode": "USD",
+        "currencySymbol": "$",
+        "payType": 3,
+        "unlimited": 0
+      }
+    ]
+  }
+}
+
+
+```
+
+# 15 更新说明
 
 ## 2022-10-10(4.4.0)
 ```

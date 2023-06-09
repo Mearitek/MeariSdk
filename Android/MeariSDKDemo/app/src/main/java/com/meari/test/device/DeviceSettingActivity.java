@@ -1,5 +1,6 @@
 package com.meari.test.device;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,6 +28,7 @@ import com.meari.sdk.callback.ISDCardFormatCallback;
 import com.meari.sdk.callback.ISDCardFormatPercentCallback;
 import com.meari.sdk.callback.ISDCardInfoCallback;
 import com.meari.sdk.callback.ISetDeviceParamsCallback;
+import com.meari.sdk.common.DeviceType;
 import com.meari.test.R;
 
 public class DeviceSettingActivity extends AppCompatActivity {
@@ -34,7 +36,7 @@ public class DeviceSettingActivity extends AppCompatActivity {
     private Switch switchLed, switchMotion;
     private EditText edtMotionSensitivity;
     private TextView tvMotionSensitivity, tvFormatPercent, tvCapacity, tvRemainingCapacity, tvUpgradePercent;
-    private Button btnMotionSensitivity, btnFormat, btnUpgrade;
+    private Button btnMotionSensitivity, btnFormat, btnUpgrade,btn_traffic_manager;
 
     private CameraInfo cameraInfo;
     private DeviceParams mDeviceParams;
@@ -62,6 +64,7 @@ public class DeviceSettingActivity extends AppCompatActivity {
         tvFormatPercent = findViewById(R.id.tv_format_percent);
         btnFormat = findViewById(R.id.btn_format);
         btnUpgrade = findViewById(R.id.btn_upgrade_firmware);
+        btn_traffic_manager = findViewById(R.id.btn_traffic_manager);
         tvUpgradePercent = findViewById(R.id.tv_upgrade_percent);
 
 
@@ -97,6 +100,7 @@ public class DeviceSettingActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void initData() {
@@ -106,6 +110,18 @@ public class DeviceSettingActivity extends AppCompatActivity {
 
         getDeviceParam();
         getSdCardData();
+        //Data Management
+        if (cameraInfo.getDevTypeID() == DeviceType.CAMERA_4G
+                && cameraInfo.isMaster()
+                && !isNull(cameraInfo.getSimID())){
+            btn_traffic_manager.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(DeviceSettingActivity.this, TrafficManagerActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     private void getDeviceParam() {
@@ -355,5 +371,11 @@ public class DeviceSettingActivity extends AppCompatActivity {
     public void finish() {
         setResult(RESULT_OK);
         super.finish();
+    }
+    /**
+     * 判空
+     * */
+    public static boolean isNull(String value) {
+        return value == null || value.trim().length() == 0 || "null".equals(value)||value.equals("");
     }
 }
