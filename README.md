@@ -8,7 +8,7 @@ Insert the following dependency to `build.gradle` file of your project.
 
 ```
 dependencies {
-    implementation 'com.meari:sdk_rb_meari:4.4.0'
+    implementation 'com.meari:sdk_rb_meari:5.0.0'
 }
 ```
 
@@ -22,4 +22,4 @@ repositories {
 ```
 
 ### Document
-[English document](https://github.com/Mearitek/MeariSdk/blob/MeariSdk-4.4.0/Android/docs/Meari%20Android%20SDK%20Guide.md)
+[English document](https://github.com/Mearitek/MeariSdk/blob/MeariSdk-5.0.0/Android/docs/Meari%20Android%20SDK%20Guide.md)
