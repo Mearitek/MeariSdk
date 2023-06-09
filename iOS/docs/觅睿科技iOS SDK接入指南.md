@@ -11,12 +11,17 @@
     * 4.2 [用户登出](#42-用户登出)
     * 4.3 [用户上传头像](#43-用户上传头像)
     * 4.4 [修改昵称](#44-修改昵称)
-    * 4.5 [注册消息推送](#45-注册消息推送)
+    * 4.5 [消息推送](#45-消息推送)
+        * 4.5.1 [注册消息推送](#451-注册消息推送)
+        * 4.5.2 [消息推送声音](#452-消息推送声音)
+        * 4.5.3 [设备消息推送](#453-设备消息推送)
     * 4.6 [数据模型](#46-数据模型)
     * 4.7 [消息通知](#47-消息通知)
 * 5 [设备配网](#5-设备配网)
     * 5.1 [获取配网token](#51-获取配网token)
     * 5.2 [二维码配网](#52-二维码配网)
+        * 5.2.1 [摄像机](#521-摄像机)
+        * 5.2.2 [4G摄像机](#522-4G摄像机)
     * 5.3 [热点配网(Ap配网)](#53-热点配网(Ap配网))
     * 5.4 [有线配网](#54-有线配网)
 * 6 [设备信息获取](#6-设备信息获取)
@@ -40,6 +45,8 @@
         * 7.5.1 [回放相关](#751-回放相关)
         * 7.5.2 [设置回放时长](#752-设置回放时长)
     * 7.6 [云回放](#76-云回放)
+        * 7.6.1 [云回放1.0](#761-云回放1.0)
+        * 7.6.2 [云回放2.0](#762-云回放2.0)
     * 7.7 [静音](#77-静音)
     * 7.8 [语音对讲](#78-语音对讲)
     * 7.9 [截图](#79-截图)
@@ -98,15 +105,20 @@
         * 10.2.4 [获取设备某天的报警消息](#1024-获取设备某天的报警消息)
         * 10.2.5 [加载报警图片](#1025-加载报警图片)
         * 10.2.6 [批量删除多个设备报警消息](#1026-批量删除多个设备报警消息)
-    * 10.3 [系统消息](#103-系统消息)
-        * 10.3.1 [获取系统消息](#1031-获取系统消息)
-        * 10.3.2 [批量删除系统消息](#1032-批量删除系统消息)
-    * 10.4 [分享消息](#104-分享消息)
-        * 10.4.1 [获取设备分享消息列表](#1041-获取设备分享消息列表)
-        * 10.4.2 [删除设备分享消息](#1042-删除设备分享消息)
-        * 10.4.3 [获取家庭分享消息列表](#1043-获取家庭分享消息列表)
-        * 10.4.4 [删除家庭分享消息](#1044-删除家庭分享消息)
-        * 10.4.5 [处理家庭分享消息](#1045-处理家庭分享消息)
+    * 10.3[报警消息2.0](#103-报警消息2.0 )
+        * 10.3.1 [获取所有设备是否有消息 ](#1031-获取所有设备是否有消息 )
+        * 10.3.2 [获取某个设备报警消息](#1032-获取某个设备报警消息 )
+        * 10.3.3 [加载报警图片](#1033-加载报警图片)
+        * 10.3.4 [删除设备报警消息](#1034-删除设备报警消息 )
+    * 10.4 [系统消息](#104-系统消息)
+        * 10.4.1 [获取系统消息](#1041-获取系统消息)
+        * 10.4.2 [批量删除系统消息](#1042-批量删除系统消息)
+    * 10.5 [分享消息](#105-分享消息)
+        * 10.5.1 [获取设备分享消息列表](#1051-获取设备分享消息列表)
+        * 10.5.2 [删除设备分享消息](#1052-删除设备分享消息)
+        * 10.5.3 [获取家庭分享消息列表](#1053-获取家庭分享消息列表)
+        * 10.5.4 [删除家庭分享消息](#1054-删除家庭分享消息)
+        * 10.5.5 [处理家庭分享消息](#1055-处理家庭分享消息)
 * 11 [云存储服务](#10-云存储服务)
     * 11.1 [云存储服务状态](#111-云存储服务状态)
     * 11.2 [云存储试用](#112-云存储试用)
@@ -127,6 +139,14 @@
         * 12.5.2 [NVR删除通道摄像机](#1252-NVR删除通道摄像机)
         * 12.5.3 [NVR通道摄像机固件升级](#1253-NVR通道摄像机固件升级)
         * 12.5.4 [NVR设备全天录像](#1254-NVR设备全天录像)
+* 13 [4G摄像机](#13-4G摄像机)
+    * 13.1 [流量详情](#131-流量详情)
+    * 13.2 [流量套餐](#132-流量套餐)
+    * 13.3 [创建流量订单](#133-创建流量订单)
+    * 13.4 [流量激活码](#134-流量激活码)
+    * 13.5 [流量订单列表](#135-流量订单列表)
+    * 13.6 [流量购买提醒](#136-流量购买提醒)
+    * 13.7 [试用流量套餐](#137-试用流量套餐)
 <center>
 
 ---
@@ -136,6 +156,7 @@
 | 3.1.0 | 觅睿技术团队 | 2021.07.05 | 优化
 | 4.1.0 | 觅睿技术团队 | 2022.03.23 | 家庭
 | 4.4.0 | 觅睿技术团队 | 2022.06.08 | NVR
+| 5.0.0 | 觅睿技术团队 | 2023.06.08 | 4G + Cloud2.0
 </center>
 
 # 1. 功能概述 
@@ -280,8 +301,8 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     
      }];
 ```
-## 4.5 注册消息推送
-
+## 4.5 消息推送
+### 4.5.1 注册消息推送
 ```
 【描述】
      注册Meari消息推送 
@@ -300,8 +321,9 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
      } failure:^(NSError *error) {
              
      }];
-
-
+```
+### 4.5.2 消息推送声音
+```
 【描述】
      关闭推送声音
 【函数调用】
@@ -322,18 +344,29 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
      } failure:^(NSError *error) {
 
      }];
-
+```
+### 4.5.3 设备消息推送
+```
 【描述】
-	 关闭设备的推送
+    设备远程推送设置开关:camera.info.closePush
 【函数调用】
-    /**
-     Device push(设备推送)
-     @param deviceID 设备ID
-     @param enable (whether to open)开关 shif
-     @param success Successful callback (成功回调)
-     @param failure failure callback (失败回调)
-     */
+/**
+ Device push(设备推送)
+ 
+ @param deviceID 设备ID
+ @param enable (whether to open)开关
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)deviceAlarmNotificationEnable:(BOOL)enable deviceID:(NSInteger)deviceID success:(MeariSuccess)success failure:(MeariFailure)failure;
 【代码范例】
+     
+    [[MeariUser sharedInstance] deviceAlarmNotificationEnable:closed deviceID:self.camera.info.ID success:^{
+        MR_HUD_DISMISS
+        MeariDo_Block_Safe(success);
+    } failure:^(NSError *error) {
+        MeariDo_Block_Safe(failure,error);
+    }];
 
 ```
 
@@ -415,6 +448,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 
 ```
 ## 5.2 二维码配网
+###5.2.1 摄像机
 ```
 【描述】
      将WIFI信息,配网token 生成二维码 给设备扫描。
@@ -461,6 +495,48 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 
 	停止局域网搜索其他设备
     [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
+
+```
+###5.2.2 4G摄像机
+```
+【描述】
+     4G设备使用蜂窝网络，不需要连接wifi
+     将WIFI信息(传空字符串),配网token 生成二维码 给设备扫描。
+     在设备发出提示声音之后表明识别成功，设备会进入蓝灯快闪的状态
+     
+【函数调用】
+     /**
+      @param ssid wifi name(wifi名称)
+      @param password wifi password(wifi密码)
+      @param token code token(二维码token)
+      @param size QR code size(二维码大小)
+      @param subDevice Sub device (是否为添加子设备)
+      @param encryption encryption (是否加密)
+      @return QR code image(二维码图片)
+     */
+     - (UIImage *)createQRCodeWithSSID:(NSString *)ssid pasword:(NSString *)password token:(NSString *)token addSubDevice:(BOOL)subDevice size:(CGSize)size encryption:(BOOL)encryption;
+
+【代码范例】
+    UIImage *image = [[MeariDeviceActivator sharedInstance] createQRCodeWithSSID:@"Meari" pasword:@"12345678" token:token addSubDevice:NO size:CGSizeMake(300, 300) encryption:YES];
+
+【描述】
+      等待设备自动添加成功的消息，建议手动查询设备列表，避免消息送达不及时的情况。
+【代码范例】
+    1.[MeariDeviceActivator sharedInstance].delegate = self;
+     实现代理方法
+      - (void)activator:(MeariDeviceActivator *)activator didReceiveDevice:(MeariDevice *)deviceModel error:(NSError *)error {
+         NSLog(@"配网的设备 --- netConnect  ------ %@ 设备添加状态 -------- %ld",deviceModel.info.nickname,(long)deviceModel.info.addStatus);
+         if (deviceModel.info.addStatus == MeariDeviceAddStatusSelf) {
+           NSLog(@"设备配网成功");
+         }
+      }
+
+    2.在给设备扫描二维码之前先记录下设备列表的设备, 等待设备添加成功的回调时，可以主动调用获取设备列表的接口来检查是否有新的设备加入
+    [[MeariUser sharedInstance] getDeviceListSuccess:^(MeariDeviceList *deviceList) {
+
+    } failure:^(NSError *error) {
+
+    }];
 
 ```
 ## 5.3 热点配网(Ap配网)
@@ -1223,6 +1299,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 ```
 
 ## 7.6 云回放 
+### 7.6.1 云回放1.0
 ```
 【描述】
      设备开通云存储服务之后,会将记录存储云端。
@@ -1340,6 +1417,178 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       
       self.cloudPlayer = [[MeariCloudPlayer alloc] initWithURL:m3u8 startTime:@"20210701102035" superView:displayView];
       self.cloudPlayer.delegate = self;
+
+
+```
+
+### 7.6.2 云回放2.0
+```
+【描述】
+     云存储2.0的设备 默认支持上传云存储片段 通过camera.supportAlarmVideoReport == YES 来区别
+     
+【函数调用】
+     /**
+     Get the cloud play time of a month
+     云存储2.0获取某月的云播放天数
+ 
+     @param monthComponents  obtain month(NSDateComponents *) 具体某月
+     @param success Successful callback (成功回调)
+     @param failure failure callback (失败回调)
+     */
+     - (void)getCloud2VideoDaysWithMonthComponents:(NSDateComponents *)monthComponents success:(void(^)(NSArray <MeariDeviceTime *> *days))success failure:(MeariDeviceFailure)failure;
+
+     /**
+     Get the cloud play time of a day
+     云存储2.0获取某天的云播放分钟
+ 
+     @param dayComponents   time(NSDateComponents *),Used to get specific time 具体日期
+     @param success Successful callback (成功回调)
+      @param failure failure callback (失败回调)
+      */
+     - (void)getCloud2VideoMinutesWithDayComponents:(NSDateComponents *)dayComponents success:(void(^)(NSArray <MeariDeviceTime *> *mins, NSArray <MeariDeviceTime *> *alarms, NSString *historyEventEnable, NSString *cloudEndTime,NSInteger storageType))success failure:(MeariDeviceFailure)failure;
+     
+    /**
+     Get cloud playback video files
+     云存储2.0获取云回放录像文件
+ 
+     @param startTime startTime(NSDateComponents *) 开始时间
+     @param success Successful callback (成功回调)
+     @param failure failure callback (失败回调)
+     */
+     - (void)getCloud2VideoWithStartTime:(NSDateComponents *)startTime success:(void (^)(NSURL *m3u8Url))success failure:(MeariDeviceFailure)failure;
+
+【代码范例】
+     //获取月份中云存储的天数
+      NSDateComponents *dateComponents = [[NSDateComponents alloc]init];
+      dateComponents.year = 2021;
+      dateComponents.month = 7;
+      [device getCloud2VideoDaysWithMonthComponents: dateComponents success:^(NSArray<MeariDeviceTime *> *days) {
+         //获取有云存储录像的日期
+      } failure:^(NSError *error) {
+        
+      }];
+
+     //获取某天中的云存储录像片段
+
+      NSDateComponents *dateComponents = [[NSDateComponents alloc]init];
+      dateComponents.year = 2021;
+      dateComponents.month = 7;
+      dateComponents.day = 1;
+      [device getCloud2VideoMinutesWithDayComponents:^(NSArray<MeariDeviceTime *> *mins,NSArray <MeariDeviceTime *> *alarms, NSString *historyEventEnable, NSString *cloudEndTime,NSInteger storageType)
+          //mins 当天的报警片段
+          //alarms 当天的报警时间点
+          //historyEventEnable 历史云存储1.0与2.0的切换时间点
+          //cloudEndTime 购买套餐之后的生效的结束时间
+         //获取有云存储录像的录像
+      } failure:^(NSError *error) {
+   
+      }];
+
+        
+      // 获取具体片段的m3u8 url  24小时制
+      // 时间以半个小时为间隔 例如:12：00 - 12：30  , 12:30-14:00
+      // m3u8文件只有半个小时有效性 过期自动失效
+      NSDateComponents * startTime = [[NSDateComponents alloc]init];
+      startTime.year = 2021;
+      startTime.month = 7;
+      startTime.day = 1;
+      startTime.hour = 12;
+      startTime.minute = 10;
+
+      [self.camera getCloud2VideoWithStartTime:startTime success:^(NSURL *m3u8Url) {
+        
+      } failure:^(NSError *error) {
+        
+      }];
+
+【描述】
+      云回放2.0的播放器,用来播放m3u8文件，支持播放，录像，Seek等操作
+【函数调用】
+     MeariCloudPlayer
+     @interface MRCloudPlayer : NSObject
+
+     /**
+     初始化
+
+     @param url video url (地址) m3u8文件或者本地mp4文件路径
+     @param startTime start time (开始时间)
+     @param superView super view (父视图)
+     @param pswArr 设备密码 默认为设备SN device.info.sn
+     @param isVideoFirst 同步机制是否以视频为主。默认传入NO
+     @return MeariPlayer
+     */
+     - (instancetype)initWithURL:(NSURL *)url startTime:(NSString *)startTime superView:(UIView *)superView psw:(NSArray *)pswArr isVideoFirst:(BOOL)isVideoFirst;
+
+     @property (nonatomic, weak) id<MeariCloudDelegate> delegate; // delegate (代理)
+     @property (nonatomic, assign, readonly) MeariCloudStatus playState; // play state (播放状态)
+     @property (nonatomic, assign, readonly) MeariCloudRecordState recordState; // record state(录制状态)
+
+     @property (nonatomic, assign, readonly, getter = isPlaying) BOOL playing; // Whether it is playing (是否正在播放)
+     @property (nonatomic, assign) BOOL muted; // mute (是否静音)
+     // 支持0到4的速度  默认为1
+     @property (nonatomic, assign) float speed; // 播放速率
+
+     - (BOOL)snapToPath:(NSString *)path; // Screenshot path : save path (截图,保存路径)
+     - (BOOL)startRecord:(NSString *)path; // Record path : save path (录制,保存路径)
+     - (void)stopRecord; //End recording (结束录制)
+     - (void)play; // start play (开始播放)
+     - (void)playWithPostion:(double)pos; //start play with postion (开始从第几秒开始播放)
+     - (void)stop; // stop play (停止播放)
+     - (void)pause; // pause (暂停)
+     - (void)resetPlayerComplete:(void(^)(void))complete; // Turn off playback (关闭播放)
+     - (void)hidePlayer; // hide  player (隐藏播放器)
+     - (void)playVideoAtTime:(NSString *)time url:(NSURL *)url psw:(NSArray *)pswArr;  // Play video at a certain time (seek进度)
+     - (NSTimeInterval)getVideoCurrentSecond;    // Current playback time (unit: second) (当前播放时间（单位：秒）)
+     - (NSTimeInterval)getVideoDuration;         // Duration (unit: second)   (时长（单位：秒）)
+     + (BOOL)checkPasswordCorrectWithUrl:(NSURL *)url time:(NSString *)time password:(NSString *)password;//检测当前的密码是否匹配
+
+     - (void)seekTime:(double)time;//废弃不使用
+     /**
+     下载在线m3u8文件 转为mp4
+     会堵塞当前线程
+
+     @param url video url m3u8文件地址
+     @param password 设备密码 默认传入设备SN device.info.sn
+     @param localPath 转换完之后本地mp4文件路径
+     @return
+     */
+     + (int)downloadUrlToTsFile:(NSURL *)url password:(NSString *)password filePath:(NSString *)localPath;
+     /**
+     将本地mp4文件再次转化为mp4文件
+     @param srcMp4Path 原来的mp4文件路径
+     @param targetMp4Path 转换完之后本地mp4文件路径
+     */
+     + (int)transformTsToMp4:(NSString *)srcMp4Path filePath:(NSString *)targetMp4Path;
+
+     //检验url中的密码是否匹配 取一个Ts的url即可
+     + (BOOL)checkEncryKey:(NSString *)url password:(NSString *)password;
+
+     ///  根据帧数 绘制生成对应的图片
+     /// @param filePath 视频文件路径
+     /// @param index 帧数
+     /// @param rectArray rectArray中为CGRect的NSValue 类型
+     /// @param colors 颜色数组 默认为红色
+     /// @param imagePath 输出图片路径
+     + (int)creatDrawRectangleImageWith:(NSString *)filePath frameIndex:(int)index rectangleArray:(NSArray <NSValue *>*)rectArray colors:(NSArray <UIColor *>*)colors imagePath:(NSString *)imagePath;
+
+     @end
+     //在线播放m3u8
+     //psw字段:默认传入当前设备的SN字段 device.info.sn
+     //isVideoFirst: 是否以视频作为同步。默认传入NO   
+     
+     self.cloudPlayer = [[MeariCloudPlayer alloc] initWithURL:m3u8 startTime:@"20210701102035" superView:displayView psw:@[device.info.sn] isVideoFirst:NO];
+     self.cloudPlayer.delegate = self;
+
+     //播放本地mp4文件，在报警消息页面推荐使用这种方式。
+     1.下载m3u8并转化为mp4文件 
+     int ret = [MRCloudPlayer downloadUrlToTsFile:m3u8Url password:devce.info.sn filePath:localMp4Path];
+
+     if (ret < 0){
+       //下载失败
+     }
+
+      self.player = [[MRCloudPlayer alloc] initWithURL:localMp4Path startTime:startTime superView:playerView psw:@[device.info.sn] isVideoFirst:NO];
+      self.player.delegate = self;
 
 
 ```
@@ -3063,7 +3312,7 @@ MeariMemberModel属性
       设备的报警图片存储在阿里云以及亚马逊云
 
 【函数调用】
-     通过消息列 MeariMessageInfoAlarmDevice 对象的 State 和 iotType 判断
+     通过消息列 MeariMessageInfoAlarmDevice 对象的 State 和 cloudType 判断
      state 为0 可以直接通过url访问图片 
      state 为1 :
         cloudType <= 1: a.通过 getOssAlarmImageDataWithUrl 直接获取图片数据 
@@ -3073,13 +3322,13 @@ MeariMemberModel属性
                         b.通过 getAwsS3ImageUrlWithUrl 获得半个小时时效的url访问链接
 
 【代码范例】
-     if ([msg.cloudType integerValue] <= 1 && msg. state == 1) {
+     if ([msg.cloudType integerValue] <= 1 && msg.state == 1) {
         [[MeariUser sharedInstance] getOssImageUrlWithUrl:url deviceID:[m.msg.deviceID integerValue] success:^(NSString *url) {
             NSLog(@"直接加载图片url")
         } failure:^(NSError *error) {
             NSLog(@"oss签名失败")
         }];                
-    }else if ([msg.cloudType integerValue] == 2 && msg. state == 1) {
+    }else if ([msg.cloudType integerValue] == 2 && msg.state == 1) {
        [[MeariUser sharedInstance] getAwsS3ImageUrlWithUrl: url deviceID:msg.deviceID integerValue] userID:msg.userID userIDS:msg.userIDS success:^(NSString * url) {
             NSLog(@"直接加载图片url")			       
        } failure:^(NSError *error) {
@@ -3087,14 +3336,14 @@ MeariMemberModel属性
        }];
     }
 	
-    if ([msg.cloudType integerValue] <= 1 && msg. state == 1) {
+    if ([msg.cloudType integerValue] <= 1 && msg.state == 1) {
         [[MeariUser sharedInstance] getOssAlarmImageDataWithUrl:url deviceID:[m.msg.deviceID integerValue] success:^(NSDictionary *dict) {
             NSData *imageData = dict[@"data"];
             NSLog(@"直接加载图片数据")
         } failure:^(NSError *error) {
             NSLog(@"oss获取图片数据失败")
         }];                
-    }else if ([msg.cloudType integerValue] == 2 && msg. state == 1) {
+    }else if ([msg.cloudType integerValue] == 2 && msg.state == 1) {
        [[MeariUser sharedInstance] getAwsS3ImageDataWithUrl: url deviceID:msg.deviceID integerValue] userID:msg.userID userIDS:msg.userIDS success:^(NSDictionary *dict) {
             NSData *imageData = dict[@"data"];
             NSLog(@"直接加载图数据")			       
@@ -3130,9 +3379,179 @@ MeariMemberModel属性
 
 ```
 
-## 10.3 系统消息 
+## 10.3 报警消息2.0 
 
-### 10.3.1 获取系统消息 
+### 10.3.1  获取所有设备是否有消息 
+```
+【描述】
+    获取云存储2.0消息 通过判断supportAlarmVideoReport == 1 或者evt == 1判断设备支持2.0报警消息
+
+【函数调用】
+     /**
+     get all the alarm messgae List for cloud2
+     (获取设备是否有最新的报警消息 云存储2.0设备)
+     
+     @param success Successful callback (成功回调)
+     @param failure failure callback (失败回调)
+     */
+     -(void)getAlarmLatestMessageListCloud2ForDeviceListSuccess:(MeariSuccess_MsgLatestAlarmList)success Failure:(MeariFailure)failure;
+【代码范例】
+     [[MeariUser sharedInstance] getAlarmLatestMessageListCloud2ForDeviceListSuccess:^(NSArray<MeariMessageLatestAlarm *> *msgs) {
+        
+     } Failure:^(NSError *error) {
+           
+     }];
+
+          
+```
+### 10.3.2   获取某个设备报警消息 
+
+```
+【描述】
+    获取云存储2.0消息 通过判断supportAlarmVideoReport == 1 或者evt == 1判断设备支持2.0报警消息
+【函数调用】
+
+     /**
+     get all the alarm messgae of one device  by day 
+     (云存储2.0获取某个设备某天的报警消息,每次最多返回20条信息)
+
+     @param deviceID 设备ID
+     @param day 天，如："20200804"
+     @param channel 默认为0
+     @param msgTime  devLocaTtime，传@“0”拉取最新消息 其他 如：“20220406200300” 表示获取在20220406200300之后的消息
+     @param eventType eventType (事件报警类型，每条消息存在一种类型，取值"1" "2" "3"..."13")
+     "-1": 表示不进行筛选
+     "1": "motion",
+     "3": "bell",
+     "6": "decibel",
+     "7": "cry",
+     "9": "baby",
+     "10": "tear",
+     "11": "human",
+     "12": "face",
+     "13": "safety"
+     @param aiTypes aiType (AI分析类型，每条消息可能存在多种类型，取值"0" "1" "2"..."7")  数组为空表示不进行筛选
+     "0": "人"
+     "1": "宠物"
+     "2": "有车辆驶来"
+     "3": "有车辆停滞"
+     "4": "有车辆驶离"
+     "5": "包裹被放下"
+     "6": "有滞留包裹"
+     "7": "包裹被拿走"
+     @param direction 1拉最新消息，0拉历史消息
+     @param success Successful callback (成功回调)
+     @param failure failure callback (失败回调)
+     */
+     - (void)getAlarmMessageListCloud2ForDeviceWithDeviceID:(NSInteger)deviceID
+                                                  channel:(NSInteger)channel
+                                                       day:(NSString *)day
+                                                  msgTime:(NSString *)time
+                                                  direction:(BOOL)direction
+                                                  eventType:(NSInteger)eventType
+                                                  aiTypes:(NSArray *)aiTypes
+                                                  success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
+【代码范例】
+     //获取云存储2.0的最新消息 不作任何的筛选
+     [[MeariUser sharedInstance] getAlarmMessageListCloud2ForDeviceWithDeviceID:deviceID channel:0 day:@"20200804" msgTime:0 direction:1 eventType:-1 aiTypes:[] success:^(NSArray<MeariMessageInfoAlarmDevice *> *newMsgs, MeariDevice *device, BOOL msgFrequently) {
+            
+      } failure:^(NSError *error) {
+           
+      }];
+```
+
+### 10.3.3 加载报警图片
+
+```
+  【描述】
+    云存储2.0的图片可以直接访问。如果链接失效请重新获取。
+    云存储2.0的图片默认以设备的SN进行加密,需要下载图片数据之后调用解密方法后才能显示。
+    图片以 jpgx3 结尾表明设备默认密码加密。采用设备SN加密
+    图片以 jpgx2 结尾表明设备采用用户密码加密。
+ 
+  【函数调用】
+     /**
+     //Check if the v2 version of the Key matches the image
+     // 判断图片是以jepx2、jepx3版本的Key是否与图片匹配
+
+     @param url 图片url
+     @param password  用户设置的密码
+     @return 解密完成的数据 (image data)
+     */
+     - (BOOL)checkImageV2EncryKey:(NSString *)url password:(NSString *)password;
+
+
+     // Determine whether the picture ends with jepx1. If it is in the format ending with jepx1, it needs to be decrypted.
+     // 判断图片是否是以jepx2、jepx3结尾 如果是以jepx2、jepx3结尾的格式 需要进行解密操作
+
+     @param deviceSN 设备的SN(device.info.sn)
+     @param imageData  图片的二进制数据 (image data)
+     @return 解密完成的数据 (image data)
+     */
+     - (NSData *)decryptImageDataV2With:(NSString *)deviceSN imageData:(NSData *)imageData;
+
+  【代码范例】
+        //根据图片URL 检验密码是否正确
+        //imageUrl 服务器返回的图片URL
+        //password jpgx3结尾下 默认以设备SN作为密码 password = device.info.sn
+        BOOL correct = [[MeariUser sharedInstance] checkImageV2EncryKey:imageUrl password:password];
+
+       //imageData 下载下来之后的图片数据
+       //解密之前先校验密码是否正确。 根据对下载之后的数据进行解密操作
+       NSData *decodeData = [[MeariUser sharedInstance] decryptImageDataV2With:password imageData:imageData];
+       //进行图片的展示
+
+```
+
+### 10.3.4 删除设备报警消息 
+
+```
+【描述】
+    删除云存储2.0消息  chanel默认为0
+【函数调用】
+          /**
+     Delete system messages in bulk
+     云存储2.0按索引批量删除事件
+     
+     @param deviceID 设备ID
+     @param indexList 需要删除的事件时间点集合
+     @param success Successful callback (成功回调)
+     @param failure failure callback (失败回调)
+     */
+     - (void)deleteSystemMessagesCloud2WithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel indexList:(NSArray *)indexList success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+     /**
+     Delete system messages in bulk
+     云存储2.0按天批量删除事件
+     
+     @param deviceID 设备ID
+     @param day 需要删除的事件天
+     @param success Successful callback (成功回调)
+     @param failure failure callback (失败回调)
+     */
+     - (void)deleteSystemMessagesCloud2WithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel day:(NSString *)day success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+     /**
+     Delete system messages in bulk
+     云存储2.0按设备删除事件
+     
+     @param deviceID 设备ID
+     @param success Successful callback (成功回调)
+     @param failure failure callback (失败回调)
+     */
+     - (void)deleteSystemMessagesCloud2WithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+     [[MeariUser sharedInstance] deleteSystemMessagesCloud2WithDeviceID:deviceID channel:0 indexList:@[msgTime,msgTime] success:^{
+        
+    } failure:^(NSError *error) {
+       
+    }];
+```
+
+## 10.4 系统消息 
+
+### 10.4.1 获取系统消息 
 ```
 【描述】
     获取系统消息 
@@ -3154,7 +3573,7 @@ MeariMemberModel属性
     }];
 ```
 
-### 10.3.2 批量删除系统消息 
+### 10.4.2 批量删除系统消息 
 
 ```
 【描述】
@@ -3177,9 +3596,9 @@ MeariMemberModel属性
     }];
 ```
 
-## 10.4 分享消息
+## 10.5 分享消息
 
-### 10.4.1 获取设备分享消息列表
+### 10.5.1 获取设备分享消息列表
 ```
 【描述】
 	 获取所有分享消息
@@ -3199,7 +3618,7 @@ MeariMemberModel属性
     }];
 ```
 
-### 10.4.2 删除设备分享消息
+### 10.5.2 删除设备分享消息
 ```
 【描述】
 	  删除分享消息
@@ -3221,7 +3640,7 @@ MeariMemberModel属性
      }];
 
 ```
-### 10.4.3 获取家庭分享消息列表
+### 10.5.3 获取家庭分享消息列表
 ```
 【描述】
 	  获取家庭分享消息
@@ -3236,7 +3655,7 @@ MeariMemberModel属性
 
      }];
 ```
-### 10.4.4 删除家庭分享消息
+### 10.5.4 删除家庭分享消息
 ```
 【描述】
 	  删除分享消息
@@ -3259,7 +3678,7 @@ MeariMemberModel属性
 
      }];
 ```
-### 10.4.5 处理家庭分享消息
+### 10.5.5 处理家庭分享消息
 ```
 【描述】
 	  处理家庭分享消息
@@ -3740,4 +4159,216 @@ NVR通道摄像机不支持云回放。
         NSLog(@"设置失败");
     }];
 ```
+# 13 4G摄像机
+## 13.1 流量详情
+```
+【描述】
+    4G设备随设备携带SIM卡流量详情(建议不要频繁调用查询，容易被运营商封)
+
+【函数调用】
+    /**
+    Get 4G device SIM card traffic details
+    获取4G设备SIM卡流量详情（随设备携带SIM卡）
+    */
+    - (void)queryDeviceTrafficWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID sucess:(void(^)(NSString *simId ,MeariSimTrafficModel *currentModel, NSArray<MeariSimTrafficUnuseModel *>* unuseArray, NSArray<MeariSimTrafficHistoryModel *>* historyArray))success failure:(MeariFailure)failure;
+
+【代码范例】
+
+    [[MeariUser sharedInstance] queryDeviceTrafficWithUUID:self.uuid deviceID:self.camera.info.ID sucess:^(NSString *simId, MeariSimTrafficModel *currentModel, NSArray<MeariSimTrafficUnuseModel *> *unuseArray, NSArray<MeariSimTrafficHistoryModel *> *historyArray) {
+        simId//卡号
+        currentModel//当前使用套餐
+        unuseArray//未使用的流量套餐
+        historyArray//历史使用流量
+    } failure:^(NSError *error) {
+        
+    }];
+```
+
+## 13.2 流量套餐
+```
+【描述】
+    4G设备随设备携带SIM卡流量套餐
+
+【函数调用】
+//注册地区为中国以外地区 countryCode不为CN的使用
+   /**
+    Get a 4G device SIM card purchase package
+    获取4G设备SIM卡购买套餐（随设备携带SIM卡）
+    */
+    - (void)queryDeviceTrafficPlanWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID sucess:(void(^)(NSArray<MeariSimTrafficPlanModel *>* planArray, BOOL tryStatus, NSString *maxMonth))success failure:(MeariFailure)failure;
+    
+    //中国注册地区 countryCode 为CN的使用 
+    /**
+    Get a 4G device SIM card purchase package2.0
+    获取4G设备SIM卡购买套餐2.0（随设备携带SIM卡）
+    */
+    - (void)queryDeviceTrafficPlan2WithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID payType:(NSInteger)payType sucess:(void(^)(NSArray<MeariSimTrafficPlanModel *>* planArray, BOOL tryStatus, NSString *maxMonth))success failure:(MeariFailure)failure;
+
+【代码范例】
+
+        if ([Meari_UserM.countryCode isEqualToString:@"CN"]) {
+        [[MeariUser sharedInstance] queryDeviceTrafficPlan2WithUUID:self.uuid deviceID:self.camera.info.ID payType:1 sucess:^(NSArray<MeariSimTrafficPlanModel *> *planArray, BOOL tryStatus, NSString *maxMonth) {
+            NSMutableArray *result = [NSMutableArray array];
+            for (MeariSimTrafficPlanModel *model in planArray) {
+                if (model.type == 1) {
+                    [result addObject:model];
+                }
+            }
+            weakSelf.payView.dataSource = result;
+            weakSelf.selectModel = result.firstObject;
+            weakSelf.maxMonth = maxMonth;
+            weakSelf.payButton.enabled = YES;
+        } failure:^(NSError *error) {
+            weakSelf.payButton.enabled = NO;
+        }];
+    } else {
+        [[MeariUser sharedInstance] queryDeviceTrafficPlanWithUUID:self.uuid deviceID:self.camera.info.ID sucess:^(NSArray<MeariSimTrafficPlanModel *> *planArray, BOOL tryStatus, NSString *maxMonth) {
+            NSMutableArray *result = [NSMutableArray array];
+            for (MeariSimTrafficPlanModel *model in planArray) {
+                if (model.type == 1) {
+                    [result addObject:model];
+                }
+            }
+            weakSelf.payView.dataSource = result;
+            weakSelf.selectModel = result.firstObject;
+            weakSelf.maxMonth = maxMonth;
+            weakSelf.payButton.enabled = YES;
+        } failure:^(NSError *error) {
+            weakSelf.payButton.enabled = NO;
+        }];
+    }
+```
+## 13.3 创建流量订单
+```
+【描述】
+        根据4G设备随设备携带SIM卡流量套餐，创建对应的支付订单
+【函数调用】
+    /**
+ Create a 4G Device SIM Package Purchase Order
+ 创建4G设备SIM卡套餐购买订单（随设备携带SIM卡）
+*/
+- (void)createDeviceTrafficOrderWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID packageID:(NSString *)packageID payType:(NSString *)payType payMoney:(NSString *)payMoney paymentMethodNonce:(NSString *)paymentMethodNonce quantity:(NSInteger)quantity sucess:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ Create a 4G Device SIM Package Purchase Order 2.0
+ 创建4G设备SIM卡套餐购买订单2.0（随设备携带SIM卡）
+*/
+- (void)createDeviceTrafficOrder2WithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID packageID:(NSString *)packageID payType:(NSString *)payType payMoney:(NSString *)payMoney quantity:(NSInteger)quantity sucess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+【代码范例】
+
+    if (![Meari_UserM.countryCode isEqualToString:@"CN"]) {
+        [[MeariUser sharedInstance] createDeviceTrafficOrderWithUUID:self.uuid deviceID:self.deviceID packageID:self.plan.planId payType:self.plan.mealType payMoney:Meari_SafeValue(self.plan.money) paymentMethodNonce:Meari_SafeValue(self.payNonce) quantity:1 sucess:^{
+            MR_HUD_DISMISS
+            MeariSimTrafficPaySuccessVC *successVC = [[MeariSimTrafficPaySuccessVC alloc] init];
+            [self.navigationController pushViewController:successVC animated:YES];
+            [Meari_NotificationCenter postNotificationName:@"MeariSimTrafficRefreshNotification" object:nil];
+        } failure:^(NSError *error) {
+            MR_HUD_SHOW_ERROR(error)
+        }];
+    } else {
+        [[MeariUser sharedInstance] createDeviceTrafficOrder2WithUUID:self.uuid deviceID:self.deviceID packageID:self.plan.planId payType:self.plan.mealType payMoney:Meari_SafeValue(self.plan.money) quantity:1 sucess:^(NSDictionary *dict) {
+            MR_HUD_DISMISS
+            NSDictionary *result = dict[@"result"];
+            MeariSimTrafficAliPayWebVC *baseWebVC = [[MeariSimTrafficAliPayWebVC alloc]init];
+            baseWebVC.urlString = result[@"payWebUrl"];
+            baseWebVC.paySuccessUrl = result[@"payReturnUrl"];
+            baseWebVC.camera = weakSelf.camera;
+            [weakSelf.navigationController pushViewController:baseWebVC animated:YES];
+        } failure:^(NSError *error) {
+            MR_HUD_SHOW_ERROR(error)
+        }];
+```
+## 13.4 流量激活码
+```
+【描述】
+    激活码激活随设备携带SIM卡流量套餐
+
+【函数调用】
+  /**
+ active  data plan for 4G devices
+ 4G设备激活码激活流量套餐
+*/
+- (void)activeDeviceTrafficWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID activeCode:(NSString *)code sucess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+
+        [[MeariUser sharedInstance] activeDeviceTrafficWithUUID:weakSelf.uuid deviceID:weakSelf.camera.info.ID activeCode:code sucess:^{
+            NSLog(@"激活码激活成功");
+        } failure:^(NSError *error) {
+            if (error.code == MeariUserCodeVerificationExpired) {
+                NSLog(@"激活码已使用");
+            }else if (error.code == MeariUserCodeVerificationError ) {
+                NSLog(@"激活码错误");
+            }else {
+                NSLog(@"%@",error);
+            }
+        }];
+```
+## 13.5 流量订单列表
+```
+【描述】
+    4G设备随设备携带SIM卡流量订单列表
+
+【函数调用】
+   /**
+ Get 4G device data plan order list
+ 获取4G设备流量套餐订单列表
+*/
+- (void)getDeviceTrafficOrderListWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID sucess:(void(^)(NSArray<MeariSimTrafficOrderModel *>* orderArray))success failure:(MeariFailure)failure;
+
+【代码范例】
+
+    [[MeariUser sharedInstance] getDeviceTrafficOrderListWithUUID:self.uuid deviceID:self.camera.info.ID sucess:^(NSArray<MeariSimTrafficOrderModel *> *orderArray) {
+        orderArray//订单数组
+    } failure:^(NSError *error) {
+        
+    }];
+```
+## 13.6 流量购买提醒
+```
+【描述】
+    4G设备随设备携带SIM卡流量不足购买提醒
+
+【函数调用】
+  /**
+ Get a reminder to purchase a data plan for 4G devices
+ 获取4G设备是否需要提醒购买流量套餐
+*/
+- (void)getDeviceTrafficBuyRemindWithDeviceID:(NSInteger)deviceID sucess:(void(^)(BOOL remind))success failure:(MeariFailure)failure;
+
+【代码范例】
+
+    [[MeariUser sharedInstance] getDeviceTrafficBuyRemindWithDeviceID:self.camera.info.ID sucess:^(BOOL remind) {
+        if (remind) {
+            NSLog(@"当前所剩流量不足，请您及时充值");
+        }
+    } failure:^(NSError *error) {
+            
+    }];
+```
+## 13.7 试用流量套餐
+```
+【描述】
+    试用4G设备随设备携带SIM卡流量
+
+【函数调用】
+  /**
+ Try 4G device data plan
+ 试用4G设备流量套餐订单列表
+*/
+- (void)tryDeviceTrafficPlanWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID sucess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+
+        [[MeariUser sharedInstance] tryDeviceTrafficPlanWithUUID:self.uuid deviceID:self.camera.info.ID sucess:^{
+            NSLog(@"试用成功");
+        } failure:^(NSError *error) {
+            
+        }];
+```
+
+
+
+
+
 
