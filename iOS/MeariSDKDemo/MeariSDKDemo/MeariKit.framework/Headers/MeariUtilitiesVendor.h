@@ -8,7 +8,7 @@
 
 #ifndef MeariUtilitiesVendor_h
 #define MeariUtilitiesVendor_h
-
+#import "MeariDDLog.h"
 static MeariDDLogLevel ddLogLevel = MeariDDLogLevelVerbose;
 
 #define MRLog(fmt, ...)              BaseLogVerbose(fmt, ##__VA_ARGS__)

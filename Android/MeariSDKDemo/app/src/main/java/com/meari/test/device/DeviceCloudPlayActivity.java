@@ -16,12 +16,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.meari.sdk.CloudPlayerController;
 import com.meari.sdk.MeariUser;
+import com.meari.sdk.VideoInfo;
 import com.meari.sdk.bean.CameraInfo;
 import com.meari.sdk.bean.VideoTimeRecord;
 import com.meari.sdk.callback.ICloudAlarmMessageTimeCallback;
+import com.meari.sdk.callback.ICloudGetShortVideoCallback;
 import com.meari.sdk.callback.ICloudGetVideoCallback;
 import com.meari.sdk.callback.ICloudPlayerCallback;
+import com.meari.sdk.callback.ICloudShortVideoTimeRecordCallback;
 import com.meari.sdk.callback.ICloudVideoTimeRecordCallback;
+import com.meari.sdk.utils.CloudPlaybackUtil;
 import com.meari.sdk.utils.Logger;
 import com.meari.test.R;
 import com.ppstrong.weeye.widget.media.IjkVideoView;
@@ -31,6 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -120,13 +125,61 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
         });
 
         mVideoView = findViewById(R.id.video_view);
+        // 开启移动和缩放
+        mVideoView.enableMoveAndScale();
+
         if (cloudPlayerController == null) {
             cloudPlayerController = new CloudPlayerController(DeviceCloudPlayActivity.this, mVideoView, this);
         }
 
-        getCloudVideoTimeRecordInDay(2020, 9, 21);
-        postEventTime(2020, 9, 14);
+        cloudPlayerController = new CloudPlayerController(this, mVideoView, new ICloudPlayerCallback() {
+            @Override
+            public void mediaPlayingCallback() {
 
+            }
+
+            @Override
+            public void mediaPauseCallback() {
+
+            }
+
+            @Override
+            public void upDateProgress(long l) {
+
+            }
+
+            @Override
+            public void mediaPlayFailedCallback() {
+
+            }
+
+            @Override
+            public void playNext() {
+
+            }
+
+            @Override
+            public void stopRecordVideo() {
+
+            }
+
+            @Override
+            public void showStopRecordVideoView(String s) {
+
+            }
+
+            @Override
+            public void screenshotSuccess(String s) {
+
+            }
+        });
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DATE);
+
+        getCloudVideoTimeRecordInDay(year, month, day);
     }
 
     private int mCurIndex;
@@ -135,51 +188,120 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
         mYear = year;
         mMonth = month;
         mDay = day;
-        MeariUser.getInstance().getCloudVideoTimeRecordInDay(String.valueOf(cameraInfo.getDeviceID()),
-                year, month, day, "", new ICloudVideoTimeRecordCallback() {
-                    @Override
-                    public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
-                        if (recordList == null || recordList.size() <= 0) {
-                            Logger.i(TAG, "getCloudVideoTimeRecordInDay: have no record");
-                        } else {
-                            mVideoRecordList = recordList;
-                            mCurIndex = getIndex(recordList);
-                            getCloudVideo(mCurIndex);
+        if (cameraInfo.getEvt() == 1) {
+            MeariUser.getInstance().getCloudShortVideoTimeRecordInDay(String.valueOf(cameraInfo.getDeviceID()),
+                    year, month, day, new ICloudShortVideoTimeRecordCallback() {
+                        @Override
+                        public void onSuccess(long historyEventEnable, long cloudEndTime, String todayStorageType, String yearMonthDay, ArrayList<VideoTimeRecord> recordList, ArrayList<VideoTimeRecord> eventList) {
+                            if (recordList == null || recordList.size() <= 0) {
+                                Logger.i(TAG, "getCloudShortVideoTimeRecordInDay: have no record");
+                            } else {
+                                mVideoRecordList = recordList;
+                                mCurIndex = getIndex(recordList);
+                                getCloudVideo(mCurIndex);
+                                // eventList is directly in the callback, so don't need call postEventTime
+                                // postEventTime(year, month, day);
+                            }
                         }
 
-                    }
+                        @Override
+                        public void onError(int errorCode, String errorMsg) {
+                            Logger.i(TAG, "getCloudShortVideoTimeRecordInDay--errorCode：" + errorCode + "; errorMsg: " + errorMsg);
+                        }
+                    });
+        } else {
+            MeariUser.getInstance().getCloudVideoTimeRecordInDay(String.valueOf(cameraInfo.getDeviceID()),
+                    year, month, day, "", new ICloudVideoTimeRecordCallback() {
+                        @Override
+                        public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
+                            if (recordList == null || recordList.size() <= 0) {
+                                Logger.i(TAG, "getCloudVideoTimeRecordInDay: have no record");
+                            } else {
+                                mVideoRecordList = recordList;
+                                mCurIndex = getIndex(recordList);
+                                getCloudVideo(mCurIndex);
+                                postEventTime(year, month, day);
+                            }
+                        }
 
-                    @Override
-                    public void onError(int errorCode, String errorMsg) {
-                        Logger.i(TAG, "getCloudVideoTimeRecordInDay--errorCode：" + errorCode + "; errorMsg: " + errorMsg);
-                    }
-                });
+                        @Override
+                        public void onError(int errorCode, String errorMsg) {
+                            Logger.i(TAG, "getCloudVideoTimeRecordInDay--errorCode：" + errorCode + "; errorMsg: " + errorMsg);
+                        }
+                    });
+        }
     }
 
     private int getIndex(ArrayList<VideoTimeRecord> recordList) {
         Logger.i(TAG, "getCloudVideoTimeRecordInDay--size: " + recordList.size());
         VideoTimeRecord videoInfo = recordList.get(0);
         int min = videoInfo.StartHour * 60 + videoInfo.StartMinute;
-        int index = min / 30;
-        return index;
+        return cameraInfo.getEvt() == 1? min / 20 : min / 30;
     }
 
     private void getCloudVideo(int index) {
-        MeariUser.getInstance().getCloudVideo(String.valueOf(cameraInfo.getDeviceID()), index, mYear, mMonth, mDay, "",
-                new ICloudGetVideoCallback() {
-                    @Override
-                    public void onSuccess(String videoInfo, String startTime, String endTime) {
-                        toM3U8(videoInfo, startTime, endTime);
-                    }
+        if (cameraInfo.getEvt() == 1) {
+            MeariUser.getInstance().getCloudShortVideo(String.valueOf(cameraInfo.getDeviceID()), index,
+                    mYear, mMonth, mDay,
+                    new ICloudGetShortVideoCallback() {
+                        @Override
+                        public void onSuccess(ArrayList<VideoInfo> videoInfo, String startTime, String endTime) {
+                            toM3U8ShortVideo(videoInfo, startTime, endTime);
+                        }
 
-                    @Override
-                    public void onError(int errorCode, String errorMsg) {
-                        Logger.i(TAG, "getCloudVideo--errorCode：" + errorCode + "; errorMsg: " + errorMsg);
-                    }
-                });
+                        @Override
+                        public void onError(int errorCode, String errorMsg) {
+
+                        }
+                    });
+        } else {
+            MeariUser.getInstance().getCloudVideo(String.valueOf(cameraInfo.getDeviceID()), index, mYear, mMonth, mDay, "",
+                    new ICloudGetVideoCallback() {
+                        @Override
+                        public void onSuccess(String videoInfo, String startTime, String endTime) {
+                            toM3U8(videoInfo, startTime, endTime);
+                        }
+
+                        @Override
+                        public void onError(int errorCode, String errorMsg) {
+                            Logger.i(TAG, "getCloudVideo--errorCode：" + errorCode + "; errorMsg: " + errorMsg);
+                        }
+                    });
+        }
     }
 
     private String mSeekString = "";
+
+    private void toM3U8ShortVideo(ArrayList<VideoInfo> videoInfoList, String startTime, String endTime) {
+        String path = getExternalCacheDir().getAbsolutePath() + System.currentTimeMillis() + ".m3u8";
+        Logger.i("postGetVideos", "path:" + path);
+        File file = new File(path);
+        if (file.exists()) {
+            file.delete();
+        }
+        try {
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
+            String content =  CloudPlaybackUtil.generateM3U8Content(videoInfoList);
+            FileOutputStream fileOutputStream = new FileOutputStream(file, true);
+            fileOutputStream.write(content.getBytes());
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Logger.i("tag", "cameraPlayer-云回放2.0开始-mSeekString：" + mSeekString + "; startTime: " + startTime + "; endTime: " + endTime);
+
+        if (mVideoRecordList != null && mVideoRecordList.size() > 0) {
+            VideoTimeRecord video = mVideoRecordList.get(0);
+            mSeekString = String.format(Locale.CHINA, "%04d%02d%02d%02d%02d%02d", mYear, mMonth, mDay,
+                    video.StartHour, video.StartMinute, video.StartSecond);
+        }
+        cloudPlayerController.play(path, mSeekString);
+    }
 
     private void toM3U8(String content, String startTime, String endTime) {
 
@@ -324,7 +446,7 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
         if (mVideoRecordList.size() == 0) {
             return curIndex;
         }
-        for (int i = curIndex + 1; i < 47; i++) {
+        for (int i = curIndex + 1; i < (cameraInfo.getEvt() == 1? 71 : 47); i++) {
             if (isHasVideoByIndex(i)) {
                 return i;
             }
@@ -333,8 +455,8 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
     }
 
     private boolean isHasVideoByIndex(int index) {
-        int startTime = 1800 * index;
-        int endTime = 1800 * (index + 1);
+        int startTime = cameraInfo.getEvt() == 1? 1200 * index : 1800 * index;
+        int endTime = cameraInfo.getEvt() == 1? 1200 * (index + 1) : 1800 * (index + 1);
         if (mVideoRecordList.size() == 0) {
             return false;
         } else {

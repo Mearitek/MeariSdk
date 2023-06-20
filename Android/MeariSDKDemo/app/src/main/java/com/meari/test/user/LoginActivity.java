@@ -56,35 +56,35 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
 
         // 云云对接登录
-        String redirectionJson = "";//云云对接获取
-        String loginJson = "";//云云对接获取
-        MeariUser.getInstance().loginWithExternalData(redirectionJson, loginJson, new ILoginCallback() {
-            @Override
-            public void onSuccess(UserInfo userInfo) {
-
-            }
-
-            @Override
-            public void onError(int i, String s) {
-
-            }
-        });
-
-//        String account = edtAccount.getEditableText().toString().trim();
-//        String pwd = edtPwd.getEditableText().toString().trim();
-//        MeariUser.getInstance().loginWithAccount("CN", "86", account, pwd, new ILoginCallback() {
+//        String redirectionJson = "";//云云对接获取
+//        String loginJson = "";//云云对接获取
+//        MeariUser.getInstance().loginWithExternalData(redirectionJson, loginJson, new ILoginCallback() {
 //            @Override
 //            public void onSuccess(UserInfo userInfo) {
-//                Toast.makeText(LoginActivity.this, R.string.toast_success, Toast.LENGTH_LONG).show();
-//                goToMain();
+//
 //            }
 //
 //            @Override
 //            public void onError(int i, String s) {
-//                Toast.makeText(LoginActivity.this, R.string.toast_fail, Toast.LENGTH_LONG).show();
-//                tvInfo.setText(i + s);
+//
 //            }
 //        });
+
+        String account = edtAccount.getEditableText().toString().trim();
+        String pwd = edtPwd.getEditableText().toString().trim();
+        MeariUser.getInstance().loginWithAccount("CN", "86", account, pwd, new ILoginCallback() {
+            @Override
+            public void onSuccess(UserInfo userInfo) {
+                Toast.makeText(LoginActivity.this, R.string.toast_success, Toast.LENGTH_LONG).show();
+                goToMain();
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                Toast.makeText(LoginActivity.this, R.string.toast_fail, Toast.LENGTH_LONG).show();
+                tvInfo.setText(i + s);
+            }
+        });
 
         // uid
 //        MeariUser.getInstance().loginWithUid("CN", "86", account, new ILoginCallback() {

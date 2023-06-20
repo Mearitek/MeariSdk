@@ -41,6 +41,8 @@ extern "C"
 
     int initappevent();
 
+    int putappevent(char *json);
+
     int iotappevent(char* err,char*ip,char* extraparams);
 
     int p2pconnectevent(char* uid,char* errorcode);

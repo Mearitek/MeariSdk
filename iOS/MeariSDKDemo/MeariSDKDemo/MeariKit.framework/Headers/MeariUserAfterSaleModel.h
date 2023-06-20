@@ -6,7 +6,8 @@
 //  Copyright © 2021 Meari. All rights reserved.
 //
 
-#import <MeariKit/MeariKit.h>
+//#import <MeariKit/MeariKit.h>
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MRGLView.h"
+#import "apple_openglview.h"
 
 @interface MeariPlayView : UIView
 
-@property (nonatomic, strong, readonly)MRGLView *videoView;
+@property (nonatomic, strong, readonly)AppleOpenGLView *videoView;
 
 @end

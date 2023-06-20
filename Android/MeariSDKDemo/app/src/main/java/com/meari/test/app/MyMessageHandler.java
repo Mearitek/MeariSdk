@@ -142,4 +142,14 @@ public class MyMessageHandler implements MqttMessageCallback {
             // 您被移除家庭，刷新家庭列表
         }
     }
+
+    @Override
+    public void onCloudServiceDis() {
+
+    }
+
+    @Override
+    public void onPermissionChanged(String s) {
+
+    }
 }

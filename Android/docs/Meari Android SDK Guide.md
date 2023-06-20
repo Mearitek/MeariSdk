@@ -34,11 +34,14 @@
         * 6.1.3 [Device removal](#613-Device-removal)
         * 6.1.4 [Device nickname modification](#614-Device-nickname-modification)
         * 6.1.5 [Get time segment of device alarm message](#615-Get-time-segment-of-device-alarm-message)
+        * 6.1.6 [Get device online status](#616-Get-device-online-status)
     * 6.2 [Device preview and playback](#62-Device-preview-and-playback)
         * 6.2.1 [Device preview](#621-Device-preview)
         * 6.2.2 [Device SD card playback](#622-Device-SD-card-playback)
+        * 6.2.3 [Device cloud playback](#623-Device-cloud-playback)
     * 6.3 [Device related](#63-Device-related)
-        * 6.3.1 [Doorbell answering process](#631-Doorbell-answering-process) 
+        * 6.3.1 [Doorbell answering process](#631-Doorbell-answering-process)
+        * 6.3.2 [Master Message](#632-Master-Message)
 * 7 [Share device](#7-Share-device)
     * 7.1 [Introduction of related class](#71-Introduction-of-related-class)
     * 7.2 [Get device share list](#72-Get-device-share-list)
@@ -87,6 +90,8 @@
         * 9.5.20 [Alarm frequency setting](#9520-Alarm-frequency-setting)
         * 9.5.21 [PIR level setting](#9521-PIR-level-setting)
         * 9.5.22 [SD card recording type and time setting](#9522-SD-card-recording-type-and-time-setting)
+        * 9.5.23 [Device Full Color Mode setting](#9523-Device-Full-Color-Mode-setting)
+        * 9.5.24 [Device sound and light alarm setting](#9524-Device-sound-and-light-alarm-setting)
     * 9.6 [Doorbell parameter setting](#96-Doorbell-parameter-setting)
         * 9.6.1 [Device Intercom volume settings](#961-Device-Intercom-volume-settings)
         * 9.6.2 [Unlock the battery lock](#962-Unlock-the-battery-lock)
@@ -152,7 +157,7 @@
     * 12.2 [Cloud Storage Trial](#122-Cloud-Storage-Trial)
     * 12.3 [Cloud storage activation code usage](#123-Cloud-storage-activation-code-usage)
     * 12.4 [Cloud storage purchases](#124-Cloud-storage-purchases)
-* 13 [Release Notes](#13-Release-Notes)
+* 14 [Release Notes](#14-Release-Notes)
 
 <center>
 
@@ -220,13 +225,12 @@ repositories {
 dependencies {
      // Required libraries
     // aar required
-    implementation(name: 'core-sdk-device-20220326', ext: 'aar')
-    implementation(name: 'core-sdk-meari-20220326', ext: 'aar')
+    implementation(name: 'core-sdk-device-500-20230602', ext: 'aar')
+    implementation(name: 'core-sdk-meari-500-20230602', ext: 'aar')
 
     implementation 'com.tencent:mmkv-static:1.0.23'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
-    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
     implementation 'com.alibaba:fastjson:1.1.67.android'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.zxing:core:3.3.3'
@@ -875,6 +879,7 @@ Get time segment of device alarm message
 
 [Function call]
 
+Use the following method if cameraInfo.getEvt() < 1:
 /**
   * Get time segment of devcie alarm message
   *
@@ -884,7 +889,19 @@ Get time segment of device alarm message
   * /
 public void getDeviceAlarmMessageTimeForDate (String deviceID, String dayTime, IDeviceAlarmMessageTimeCallback callback);
 
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * Get time segment of devcie alarm message
+ *
+ * @param deviceID device ID
+ * @param dayTime Time: "20200303"
+ * @param callback callback
+ */
+public void getDeviceAlarmMessageTimeForDate2(String deviceID, String dayTime, IDeviceAlarmMessageTimeCallbackNew callback);
+
 [Code example]
+
+Call the following mehod when cameraInfo.getEvt() < 1:
 MeariUser.getInstance().GetDeviceAlarmMessageTimeForDate (deviceID, dayTime, new IDeviceAlarmMessageTimeCallback () {
      @Override
      public void onSuccess (ArrayList <VideoTimeRecord> videoTimeList) {
@@ -894,6 +911,37 @@ MeariUser.getInstance().GetDeviceAlarmMessageTimeForDate (deviceID, dayTime, new
      public void onError (int code, String error) {
      }
 });
+
+Call the following mehod when cameraInfo.getEvt() == 1:
+MeariUser.getInstance().getDeviceAlarmMessageTimeForDate2(deviceID, dayTime, new IDeviceAlarmMessageTimeCallbackNew() {
+    @Override
+    public void onSuccess(ArrayList<VideoTimeRecord> videoTimeList, long historyEventEnable) {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
+
+### 6.1.6 Get device online status
+```
+【description】
+Get device online status
+
+[Function call]
+
+/**
+ * Get device online status
+ *
+ * String Intercepted SN，cameraInfo.getSnNum().substring(4)
+ * Integer 0-connecting; 1-online; 2-offline; 3-sleep
+ */
+public Map<String, Integer> queryDeviceStatus();
+
+[Code example]
+// After obtaining the device list, obtain the device state in a loop, and update the device state if the state changes
+Map<String, Integer> temStatus = MeariIotController.getInstance().queryDeviceStatus();
 ```
 
 ## 6.2 Device preview and playback
@@ -940,6 +988,8 @@ deviceController.startConnect (new MeariDeviceListener () {
         // Save the object and avoid duplicate creation
         MeariUser.getInstance (). SetCameraInfo (cameraInfo);
         MeariUser.getInstance (). SetController (deviceController);
+        // Get bit rate
+        String mBitRate = deviceController.getBitRate() + "KB/s";
     }
 
     @Override
@@ -1082,6 +1132,42 @@ public void resumePlaybackSDCard (MeariDeviceListener deviceListener)
  * /
 public void stopPlaybackSDCard (MeariDeviceListener deviceListener);
 
+support download record when MeariDeviceUtil.isSupportDownloadSdRecord(cameraInfo) == true
+/**
+ * download record
+ *
+ * @param channelId camera channelId cameraInfo.getChannelId()
+ * @param startTime yyyyMMddHHmmss startTime must be in the record
+ * @param endTime yyyyMMddHHmmss
+ * @param filePath download path of record
+ * @param listener listener
+ */
+public void startDownloadSdRecord(int channelId, String startTime, String endTime, String filePath, @NonNull MeariDeviceSdRecordDownloadListener listener)
+
+/**
+ * progress of downloading record
+ *
+ * @param callback callback
+ */
+public void getSdRecordDownloadProgress(IProgressCallback callback)
+
+support delete record when MeariDeviceUtil.isSupportDeleteSdRecord(cameraInfo) == true
+/**
+ * delete record of one day
+ *
+ * @param channelId camera channel
+ * @param day yyyyMMdd
+ * @param listener listener
+ */
+public void deleteSdRecordOfDay(int channelId, String day, @NonNull MeariDeviceListener listener)
+
+/**
+ * status of deleting record
+ *
+ * @param callback callback
+ */
+public void getSdRecordDeleteState(IProgressCallback callback)
+
 
 [Code example]
 
@@ -1186,6 +1272,228 @@ deviceController.stopPlaybackSDCard (new MeariDeviceListener () {
 
     }
 });
+
+// download record
+deviceController.startDownloadSdRecord(channelId, start, end, path, new MeariDeviceSdRecordDownloadListener() {
+    @Override
+    public void onSuccess(int index) {
+        MeariUser.getInstance().getSdRecordDownloadProgress()
+    }
+
+    @Override
+    public void onFailed(int code, String msg) {
+
+    }
+});
+
+// progress of downloading record
+MeariUser.getInstance().getSdRecordDownloadProgress(new IProgressCallback() {
+    @Override
+    public void onSuccess(int progress) {
+        if (progress >= 100) {
+            // stop download when download is success
+            deviceController.stopDownloadSdRecord(channel, index, new MeariDeviceListener() {
+            @Override
+            public void onSuccess(String successMsg) {
+                
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                
+            }
+        });
+
+        }
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+
+    }
+});
+
+// delete record of one day
+deviceController.deleteSdRecordOfDay(cameraInfo.getNvrChannelId(), ymd, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+        MeariUser.getInstance().getSdRecordDeleteState()
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+
+    }
+});
+
+// status of deleting record
+MeariUser.getInstanace().getSdRecordDeleteState(new IProgressCallback() {
+    @Override
+    public void onSuccess(int state) {
+        if (state == 0) {
+            // not under deleting, success
+        } else {
+            // under deleting
+        }
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+
+    }
+});
+```
+
+### 6.2.3 Device cloud playback
+
+```
+[description]
+The device can do cloud playback when it opened the cloud service.
+
+[Function call]
+
+Use the following method if cameraInfo.getEvt() < 1:
+/**
+ * get the day which has video in one month
+ * @param deviceID device id
+ * @param year year
+ * @param month month
+ * @param callback callback
+ */
+public void getCloudHaveVideoDaysInMonth(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * get the day which has video in one month
+ * @param deviceID device id
+ * @param year year
+ * @param month month
+ * @param callback callback
+ */
+public void getCloudHaveShortVideoDaysInMonth(String deviceID, int year, int month, ICloudHaveVideoDaysCallback callback);
+
+Use the following method if cameraInfo.getEvt() < 1:
+/**
+ * get all the video clips in one day
+ * @param deviceID device id
+ * @param year year
+ * @param month month
+ * @param day day
+ * @param callback callback
+ */
+public void getCloudVideoTimeRecordInDay(String deviceID, int year, int month, int day, ICloudVideoTimeRecordCallback callback);
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * get all the video clips in one day
+ * @param deviceID device id
+ * @param year year
+ * @param month month
+ * @param day day
+ * @param callback callback
+ */
+public void getCloudShortVideoTimeRecordInDay(String deviceID, int year, int month, int day, ICloudShortVideoTimeRecordCallback callback);
+
+Use the following method if cameraInfo.getEvt() < 1:
+/**
+ * get the video information
+ * @param deviceID device id
+ * @param index index of time  for example: 00:30:00 is 1, 01:00:00 is 2
+ * @param year year
+ * @param month month
+ * @param month day
+ * @param callback callback
+ */
+public void getCloudVideo(String deviceID, int index, int year, int month, int day, ICloudGetVideoCallback callback);
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * get the video information
+ * @param deviceID device id
+ * @param index index of time  for example: 00:20:00 is 1, 00:40:00 is 2
+ * @param year year
+ * @param month month
+ * @param month day
+ * @param callback callback
+ */
+public void getCloudShortVideo(String deviceID, int index, int year, int month, int day, ICloudGetShortVideoCallback callback);
+
+[Code example]
+
+// get the day which has video in one month
+Call the following mehod when cameraInfo.getEvt() < 1:
+MeariUser.getInstance().getCloudHaveVideoDaysInMonth(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
+    @Override
+    public void onSuccess(String yearAndMonth, ArrayList<Integer> haveVideoDays) {
+               
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+Call the following mehod when cameraInfo.getEvt() == 1:
+MeariUser.getInstance().getCloudHaveShortVideoDaysInMonth(deviceId, year, month, new ICloudHaveVideoDaysCallback() {
+    @Override
+    public void onSuccess(String yearAndMonth, ArrayList<Integer> haveVideoDays) {
+               
+    }
+
+    @Override
+    public void onError(int code, String error) {
+
+    }
+});
+
+// get all the video clips in one day
+Call the following mehod when cameraInfo.getEvt() < 1:
+MeariUser.getInstance().getCloudVideoTimeRecordInDay(deviceId,year, month, day, new ICloudVideoTimeRecordCallback(){
+    @Override
+    public void onSuccess(String yearMonthDay, ArrayList<VideoTimeRecord> recordList) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+Call the following mehod when cameraInfo.getEvt() == 1:
+MeariUser.getInstance().getCloudShortVideoTimeRecordInDay(deviceId,year, month, day, new ICloudShortVideoTimeRecordCallback(){
+    @Override
+    public void onSuccess(long historyEventEnable, long cloudEndTime, String todayStorageType, String yearMonthDay, ArrayList<VideoTimeRecord> recordList, ArrayList<VideoTimeRecord> eventList) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+
+// get the video information
+Call the following mehod when cameraInfo.getEvt() < 1:
+MeariUser.getInstance().getCloudVideo(deviceid, index, year, month, day, new ICloudGetVideoCallback() {
+    @Override
+    public void onSuccess(String videoInfo, String startTime, String endTime) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+Call the following mehod when cameraInfo.getEvt() == 1:
+MeariUser.getInstance().getCloudShortVideo(deviceid, index, year, month, day, new ICloudGetShortVideoCallback() {
+    @Override
+    public void onSuccess(String videoInfo, String startTime, String endTime) {
+        
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
 ```
 
 ## 6.3 Device related
@@ -1257,6 +1565,133 @@ MeariUser.getInstance().postHangUpBell(bellInfo.getDeviceID(), new IResultCallba
         // Close the hole, close the page
         ...
     }
+});
+```
+
+### 6.3.2 Master Message
+
+> Doorbell devices that support messages can record messages and choose to play them when answering the call.
+
+- 1 Determine whether to support the message function
+```
+if (MeariDeviceUtil.isSupportHostMessage(cameraInfo)) {
+}
+
+// The maximum number of master messages
+private int voiceMailMaxSize;
+// The maximum time for the owner to leave a message (seconds)
+private int voiceMailDuration = 10;
+
+if (cameraInfo.getHms() == 1) {
+    voiceMailMaxSize = 1;
+    voiceMailDuration = 30;
+} else if (cameraInfo.getHms() == 2){
+    voiceMailMaxSize = 3;
+    voiceMailDuration = 10;
+}
+```
+
+- 2 Get device message list
+```
+MeariUser.getInstance().getVoiceMailList(cameraInfo.getDeviceID(), this, new IGetVoiceMailListCallback() {
+    @Override
+    public void onSuccess(ArrayList<VoiceMailInfo> voiceMailList) {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
+- 3 To record and upload messages, microphone permission is required
+```
+private String g711uFilePath;
+private String wavFilePath;
+private String pcmFilePath;
+
+// start recording
+controller.startRecordVoiceMail(pcmFilePath, g711uFilePath);
+
+// end recording
+controller.stopRecordVoiceMail();
+
+// convert format
+controller.changeG711u2WAV(g711uFilePath, wavFilePath, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+        
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+    }
+});
+
+// upload message
+File wavFile = new File(wavFilePath);
+List<File> fileList = new ArrayList<>();
+fileList.add(wavFile);
+MeariUser.getInstance().uploadVoiceMail(cameraInfo.getDeviceID(), voiceMailName, fileList, new IUploadVoiceMailCallback() {
+    @Override
+    public void onSuccess(VoiceMailInfo voiceMailInfo) {
+        
+    }
+
+    @Override
+    public void onError(int code, String error) {
+        handler.sendEmptyMessage(MSG_UPLOAD_RECORD_FAILED);
+    }
+});
+```
+
+- 4 Control device to play message
+```
+MeariUser.getInstance().sendVoiceMail(cameraInfo.getDeviceID(), voiceMailInfo.getVoiceId(), this, new IResultCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+```
+
+- 5 Play message on mobile phone
+```
+// download message
+MeariUser.getInstance().downloadFile(voiceMailInfo.getVoiceUrl(), destFileDir, destFileName, new IDownloadFileCallback() {
+    @Override
+    public void onSuccess(File file) {
+        changeWav2Pcm(file);
+    }
+    @Override
+    public void downloadProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
+    }
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+
+// convert format
+controller.changeG711u2Pcm(wavFilePath, pcmFilePath, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+    }
+});
+
+// play message
+AudioUtil.getInstance().playPCM(pcmFilePath);
+AudioUtil.getInstance().setOnPlayListener(flag -> {
+    // play complete
+    Message msg = Message.obtain();
+    msg.what = MSG_PLAY_RECORD_COMPLETE;
+    msg.obj = type;
+    handler.sendMessage(msg);
 });
 ```
 
@@ -1594,6 +2029,7 @@ MeariUser.getInstance (). GetDeviceMessageStatusList (new IDeviceMessageStatusCa
 Get alarm messages of a single device
 
 [Function call]
+Use the following method if cameraInfo.getEvt() < 1:
 /**
  * Get the alarm message of a single device (get the latest 20 messages at a time, after the device owner pulls it, the server deletes the data, pay attention to save the data)
  *
@@ -1603,33 +2039,240 @@ Get alarm messages of a single device
  * /
 public void getAlertMsg (long deviceId, String day, IGetAlarmMessagesCallback callback);
 
-[Method call]
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * Get the alarm message of a single device (get the latest 20 messages at a time, the server will delete the data after 30 days if user open the cloud service, otherwise is 7 days)
+ *
+ * @param deviceId device id
+ * @param day date yyyyMMdd
+ * @param index pass "0" when direction=1, pass the eventTime of the last message when direction=0
+ * @param direction 1: refresh 0: load more
+ * @param eventType message type, for filtering
+ "1": "motion",
+ "2": "pir",
+ "3": "bell",
+ "6": "decibel",
+ "7": "cry",
+ "9": "baby",
+ "10": "tear",
+ "11": "human",
+ "12": "face",
+ "13": "safety",
+ * @param aiType ai type, for filtering
+ "0": "people"
+ "1": "pet"
+ "2": "car is comming"
+ "3": "car retention"
+ "4": "car is driving away"
+ "5": "package is dropping down"
+ "6": "package retention"
+ "7": "package has taken"
+ * @param callback function callback
+ */
+ public void getAlertMsgWithVideo(long deviceId, String day, String index, int direction, int eventType, int[] aiType, IDeviceAlarmMessagesCallback callback);
+
+
+【Method call】
 
 class DeviceAlarmMessage:
+Common fields:
 -long deviceID; // device ID
 -String deviceUuid; // device unique identifier
--String imgUrl; // Alarm picture address
 -int imageAlertType; // Alarm type (PIR and Motion)
 -int msgTypeID; // message type
 -long userID; // User Id
 -long userIDS;// if it's a shared device, the value is 0, or it will be user id
 -String createDate; // wear time
 -String isRead; // whether read
--String tumbnailPic; // Thumbnails
 -String decibel; // dB
 -long msgID; // Message Id
 
+exclusive for cameraInfo.getEvt() < 1
+-String imgUrl; // Alarm picture address
+-String tumbnailPic; // Thumbnails
 
-MeariUser.getInstance().getAlertMsg(getMsgInfo().GetDeviceID(), day, new IDeviceAlarmMessagesCallback () {
+exclusive for cameraInfo.getEvt() == 1
+- long imageUrl;  // Alarm picture address 
+- String eventTime; // event time
+- List<AiVideoInfo> aiVideoInfo // ai analysis information
+AiVideoInfo 
+name: people,car,pet,package
+event: //  "come" is default for people and pet, no ther status
+       //  package and car has 3 status:"come" "stay" "go"
+       //  "come" means package is dropping down, car is comming
+       //  "stay" means package retention, car retention
+       //  "go " means package has taken, car is driving away
+left: the distance from left in the alarm picture, for draw box
+top: the distance from top in the alarm picture, for draw box
+width: the width of box, for draw box
+height: the height of box, for draw box
+- List<VideoInfo> videoUrl // the url of alarm short video
+VideoInfo
+url: download url
+duration: the duration of the video clip
+- long historyEventEnable // the time when device update to evt==1
+
+Call the following mehod when cameraInfo.getEvt() < 1:
+MeariUser.getInstance().getAlertMsg(getMsgInfo().getDeviceID(), day, new IDeviceAlarmMessagesCallback() {
     @Override
-    public void onSuccess (List <DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
+    public void onSuccess(List<DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
 
     }
 
     @Override
-    public void onError (int code, String error) {
+    public void onError(int code, String error) {
     }
 });
+
+Call the following mehod when cameraInfo.getEvt() == 1:
+MeariUser.getInstance().getAlertMsgWithVideo(deviceId, day, index, direction, eventType, aiType, new IDeviceAlarmMessagesCallback() {
+                @Override
+                public void onSuccess(List<DeviceAlarmMessage> deviceAlarmMessages, CameraInfo cameraInfo) {
+                
+                }
+
+                @Override
+                public void onError(int code, String error) {
+                    
+                }
+            });
+Call the following mehod to decrypt the picture
+/**
+ * decrypt the picture
+ *
+ * @param url the download url of the picture
+ * @param img byte array of the picture
+ * @param sn device sn
+ * @param device password, default it has no password, the parameter is empty set
+ * @return [byte[], bool] the picture data after decrypted, result
+ */
+Object[] result = SdkUtils.handleEncodedImage(String url, byte[] img, String sn, Set<String> allPwd)
+
+Using the following method to download short video:
+/**
+ * generate m3u8 to specified path
+ *
+ * @param videoInfoList videoUrl form DeviceAlarmMessage
+ * @param path_m3u8 output path of m3u8
+ */
+String path_m3u8 = SdkUtils.getM3U8Path(List<VideoInfo> videoInfoList, String path_m3u8)
+
+// Using the first url of video to check if the video is encrypted
+VideoInfo videoInfo = videoInfoList.get(0);
+String url = videoInfo.getUrl();
+String[] strList = url.split("__");
+String v = strList[1];
+if (v.startsWith("vn")) {
+    // not encrypted
+    SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, "")
+} else {
+    String decKey = "";
+    if (v.startsWith("v2")) {
+        // license encrypted
+        decKey = SdkUtils.formatLicenceId(cameraInfo.getSnNum());
+        SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, decKey)
+    } else {
+        Set<String> curDecKey =  the device password that is setting form user
+        keyCheckStr = v.split("-")[1];
+        for (String key: curDecKey) {
+            keyCheckStr=" + keyCheckStr + " " + MeariMediaUtil.checkVideoPwd(keyCheckStr, key));
+            if (MeariMediaUtil.checkVideoPwd(keyCheckStr, key) == 0) {
+                decKey = key;
+                SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, decKey)
+                break;
+            } else {
+                // password is not right
+            }
+        }
+    }        
+}
+
+/**
+ * download mp4 file from m3u8
+ *
+ * @param path_m3u8 path of m3u8
+ * @param path_mp4 path of mp4
+ * @param decKey password
+ */
+String path_m3u8 = SdkUtils.downloadMp4FromM3U8(String path_m3u8, String path_mp4, String decKey)
+
+// play short video
+<LinearLayout
+  android:id="@+id/ll_video_view"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/dark"
+  android:orientation="horizontal">
+  <com.ppstrong.weeye.widget.media.IjkVideoView
+    android:id="@+id/video_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center" />
+</LinearLayout>
+
+IjkVideoView mVideoView = findViewById(R.id.video_view)
+CloudPlayerController cloudPlayerController = new CloudPlayerController(context, mVideoView, new ICloudPlayerCallback() {
+            @Override
+            public void mediaPlayingCallback() {
+                // paly success
+                
+            }
+
+            @Override
+            public void mediaPauseCallback() {
+
+            }
+
+            @Override
+            public void upDateProgress(long postion) {
+                // play progress
+
+            }
+
+            @Override
+            public void mediaPlayFailedCallback(int code) {
+                // play failed
+
+            }
+
+            @Override
+            public void playNext() {
+                // play complete
+
+            }
+
+            @Override
+            public void stopRecordVideo() {
+
+            }
+
+            @Override
+            public void showStopRecordVideoView(String path) {
+
+            }
+
+            @Override
+            public void screenshotSuccess(String path) {
+
+            }
+        });
+cloudPlayerController.setPlayOther(true);
+if (!TextUtils.isEmpty(curDecKey)) {
+    Set<String> keys = new HashSet<>();
+    keys.add(curDecKey);
+    cloudPlayerController.setDecKey(keys);
+}
+// start play
+cloudPlayerController.play(path_mp4, "0");
+// play from any time(millisecond)
+if (isEnd) {
+    // play again and pass the seek time when the video is complete
+    cloudPlayerController.play(path_mp4, "0");
+    cloudPlayerController.play(path_mp4, String.valueOf(millisecond / 1000));
+} else  {
+    // seek directly
+    cloudPlayerController.seekTo(millisecond);
+}
 ```
 
 ## 8.3 System Message
@@ -1724,7 +2367,7 @@ device Capability
 - int pir; human detection: 0-not supported; 1-support pir switch and high/medium/low setting; 2-support pir switch only; 3-reserved; 4-support pir switch and high/low setting; 5-support double pir(left/right) switch and global sensitivity setting(high/low)(for normal power device); 6-support double pir(left/right) switch and global sensitivity setting(high/low)(for low power consumption device); 7- support pir switch and pir sensitivity setting(10 levels); 8-support pir switch and pir sensitivity setting(refer to plv), defalut is 10
 - int plv; pir level: 0-not supported; 10-support level 10(1-10)
 - int md; motion detection: 0-not supported; 1-support
-- int cst; cloud storage : 0 - not supported; 1 - support
+- int cst; cloud storage : 0 - not supported; 1 - support night vision mode; 2 - support Full Color Mode
 - int dnm; day and night mode: 0-not supported; 1-support
 - int led; LED lights : 0 - not supported; 1 - support
 - int flp; video flip: 0-not supported; 1-support
@@ -1732,6 +2375,7 @@ device Capability
 - int ptr; humanoid tracking: 0-not supported; 1-support
 - int pdt; humanoid detection: 0-not supported; bit0-support switch setting; bit1-support picture frame setting; bit2-support night filter switch setting; bit3-support day filter switch setting
 - int ptz; pan-tilt: 0-not supported; 1-support left/top/right/bottom; 2-support top/bottom; 3-support left/right
+- int sla; sound and light alarm: 0-not supported; 1-support
 
 ## 9.2 Device parameters
 
@@ -1745,6 +2389,7 @@ device Capability
 - int sdRecordType; SD card recording type: 0-event recording; 1-all day recording;
 - int sdRecordDuration; SD card recording time (seconds): 20, 30, 40, 60, 120, 180
 - int dayNightMode; day-night mode: 0-automatic; 1-day mode; 2-night mode;
+- int fullColorMode; Full Color Mode: 0-Intelligent vision；1-Full color night vision；2-Black and white night vision；
 - int sleepMode; sleep mode: 0-not sleep; 1-sleep; 2-timed sleep; 3-geo fencing sleep;
 - String sleepTimeList; List of sleep time: json array
 - String sleepWifi; Geo-fencing sleep WiFi
@@ -1773,7 +2418,8 @@ device Capability
 - int wirelessChimeEnable; wireless bell switch: 0-off; 1-on
 - int wirelessChimeVolume; volume of wireless bell: 0-100
 - String wirelessChimeSongs; song list of wireless bell: ["song1", "song2", "song3"]
-
+- int soundLightEnable; sound and light alarm switch: 0-off; 1-on;
+- int soundLightType; sound and light alarm mode: 0-sound alarm; 1-white light alarm; 2-sound and light alarm;
 
 ## 9.3 Format device SD Card
 ```
@@ -2084,6 +2730,7 @@ Day and night mode setting of device
 public void setDayNightMode(int mode, ISetDeviceParamsCallback callback);
 
 [code example]
+int currentMode = deviceParams.getDayNightMode()
 MeariUser.getInstance().setDayNightMode(mode, new ISetDeviceParamsCallback() {
     @Override
     public void onSuccess() {
@@ -2622,12 +3269,84 @@ if (cameraInfo.getVer() >= 57){
 }
 
 // current event type
-int currenttype = deviceParams.getSdRecordType()
+int currenttype = deviceParams.getSdRecordType();
 // The time of the current event recording
-int currentDuration = deviceParams.getSdRecordDuration()
+int currentDuration = deviceParams.getSdRecordDuration();
 
 // set type or time
 MeariUser.getInstance().setPlaybackRecordVideo(type, duration, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.23 Device Full Color Mode setting
+```
+【description】
+Full Color Mode setting of device
+
+[function call]
+/**
+ * Full Color Mode setting of device
+ *
+ * @param mode mode
+ * @param callback Function callback
+ */
+public void setFullColorMode(int mode, ISetDeviceParamsCallback callback);
+
+[code example]
+int currentMode = deviceParams.getFullColorMode();
+MeariUser.getInstance().setFullColorMode(mode, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 9.5.24 Device sound and light alarm setting
+```
+【description】
+Device sound and light alarm setting
+
+[function call]
+/**
+ * Set sound and light alarm switch
+ *
+ * @param enable enable
+ * @param callback Function callback
+ */
+public void setFloodCameraVoiceLightAlarmEnable(int enable, ISetDeviceParamsCallback callback)
+/**
+ * Set sound and light alarm mode
+ *
+ * @param alarmType alarmType
+ * @param callback Function callback
+ */
+public void setFloodCameraVoiceLightAlarmType(int alarmType, ISetDeviceParamsCallback callback)
+
+[code example]
+int currentEnable = deviceParams.getSoundLightEnable();
+MeariUser.getInstance().setFloodCameraVoiceLightAlarmEnable(enable, new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+int currentType = deviceParams.getSoundLightType();
+MeariUser.getInstance().setFloodCameraVoiceLightAlarmType(type, new ISetDeviceParamsCallback() {
     @Override
     public void onSuccess() {
     }
@@ -3049,9 +3768,9 @@ MeariUser.getInstance().setFlightLinkSirenEnable(status, new ISetDeviceParamsCal
 ```
 # 10 Family
 
-## 10.1 Family Operation 
+## 10.1 Family Operation
 
-### 10.1.1 Get family list 
+### 10.1.1 Get family list
 ```
 【description】
 Get family list 
@@ -3101,7 +3820,7 @@ MeariUser.getInstance().createFamily(familyName, familyLocation, roomList, new I
 });
 ```
 
-### 10.1.3 Update Family Information 
+### 10.1.3 Update Family Information
 ```
 【description】
 Update family information 
@@ -3126,7 +3845,7 @@ MeariUser.getInstance().updateFamily(familyId, familyName, familyLocation, new I
 });
 ```
 
-### 10.1.4 Delete Family 
+### 10.1.4 Delete Family
 ```
 【description】
 delete family from account
@@ -3281,7 +4000,7 @@ MeariUser.getInstance().getFamilyShareMessages(new IBaseModelCallback<List<Famil
 });
 ```
 
-### 10.2.6 Handle family shared messages 
+### 10.2.6 Handle family shared messages
 ```
 【description】
 Handle family shared messages
@@ -3354,7 +4073,7 @@ MeariUser.getInstance().modifyMemberDevicePermission(familyId, memberID, permiss
 });
 ```
 
-### 10.2.9 Remove a member from the family 
+### 10.2.9 Remove a member from the family
 ```
 【description】
 Remove a member from the family 
@@ -3379,7 +4098,7 @@ MeariUser.getInstance().removeMemberFromFamily(familyId, memberID, new IStringRe
 });
 ```
 
-### 10.2.10 Revoke member invitation 
+### 10.2.10 Revoke member invitation
 ```
 【description】
 Revoke member invitation 
@@ -3574,7 +4293,7 @@ MeariUser.getInstance().deleteDeviceBatch(deviceIDList, new IResultCallback() {
 });
 ```
 
-## 10.4 Family Related Classes 
+## 10.4 Family Related Classes
 
 ### 10.4.1 MeariFamily
 ```
@@ -3804,7 +4523,7 @@ if (familyMqttMsg.getMsgId() == MqttMsgType.FAMILY_INFO_CHANGED) {
 }
 ```
 
-## 11.2 MQTT Related Classes 
+## 11.2 MQTT Related Classes
 
 ### 11.2.1 MqttMsg
 > MQTT message base class 
@@ -3834,7 +4553,7 @@ boolean isCheck; Is it checked
 
 ## 11.3 Integrated FCM Push
 First, You can follow these guides: [Add Firebase to your Android project](https://firebase.google.com/docs/android/setup) and [Set up a Firebase Cloud Messaging client app on Android](https://firebase.google.com/docs/cloud-messaging/android/client), then go to firebase setting page, geneating the admin sdk file，provide the file to meari,
-call MeariUser.getInstance().uploadToken(1, token, callback) to upload your fcm token to meari server.
+call MeariUser.getInstance().postPushToken(1, token, callback) to upload your fcm token to meari server.
 
 ## 11.4 Integration with other pushes
 ```
@@ -3973,7 +4692,18 @@ MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IR
 See Demo for details
 ```
 
-# 13 Release Notes
+# 14 Release Notes
+
+## 2022-10-10(4.4.0)
+```
+1. Fix Android 12 crash problem, need to comment: // implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+2. ptz capability set error description modification
+3. Get device online status
+4. Get bit rate
+5. NVR support
+6. Full Color Mode support
+7. sound and light alarm support
+```
 
 ## 2022-06-21(4.1.0)
 ```
