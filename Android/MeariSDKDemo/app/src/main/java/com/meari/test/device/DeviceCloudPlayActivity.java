@@ -27,6 +27,7 @@ import com.meari.sdk.callback.ICloudShortVideoTimeRecordCallback;
 import com.meari.sdk.callback.ICloudVideoTimeRecordCallback;
 import com.meari.sdk.utils.CloudPlaybackUtil;
 import com.meari.sdk.utils.Logger;
+import com.meari.sdk.utils.SdkUtils;
 import com.meari.test.R;
 import com.ppstrong.weeye.widget.media.IjkVideoView;
 
@@ -36,8 +37,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloudPlayerCallback {
 
@@ -300,6 +303,10 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
             mSeekString = String.format(Locale.CHINA, "%04d%02d%02d%02d%02d%02d", mYear, mMonth, mDay,
                     video.StartHour, video.StartMinute, video.StartSecond);
         }
+        Set<String> curDecKey = new HashSet<>();
+        String license = SdkUtils.formatLicenceId(cameraInfo.getSnNum());
+            curDecKey.add(license);
+        cloudPlayerController.setDecKey(curDecKey);
         cloudPlayerController.play(path, mSeekString);
     }
 
