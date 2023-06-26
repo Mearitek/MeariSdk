@@ -61,8 +61,9 @@
         * 8.1.1 [获取设备分享消息列表](#811-获取设备分享消息列表)
         * 8.1.2 [删除设备分享消息](#812-删除设备分享消息)
     * 8.2 [设备报警消息](#82-设备报警消息)
-        * 8.2.1 [获取所有设备是否有消息](#821-获取所有设备是否有消息)
+        * 8.2.1 [获取所有设备最新的消息](#821-获取所有设备最新的消息)
         * 8.2.2 [获取单个设备的报警消息](#822-获取单个设备的报警消息)
+        * 8.2.3 [删除设备的报警消息](#823-删除设备的报警消息)
     * 8.3 [系统消息](#83-系统消息)
         * 8.3.1 [获取系统消息列表](#831-获取系统消息列表)
         * 8.3.2 [删除系统消息](#832-删除系统消息)
@@ -2183,39 +2184,59 @@ MeariUser.getInstance().deleteShareMessage(msgIDList, new IResultCallback() {
 ```
 ## 8.2 设备报警消息
 
-### 8.2.1 获取所有设备是否有消息
+### 8.2.1 获取所有设备最新的消息
 ```
 【描述】
-获取所有设备是否有消息
+获取所有设备最新的消息
 
 【函数调用】
 /**
- * 获取所有设备是否有报警消息
+ * 获取cameraInfo.getEvt() < 1的所有设设备最新的消息
  *
  * @param callback function callback
  */
-public void getDeviceMessageStatusList(IDeviceMessageStatusCallback callback);
+public void getAllDeviceAlarmListWithNewestMsg(IBaseModelCallback callback);
+
+/**
+ * 获取cameraInfo.getEvt() == 1的所有设设备最新的消息
+ *
+ * @param callback function callback
+ */
+public void getAllDeviceAlarmListWithNewestMsgNew(IBaseModelCallback callback);
+
+如果同时存在cameraInfo.getEvt() < 1和cameraInfo.getEvt() == 1的设备，需要同时请求上面两个接口并合并数据
 
 【方法调用】
 
-DeviceMessageStatus
-- long deviceID;  设备ID
-- String deviceName; 设备名称
-- String snNum; 设备SN
-- String deviceIcon; 设备图标
-- boolean hasMessage; 该设备是否有报警消息
+MeariUser.getInstance().getAllDeviceAlarmListWithNewestMsgNew(new IBaseModelCallback<List<DevicesWithNewestMsg>>() {
+                    @Override
+                    public void onSuccess(List<DevicesWithNewestMsg> devicesWithNewestMsgs) {
+                        
+                    }
 
-MeariUser.getInstance().getDeviceMessageStatusList(new IDeviceMessageStatusCallback() {
-    @Override
-    public void onSuccess(List<DeviceMessageStatus> deviceMessageStatusList) {
-        //如果设备有报警消息，则可以获取报警消息
-    }
+                    @Override
+                    public void onFailed(int code, String errorMsg) {
+                        
+                    }
+                });
+MeariUser.getInstance().getAllDeviceAlarmListWithNewestMsg(new IBaseModelCallback<List<DevicesWithNewestMsg>>() {
+                    @Override
+                    public void onSuccess(List<DevicesWithNewestMsg> devicesWithNewestMsgs) {
 
-    @Override
-    public void onError(int code, String error) {
+                    }
 
-    }
-});
+                    @Override
+                    public void onFailed(int code, String errorMsg) {
+                        
+                    }
+                });
+
+DevicesWithNewestMsg
+devLocalTime 20230613101425
+deviceID 设备ID
+imageAlertType 消息类型     1:PIR报警类型   2:移动侦测报警类型  3:访客报警类型   6:噪音报警类型  7:哭声检查报警类型  8:人脸识别
+9:呼叫消息类型   10:防拆报警类型  11:人形侦测  12:人脸侦测  17:智能车辆侦测  18:智能宠物侦测  19:智能包裹侦测  20:智能人形侦测
+deviceName 设备名称需要从首页接口中根据设备ID获取
 ```
 
 ### 8.2.2 获取单个设备的报警消息
@@ -2265,6 +2286,7 @@ public void getAlertMsg(long deviceID, String day, IDeviceAlarmMessagesCallback 
  * @param callback function callback
  */
  public void getAlertMsgWithVideo(long deviceId, String day, String index, int direction, int eventType, int[] aiType, IDeviceAlarmMessagesCallback callback);
+ 如果想要获取所有的报警消息，eventType=0, aiType=null
 
 
 【方法调用】
@@ -2467,6 +2489,121 @@ if (isEnd) {
 } else  {
     cloudPlayerController.seekTo(millisecond);
 }
+```
+
+### 8.2.3 删除设备的报警消息
+```
+【描述】
+删除设备的报警消息
+
+【函数调用】
+刪除设备的报警消息
+如果设备能力级cameraInfo.getEvt() < 1使用如下方法：
+/**
+ * 刪除设备的报警消息
+ *
+ * @param deviceIDs 设备ID列表
+ * @param callback function callback
+ */
+public void deleteDevicesAlarmMessage(List<Long> deviceIDs, IResultCallback callback);
+
+如果设备能力级cameraInfo.getEvt() == 1使用如下方法：
+/**
+ * 刪除设备的报警消息
+ *
+ * @param deviceID 设备ID
+ * @param callback function callback
+ */
+ public void delAlertEventByDevice(String deviceID, IResultCallback callback);
+
+刪除设备的报警消息(按天)
+如果设备能力级cameraInfo.getEvt() < 1，请根据日期删除缓存下来的消息
+
+如果设备能力级cameraInfo.getEvt() == 1使用如下方法：
+/**
+ * 刪除设备的报警消息(按天)
+ *
+ * @param deviceID 设备ID
+ * @param day 日期 yyyyMMdd
+ * @param callback function callback
+ */
+ public void delAlertEventByDay(String deviceID, String day, IResultCallback callback);
+
+刪除设备的报警消息(按索引)
+如果设备能力级cameraInfo.getEvt() < 1，请根据msgID删除缓存下来的消息
+
+如果设备能力级cameraInfo.getEvt() == 1使用如下方法：
+/**
+ * 刪除设备的报警消息(按索引)
+ *
+ * @param deviceID 设备ID
+ * @param indexList 索引列表，索引：deviceAlarmMessage.getEventTime()
+ * @param callback function callback
+ */
+ public void delAlertEventByIndex(String deviceID, List<String> indexList, IResultCallback callback);
+
+【方法调用】
+
+刪除设备的报警消息
+如果设备能力级cameraInfo.getEvt() < 1时调用:
+MeariUser.getInstance().deleteDevicesAlarmMessage(deviceIDList, new IResultCallback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError(int code, String error) {
+                    
+                }
+            });
+
+如果设备能力级cameraInfo.getEvt() == 1时调用:
+MeariUser.getInstance().delAlertEventByDevice(deviceID, new IResultCallback() {
+                            @Override
+                            public void onSuccess() {
+                                
+                            }
+
+                            @Override
+                            public void onError(int errorCode, String errorMsg) {
+                                
+                            }
+                        });
+
+刪除设备的报警消息(按天)
+如果设备能力级cameraInfo.getEvt() == 1时调用:
+MeariUser.getInstance().delAlertEventByDay(String.valueOf(cameraInfo.getDeviceID()), day, new IResultCallback() {
+                @Override
+                public void onError(int errorCode, String errorMsg) {
+
+                }
+
+                @Override
+                public void onSuccess() {
+                    
+                }
+            });
+
+刪除设备的报警消息(按索引)
+如果设备能力级cameraInfo.getEvt() == 1时调用:
+List<String> _index = new ArrayList<>();
+for (DeviceAlarmMessage message : deleteMessages) {
+    if (!TextUtils.isEmpty(message.getEventTime())) {
+        _index.add(message.getEventTime());
+    }        
+}  
+MeariUser.getInstance().delAlertEventByIndex(String.valueOf(cameraInfo.getDeviceID()), _index, new IResultCallback() {
+                    @Override
+                    public void onSuccess() {
+                        
+                    }
+
+                    @Override
+                    public void onError(int errorCode, String errorMsg) {
+                        
+                    }
+                });
 ```
 
 ## 8.3 系统消息

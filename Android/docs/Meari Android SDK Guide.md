@@ -57,8 +57,9 @@
         * 8.1.1 [Get list of the device shared message](#811-Get-list-of-the-device-shared-message)
         * 8.1.2 [Delete shared messages of device](#812-Delete-shared-messages-of-device)
     * 8.2 [Device alarm message](#82-Device-alarm-message)
-        * 8.2.1 [Get whether all devices have messages](#821-Get-whether-all-devices-have-messages)
+        * 8.2.1 [Get the newest message of all device](#821-Get-the-newest-message-of-all-device)
         * 8.2.2 [Get alarm messages of a single device](#822-Get-alarm-messages-of-a-single-device)
+        * 8.2.3 [Delete device messages](#823-Delete-device-messages)
     * 8.3 [System message](#83-System-message)
         * 8.3.1 [Get system message list](#831-Get-system-message-list)
         * 8.3.2 [Delete system messages](#832-Delete-system-messages)
@@ -1986,41 +1987,60 @@ MeariUser.getInstance (). DeleteShareMessage (msgIDList, new IResultCallback () 
     }
 });
 ```
-## 8.2 Device shared message
+## 8.2 Device alarm message
 
-### 8.2.1 Get whether all devices have messages
+### 8.2.1 Get the newest message of all device
 ```
 【description】
-Get whether all devices have messages
+Get the newest message of all device
 
 [Function call]
 /**
- * Get alarm messages of all devices
+ * Get the newest message of all device if cameraInfo.getEvt() < 1
  *
  * @param callback function callback
- * /
-public void getDeviceMessageStatusList (IDeviceMessageStatusCallback callback);
+ */
+public void getAllDeviceAlarmListWithNewestMsg(IBaseModelCallback callback);
+
+/**
+ * Get the newest message of all device if cameraInfo.getEvt() == 1
+ *
+ * @param callback function callback
+ */
+public void getAllDeviceAlarmListWithNewestMsgNew(IBaseModelCallback callback);
+
+Calling the above two methods and merge the data if you have the device which cameraInfo.getEvt < 1 and the device which cameaInfo.getEvt() == 1
 
 [Method call]
 
-DeviceMessageStatus
--long deviceID; device ID
--String deviceName; device name
--String snNum; device SN
--String deviceIcon; device icon
--boolean hasMessage; whether the device has an alarm message
+MeariUser.getInstance().getAllDeviceAlarmListWithNewestMsgNew(new IBaseModelCallback<List<DevicesWithNewestMsg>>() {
+                    @Override
+                    public void onSuccess(List<DevicesWithNewestMsg> devicesWithNewestMsgs) {
+                        
+                    }
 
-MeariUser.getInstance (). GetDeviceMessageStatusList (new IDeviceMessageStatusCallback () {
-    @Override
-    public void onSuccess (List <DeviceMessageStatus> deviceMessageStatusList) {
-        // If the device has an alarm message, you can get the alarm message
-    }
+                    @Override
+                    public void onFailed(int code, String errorMsg) {
+                        
+                    }
+                });
+MeariUser.getInstance().getAllDeviceAlarmListWithNewestMsg(new IBaseModelCallback<List<DevicesWithNewestMsg>>() {
+                    @Override
+                    public void onSuccess(List<DevicesWithNewestMsg> devicesWithNewestMsgs) {
 
-    @Override
-    public void onError (int code, String error) {
+                    }
 
-    }
-});
+                    @Override
+                    public void onFailed(int code, String errorMsg) {
+                        
+                    }
+                });
+
+DevicesWithNewestMsg
+devLocalTime 20230613101425
+deviceID device ID
+imageAlertType message type 1:PIR   2:movement detection  3:visitor   6:noise  7:cry  8:face recognition  9:calling   10:tamper alarm  11:human detection  12:face detection  17:smart car detection  18:smart pet detection  19:smart package detection  20:smart human detection
+deviceName get the device name from the device list by device ID
 ```
 
 ### 8.2.2 Get alarm messages of a single device
@@ -2070,6 +2090,7 @@ Use the following method if cameraInfo.getEvt() == 1:
  * @param callback function callback
  */
  public void getAlertMsgWithVideo(long deviceId, String day, String index, int direction, int eventType, int[] aiType, IDeviceAlarmMessagesCallback callback);
+ Passing eventType=0 and aiType=null if you want to get all messages
 
 
 【Method call】
@@ -2273,6 +2294,123 @@ if (isEnd) {
     // seek directly
     cloudPlayerController.seekTo(millisecond);
 }
+```
+
+### 8.2.3 Delete device messages
+```
+【description】
+Delete device messages
+
+[Function call]
+
+Delete device messages
+Use the following method if cameraInfo.getEvt() < 1:
+/**
+ * Delete device messages
+ *
+ * @param deviceIDs device ID list
+ * @param callback function callback
+ */
+public void deleteDevicesAlarmMessage(List<Long> deviceIDs, IResultCallback callback);
+
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * Delete device messages
+ *
+ * @param deviceID device ID
+ * @param callback function callback
+ */
+ public void delAlertEventByDevice(String deviceID, IResultCallback callback);
+
+Delete device messages(by day)
+Delete the cached messages by day if cameraInfo.getEvt() < 1
+
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * Delete device messages(by day)
+ *
+ * @param deviceID device ID
+ * @param day date yyyyMMdd
+ * @param callback function callback
+ */
+ public void delAlertEventByDay(String deviceID, String day, IResultCallback callback);
+
+Delete device messages(by index)
+Delete the cached messages by msgID if cameraInfo.getEvt() < 1
+
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * Delete device messages(by index)
+ *
+ * @param deviceID device ID
+ * @param indexList index list  index:deviceAlarmMessage.getEventTime()
+ * @param callback function callback
+ */
+ public void delAlertEventByIndex(String deviceID, List<String> indexList, IResultCallback callback);
+
+
+【Method call】
+
+Delete device messages
+Use the following method if cameraInfo.getEvt() < 1:
+MeariUser.getInstance().deleteDevicesAlarmMessage(deviceIDList, new IResultCallback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError(int code, String error) {
+                    
+                }
+            });
+
+Use the following method if cameraInfo.getEvt() == 1:
+MeariUser.getInstance().delAlertEventByDevice(deviceID, new IResultCallback() {
+                            @Override
+                            public void onSuccess() {
+                                
+                            }
+
+                            @Override
+                            public void onError(int errorCode, String errorMsg) {
+                                
+                            }
+                        });
+
+Delete device messages(by day)
+Use the following method if cameraInfo.getEvt() == 1:
+MeariUser.getInstance().delAlertEventByDay(String.valueOf(cameraInfo.getDeviceID()), day, new IResultCallback() {
+                @Override
+                public void onError(int errorCode, String errorMsg) {
+
+                }
+
+                @Override
+                public void onSuccess() {
+                    
+                }
+            });
+
+Delete device messages(by index)
+Use the following method if cameraInfo.getEvt() == 1:
+List<String> _index = new ArrayList<>();
+for (DeviceAlarmMessage message : deleteMessages) {
+    if (!TextUtils.isEmpty(message.getEventTime())) {
+        _index.add(message.getEventTime());
+    }        
+}  
+MeariUser.getInstance().delAlertEventByIndex(String.valueOf(cameraInfo.getDeviceID()), _index, new IResultCallback() {
+                    @Override
+                    public void onSuccess() {
+                        
+                    }
+
+                    @Override
+                    public void onError(int errorCode, String errorMsg) {
+                        
+                    }
+                });
 ```
 
 ## 8.3 System Message
