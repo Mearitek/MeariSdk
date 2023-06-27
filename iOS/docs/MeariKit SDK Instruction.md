@@ -118,9 +118,10 @@
     * 10.5 [Shared messages](#104-Shared-messages)
         * 10.5.1 [Get shared messages list of the device](#1051-Get-shared-messages-list-of-the-device)
         * 10.5.2 [Delete shared messages of the device](#1052-Delete-shared-messages-of-the-device)
-        * 10.5.3 [Get shared messages list of the family](#1053-Get-shared-messages-list-of-the-family)
-        * 10.5.4 [Delete shared messages of the family](#1054-Delete-shared-messages-of-the-family)
-        * 10.5.5 [Process shared messages of the family](#1055-Process-shared-messages-of-the-family)
+        * 10.5.3 [Process shared messages of the device](#1053-Process-shared-messages-of-the-device)
+        * 10.5.4 [Get shared messages list of the family](#1054-Get-shared-messages-list-of-the-family)
+        * 10.5.5 [Delete shared messages of the family](#1055-Delete-shared-messages-of-the-family)
+        * 10.5.6 [Process shared messages of the family](#1056-Process-shared-messages-of-the-family)
 * 11 [Cloud storage service](#11-Cloud-storage-service)
     * 11.1 [Cloud storage service status](#111-Cloud-storage-service-status)
     * 11.2 [Cloud storage trial](#112-Cloud-storage-trial)
@@ -3609,8 +3610,31 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 
 
 ```
+### 10.5.3 Process shared messages of the device
+```
+【Description】
+     The processing device shares the message, which can be accepted or rejected.
+【Function】
+     /**
 
-### 10.5.3  Get shared messages list of the family
+       @param msgID Message ID
+       @param sign Sharing permission identification 0-No permission 1-Have permission
+       @param accept (Whether to accept)
+       @param success (Successful callback)
+       @param failure (Failure callback)
+     */
+     - (void)dealShareMsgWithMsgID:(NSString *)msgID shareAccessSign:(NSInteger)sign accept:(BOOL)accept success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code】
+     [[MeariUser sharedInstance] dealShareMsgWithMsgID:msgID shareAccessSign:sign accept:accept success:^{
+        
+     } failure:^(NSError *error) {
+        
+     }];
+```
+
+
+### 10.5.4  Get shared messages list of the family
 
 ```
 【Description】
@@ -3627,7 +3651,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
      }];
 ```
 
-### 10.5.4 Delete shared messages of the family
+### 10.5.5 Delete shared messages of the family
 
 ```
 【Description】
@@ -3652,7 +3676,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
      }];
 ```
 
-### 10.5.5  Process shared messages of the family
+### 10.5.6  Process shared messages of the family
 
 ```
 【Description】
