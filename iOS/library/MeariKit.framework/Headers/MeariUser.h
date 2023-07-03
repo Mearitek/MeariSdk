@@ -454,6 +454,31 @@ Whether has meari iot info   (是否有自研iot信息)
  @param failure 失败回调
  */
 -(void)markLaunchAdWithAdId:(NSString *)adId isInterest:(BOOL)isInterest success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ 获取定制广告详情
+ 
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)getAdvertInfoWithSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ 广告转接客服
+ 
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)advertTransferWithAdvertId:(NSInteger)advertId success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ 广告推送兴趣反馈
+ 
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)messageFeedbackWithMsgId:(NSString *)msgId workOrderNo:(NSString *)workOrderNo success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
 #pragma mark -- Cloud
 
 /**
@@ -1486,6 +1511,15 @@ get all the alarm messgae of one device  by day
 */
 - (void)getUserAgreeProtocolCountryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode version:(NSInteger)version success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
+/**
+ 获取Alexa链接
+ */
+- (NSString *)getAlexaLinkWithLanguageString:(NSString *)lng;
+
+/**
+ 获取Google Assistant链接
+ */
+- (NSString *)getGoogleAssistantLinkWithLanguageString:(NSString *)lng;
 
 #pragma mark - Other
 /**
