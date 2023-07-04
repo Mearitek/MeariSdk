@@ -450,8 +450,6 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 @property (nonatomic, assign) NSInteger pfv;
 /** 是否支持主人投食留言语音设置，0-不是 1-是, 默认0*/
 @property (nonatomic, assign) NSInteger pms;
-/** 是否支持扫机身码直接添加功能, 0-不支持, 1(非0)-支持*/
-@property (nonatomic, assign) NSInteger sqr;
 
 
 
