@@ -97,6 +97,11 @@
         * 9.5.22 [SD卡录像类型和时间设置](#9522-SD卡录像类型和时间设置)
         * 9.5.23 [设备全彩模式设置](#9523-设备全彩模式设置)
         * 9.5.24 [设备声光报警设置](#9524-设备声光报警设置)
+        * 9.5.25 [设备12小时开关设置](#9525-设备12小时开关设置)
+        * 9.5.26 [设备抗闪烁设置](#9526-设备抗闪烁设置)
+        * 9.5.27 [设备麦克风、录音、扬声器设置](#9527-设备麦克风、录音、扬声器设置)
+        * 9.5.28 [设备视频加密设置](#9528-设备视频加密设置)
+        * 9.5.29 [设备防拆报警设置](#9529-设备防拆报警设置)
     * 9.6 [门铃参数设置](#96-门铃参数设置)
         * 9.6.1 [设备对讲音量设置](#961-设备对讲音量设置)
         * 9.6.2 [解锁电池锁](#962-解锁电池锁)
@@ -3759,6 +3764,340 @@ MeariUser.getInstance().setFloodCameraVoiceLightAlarmType(type, new ISetDevicePa
     }
 });
 ```
+
+### 9.5.25 设备12小时开关设置
+```
+
+【描述】
+设备12小时开关设置
+
+【函数调用】
+/**
+ * 设备12小时开关设置
+ *
+ * @param isOpen true代表12小时制
+ * @param callback Function callback
+ */
+public void postTimeFormat(boolean isOpen, IResultCallback callback) 
+
+
+【代码范例】
+//12小时制是否开启的标志位存储在本地，设备复位后就会重置成24小时。
+MeariUser.getInstance().postTimeFormat(isOpen, new IResultCallback() {
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                
+            }
+
+            @Override
+            public void onSuccess() {
+                
+            }
+        });
+```
+
+
+### 9.5.26 设备抗闪烁设置
+```
+
+【描述】
+设备抗闪烁设置
+
+【函数调用】
+/**
+ * 设备抗闪烁设置
+ *
+ * @param antiflicker true代表12小时制
+ * @param callback Function callback
+ */
+public void setAntiflicker(int antiflicker, ISetDeviceParamsCallback callback) 
+
+
+【代码范例】
+1.是否支持抗闪烁
+/**
+     *
+     * 属性  抗闪烁设置
+     * - type: integer
+     * - description: 是否支持抗闪烁能力级：
+     * 0-不支持, 按比特来赋值, 0x1-支持50HZ, 0x2-支持60HZ, 0x4-支持自动, 0x8=支持关闭, 对应DP点202
+     */
+flk=cameraInfo.getFlk()
+if (flk > 0) {
+            if (1 << 3 == (1 << 3 & flk)) {
+//                0x8=支持关闭
+            }
+            if (1 == (1 & flk)) {
+              //0x1-支持50HZ
+            }
+            if (1 << 1 == (1 << 1 & flk)) {
+//               0x2-支持60HZ
+               
+            }
+            if (1 << 2 == (1 << 2 & flk)) {
+//                0x4-支持自动
+                
+            }
+        }
+
+2.当前抗闪烁的设置
+/**
+     * 抗闪烁设置 //0-关闭, 1-50HZ, 2-60HZ, 3-自动
+     */
+    private int antiflicker;
+antiflicker=deviceParams.getAntiflicker();
+
+3.设置抗闪烁
+MeariUser.getInstance().setAntiflicker(antiflicker, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+### 9.5.27 设备麦克风、录音、扬声器设置
+```
+
+【描述】
+设备麦克风、录音、扬声器设置
+【注意事项】
+1.麦克风（关闭同时关闭录像声音）
+2.麦克风打开，录像声音才可以打开
+
+【代码范例】
+1.麦克风
+/**
+     *  - microphone
+     *         - description: 麦克风使能开关, 0=禁用， 1=使能
+     *         - type: integer
+     */
+    private int microphone;
+    //获取当前麦克风开关状态
+    microphone=deviceParams.getMicrophone()
+//设置麦克风开关
+MeariUser.getInstance().setMicroPhone(microphone, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_Micro_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_Micro_FAILED);
+            }
+        });
+
+2.扬声器
+/**
+     *
+     *     - speaker
+     *         - description: 喇叭使能开关，0=禁用，1=使能
+     *         - type: integer
+     */
+    private int speaker;
+    //获取当前扬声器开关状态
+    speaker=deviceParams.getSpeaker()
+//设置扬声器开关
+MeariUser.getInstance().setSpeaker(speaker, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_SEN_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_SEN_FAILED);
+            }
+        });    
+
+ 3.音量
+/**
+     * 对讲时(门铃、电池摄像机)的喇叭音量：0-100
+     */
+    private int speakVolume;
+    //获取当前音量
+    speakVolume=deviceParams.getSpeakVolume()
+//设置音量开关
+MeariUser.getInstance().setSpeakVolume(volume, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SET_SPEAK_VOLUME_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SET_SPEAK_VOLUME_FAILED);
+            }
+        });     
+
+ 4.录像声音开关
+/**
+     *
+     *     录像声音开关
+     *     rec_audio_en
+     *         - type: integer
+     *         - description: 录像声音开关, 全局开关，保护SD卡和云存储
+     */
+    private int rec_audio_en;
+    //获取当前录像声音开关
+    rec_audio_en=deviceParams.getRec_audio_en()
+//设置录像声音开关
+
+MeariUser.getInstance().setRae(rec_audio_en, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_REC_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_REC_FAILED);
+            }
+        });        
+
+```
+
+
+### 9.5.28 设备视频加密设置
+```
+【描述】
+设备视频加密设置
+【注意事项】
+1.视频加密的密码全部保存在本地，不存储云端，增加隐私性。
+2.设备重新添加后视频加密会关闭，可以重新设置密码，但是想查看之前的本地录像和云录像就需要当时设置的视频密码来解密。如果本地没有存储当时的密码需要让用户输入。
+3.一个设备每个密码使用时期使用了那个密码查看对应时期需要对应的密码，无法通用，本地如果存储了可以遍历去打洞。
+4.视频加密可以校验当前密码后才能关闭，可以不校验直接关闭，防止用户忘记密码后不知道能通过重新添加设备重置状态。
+5.主人才允许设置密码camerainfo.isMaster()
+
+【代码范例】
+//是否设置了视频加密
+/**
+     * 用户访问密码是否设置  未设置 - 0；已设置 - 1；
+     * @return
+     */
+int isVideoSetPwd= deviceParams.getIsVideoSetPwd()
+获取到数值后存储本地
+MMKVUtil.setData(DEVICE_VIDEO_PASSWORD_IS_SET+snNum,isVideoSetPwd);
+//如果设置了视频密码，就需要从本地获取存储的密码或者让用户输入，将密码存储到对应的
+MMKVUtil.setData(DEVICE_VIDEO_PASSWORD+snNum,pwd);中。
+打洞时会从对应的本地取出密码校验，打洞如果失败返回错误码-18代表密码错误，需要用户重新输入。
+
+//设置密码（修改密码）并打开视频加密
+MeariUser.getInstance().setVidePwd(pwd, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                //该设备是否设置密码
+                MMKVUtil.setData(DEVICE_VIDEO_PASSWORD_IS_SET+snNum,1);
+                //更新密码值
+                MMKVUtil.setData(DEVICE_VIDEO_PASSWORD+snNum,pwd);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+//关闭视频加密
+MeariUser.getInstance().setVidePwdSwitch(new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+            MMKVUtil.setData(DEVICE_VIDEO_PASSWORD_IS_SET + cameraInfo.getSnNum(), 0);
+                                               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                                                
+            }
+            });
+//修改密码前打洞校验用户输入的密码是否正确    
+private MeariDeviceController controller;  
+controller = new MeariDeviceController(cameraInfo);
+        controller.startConnect(pwdOldTxt,new MeariDeviceListener() {
+            @Override
+            public void onSuccess(String successMsg) {
+                //校验通过
+                
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                dismissLoading();
+                try {
+                    BaseJSONObject object = new BaseJSONObject(errorMsg);
+                    int errorCode = object.optInt("code");
+                    if (errorCode == -18) {
+                        //鉴权密码错误
+                        
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });                                  
+
+```
+
+
+### 9.5.29 设备防拆报警设置
+```
+
+【代码范例】
+/**
+     * 
+     * 防拆报警能力级，0=不支持，1=支持
+     */
+    private int fcb;
+//fcb=1才支持防拆报警
+fcb=camerainfo.getFcb();
+//获取防拆报警开关设置
+    deviceParams.getRemoveProtectEnable()
+//设置防拆报警开关
+    MeariUser.getInstance().setRemoveProtectAlert(isCheck ? 1 : 0, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
 
 ## 9.6 门铃参数设置
 ### 9.6.1 设备对讲音量设置

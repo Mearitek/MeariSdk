@@ -2611,7 +2611,7 @@ Belong to: MeariUser
      - (void)getShareListForDeviceWithDeviceID:(NSInteger)deviceID success:(MeariSuccess_ShareList)success failure:(MeariFailure)failure;
 
 【Code】
-     [[MeariUser sharedInstance] getShareListForDeviceWithDeviceID:camera.info.ID success:^(NSArray<MeariFriendInfo *> *friends) {
+     [[MeariUser sharedInstance] getShareListForDeviceWithDeviceID:camera.info.ID success:^(NSArray<MeariShareInfo *> *shareInfoList) {
  		} failure:^(NSError *error) {
     
    		}];

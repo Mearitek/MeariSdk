@@ -122,6 +122,9 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** Get Supported munal light duration */
 /** 获取支持的SDK手动亮灯时长*/
 - (NSArray <NSNumber *>*)supportLightDurationSeconds;
+/** Whether to support LED setting */
+/** 是否支持指示灯设置 */
+@property (nonatomic, assign, readonly) BOOL supportLED;
 /** Whether to support two-way voice intercom */
 /** 是否支持双向语音对讲 */
 @property (nonatomic, assign, readonly) BOOL supportFullDuplex;
@@ -192,6 +195,9 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** Whether to support switching the main stream */
 /** 是否为支持切换主码流 */
 @property (nonatomic, assign, readonly) BOOL supportVideoEnc;
+/** Whether to support humanoid tracking */
+/** 是否为支持人形跟踪 */
+@property (nonatomic, assign, readonly) BOOL supportHumanTrack;
 /** Whether to support Humanoid detection */
 /** 是否为支持人形检测 */
 @property (nonatomic, assign, readonly) BOOL supportPeopleDetect;
