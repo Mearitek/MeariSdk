@@ -102,6 +102,9 @@
         * 9.5.27 [设备麦克风、录音、扬声器设置](#9527-设备麦克风、录音、扬声器设置)
         * 9.5.28 [设备视频加密设置](#9528-设备视频加密设置)
         * 9.5.29 [设备防拆报警设置](#9529-设备防拆报警设置)
+        * 9.5.30 [设备变声设置](#9530-设备变声设置)    
+        * 9.5.31 [设备工作模式](#9531-设备工作模式)
+        * 9.5.32 [人形报警区域（画框）设置](#9531-人形报警区域（画框）设置)
     * 9.6 [门铃参数设置](#96-门铃参数设置)
         * 9.6.1 [设备对讲音量设置](#961-设备对讲音量设置)
         * 9.6.2 [解锁电池锁](#962-解锁电池锁)
@@ -4089,6 +4092,87 @@ fcb=camerainfo.getFcb();
             @Override
             public void onSuccess() {
 
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+### 9.5.30 设备变声设置
+```
+【描述】
+设备变声设置
+【注意事项】
+cameraInfo.getVtk() == 4
+表示支持双向对讲，支持双向对讲的才有变声
+【代码范例】
+/**
+*soundTouchType   变声参数 正常 0   大叔  1    小丑 2
+**/
+if (deviceController != null) {
+            deviceController.setVoiceTalk(new MeariDeviceListener() {
+                @Override
+                public void onSuccess(String successMsg) {
+
+                }
+
+                @Override
+                public void onFailed(String errorMsg) {
+
+                }
+            }, soundTouchType);
+        }
+```
+### 9.5.31 设备工作模式
+```
+【描述】
+设备工作模式
+【函数调用】
+/**
+*lwm：0-不支持，1-支持工作模式，2-支持工作模式增加持续录像模式
+* 描述：lwm=2，在原有的省电模式、性能模式、自定义模式基础上，增加持续录像模式选项
+如果不支持，则只支持自定义模式。
+**/
+cameraInfo.getLwm()
+//设置工作模式
+public void setWorkMode(int workmode, ISetDeviceParamsCallback callback)
+【代码范例】
+/**
+*workmode   省电模式 0    性能模式 1    自定义模式 2    常电模式 3 
+**/
+MeariUser.getInstance().setWorkMode(workmode, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+### 9.5.32 人形报警区域（画框）设置
+```
+【描述】
+人形报警区域（画框）设置
+【代码范例】
+int pdt = cameraInfo.getPdt();
+if (cameraInfo.getVer() >= 12 && pdt != -1 && 1 << 1 == (1 << 1 & pdt)) {
+            //支持
+        } else {
+            //不支持
+        }
+/**
+*status   switchHumanFrame(isChecked ? 1 : 0)
+**/
+MeariUser.getInstance().setHumanFrame(status, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+               
             }
 
             @Override
