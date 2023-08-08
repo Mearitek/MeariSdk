@@ -70,7 +70,7 @@
     * 7.22 [Bell settings](#722-Bell-settings)
     * 7.23 [Floodlight camera settings](#723-Floodlight-camera-settings)
         * 7.23.1 [Switch lights](#7231-Switch-lights)
-        * 7.23.2 [Sound alarm switch](#7232-Sound-alarm-switch)
+        * 7.23.2 [Buzzer alarm switch](#7232-Buzzer-alarm-switch)
         * 7.23.3 [Turn on/off the lights according to the time period](#7233-Turn-on/off-the-lights-according-to-the-time-period)
         * 7.23.4 [Turn on/off the lights according to alarm events](#7234-Turn-on/off-the-lights-according-to-alarm-events)
     * 7.24 [Doorbell answering process](#724-Doorbell-answering-process)
@@ -2464,7 +2464,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
      }];
 ```
 
-### 7.23.2 Sound alarm switch
+### 7.23.2 Buzzer alarm switch
 
 ```
 【Description】
