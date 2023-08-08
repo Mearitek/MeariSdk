@@ -2418,16 +2418,17 @@ Belong to: MeariUser
      Modify the permissions of the shared user
 【Function】
      /**
+      change share devie Authority
       @param deviceID 
       @param shareAccount  
       @param authSign Sharing authority identification 0 means that only can be viewed 1 means that it can be controlled
       @param success Successful callback  
       @param failure failure callback  
      */
-     - (void)changeShareDeviceWithDeviceID:(NSInteger)deviceID shareAccount:(NSString *)shareAccount authSign:(NSInteger)authSign success:(MeariSuccess)success failure:(MeariFailure)failure;
+    - (void)changeShareDeviceWithDeviceID:(NSInteger)deviceID shareUserID:(NSInteger)shareUserID authSign:(NSInteger)authSign success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【Code】
-     [[MeariUser sharedInstance] changeShareDeviceWithDeviceID:camera.info.ID shareAccount:@"test@meari.com" authSign:1 success:^{
+     [[MeariUser sharedInstance] changeShareDeviceWithDeviceID:camera.info.ID shareUserID:model.info.shareUserID authSign:1 success:^{
             
      } failure:^(NSError *error) {
     

@@ -2431,17 +2431,18 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      修改被分享者的权限
 【函数调用】
      /**
-
-      @param deviceID 设备ID
-      @param shareAccount 分享账号
-      @param authSign 分享权限标识 0表示只能查看 1表示可以控制
-      @param success Successful callback (成功回调)
-      @param failure failure callback (失败回调)
-     */
-     - (void)changeShareDeviceWithDeviceID:(NSInteger)deviceID shareAccount:(NSString *)shareAccount authSign:(NSInteger)authSign success:(MeariSuccess)success failure:(MeariFailure)failure;
+    change share devie Authority
+    (修改分享设备权限)
+    @param deviceID 设备ID
+    @param shareUserID 分享用户ID
+    @param authSign 分享权限标识 0-无权限 1-有权限
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)changeShareDeviceWithDeviceID:(NSInteger)deviceID shareUserID:(NSInteger)shareUserID authSign:(NSInteger)authSign success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
-     [[MeariUser sharedInstance] changeShareDeviceWithDeviceID:camera.info.ID shareAccount:@"test@meari.com" authSign:1 success:^{
+     [[MeariUser sharedInstance] changeShareDeviceWithDeviceID:camera.info.ID shareUserID:model.info.shareUserID authSign:1 success:^{
             
      } failure:^(NSError *error) {
 
