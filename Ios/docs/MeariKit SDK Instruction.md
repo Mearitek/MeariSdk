@@ -3359,7 +3359,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 ### 10.3.1  Get whether the devices have alarm message
 ```
 【Description】
-    获取云存储2.0消息 通过判断supportAlarmVideoReport == 1 或者evt == 1判断设备支持2.0报警消息
+    Get cloud storage 2.0 messages. Determine whether the device supports 2.0 alarm messages by judging supportAlarmVideoReport == 1 or evt == 1.
 
 【Function】
      /**
@@ -3383,19 +3383,19 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 
 ```
 【Description】
-    获取云存储2.0消息 通过判断supportAlarmVideoReport == 1 或者evt == 1判断设备支持2.0报警消息
+    Get cloud storage 2.0 messages. Determine whether the device supports 2.0 alarm messages by judging supportAlarmVideoReport == 1 or evt == 1.
 【Function】
 
      /**
      get all the alarm messgae of one device  by day 
      (云存储2.0获取某个设备某天的报警消息,每次最多返回20条信息)
 
-     @param deviceID 设备ID
-     @param day 天，如："20200804"
-     @param channel 默认为0
-     @param msgTime  devLocaTtime，传@“0”拉取最新消息 其他 如：“20220406200300” 表示获取在20220406200300之后的消息
-     @param eventType eventType (事件报警类型，每条消息存在一种类型，取值"1" "2" "3"..."13")
-     "-1": 表示不进行筛选
+     @param deviceID device ID
+     @param day format："20200804"
+     @param channel Default is 0
+     @param msgTime  devLocaTtime，Pass @"0" to get the latest news. Others, such as: "20220406200300" means to get the news after 20220406200300.
+     @param eventType eventType (Event alarm type, each message has one type, the value is "1" "2" "3"..."13")
+     "-1": Indicates no filtering
      "1": "motion",
      "3": "bell",
      "6": "decibel",
@@ -3405,16 +3405,16 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
      "11": "human",
      "12": "face",
      "13": "safety"
-     @param aiTypes aiType (AI分析类型，每条消息可能存在多种类型，取值"0" "1" "2"..."7")  数组为空表示不进行筛选
-     "0": "人"
-     "1": "宠物"
-     "2": "有车辆驶来"
-     "3": "有车辆停滞"
-     "4": "有车辆驶离"
-     "5": "包裹被放下"
-     "6": "有滞留包裹"
-     "7": "包裹被拿走"
-     @param direction 1拉最新消息，0拉历史消息
+     @param aiTypes aiType (AI analysis type, each message may have multiple types, value "0" "1" "2"..."7") An empty array means no filtering
+     "0": "people"
+     "1": "pet"
+     "2": "car come"
+     "3": "car stay"
+     "4": "car leave"
+     "5": "The package was dropped off"
+     "6": "There is a stranded package"
+     "7": "The package was taken away"
+     @param direction 1 pulls the latest news, 0 pulls historical news
      @param success Successful callback (成功回调)
      @param failure failure callback (失败回调)
      */
@@ -3427,7 +3427,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
                                                   aiTypes:(NSArray *)aiTypes
                                                   success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
 【Code】
-     //获取云存储2.0的最新消息 不作任何的筛选
+     //Get the latest news on cloud storage 2.0 without any filtering (获取云存储2.0的最新消息 不作任何的筛选)
      [[MeariUser sharedInstance] getAlarmMessageListCloud2ForDeviceWithDeviceID:deviceID channel:0 day:@"20200804" msgTime:0 direction:1 eventType:-1 aiTypes:[] success:^(NSArray<MeariMessageInfoAlarmDevice *> *newMsgs, MeariDevice *device, BOOL msgFrequently) {
             
       } failure:^(NSError *error) {
@@ -3439,42 +3439,46 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 
 ```
   【Description】
-    云存储2.0的图片可以直接访问。如果链接失效请重新获取。
+    Pictures in Cloud Storage 2.0 can be accessed directly. If the link is invalid, please get it again.
+    Pictures in Cloud Storage 2.0 are encrypted by the device's SN by default. You need to download the picture data and call the decryption method before it can be displayed.
+    Images url ending in jpgx3 indicate that the device is password-encrypted by default. Use device SN encryption
+    Images url ending in jpgx2 indicate that the device is encrypted with user passwords.
+    (云存储2.0的图片可以直接访问。如果链接失效请重新获取。
     云存储2.0的图片默认以设备的SN进行加密,需要下载图片数据之后调用解密方法后才能显示。
-    图片以 jpgx3 结尾表明设备默认密码加密。采用设备SN加密
-    图片以 jpgx2 结尾表明设备采用用户密码加密。
+    图片名称以 jpgx3 结尾表明设备默认密码加密。采用设备SN加密
+    图片名称以 jpgx2 结尾表明设备采用用户密码加密。)
  
   【Function】
      /**
-     //Check if the v2 version of the Key matches the image
+     //Determine whether the image is based on the jepx2 or jepx3 version of the Key and whether it matches the image.
      // 判断图片是以jepx2、jepx3版本的Key是否与图片匹配
 
-     @param url 图片url
-     @param password  用户设置的密码
-     @return 解密完成的数据 (image data)
+     @param url image url
+     @param password Password set by user。The default is the SN of the device
+     @return password correct
      */
      - (BOOL)checkImageV2EncryKey:(NSString *)url password:(NSString *)password;
 
 
-     // Determine whether the picture ends with jepx1. If it is in the format ending with jepx1, it needs to be decrypted.
+     // Determine whether the image ends with jepx2 or jepx3. If the image ends with jepx2 or jepx3, decryption operation is required.
      // 判断图片是否是以jepx2、jepx3结尾 如果是以jepx2、jepx3结尾的格式 需要进行解密操作
 
-     @param deviceSN 设备的SN(device.info.sn)
-     @param imageData  图片的二进制数据 (image data)
-     @return 解密完成的数据 (image data)
+     @param deviceSN (device.info.sn)
+     @param imageData (image data)
+     @return Decrypt the completed data（解密完成的数据）
      */
      - (NSData *)decryptImageDataV2With:(NSString *)deviceSN imageData:(NSData *)imageData;
 
   【Code】
-        //根据图片URL 检验密码是否正确
-        //imageUrl 服务器返回的图片URL
-        //password jpgx3结尾下 默认以设备SN作为密码 password = device.info.sn
+        //Check whether the password is correct based on the image URL
+         //imageUrl image URL returned by the server
+         //Password at the end of jpgx3 defaults to device SN as password password = device.info.sn
+       
         BOOL correct = [[MeariUser sharedInstance] checkImageV2EncryKey:imageUrl password:password];
 
-       //imageData 下载下来之后的图片数据
-       //解密之前先校验密码是否正确。 根据对下载之后的数据进行解密操作
+        //imageData image data after downloading
+        //Verify whether the password is correct before decrypting. Decrypt the downloaded data
        NSData *decodeData = [[MeariUser sharedInstance] decryptImageDataV2With:password imageData:imageData];
-       //进行图片的展示
 
 ```
 
@@ -3482,35 +3486,32 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 
 ```
 【Description】
-    删除云存储2.0消息  chanel默认为0
+    Delete cloud storage 2.0 message chanel defaults to 0
 【Function】
-          /**
-     Delete system messages in bulk
-     云存储2.0按索引批量删除事件
+    /**
+     Cloud Storage 2.0 batch delete events by index
      
-     @param deviceID 设备ID
-     @param indexList 需要删除的事件时间点集合
+     @param deviceID 
+     @param indexList A collection of event time points that need to be deleted [msgTime,msgTime]
      @param success Successful callback (成功回调)
      @param failure failure callback (失败回调)
      */
      - (void)deleteSystemMessagesCloud2WithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel indexList:(NSArray *)indexList success:(MeariSuccess)success failure:(MeariFailure)failure;
 
      /**
-     Delete system messages in bulk
-     云存储2.0按天批量删除事件
+     Cloud Storage 2.0 batch delete events by day
      
-     @param deviceID 设备ID
-     @param day 需要删除的事件天
+     @param deviceID deviceID
+     @param day Event date to be deleted. formart:20210101
      @param success Successful callback (成功回调)
      @param failure failure callback (失败回调)
      */
      - (void)deleteSystemMessagesCloud2WithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel day:(NSString *)day success:(MeariSuccess)success failure:(MeariFailure)failure;
 
      /**
-     Delete system messages in bulk
-     云存储2.0按设备删除事件
+     Cloud Storage 2.0 delete events by device
      
-     @param deviceID 设备ID
+     @param deviceID 
      @param success Successful callback (成功回调)
      @param failure failure callback (失败回调)
      */
