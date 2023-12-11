@@ -36,15 +36,15 @@
 
 @interface MeariSimTrafficPlanModel : NSObject
 
-@property(nonatomic, copy) NSString *planId;        //（套餐id，对应packageId）
-@property(nonatomic, copy) NSString *mealType;      //（M是月套餐，S是季套餐）
+@property(nonatomic, copy) NSString *planId;    //（套餐id，对应packageId）
+@property(nonatomic, copy) NSString *mealType;  //套餐类型（W-周 M-月 S-季 X-半年 Y-年）
 @property(nonatomic, copy) NSString *money;         //套餐金额
 @property(nonatomic, assign) NSInteger type;            //（0是试用，1是付费）
 @property(nonatomic, assign) NSInteger quantity;        //套餐流量
 @property(nonatomic, copy) NSString *trafficPackage;    //套餐流量单位
-@property(nonatomic, copy) NSString *currencyCode;
+@property(nonatomic, copy) NSString *currencyCode;      //套餐国家代号
 @property(nonatomic, copy) NSString *currencySymbol;    //套餐金额单位
-@property(nonatomic, assign) NSInteger unlimited;    //1 为不限量
+@property(nonatomic, assign) NSInteger unlimited;    //1 为不限量套餐
 @end
 
 @interface MeariSimTrafficOrderModel : NSObject
@@ -52,10 +52,10 @@
 @property(nonatomic, copy) NSString *mealType;  //(月、季还是年 例 : @"M" @"S" @"Y" )
 @property(nonatomic, copy) NSString *payMoney;  //订单金额
 @property(nonatomic, copy) NSString *payDate;   //订单时间
-@property(nonatomic, assign) NSInteger quantity;
+@property(nonatomic, assign) NSInteger quantity;    //套餐数量，暂时仅支持单个购买（未使用）
 @property(nonatomic, copy) NSString *trafficPackage;    //订单流量单位
 @property(nonatomic, copy) NSString *trafficQuantity;   //订单流量数目
-@property(nonatomic, copy) NSString *currencyCode;
+@property(nonatomic, copy) NSString *currencyCode;      //套餐国家代号
 @property(nonatomic, copy) NSString *currencySymbol;    //订单金额单位
 @property(nonatomic, assign) NSInteger unlimited;    //1 为不限量
 @end

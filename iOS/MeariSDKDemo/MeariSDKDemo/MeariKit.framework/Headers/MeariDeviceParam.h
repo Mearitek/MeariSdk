@@ -45,9 +45,9 @@ typedef NS_ENUM(NSInteger, MeariDeviceDoublePirStatus) {
 /** 设备抗闪烁等级 */
 typedef NS_ENUM(NSInteger, MeariDeviceFlickerLevel) {
     MeariDeviceFlickerLevelClose   = 0, // close all
-    MeariDeviceFlickerLevelFiftyHz = 1, // open left pir
-    MeariDeviceFlickerLevelSixtyHz = 2, // open left pir
-    MeariDeviceFlickerLevelAuto    = 3, // open all
+    MeariDeviceFlickerLevelFiftyHz = 1, // 50Hz
+    MeariDeviceFlickerLevelSixtyHz = 2, // 60Hz
+    MeariDeviceFlickerLevelAuto    = 3, // auto
 };
 
 /** sdcard record duration*/

@@ -4206,6 +4206,30 @@ NVR通道摄像机不支持云回放。
     } failure:^(NSError *error) {
         
     }];
+【返回数据】
+    //MeariSimTrafficModel 当前使用套餐详情
+    @property(nonatomic, copy) NSString *qtavalue;      //总流量（M）
+    @property(nonatomic, copy) NSString *qtabalance;    //剩余流量（M）
+    @property(nonatomic, copy) NSString *qtaconsumption;//已使用流量（M）
+    @property(nonatomic, copy) NSString *activeTime;    //激活时间
+    @property(nonatomic, copy) NSString *mealType;     //套餐类型
+    @property(nonatomic, copy) NSString *expireTime;    //过期时间
+    @property(nonatomic, copy) NSString *money;         //套餐金额
+    @property(nonatomic, assign) NSInteger unlimited;    //是否为不限量套餐 1-是不限量套餐
+
+
+    // MeariSimTrafficUnuseModel 未使用的流量套餐详情
+    @property(nonatomic, copy) NSString *trafficPackage;    //套餐流量单位
+    @property(nonatomic, copy) NSString *mealType;      //套餐类型 （W-周 M-月 S-季 X-半年 Y-年）
+    @property(nonatomic, copy) NSString *quantity;      //套餐流量大小
+    @property(nonatomic, copy) NSString *money;         //套餐金额
+    @property(nonatomic, assign) NSInteger unlimited;    //是否为不限量套餐 1-是不限量套餐
+
+
+    //MeariSimTrafficHistoryModel //历史使用流量（已废弃）
+    @property(nonatomic, copy) NSString *time;              //流量使用时间
+    @property(nonatomic, copy) NSString *qtaconsumption;    //套餐流量大小
+
 ```
 
 ## 13.2 流量套餐
@@ -4261,6 +4285,23 @@ NVR通道摄像机不支持云回放。
             weakSelf.payButton.enabled = NO;
         }];
     }
+【返回数据】
+    // MeariSimTrafficPlanModel    流量套餐
+    @property(nonatomic, copy) NSString *planId;    //（套餐id，对应packageId）
+    @property(nonatomic, copy) NSString *mealType;  //套餐类型（W-周 M-月 S-季 X-半年 Y-年）
+    @property(nonatomic, copy) NSString *money;         //套餐金额
+    @property(nonatomic, assign) NSInteger type;            //（0是试用，1是付费）
+    @property(nonatomic, assign) NSInteger quantity;        //套餐流量
+    @property(nonatomic, copy) NSString *trafficPackage;    //套餐流量单位
+    @property(nonatomic, copy) NSString *currencyCode;      //套餐国家代号
+    @property(nonatomic, copy) NSString *currencySymbol;    //套餐金额单位
+    @property(nonatomic, assign) NSInteger unlimited;    //1 为不限量套餐
+
+    //tryStatus
+    BOOL tryStatus    //是否支持试用套餐  需要与MeariSimTrafficPlanModel中的type配合使用
+    
+    //maxMonth
+    NSString *maxMonth  //最大支持购买月份
 ```
 ## 13.3 创建流量订单
 ```
@@ -4347,6 +4388,20 @@ NVR通道摄像机不支持云回放。
     } failure:^(NSError *error) {
         
     }];
+ 
+【返回数据】   
+    // MeariSimTrafficOrderModel 
+    @property(nonatomic, copy) NSString *orderNum;  //订单号
+    @property(nonatomic, copy) NSString *mealType;  //(月、季还是年 例 : @"M" @"S" @"Y" )
+    @property(nonatomic, copy) NSString *payMoney;  //订单金额
+    @property(nonatomic, copy) NSString *payDate;   //订单时间
+    @property(nonatomic, assign) NSInteger quantity;    //套餐数量，暂时仅支持单个购买（未使用）
+    @property(nonatomic, copy) NSString *trafficPackage;    //订单流量单位
+    @property(nonatomic, copy) NSString *trafficQuantity;   //订单流量数目
+    @property(nonatomic, copy) NSString *currencyCode;      //套餐国家代号
+    @property(nonatomic, copy) NSString *currencySymbol;    //订单金额单位
+    @property(nonatomic, assign) NSInteger unlimited;    //1 为不限量
+
 ```
 ## 13.6 流量购买提醒
 ```

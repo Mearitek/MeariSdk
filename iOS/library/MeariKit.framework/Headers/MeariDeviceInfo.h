@@ -544,6 +544,8 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 @property (nonatomic, assign) NSInteger userID;
 // device bind sim id(the device is 4G)
 @property (nonatomic, assign) NSInteger simID;
+// device sim card nedd to buy data(the device is 4G)
+@property (nonatomic, assign) BOOL needBuy;
 // device bind id(the device is jingle)
 @property (nonatomic, assign) NSInteger bindDeviceID;
 // device had be bind

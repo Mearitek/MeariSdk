@@ -4169,6 +4169,29 @@ The differences are detailed below.
     } failure:^(NSError *error) {
         
     }];
+【Return data】
+    //MeariSimTrafficModel  Current package details
+    @property(nonatomic, copy) NSString *qtavalue;      //Total data（M）
+    @property(nonatomic, copy) NSString *qtabalance;    //Remaining data（M）
+    @property(nonatomic, copy) NSString *qtaconsumption;//Used data（M）
+    @property(nonatomic, copy) NSString *activeTime;    //Activation time
+    @property(nonatomic, copy) NSString *mealType;     //Plan cycle Type （W-Week M-Month S-Season X-half a year Y-Year）
+    @property(nonatomic, copy) NSString *expireTime;    //Expire date
+    @property(nonatomic, copy) NSString *money;         //Plan amount
+    @property(nonatomic, assign) NSInteger unlimited;    //Is it an unlimited package? 1- unlimited package
+
+
+    // MeariSimTrafficUnuseModel  Unused data plan details
+    @property(nonatomic, copy) NSString *trafficPackage;    //data unit
+    @property(nonatomic, copy) NSString *mealType;       //Plan cycle Type （W-Week M-Month S-Season X-half a year Y-Year）
+    @property(nonatomic, copy) NSString *quantity;      //Plan data size
+    @property(nonatomic, copy) NSString *money;         //Plan amount
+    @property(nonatomic, assign) NSInteger unlimited;    //Is it an unlimited Plan? 1 means unlimited Plan
+
+
+    //MeariSimTrafficHistoryModel //Historical data usage (obsolete)
+    @property(nonatomic, copy) NSString *time;              //Data usage time
+    @property(nonatomic, copy) NSString *qtaconsumption;    //data size
 ```
 
 ## 13.2 Data plan
@@ -4222,6 +4245,23 @@ The differences are detailed below.
             weakSelf.payButton.enabled = NO;
         }];
     }
+【Return data】
+    // MeariSimTrafficPlanModel   Data Plan
+    @property(nonatomic, copy) NSString *planId;    //（Plan id, corresponding to packageId）
+    @property(nonatomic, copy) NSString *mealType;  //Plan cycle Type （W-Week M-Month S-Season X-half a year Y-Year）
+    @property(nonatomic, copy) NSString *money;         //Plan amount
+    @property(nonatomic, assign) NSInteger type;            //Plan type (0 is trial, 1 is paid)
+    @property(nonatomic, assign) NSInteger quantity;        //Plan data
+    @property(nonatomic, copy) NSString *trafficPackage;    //Plan data unit
+    @property(nonatomic, copy) NSString *currencyCode;      //Plan country code
+    @property(nonatomic, copy) NSString *currencySymbol;    //Plan amount unit
+    @property(nonatomic, assign) NSInteger unlimited;    //1 means unlimited Plan
+
+    //tryStatus
+    BOOL tryStatus    //Whether the trial package is supported needs to be used in conjunction with the type in MeariSimTrafficPlanModel
+    
+    //maxMonth
+    NSString *maxMonth  //Maximum supported purchase months
 ```
 ## 13.3 Create Data Order
 ```
@@ -4304,6 +4344,18 @@ The differences are detailed below.
     } failure:^(NSError *error) {
         
     }];
+【Return data】   
+    // MeariSimTrafficOrderModel  Package order
+    @property(nonatomic, copy) NSString *orderNum;  //Order number
+    @property(nonatomic, copy) NSString *mealType;  //Plan cycle Type （W-Week M-Month S-Season X-half a year Y-Year）
+    @property(nonatomic, copy) NSString *payMoney;  //Order amount
+    @property(nonatomic, copy) NSString *payDate;   //Order time
+    @property(nonatomic, assign) NSInteger quantity;    //Number of packages, currently only supports single purchase (not used)
+    @property(nonatomic, copy) NSString *trafficPackage;    //Order data unit
+    @property(nonatomic, copy) NSString *trafficQuantity;   //Order data number
+    @property(nonatomic, copy) NSString *currencyCode;      //Plan country code
+    @property(nonatomic, copy) NSString *currencySymbol;    //Order amount unit
+    @property(nonatomic, assign) NSInteger unlimited;    //1 means unlimited
 ```
 ## 13.6 Data purchase reminder
 ```

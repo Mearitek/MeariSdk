@@ -562,7 +562,7 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 /**
  Get mute(获取静音)
  
- @param muted muted is mute?(是否静音)
+ @return muted (是否静音)
  */
 - (BOOL)getMute;
 
@@ -733,7 +733,7 @@ Start record sound(开始录音)
 /**
   set  Flicker(设置抗闪烁)
  
- @param on 是否打开Flicker
+ @param level 抗闪烁等级
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
@@ -1388,7 +1388,7 @@ Start record sound(开始录音)
 
 /**
   Set the switch for double pir (设置双pir 的开关)  ( warning : level cant contain MeariDeviceLevelOff)
-@param level  PirSensitivity (灵敏度)
+@param doublePirStatus  Pir Status (pir 状态开关)
 @param success Successful callback (成功回调)
 @param failure failure callback (失败回调)
  */
@@ -1418,7 +1418,6 @@ Start record sound(开始录音)
 /**
  Set the doorbell battery lock (设置门铃电池锁)
  
- @param open Whether to open the battery lock (是否打开电池锁)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
@@ -2128,6 +2127,11 @@ Determine whether it is a face
 /// @param success Successful callback (成功回调)
 /// @param failure failure callback (失败回调)
 + (void)getNvrInfoWithSnList:(NSArray<NSString *> *)snList dpList:(NSArray<NSString *> *)dpList success:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
+/// 获取4G设备 dp属性
+/// @param idList Device ID list
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
++ (void)getForthInfoWithDeviceIDList:(NSArray<NSNumber *> *)idList success:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
 #pragma mark - PRTP 设备
 /**
  Search for PRTP devices in the LAN (must be in the same LAN)局域网搜索PRTP设备 (必须在同一个局域网下)
@@ -2142,7 +2146,7 @@ Determine whether it is a face
  @param failure failure callback (失败回调)
 */
 //停止搜索局域网设备
-+ (void)prtpStopDiscovery:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)error;
++ (void)prtpStopDiscovery:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 /**
  局域网设备初始化与连接
@@ -2150,7 +2154,6 @@ Determine whether it is a face
  @param ip device ip address (设备IP地址)
  @param port device port (设备端口)
  @param success Successful callback (成功回调)
- @param disconnect abnormal disconnect callback (异常断开回调)
  @param failure failure callback (失败回调)
 */
 - (void)prtpConnect:(NSString*)ip port:(int)port success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;

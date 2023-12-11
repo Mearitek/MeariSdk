@@ -116,7 +116,14 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  @return QR code image(二维码图片)
  */
 - (UIImage *)createQRCodeWithText:(NSString *)text size:(CGSize)size encode:(NSStringEncoding)code;
-
+/**
+ Get the UUID in the QR code Text
+ 获取二维码信息里的UUID
+ 
+ @param text QR code info(二维码信息)
+ @return UUID
+ */
+- (NSString *)getUUIDFromQRCodeText:(NSString *)text;
 /**
  AP配网传递的参数
 

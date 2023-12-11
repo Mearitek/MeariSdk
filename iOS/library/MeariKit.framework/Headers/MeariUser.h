@@ -196,6 +196,14 @@ Whether has meari iot info   (是否有自研iot信息)
  */
 - (void)resetRedirect;
 
+/**
+ Sets whether to enable iot server connections
+ 设置是否允许启用iot服务器连接
+ 
+ @param enable default is yes
+ */
+- (void)setConnectIotServerEnable:(BOOL)enable;
+
 #pragma mark - User
 
 /**
