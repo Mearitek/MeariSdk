@@ -115,7 +115,6 @@ TODOTODO
 /**
  The STS token's credential provider.
  */
-__attribute__((deprecated("Please use OSSAuthCredentialProvider or its subClass instead!")))
 @interface OSSStsTokenCredentialProvider : NSObject <OSSCredentialProvider>
 @property (nonatomic, copy) NSString * accessKeyId;
 @property (nonatomic, copy) NSString * secretKeyId;
@@ -201,6 +200,16 @@ Sets the session Id for background file transmission
 @property (nonatomic, copy) NSString * userAgentMark;
 
 /**
+ Sets the flag of using Second Level Domain style to access the endpoint. By default it's false.
+ */
+@property (nonatomic, assign) BOOL isPathStyleAccessEnable;
+
+/**
+ Sets  the flag of using custom path prefix to access the endpoint. By default it's false.
+ */
+@property (nonatomic, assign) BOOL isCustomPathPrefixEnable;
+
+/**
  Sets CName excluded list.
  */
 @property (nonatomic, strong, setter=setCnameExcludeList:) NSArray * cnameExcludeList;
@@ -209,6 +218,12 @@ Sets the session Id for background file transmission
  是否开启crc校验(当同时设置了此选项和请求中的checkCRC开关时，以请求中的checkCRC开关为准)
  */
 @property (nonatomic, assign) BOOL crc64Verifiable;
+
+/// Set whether to allow UA to carry system information
+@property (nonatomic, assign) BOOL isAllowUACarrySystemInfo;
+
+/// Set whether to allow the redirection with a modified request
+@property (nonatomic, assign) BOOL isFollowRedirectsEnable;
 
 @end
 
