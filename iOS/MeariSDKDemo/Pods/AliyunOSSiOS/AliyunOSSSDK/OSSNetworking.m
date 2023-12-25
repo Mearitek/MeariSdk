@@ -75,11 +75,6 @@
 }
 
 - (OSSTask *)sendRequest:(OSSNetworkingRequestDelegate *)request {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        OSSLogVerbose(@"NetWorkConnectedMsg : %@",[OSSUtil buildNetWorkConnectedMsg]);
-        NSString *operator = [OSSUtil buildOperatorMsg];
-        if(operator) OSSLogVerbose(@"Operator : %@",[OSSUtil buildOperatorMsg]);
-    });
     OSSLogVerbose(@"send request --------");
     if (self.configuration.proxyHost && self.configuration.proxyPort) {
         request.isAccessViaProxy = YES;
@@ -429,6 +424,17 @@
 - (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session
 {
     
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
+                     willPerformHTTPRedirection:(NSHTTPURLResponse *)response
+                                     newRequest:(NSURLRequest *)request
+                              completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler {
+    if (self.configuration.enableFollowRedirects) {
+        completionHandler(request);
+    } else {
+        completionHandler(nil);
+    }
 }
 
 #pragma mark - NSURLSessionDataDelegate Methods

@@ -22,10 +22,14 @@
 #import "OSSDefine.h"
 #import "OSSDeleteMultipleObjectsRequest.h"
 #import "OSSDeleteMultipleObjectsResult.h"
+#import "OSSDeleteObjectTaggingRequest.h"
+#import "OSSDeleteObjectTaggingResult.h"
 #import "OSSGetBucketInfoRequest.h"
 #import "OSSGetBucketInfoResult.h"
 #import "OSSGetObjectACLRequest.h"
 #import "OSSGetObjectACLResult.h"
+#import "OSSGetObjectTaggingRequest.h"
+#import "OSSGetObjectTaggingResult.h"
 #import "OSSGetSymlinkRequest.h"
 #import "OSSGetSymlinkResult.h"
 #import "OSSHttpdns.h"
@@ -35,6 +39,8 @@
 #import "OSSModel.h"
 #import "OSSNetworking.h"
 #import "OSSNetworkingRequestDelegate.h"
+#import "OSSPutObjectTaggingRequest.h"
+#import "OSSPutObjectTaggingResult.h"
 #import "OSSPutSymlinkRequest.h"
 #import "OSSPutSymlinkResult.h"
 #import "OSSRequest.h"
@@ -60,7 +66,6 @@
 #import "OSSReachability.h"
 #import "OSSIPv6Adapter.h"
 #import "OSSIPv6PrefixResolver.h"
-#import "OSSReachabilityManager.h"
 
 FOUNDATION_EXPORT double AliyunOSSiOSVersionNumber;
 FOUNDATION_EXPORT const unsigned char AliyunOSSiOSVersionString[];
