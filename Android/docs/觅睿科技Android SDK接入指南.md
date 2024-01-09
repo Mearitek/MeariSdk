@@ -104,7 +104,9 @@
         * 9.5.29 [设备防拆报警设置](#9529-设备防拆报警设置)
         * 9.5.30 [设备变声设置](#9530-设备变声设置)    
         * 9.5.31 [设备工作模式](#9531-设备工作模式)
-        * 9.5.32 [人形报警区域（画框）设置](#9531-人形报警区域（画框）设置)
+        * 9.5.32 [人形报警区域（画框）设置](#9532-人形报警区域（画框）设置)
+        * 9.5.33 [人形开关设置](#9533-人形开关设置)
+        * 9.5.34 [录像时长设置](#9534-录像时长设置)
     * 9.6 [门铃参数设置](#96-门铃参数设置)
         * 9.6.1 [设备对讲音量设置](#961-设备对讲音量设置)
         * 9.6.2 [解锁电池锁](#962-解锁电池锁)
@@ -4181,6 +4183,95 @@ MeariUser.getInstance().setHumanFrame(status, new ISetDeviceParamsCallback() {
             }
         });
 ```
+
+### 9.5.33 人形开关设置
+```
+【描述】
+人形开关设置
+【代码范例】
+val pdt: Int = cameraInfo.pdt
+if (info.ver >= 12) {
+            if (pdt != -1 && 1 == 1 and pdt) {
+                //支持设置人形开关
+            } 
+            if (pdt != -1 && 1 shl 2 == 1 shl 2 and pdt) {
+                //支持夜间，不再设置人形开关
+            } 
+            if (pdt != -1 && 1 shl 3 == 1 shl 3 and pdt) {
+                //支持白天，不再设置人形开关
+            }
+        }
+
+
+【人形侦测使能开关】：0-关；1-开；
+deviceParams.humanDetEnable == 1
+设置
+MeariUser.getInstance().setHumanDetection(status, object : ISetDeviceParamsCallback)
+
+
+【白天人形侦测使能开关】：0-关；1-开；
+deviceParams.humanDetDayEnable == 1
+
+MeariUser.getInstance().setHumanDetectionDay(status, object : ISetDeviceParamsCallback)
+
+【夜间人形侦测使能开关】：0-关；1-开；
+deviceParams.humanDetNightEnable == 1
+
+MeariUser.getInstance().setHumanDetectionNight(status, object : ISetDeviceParamsCallback)
+
+
+【灵敏度】
+//0-不支持，3-支持3档灵敏度，5-支持5档灵敏度，10-支持10档灵敏度
+pds = info.pds
+
+设置灵敏度（几档就设置几，不能超过最大支持档位）
+MeariUser.getInstance().setHumanDetectionSensitivity(pirLevel, object : ISetDeviceParamsCallback)
+```
+
+### 9.5.34 录像时长设置
+```
+【描述】
+录像时长设置
+【代码范例】
+val esd: Int = info.esd
+if (esd > 0) {
+            if (1 shl 6 == 1 shl 6 and esd) {
+                //10s
+            
+            }
+            if (1 shl 4 == 1 shl 4 and esd) {
+                //20s
+                
+            }
+            if (1 == 1 and esd) {
+                //30s
+                
+            }
+            if (1 shl 5 == 1 shl 5 and esd) {
+                //40s
+                
+            }
+            if (1 shl 1 == 1 shl 1 and esd) {
+                //60s
+               
+            }
+            if (1 shl 2 == 1 shl 2 and esd) {
+                //120s
+                
+            }
+            if (1 shl 3 == 1 shl 3 and esd) {
+                //180s
+            }
+        }
+
+获取录像时长（单位 s,比如180s值就是180）
+deviceParams.sdRecordDuration
+
+设置录像时长(value代表时长，单位 s,比如180s就传180)
+MeariUser.getInstance().setPlaybackRecordVideo(deviceParams.sdRecordType, value, object : ISetDeviceParamsCallback )
+```
+
+
 
 
 ## 9.6 门铃参数设置

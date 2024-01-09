@@ -93,6 +93,16 @@
         * 9.5.22 [SD card recording type and time setting](#9522-SD-card-recording-type-and-time-setting)
         * 9.5.23 [Device Full Color Mode setting](#9523-Device-Full-Color-Mode-setting)
         * 9.5.24 [Device sound and light alarm setting](#9524-Device-sound-and-light-alarm-setting)
+        * 9.5.25 [Device 12-hour switch setting](#9525-Device-12-hour-switch-setting)
+        * 9.5.26 [Device anti-flicker Settings](#9526-Device-anti-flicker-Settings)
+        * 9.5.27 [Device microphone, recording, speaker Settings](#9527-Device-microphone,-recording,-speaker-Settings)
+        * 9.5.28 [Device video encryption Settings](#9528-Device-video-encryption-Settings)
+        * 9.5.29 [Device anti-demolition alarm Settings](#9529-Device-anti-demolition-alarm-Settings)
+        * 9.5.30 [Device Sound Touch Settings](#9530-Device-Sound-Touch-Settings)    
+        * 9.5.31 [Device Work Mode](#9531-Device-Work-Mode)
+        * 9.5.32 [Humanoid alarm area (picture frame) Settings](#9532-Humanoid-alarm-area-(picture-frame)-Settings)
+        * 9.5.33 [Humanoid switch setup](#9533-Humanoid-switch-setup)
+        * 9.5.34 [Recording duration setting](#9534-Recording-duration-setting)
     * 9.6 [Doorbell parameter setting](#96-Doorbell-parameter-setting)
         * 9.6.1 [Device Intercom volume settings](#961-Device-Intercom-volume-settings)
         * 9.6.2 [Unlock the battery lock](#962-Unlock-the-battery-lock)
@@ -3493,6 +3503,504 @@ MeariUser.getInstance().setFloodCameraVoiceLightAlarmType(type, new ISetDevicePa
     public void onFailed(int errorCode, String errorMsg) {
     }
 });
+```
+
+### 9.5.25 Device 12-hour switch setting
+```
+
+【description】
+Device 12-hour switch settinge
+
+【function call】
+/**
+ * Device 12-hour switch settinge
+ *
+ * @param isOpen true 12-hour time system
+ * @param callback Function callback
+ */
+public void postTimeFormat(boolean isOpen, IResultCallback callback) 
+
+
+【Code example】
+//The 12-hour enabled flag bit is stored locally and will be reset to 24 hours after the device is reset.
+MeariUser.getInstance().postTimeFormat(isOpen, new IResultCallback() {
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                
+            }
+
+            @Override
+            public void onSuccess() {
+                
+            }
+        });
+```
+
+
+### 9.5.26 Device anti-flicker Settings
+```
+
+【description】
+Device anti-flicker Settings
+
+【function call】
+/**
+ * Device anti-flicker Settings
+ *
+ * @param antiflicker 
+ * @param callback Function callback
+ */
+public void setAntiflicker(int antiflicker, ISetDeviceParamsCallback callback) 
+
+
+【Code example】
+1.Whether anti-flicker is supported
+/**
+     *
+     * 
+     * - type: integer
+     * - description: Whether anti-flicker is supported 
+     * 0-nonsupport,  0x1-support 50HZ, 0x2-support 60HZ, 0x4-support Auto, 0x8=support close, Corresponding DP point 202
+     */
+flk=cameraInfo.getFlk()
+if (flk > 0) {
+            if (1 << 3 == (1 << 3 & flk)) {
+//                0x8=support close
+            }
+            if (1 == (1 & flk)) {
+              //0x1-support 50HZ
+            }
+            if (1 << 1 == (1 << 1 & flk)) {
+//               0x2-support 60HZ
+               
+            }
+            if (1 << 2 == (1 << 2 & flk)) {
+//                0x4-support Auto
+                
+            }
+        }
+
+2.Current anti-flicker Settings
+/**
+     * anti-flicker Settings  //0-close, 1-50HZ, 2-60HZ, 3-Auto
+     */
+    private int antiflicker;
+antiflicker=deviceParams.getAntiflicker();
+
+3.Set anti-flicker
+MeariUser.getInstance().setAntiflicker(antiflicker, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+### 9.5.27 Device microphone, recording, speaker Settings
+```
+
+【description】
+Device microphone, recording, speaker Settings
+【matters need attention】
+1.Microphone (Turn off recording sound at the same time)
+2.When the microphone is on, the recording sound can be turned on
+
+【Code example】
+1.microphone
+/**
+     *  - microphone
+     *         - description: Microphone enablement switch, 0=forbidden， 1=enabled
+     *         - type: integer
+     */
+    private int microphone;
+    //Obtain the current microphone switch status
+    microphone=deviceParams.getMicrophone()
+//Set microphone switch
+MeariUser.getInstance().setMicroPhone(microphone, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_Micro_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_Micro_FAILED);
+            }
+        });
+
+2.Speaker
+/**
+     *
+     *     - speaker
+     *         - description: Speaker ，0=forbidden， 1=enabled
+     *         - type: integer
+     */
+    private int speaker;
+    //Obtain the current speaker switch status
+    speaker=deviceParams.getSpeaker()
+//Set speaker switch
+MeariUser.getInstance().setSpeaker(speaker, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_SEN_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_SEN_FAILED);
+            }
+        });    
+
+ 3.volume
+/**
+     * Speaker volume during intercom (doorbell, battery camera)：0-100
+     */
+    private int speakVolume;
+    //Get current volume
+    speakVolume=deviceParams.getSpeakVolume()
+//
+MeariUser.getInstance().setSpeakVolume(volume, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SET_SPEAK_VOLUME_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SET_SPEAK_VOLUME_FAILED);
+            }
+        });     
+
+ 4.Video sound switch
+/**
+     *
+     *     Video sound switch
+     *     rec_audio_en
+     *         - type: integer
+     *         - description: Video sound switch
+     */
+    private int rec_audio_en;
+    //Get Video sound switch
+    rec_audio_en=deviceParams.getRec_audio_en()
+
+//Set Video sound switch
+MeariUser.getInstance().setRae(rec_audio_en, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_REC_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_REC_FAILED);
+            }
+        });        
+
+```
+
+
+### 9.5.28 Device video encryption Settings
+```
+【description】
+Device video encryption Settings
+【matters need attention】
+1. All video encryption passwords are saved locally, not in the cloud, to increase privacy.
+2. After the device is added again, the video encryption will be turned off, and the password can be reset, but if you want to view the previous local video and cloud video, you need to set the video password to decrypt. If the current password is not stored locally, let the user enter it.
+3. A device uses the password for each password period to view the password required for the corresponding period, which cannot be universal. If it is stored locally, it can traverse to make holes.
+4. Video encryption can be turned off only after checking the current password, and can be turned off directly without checking, preventing users from forgetting the password and not knowing that they can reset the status of the device by adding it again.
+5.The owner is allowed to set a password.    camerainfo.isMaster()
+
+【Code example】
+
+/**
+     * Whether the user access password is set.  no set - 0； set - 1；
+     * @return
+     */
+int isVideoSetPwd= deviceParams.getIsVideoSetPwd()
+After obtaining the value, store it locally
+MMKVUtil.setData(DEVICE_VIDEO_PASSWORD_IS_SET+snNum,isVideoSetPwd);
+//If you set a video password, you need to either get the stored password locally or let the user enter it and store the password to the corresponding
+MMKVUtil.setData(DEVICE_VIDEO_PASSWORD+snNum,pwd);中。
+The password is retrieved from the local directory for verification. If the hole fails to be perforated, the error code -18 indicates that the password is incorrect. You need to enter the password again.
+
+//Set password (change password) and turn on video encryption
+MeariUser.getInstance().setVidePwd(pwd, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+//Turn off video encryption
+MeariUser.getInstance().setVidePwdSwitch(new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+            MMKVUtil.setData(DEVICE_VIDEO_PASSWORD_IS_SET + cameraInfo.getSnNum(), 0);
+                                               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                                                
+            }
+            });
+//Punch holes before changing the password to check whether the entered password is correct  
+private MeariDeviceController controller;  
+controller = new MeariDeviceController(cameraInfo);
+        controller.startConnect(pwdOldTxt,new MeariDeviceListener() {
+            @Override
+            public void onSuccess(String successMsg) {
+            
+                
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                dismissLoading();
+                try {
+                    BaseJSONObject object = new BaseJSONObject(errorMsg);
+                    int errorCode = object.optInt("code");
+                    if (errorCode == -18) {
+                        //password error
+                        
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });                                  
+
+```
+
+
+### 9.5.29 Device anti-demolition alarm Settings
+```
+
+【Code example】
+/**
+     * 
+     * Anti-demolition alarm capability level，0=no support，1=support
+     */
+    private int fcb;
+//
+fcb=camerainfo.getFcb();
+//Get anti-tamper alarm switch Settings
+    deviceParams.getRemoveProtectEnable()
+//Set anti-tamper alarm switch Settings
+    MeariUser.getInstance().setRemoveProtectAlert(isCheck ? 1 : 0, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+### 9.5.30 Device Sound Touch Settings
+```
+【description】
+Device Sound Touch Settings
+【matters need attention】
+cameraInfo.getVtk() == 4
+Support two-way intercom, support two-way intercom only change voice
+【Code example】
+/**
+*soundTouchType   normal 0  uncle  1    clown 2
+**/
+if (deviceController != null) {
+            deviceController.setVoiceTalk(new MeariDeviceListener() {
+                @Override
+                public void onSuccess(String successMsg) {
+
+                }
+
+                @Override
+                public void onFailed(String errorMsg) {
+
+                }
+            }, soundTouchType);
+        }
+```
+### 9.5.31 Device Work Mode
+```
+【description】
+Device Work Mode
+【function call】
+/**
+*lwm：0- Not supported, 1- Work mode is supported, 2- Work mode Added continuous recording mode
+* lwm=2，In addition to the original power saving mode, performance mode, custom mode, add continuous recording mode option
+If not, only the custom mode is supported.
+**/
+cameraInfo.getLwm()
+//Set Device Work Mode
+public void setWorkMode(int workmode, ISetDeviceParamsCallback callback)
+【Code example】
+/**
+*workmode   power saving mod 0    performance mode 1    custom mode 2     continuous recording mode 3 
+**/
+MeariUser.getInstance().setWorkMode(workmode, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+### 9.5.32 Humanoid alarm area (picture frame) Settings
+```
+【description】
+Humanoid alarm area (picture frame) Settings
+【Code example】
+int pdt = cameraInfo.getPdt();
+if (cameraInfo.getVer() >= 12 && pdt != -1 && 1 << 1 == (1 << 1 & pdt)) {
+            //support
+        } else {
+            //not support
+        }
+/**
+*status   switchHumanFrame(isChecked ? 1 : 0)
+**/
+MeariUser.getInstance().setHumanFrame(status, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+### 9.5.33 Humanoid switch setup
+```
+【description】
+Humanoid switch setup
+【Code example】
+val pdt: Int = cameraInfo.pdt
+if (info.ver >= 12) {
+            if (pdt != -1 && 1 == 1 and pdt) {
+                //Supports the humanoid switch
+            } 
+            if (pdt != -1 && 1 shl 2 == 1 shl 2 and pdt) {
+                //Support night，Not Supports the humanoid switch
+            } 
+            if (pdt != -1 && 1 shl 3 == 1 shl 3 and pdt) {
+                //Support day，Not Supports the humanoid switch
+            }
+        }
+
+
+【Humanoid detection enable switch】：0=forbidden， 1=enabled；
+deviceParams.humanDetEnable == 1
+
+MeariUser.getInstance().setHumanDetection(status, object : ISetDeviceParamsCallback)
+
+
+【Daytime humanoid detection enable switch】：0=forbidden， 1=enabled；
+deviceParams.humanDetDayEnable == 1
+
+MeariUser.getInstance().setHumanDetectionDay(status, object : ISetDeviceParamsCallback)
+
+【Nighttime humanoid detection enable switch】：0=forbidden， 1=enabled；
+deviceParams.humanDetNightEnable == 1
+
+MeariUser.getInstance().setHumanDetectionNight(status, object : ISetDeviceParamsCallback)
+
+
+【sensitivity】
+//0-Not support，3-Supports 3 levels of sensitivity，5-Supports 5 levels of sensitivity，10-Supports 10 levels of sensitivity
+pds = info.pds
+
+set sensitivity
+MeariUser.getInstance().setHumanDetectionSensitivity(pirLevel, object : ISetDeviceParamsCallback)
+```
+
+### 9.5.34 Recording duration setting
+```
+【description】
+Recording duration setting
+【Code example】
+val esd: Int = info.esd
+if (esd > 0) {
+            if (1 shl 6 == 1 shl 6 and esd) {
+                //10s
+            
+            }
+            if (1 shl 4 == 1 shl 4 and esd) {
+                //20s
+                
+            }
+            if (1 == 1 and esd) {
+                //30s
+                
+            }
+            if (1 shl 5 == 1 shl 5 and esd) {
+                //40s
+                
+            }
+            if (1 shl 1 == 1 shl 1 and esd) {
+                //60s
+               
+            }
+            if (1 shl 2 == 1 shl 2 and esd) {
+                //120s
+                
+            }
+            if (1 shl 3 == 1 shl 3 and esd) {
+                //180s
+            }
+        }
+
+Get recording duration（unit s）
+deviceParams.sdRecordDuration
+
+Set recording duration
+MeariUser.getInstance().setPlaybackRecordVideo(deviceParams.sdRecordType, value, object : ISetDeviceParamsCallback )
 ```
 
 ## 9.6 Doorbell parameter setting
