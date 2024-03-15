@@ -34,9 +34,6 @@ public class DeviceListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_device_list);
 
         initView();
-
-        // Connect mqtt service
-        MeariUser.getInstance().connectMqttServer(MeariApplication.getInstance());
     }
 
     @Override

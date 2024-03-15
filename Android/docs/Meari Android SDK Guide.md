@@ -103,6 +103,7 @@
         * 9.5.32 [Humanoid alarm area (picture frame) Settings](#9532-Humanoid-alarm-area-(picture-frame)-Settings)
         * 9.5.33 [Humanoid switch setup](#9533-Humanoid-switch-setup)
         * 9.5.34 [Recording duration setting](#9534-Recording-duration-setting)
+        * 9.5.35 [Music Playback Settings](#9535-Music-Playback-Settings)
     * 9.6 [Doorbell parameter setting](#96-Doorbell-parameter-setting)
         * 9.6.1 [Device Intercom volume settings](#961-Device-Intercom-volume-settings)
         * 9.6.2 [Unlock the battery lock](#962-Unlock-the-battery-lock)
@@ -4002,6 +4003,138 @@ deviceParams.sdRecordDuration
 Set recording duration
 MeariUser.getInstance().setPlaybackRecordVideo(deviceParams.sdRecordType, value, object : ISetDeviceParamsCallback )
 ```
+### 9.5.35 Music Playback Settings
+```
+【description】
+Music playback settings (requires SD card to be available)
+【Code Example】
+·Whether to support music playback settings: 0-not supported, 1-supported
+cameraInfo.getMpc()
+·Get music list
+MeariUser.getInstance().getMusicListNew(new IGetMusicListCallback(){
+            @Override
+            public void onSuccess(ArrayList<MeariMusic> songInfos) {
+                
+            }
+
+            @Override
+            public void onError(int code, String error) {
+
+            }
+        });
+·Get current volume
+MeariUser.getInstance().getMusicVolume(new IGetMusicVolumeCallback() {
+            @Override
+            public void onSuccess(int volume) {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });  
+·Set current volume
+MeariUser.getInstance().setMusicVolume(value, new ISetDeviceParamsCallback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onFailed(int errorCode, String errorMsg) {
+
+                    }
+                });       
+·Refresh current song status
+MeariUser.getInstance().getPlayMusicStatus(new IRefreshMusicStatusCallback() {
+            @Override
+            public void onSuccess(String currentMusicId, boolean isPlaying, ArrayList<MeariMusic> musicList) {
+                current song -currentMusicId
+                is playing-isPlaying
+                music list-musicList
+                The current song is being downloaded-info.getDownloadPercent() < 100
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+            
+            }
+        });   
+·play song
+MeariUser.getInstance().playMusic(curMusicId, new IControlMusicCallback() {
+            @Override
+            public void onSuccess(String currentMusicID) {
+            
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+
+            }
+        });     
+·pause song
+MeariUser.getInstance().pauseMusic(curMusicId, new IControlMusicCallback() {
+            @Override
+            public void onSuccess(String currentMusicID) {
+            
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+
+            }
+        });                    
+·Whether to support music playback duration setting 0-not supported, bit0-on(Play continuously) bit1-10min bit2-30min bit3-60min
+cameraInfo.getMul()
+  -Play time list
+            ArrayList<Integer> times = new ArrayList<>();
+            if (1 == (1 & mul)) {
+                times.add(0);
+            }
+            if (1 << 1 == (1 << 1 & mul)) {
+                times.add(600);
+            }
+            if (1 << 2 == (1 << 2 & mul)) {
+                times.add(1800);
+            }
+            if (1 << 3 == (1 << 3 & mul)) {
+                times.add(3600);
+            }
+   -Get the current playback duration setting(s)
+   deviceParams.getMusicTime()  
+   -Set the current playback duration(s)
+   MeariUser.getInstance().setMusicTime(time, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+·Whether to support music playback mode setting 0-not supported bit1: sequential playback bit2-single loop bit3-random playback
+cameraInfo.getMpm()
+   -Get the current playback mode (0 means sequential playback (default), 1 means single loop, 2 means random playback)
+   deviceParams.getMusicCyclical()
+   -Set the current playback mode (0 means sequential playback (default), 1 means single loop, 2 means random playback)
+   MeariUser.getInstance().setMusicCyclical(mode, new IControlMusicCallback() {
+                @Override
+                public void onSuccess(String currentMusicID) {
+                    
+                }
+
+                @Override
+                public void onFailed(int errorCode, String errorMsg) {
+
+                }
+            });
+
+
+```
+
 
 ## 9.6 Doorbell parameter setting
 ### 9.6.1 Device Intercom volume settings
@@ -5049,8 +5182,7 @@ Used to receive messages such as device add success message, doorbell call messa
 
 ### 11.1.1 Connect to MQTT Service
 
-// Called after the user login successfully
-MeariUser.getInstance (). ConnectMqttServer (application);
+No need to call in 5.3.0, it will be called in sdk.
 
 ### 11.1.2 Exit MQTT Service
 

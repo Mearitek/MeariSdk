@@ -79,6 +79,11 @@ public class MyMessageHandler implements MqttMessageCallback {
     }
 
     @Override
+    public void addDeviceFailedNoMatchAreas(String s) {
+
+    }
+
+    @Override
     public void onChimeDeviceLimit(String s) {
 
     }

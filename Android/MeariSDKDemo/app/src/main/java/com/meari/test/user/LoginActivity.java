@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String account = edtAccount.getEditableText().toString().trim();
         String pwd = edtPwd.getEditableText().toString().trim();
-        MeariUser.getInstance().loginWithAccount("CN", "86", account, pwd, new ILoginCallback() {
+        MeariUser.getInstance().loginWithAccount("CN", "86", account, pwd, false, new ILoginCallback() {
             @Override
             public void onSuccess(UserInfo userInfo) {
                 Toast.makeText(LoginActivity.this, R.string.toast_success, Toast.LENGTH_LONG).show();

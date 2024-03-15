@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
         String verificationCode = "";
         // Mobile phone number registration requires a verification code
         // getValidateCodeWithAccount(String countryCode, String phoneCode, String userAccount, IValidateCallback callback)
-        MeariUser.getInstance().registerWithAccount("CN", "86", account, pwd, nickname, verificationCode, new IRegisterCallback() {
+        MeariUser.getInstance().registerWithAccount("CN", "86", account, pwd, nickname, verificationCode, 0, new IRegisterCallback() {
             @Override
             public void onSuccess(UserInfo userInfo) {
                 Toast.makeText(RegisterActivity.this, R.string.toast_success, Toast.LENGTH_LONG).show();
