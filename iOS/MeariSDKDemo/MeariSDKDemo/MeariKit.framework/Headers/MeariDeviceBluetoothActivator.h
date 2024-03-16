@@ -10,7 +10,9 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "MeariUser.h"
 #import "MRBleAdvModel.h"
-typedef void(^MeariSuccess_BluetoothPeripheral)(CBPeripheral *peripheral, MRBleAdvModel *model);
+typedef void(^MeariSuccess_BluetoothPeripheral)(CBPeripheral * _Nullable peripheral, MRBleAdvModel * _Nullable model,NSString * _Nullable name);
+API_AVAILABLE(ios(10.0))
+typedef void(^MeariSearchFailure)(NSError * _Nullable error,CBManagerState state);
 typedef NS_ENUM (NSInteger, MeariBluetoothErrorCode) {
     MeariBluetoothErrorCodeSuccesss = 10000,
     MeariBluetoothErrorCodeStateUnavailable = 10001,
@@ -27,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class MeariDeviceBluetoothActivator;
 
 @protocol MeariDeviceBluetoothActivatorDelegate<NSObject>
-
+- (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error ;
 @required
 
 - (void)blueToothCentralManagerDidUpdateState:(nonnull CBCentralManager *)central;
@@ -50,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)startSearchBluetoothDeviceWithSuccess:(MeariSuccess_BluetoothPeripheral)success failure:(MeariFailure)failure;
+- (void)startSearchBluetoothDeviceWithSuccess:(MeariSuccess_BluetoothPeripheral)success failure:(MeariSearchFailure)failure API_AVAILABLE(ios(10.0));
 /**
  停止蓝牙搜索
  */
@@ -77,6 +79,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)disconnectBluetoothDevice:(CBPeripheral *)peripheral success:(MeariSuccess)success failure:(MeariFailure)failure;
 
+/**
+ disconnect Bluetooth Device
+ 断开当前蓝牙设备
+  
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)disconnectCurrentBluetoothDeviceWithsuccess:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  Gets a list of Wi-Fi scanned by Bluetooth devices
@@ -85,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)getDeviceWifiListWithSuccess:(MeariSuccess_Str)success failure:(MeariFailure)failure;
+- (void)getDeviceWifiListWithSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
 
 /**
  add Bluetooth Device
@@ -97,15 +107,21 @@ NS_ASSUME_NONNULL_BEGIN
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)addBluetoothDeviceWithWifi:(NSString *)wifi password:(NSString *)password token:(NSString *)token success:(MeariSuccess_Str)success failure:(MeariFailure)failure;
+- (void)addBluetoothDeviceWithWifi:(NSString *)wifi password:(NSString *)password token:(NSString *)token success:(MeariSuccess_String)success failure:(MeariFailure)failure activeDeviceWifiBlock:(MeariSuccess_Dictionary)activeDeviceWifiBlock;
 /**
- add Bluetooth Device
+ activate bluetooth device wifi
+ 激活蓝牙设备wifi
+ */
+@property(nonatomic, copy) MeariSuccess_Dictionary activeDeviceWifiBlock;
+
+/**
+ Activate Bluetooth device hotspot
  激活蓝牙设备热点
  
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)activeBluetoothDeviceWifiWithSuccess:(MeariSuccess_Str)success failure:(MeariFailure)failure;
+- (void)activeBluetoothDeviceWifiWithSuccess:(void(^)(NSString *wifiInfoString,NSString *deviceToken))success failure:(MeariFailure)failure;
 
 /**
  get Bluetooth Device Token

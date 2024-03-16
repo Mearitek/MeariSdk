@@ -34,10 +34,16 @@ typedef NS_ENUM(NSInteger, MeariAlarmMessageType) {
     MeariAlarmMessageTypeSomeoneCall = 9,           // visitor alarm, available on ipc device, alarm when somebody tap the ring.(有人来访)
     MeariAlarmMessageTypeTear = 10,                  //Tear device alarm (强行拆除报警)
     MeariAlarmMessageTypeHuman = 11,                  //Person detected (人形过滤检测到人)
+    MeariAlarmMessageTypeDogDark = 14,                //Dog dark detected (犬吠检测)
     MeariAlarmMessageTypeAICar = 17,                 //Intelligent detection of car (智能检测到车辆)
     MeariAlarmMessageTypeAIPet = 18,                 //Intelligent detection of pet (智能检测到宠物)
     MeariAlarmMessageTypeAIPackage = 19,              //Intelligent detection of package (智能检测到包裹)
     MeariAlarmMessageTypeAIHunman = 20,               //Intelligent detection of person (智能检测到人)
+    MeariAlarmMessageTypeRemoveSDcard = 21,               //hightemp(高温报警) = 21,               //hightemp(高温报警)
+    MeariAlarmMessageTypeHightemp = 22,               //hightemp(高温报警)
+    MeariAlarmMessageTypeLowtemp = 23,               //lowtemp(低温报警)
+    MeariAlarmMessageTypeAirdry = 24,               //Airdry(空气干燥报警)
+    MeariAlarmMessageTypeAirhumid = 25,               //airhumid(空气湿润报警)
 };
 
 typedef NS_ENUM(NSInteger, MeariVisitorMessageType) {
@@ -136,6 +142,7 @@ typedef NS_ENUM(NSInteger, MeariShareMessageType) {
 
 @property (nonatomic, assign)NSInteger cloudImgType; //AWS Image
 
+@property (nonatomic, strong) NSArray *faceInfo;//人脸识别信息
 @end
 
 @interface MeariMessageInfoVisitor : MeariMessageInfo

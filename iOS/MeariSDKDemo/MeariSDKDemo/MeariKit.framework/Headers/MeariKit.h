@@ -23,6 +23,7 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 #import <MeariKit/MeariSDK.h>
 #import <MeariKit/MeariBaseModel.h>
 #import <MeariKit/MeariDevice.h>
+#import <MeariKit/MeariDevice+Capability.h>
 #import <MeariKit/MeariDevice+NVR.h>
 #import <MeariKit/MeariDeviceInfo.h>
 #import <MeariKit/MeariDeviceParam.h>

@@ -29,7 +29,11 @@ typedef enum {
     MR_BLE_CMD_BIND_STATUS_RSP = 0x010b,
     MR_BLE_CMD_ACTIVE_WIFI_REQ = 0x010c,//激活设备Wifi
     MR_BLE_CMD_ACTIVE_WIFI_RSP = 0x010d,
-    
+    MR_BLE_CMD_KEY_REQ_V2 = 0x0110,//获取临时key v2
+    MR_BLE_CMD_KEY_RSP_V2 = 0x0111,
+    MR_BLE_CMD_GET_TOKEN_REQ = 0x0112,//离线从设备获取token
+    MR_BLE_CMD_GET_TOKEN_RSP = 0x0113,
+
     MR_BLE_CMD_GET_DP_REQ = 0x0500,//获取DP点
     MR_BLE_CMD_GET_DP_RSP = 0x0501,
     MR_BLE_CMD_SET_DP_REQ = 0x0502,//设置DP点

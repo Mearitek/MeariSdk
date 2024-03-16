@@ -55,6 +55,7 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
     MeariMqttCodeTypeDeviceAutobundleFailure    = 171,
     MeariMqttCodeTypeDeviceAutobundleByOtherFailure = 172,
     MeariMqttCodeTypeDeviceAutobundleOverLimit  = 173,
+    MeariMqttCodeTypeDeviceAutobundleRegionMismatch  = 177,
     MeariMqttCodeTypeDeviceShare                = 180,
     MeariMqttCodeTypeNewDeviceShareToMeRequest  = 181,
     MeariMqttCodeTypeNewDeviceShareToHimRequest = 182,
@@ -93,6 +94,9 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
     
     MeariMqttCodeTypeSimTrafficExpired          = 250,
     MeariMqttCodeTypeSimTrafficShortage         = 251,
+    
+    MeariMqttCodeTypeAddDeviceCheckPassword     = 252,
+    MeariMqttCodeTypeCleanMqttCache             = 253,
     
     MeariMqttCodeTypeNotice                     = 200,
     MeariMqttCodeTypeSomebodyCall               = 201,
@@ -136,6 +140,9 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, assign) NSInteger endTime; // notice end time(公告结束时间)
 @property (nonatomic, assign) NSInteger noticeID; // notice end time(公告结束时间)
 @property (nonatomic, copy) NSString *appProtocolVer; // notice end time(公告最低支持协议版本)
+@property (nonatomic, assign) NSInteger bindDeviceType; // 拍照门铃绑定设置
+@property (nonatomic, copy) NSString *bindSnNum; // 拍照门铃Sn
+@property (nonatomic, strong) NSArray *faceInfo;//人脸识别信息
 @end
 
 @interface MeariEventInfo : MeariBaseModel
@@ -178,6 +185,8 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, assign) NSInteger iotType;
 @property (nonatomic, assign) NSString *pushType;
 @property (nonatomic, copy) NSString *deviceUrl;
+@property (nonatomic, assign) NSInteger isForce;
+@property (nonatomic, assign) NSInteger countDownSecond;
 @property (nonatomic, copy) MeariEventInfo *eventInfo; //Service incident reporting (服务事件上报)
 
 @property (nonatomic, copy) NSString *userName;
@@ -214,6 +223,7 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, copy) NSString *tp;
 
 @property (nonatomic, assign) NSInteger discountPeriod;
+@property (nonatomic, strong) NSArray *faceInfo;//人脸识别信息
 @end
 
 

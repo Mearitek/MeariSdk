@@ -7,16 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MeariDeviceInfo.h"
-#import "MeariDeviceParam.h"
-#import "MeariDeviceControl.h"
-typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
-    MeariDevicePtzDirectionNone = 0,      //not support
-    MeariDevicePtzDirectionAll = 1,       //left/right/up/down
-    MeariDevicePtzDirectionUpDown = 2,    //up/down
-    MeariDevicePtzDirectionLeftRight = 3  //left/right
-};
-
+#import <MeariKit/MeariDeviceInfo.h>
+#import <MeariKit/MeariDeviceParam.h>
+#import <MeariKit/MeariDeviceControl.h>
+#import <MeariKit/MeariDeviceEnum.h>
 @interface MeariDevice : MeariBaseModel<MeariDeviceControl>
 + (instancetype)deviceWithDeviceId:(NSInteger)deviceId;
 + (instancetype)deviceWithDeviceSn:(NSString *)sn;
@@ -60,7 +54,9 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** hunting*/
 /** 狩猎相机*/
 @property (nonatomic, assign, readonly, getter = isHunting) BOOL hunting;
-
+/** petfeeder*/
+/** 宠物投食器*/
+@property (nonatomic, assign, readonly, getter = isPetfeeder) BOOL petfeeder;
 
 /** Whether the device is support iot*/
 /** 是否iOT设备*/
@@ -122,54 +118,10 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** Get Supported munal light duration */
 /** 获取支持的SDK手动亮灯时长*/
 - (NSArray <NSNumber *>*)supportLightDurationSeconds;
-/** Whether to support LED setting */
-/** 是否支持指示灯设置 */
-@property (nonatomic, assign, readonly) BOOL supportLED;
-/** Whether to support two-way voice intercom */
-/** 是否支持双向语音对讲 */
-@property (nonatomic, assign, readonly) BOOL supportFullDuplex;
-/** Whether to support voice intercom */
-/** 是否支持单向语音对讲 */
-@property (nonatomic, assign, readonly) BOOL supportVoiceTalk;
-/** Whether to support mute */
-/** 是否有麦克 */
-@property (nonatomic, assign, readonly) BOOL supportMute;
-/** Whether to support HD SD */
-/** 码流是否支持高清标清 */
-@property (nonatomic, assign, readonly) BOOL supportVideoHDSD;
-/** Only support HD */
-/** 码流是否只支持高清 */
-@property (nonatomic, assign, readonly) BOOL supportVideoOnlyHD;
-/** Whether to support host Message */
-/** 是否支持主人录制留言 */
-@property (nonatomic, assign, readonly) MeariDeviceSupportHostType supportHostMessage;
-/** Whether to support power management */
-/** 是否支持功耗管理 */
-@property (nonatomic, assign, readonly) BOOL supportPowerManagement;
-/** Whether to support SDCard playback */
-/** 是否支持SD卡 */
-@property (nonatomic, assign, readonly) BOOL supportSDCard;
-/** Whether to support Machinery Bell */
-/** 是否支持机械铃铛 */
-@property (nonatomic, assign, readonly) BOOL supportMachineryBell;
-/** Whether to support Wireless Bell */
-/** 是否支持无线铃铛 */
-@property (nonatomic, assign, readonly) BOOL supportWirelessBell;
-/** Whether to support Wireless */
-/** 是否支持无线信号开关，用于控制无线铃铛 */
-@property (nonatomic, assign, readonly) BOOL supportWirelessEnable;
-/** Whether to support Wireless */
-/** 是否支持无线信号开关，用于开关无线铃铛 */
-@property (nonatomic, assign, readonly) BOOL supportWirelessSwitchEnable;
-/** Whether to support Wireless */
-/** 是否支持无线信号配对，用于控制配对铃铛 */
-@property (nonatomic, assign, readonly) BOOL supportWirelessPairEnable;
-/** Whether to support Wireless */
-/** 是否支持无线信号音量，用于控制无线铃铛音量 */
-@property (nonatomic, assign, readonly) BOOL supportWirelessVolumeEnable;
-/** Whether to support Wireless */
-/** 是否支持无线信号歌曲，用于控制无线铃铛歌曲选择 */
-@property (nonatomic, assign, readonly) BOOL supportWirelessSongsEnable;
+
+/**是否支持AOV模式下 回放速度的设定 */
+- (NSInteger)supportAovPlaybackSpeed;
+
 
 /** Whether to support local server */
 /** 是否支持ONVIF */
@@ -177,12 +129,8 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** Whether to support local server */
 /** 是否支持新版本ONVIF */
 @property (nonatomic, assign, readonly) BOOL supportNewOnvif;
-/** Whether to support image flip */
-/** 是否支持镜头翻转 */
-@property (nonatomic, assign, readonly) BOOL supportFlip;
-/** Whether to support upgrade device */
-/** 是否支持OTA升级固件版本 */
-@property (nonatomic, assign, readonly) BOOL supportOTA;
+
+
 /** Whether to support set body detection sensitivity */
 /** 是否支持设置人体侦测等级 */
 @property (nonatomic, assign, readonly) MeariDevicePirSensitivity supportPirSensitivity;
@@ -193,161 +141,86 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** 是否为低功耗设备 */
 @property (nonatomic, assign, readonly) BOOL lowPowerDevice;
 /** Whether to support switching the main stream */
-/** 是否为支持切换主码流 */
+/** 是否支持切换主码流 */
 @property (nonatomic, assign, readonly) BOOL supportVideoEnc;
-/** Whether to support humanoid tracking */
-/** 是否为支持人形跟踪 */
-@property (nonatomic, assign, readonly) BOOL supportHumanTrack;
-/** Whether to support Humanoid detection */
-/** 是否为支持人形检测 */
-@property (nonatomic, assign, readonly) BOOL supportPeopleDetect;
-/** 是否为支持白天人形检测 */
-@property (nonatomic, assign, readonly) BOOL supportPeopleDetectDay;
-/** 是否为支持夜间人形检测 */
-@property (nonatomic, assign, readonly) BOOL supportPeopleDetectNight;
-/** 是否为支持人形边框 */
-@property (nonatomic, assign, readonly) BOOL supportPeopleTrackBorder;
-/** Whether to support the alarm plan*/
-/** 是否为支持报警计划 */
-@property (nonatomic, assign, readonly) BOOL supportAlarmPlan;
+
+
 /** Whether to support the iot protocol*/
-/** 是否为支持iot协议 */
+/** 是否支持iot协议 */
 @property (nonatomic, assign, readonly) BOOL supportIotProtocol;
-/** Whether to support brightness adjustment*/
-/** 是否为支持亮度调节 */
-@property (nonatomic, assign, readonly) BOOL supportLightAdjust;
-/** Whether to support chromecast*/
-/** 是否为支持chromecast */
-@property (nonatomic, assign, readonly) BOOL supportChromecast;
-/** Whether to support echoshow*/
-/** 是否为支持echoshow */
-@property (nonatomic, assign, readonly) BOOL supportEchoshow;
-/** Whether to support record off*/
-/** 是否为支持录像关闭 */
-@property (nonatomic, assign, readonly) BOOL supportRecordClose;
-/** 是否为支持音量调节 */
+
+
+/** 是否支持音量调节 */
 @property (nonatomic, assign, readonly) BOOL supportSpeakVolume;
-/** 是否为支持报警间隔 */
-@property (nonatomic, assign, readonly) BOOL supportAlarmInterval;
-/** 是否为支持roi区域报警 */
-@property (nonatomic, assign, readonly) BOOL supportAlarmRoi;
-/** 是否为支持人脸识别 */
+
+/** 是否支持人脸识别 */
 @property (nonatomic, assign, readonly) BOOL supportFaceRecognition;
-/** 是否为支持声光报警 */
-@property (nonatomic, assign, readonly) BOOL supportVoiceLightAlarm;
-/** 是否为支持声光报警时间段 */
-@property (nonatomic, assign, readonly) BOOL supportVoiceLightAlarmPlan;
-/** 是否为支持声光报警铃声 */
-@property (nonatomic, assign, readonly) BOOL supportVoiceLightAlarmRing;
+
 /** 视频显示的类型 */
 @property (nonatomic, assign, readonly) MeariDeviceVideoType displayVideoType;
 /** 灯具摄像机类型 */
 @property (nonatomic, assign, readonly) MeariDeviceFloodCameraType floodCameraType;
 /** 是否支持时间风格设置 */
 @property (nonatomic, assign, readonly) BOOL supportTimeShowSetting;
-/** 是否支持babymonitor音乐播放 */
-@property (nonatomic, assign, readonly) BOOL supportPlayMusic;
-/** 是否支持babymonitor温湿度检测 */
-@property (nonatomic, assign, readonly) BOOL supportDetectTemperatureHumidity;
-/** 是否支持 报警计划跨天 */
-@property (nonatomic, assign, readonly) BOOL supportAlarmPlanCrossDays;
+
+
 /** pir等级设置，用于多级设置开关1-N档 返回最大支持等级， 0不支持*/
 @property (nonatomic, assign, readonly) NSInteger supportPirLevel;
-/** 人形检测灵敏度设置，用于多级设置开关1-N档 返回最大支持等级， 0不支持*/
-@property (nonatomic, assign, readonly) NSInteger supportHumanLevel;
+
 /** 是否支持视频预览出图 (语音门铃使用) */
 @property (nonatomic, assign, readonly) BOOL supportPreviewImage;
-/** 是否防拆报警 */
-@property (nonatomic, assign, readonly) BOOL supportTamperAlarmSetting;
+
 /** 支持的云台方向 */
 @property (nonatomic, assign, readonly) MeariDevicePtzDirection ptzDirection;
 /** 支持新版本的码率 */
 @property (nonatomic, assign, readonly) BOOL supportNewVideoStream;
-/** 是否支持pir显示 */
-@property (nonatomic, assign, readonly) BOOL supportPir;
-/** 是否支持灯具摄像机的联动亮灯*/
-@property (nonatomic, assign, readonly) BOOL supportLinkLight;
-/** 是否噪声异常巡查功能*/
-@property (nonatomic, assign, readonly) BOOL supportDbPatrol;
-/** baby是否支持上传用户预览信息功能*/
-@property (nonatomic, assign, readonly) BOOL supportUploadAccountInfo;
-/**是否支持 ptz 巡逻*/
-@property (nonatomic, assign, readonly) BOOL supportPtzPatrol;
-/**是否支持工作模式*/
-@property (nonatomic, assign, readonly) BOOL supportMotionMode;
-/**是否支持持续录像模式*/
-@property (nonatomic, assign, readonly) BOOL supportCommonMode;
-/**是否支持报警总开关*/
-@property (nonatomic, assign, readonly) BOOL supportAlarmWhole;
-/** baby是否支持rgb*/
-@property (nonatomic, assign, readonly) BOOL supportRGB;
-/** 是否支持移动侦测*/
-@property (nonatomic, assign, readonly) BOOL supportMotion;
-/** 是否支持哭声侦测*/
-@property (nonatomic, assign, readonly) BOOL supportCryDetect;
-/** 是否支持噪声侦测*/
-@property (nonatomic, assign, readonly) BOOL supportNoiseDetect;
-/** 是否支持抗闪烁*/
-@property (nonatomic, assign, readonly) BOOL supportFlicker;
-/** 是否支持自动更新*/
-@property (nonatomic, assign, readonly) BOOL supportAutoUpdate;
-/** 是否支持实时信息统计*/
-@property (nonatomic, assign, readonly) BOOL supportRealTimeStatistics;
-/** 是否支持天/月信息统计*/
-@property (nonatomic, assign, readonly) BOOL supportIntervalStatistics;
+
 /** 是否支持鸣笛报警*/
 @property (nonatomic, assign, readonly) BOOL supportSiren;
+/** 是否支持最大警报时长 flight*/
+@property (nonatomic, assign, readonly) BOOL supportMaxSirenTime;
 /** 是否支持设备扬声器*/
 @property (nonatomic, assign, readonly) BOOL supportDeviceSpeaker;
 /** 是否支持麦克风*/
 @property (nonatomic, assign, readonly) BOOL supportMicrophone;
-/** 是否支持开关暖光灯*/
-@property (nonatomic, assign, readonly) BOOL supportOnOffWarmLight;
-/** 是否支持开关非暖光灯*/
-@property (nonatomic, assign, readonly) BOOL supportOnOffUnWarmLight;
-/** 是否支持录像声音开关*/
-@property (nonatomic, assign, readonly) BOOL supportRecordVoice;
-/** 是否支持全天录像*/
-@property (nonatomic, assign, readonly) BOOL supportFullRecord;
-/** 是否支持事件录像*/
-@property (nonatomic, assign, readonly) BOOL supportEventRecord;
+
+
 /** 彩色日夜模式*/
 @property (nonatomic, assign, readonly) MeariDeviceDayNightMode dayNightType;
+
+/**
+ dnm2
+ 彩色日夜模式
+ supportdnm2 是否有 dnm2 能力级
+ supportDayNightModeDefaultMode  支持非暖光灯的夜视模式
+ supportDayNightModeFullColorMode 支持暖光灯的夜视模式
+ supportDayNightModeDimlightMode  支持微光全彩模式
+ */
+@property (nonatomic, assign, readonly) BOOL supportdnm2;
+@property (nonatomic, assign, readonly) BOOL supportDayNightModeDefaultMode;
+@property (nonatomic, assign, readonly) BOOL supportDayNightModeFullColorMode;
+@property (nonatomic, assign, readonly) BOOL supportDayNightModeDimlightMode;
 /** 设备链接加密*/
 @property (nonatomic, assign, readonly) BOOL supportConnectEncryption;
-/** 是否支持最大警报时长 flight*/
-@property (nonatomic, assign, readonly) BOOL supportMaxSirenTime;
-/** 是否支持 亮灯时长设置 flight*/
-@property (nonatomic, assign, readonly) BOOL supportLightDuration;
-/** 是否支持 亮灯计划 flight*/
-@property (nonatomic, assign, readonly) BOOL supportLightSchedule;
+
+
 /** 是否支持时区设置*/
 @property (nonatomic, assign, readonly) BOOL supportTimeZone;
-/** 是否重启设置*/
-@property (nonatomic, assign, readonly) BOOL supportReboot;
+
 /** 是否连接私有协议NVR,允许被发现功能*/
 @property (nonatomic, assign, readonly) BOOL supportFoundPermission;
 /** 设备报警方式是否支持视频上报 */
 @property (nonatomic, assign, readonly) BOOL supportAlarmVideoReport;
 /**  支持事件报警类型设置切换 / */
 @property (nonatomic, assign, readonly) BOOL supportAlarmVideoEventSwitch;
+/** 是否支持logo叠加 */
+@property (nonatomic, assign, readonly) BOOL supportLogo;
 /** 设备视频是否支持AI处理 */
 @property (nonatomic, assign, readonly) BOOL supportAlarmAI;
-/** 噪音报警是否支持录像*/
-@property (nonatomic, assign, readonly) BOOL supportNoiseRecord;
-/** IPC是否支持显示电量*/
-@property (nonatomic, assign, readonly) BOOL supportShowIpcBattery;
 
-/** 支持多边形报警区域*/
-@property (nonatomic, assign, readonly) BOOL supportPolygonRoiAlarm;
-/** 支持长电设备低功耗模式*/
-@property (nonatomic, assign, readonly) BOOL supportIpcLowpowerMode;
-/** 支持PTZ*/
-@property (nonatomic, assign, readonly) BOOL supportPTZ;
-/** 支持回放视频下载*/
-@property (nonatomic, assign, readonly) BOOL supportVideoDownload;
-/** 支持回放视频删除*/
-@property (nonatomic, assign, readonly) BOOL supportVideoDelete;
+
+
+
 /** 支持回放视频倍速*/
 @property (nonatomic, assign, readonly) NSArray *supportPlayBackSpeed;
 /** 支持自适应码率*/
@@ -363,18 +236,86 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** 是否支持主人投食留言语音设置*/
 @property (nonatomic, assign, readonly) BOOL supportPetMasterMessageSetting;
 
-@property (nonatomic, assign, readonly) BOOL supportVopSetting ;
-@property (nonatomic, assign, readonly) BOOL supportPhotoResolutionSetting ;
-@property (nonatomic, assign, readonly) BOOL supportSnapshotsSetting;
-@property (nonatomic, assign, readonly) BOOL supportVideoResolutionSetting;
-@property (nonatomic, assign, readonly) BOOL supportRecordDurationSetting;
-@property (nonatomic, assign, readonly) BOOL supportPeriodIntervalTimeSetting;
-@property (nonatomic, assign, readonly) BOOL supportMonitoringPeriodSetting;
-@property (nonatomic, assign, readonly) BOOL supportIrLedSetting;
-@property (nonatomic, assign, readonly) BOOL supportRestoreFactorySetting;
-@property (nonatomic, assign, readonly) BOOL supportMicrophoneSetting;
-@property (nonatomic, assign, readonly) BOOL supportLanguageSetting;
 
+/** 支持狩猎相机工作模式设置  */
+@property (nonatomic, assign, readonly) BOOL supportVopSetting ;
+/** 支持狩猎相机拍照管理设置  */
+@property (nonatomic, assign, readonly) BOOL supportPhotoResolutionSetting ;
+/** 支持狩猎相机拍照张数设置  */
+@property (nonatomic, assign, readonly) BOOL supportSnapshotsSetting;
+/** 支持狩猎相机录像管理设置  */
+@property (nonatomic, assign, readonly) BOOL supportVideoResolutionSetting;
+/** 支持狩猎相机录像时长设置  */
+@property (nonatomic, assign, readonly) BOOL supportRecordDurationSetting;
+/** 支持狩猎相机定时拍摄设置  */
+@property (nonatomic, assign, readonly) BOOL supportPeriodIntervalTimeSetting;
+/** 支持狩猎相机监控时段设置  */
+@property (nonatomic, assign, readonly) BOOL supportMonitoringPeriodSetting;
+/** 支持狩猎相机irled设置  */
+@property (nonatomic, assign, readonly) BOOL supportIrLedSetting;
+/** 支持狩猎相机恢复默认设置  */
+@property (nonatomic, assign, readonly) BOOL supportRestoreFactorySetting;
+/** 支持狩猎相机麦克风设置  */
+@property (nonatomic, assign, readonly) BOOL supportMicrophoneSetting;
+/** 支持狩猎相机语言设置  */
+@property (nonatomic, assign, readonly) BOOL supportLanguageSetting;
+/** 支持狩猎相机时间设置  */
+@property (nonatomic, assign, readonly) BOOL supportTimeSetting;
+/** 支持拍照门铃实时画面开关设置  */
+@property (nonatomic, assign, readonly) BOOL supportPreviewSwitchSetting;
+/** 支持继电器设置  */
+@property (nonatomic, assign, readonly) BOOL supportRelay;
+/** 支持狩猎相机pir设置  */
+@property (nonatomic, assign, readonly) BOOL supportPrtpPirSetting;
+/**门铃绑定相关，是否显示门铃关联 */
+@property (nonatomic, assign, readonly) BOOL supportRelayFunction;
+/** 是否支持切换WIFI */
+@property (nonatomic, assign, readonly) BOOL supportSwitchWifi;
+/** 是否支持设置安全访问密码*/
+@property (nonatomic, assign, readonly) BOOL supportDevicePassword;
+/** 是否支持犬吠检测 */
+@property (nonatomic, assign, readonly) BOOL supportDogBarkDetection;
+
+/** 是否支持宠物检测 */
+@property (nonatomic, assign, readonly) BOOL supportPetDetection;
+
+/** 支持双目 */
+@property (nonatomic, assign, readonly) BOOL supportMultiCamera;
+
+-(NSString *)multiCameraParams;
+/**是否支持AOV模式 */
+@property (nonatomic, assign, readonly) BOOL supportAovMode;
+
+/**是否支持全时低功耗的工作模式设置*/
+@property (nonatomic, assign, readonly) BOOL supportLowPowerWorkMode;
+@property (nonatomic, assign, readonly) BOOL supportLowPowerSaveWorkMode;
+@property (nonatomic, assign, readonly) BOOL supportLowPowerPerformanceWorkMode;
+@property (nonatomic, assign, readonly) BOOL supportLowPowerCustomWorkMode;
+/** 是否支持事件录像延时 （事件录像结束后，再多录一定时间的录像）*/
+@property (nonatomic, assign, readonly) BOOL supportEventRecordDelay;
+/**是否支持补光距离配置*/
+@property (nonatomic, assign, readonly) BOOL supportFillLightDistance;
+/**是否支持夜景模式配置*/
+@property (nonatomic, assign, readonly) BOOL supportNightSceneMode;
+
+/**是否支持双SIM卡 */
+@property (nonatomic, assign, readonly) BOOL supportDualSIMCard;
+/**是否支持限制4G设备流量 */
+@property (nonatomic, assign, readonly) BOOL supportLimitTraffic;
+
+/** 支持AOV视频帧率数组*/
+- (NSArray <NSNumber *>*)supportAovModeFrameRateArray;
+/** 支持实时视频帧率数组*/
+- (NSArray <NSNumber *>*)supportLiveVideoFrameRateArray;
+
+/** 支持音乐限制时间数组(0-不限时) */
+- (NSArray <NSNumber *>*)supportMusicLimitTimeArray;
+/** 是否支持毫米波雷达 bit0=1支持开关 bit1:呼吸使能 bit2:心跳使能 bit3:身体状态使能 bit4:身体运动状态量*/
+- (BOOL)supportMrda; 
+- (BOOL)supportMrdaBreatheEnable;
+- (BOOL)supportMrdaHeartBeatEnable;
+- (BOOL)supportMrdaConditionEnable;
+- (BOOL)supportMrdaMotionStateQuantity; 
 @end
 
 @interface MeariDeviceList : MeariBaseModel
@@ -405,13 +346,21 @@ typedef NS_ENUM(NSInteger, MeariDevicePtzDirection) {
 /** 新版NVR */
 /** neutral nvr */
 @property (nonatomic, strong) NSArray <MeariDevice *> *neutralnvrs;
+/** Base NVR */
+/** base nvr */
+@property (nonatomic, strong) NSArray <MeariDevice *> *basenvrs;
 /** jingle */
 /** 铃铛 */
 @property (nonatomic, strong) NSArray <MeariDevice *> *jings;
 /** photobell */
 /** 拍照门铃 */
 @property (nonatomic, strong) NSArray <MeariDevice *> *photoBells;
+/** huntings */
+/** 狩猎相机 */
+@property (nonatomic, strong) NSArray <MeariDevice *> *huntings;
 /** prtpDevice  */
 /** prtp设备存本地*/
 @property (nonatomic, strong) NSArray <MeariDevice *> *prtpDevices;
+
+- (NSMutableArray<MeariDevice *> *)allDeviceList;
 @end

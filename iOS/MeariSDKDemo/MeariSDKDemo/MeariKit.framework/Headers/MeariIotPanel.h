@@ -7,15 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "MeariBlock.h"
 @class MeariPanelHistoryInfo;
 @class MeariPanelBindInfo;
 
-typedef void(^MeariSuccess)(void);
-typedef void(^MeariFailure)(NSError *error);
+
 typedef void(^MeariSuccess_panelHistoryList)(NSArray <MeariPanelHistoryInfo *> *list);
 typedef void(^MeariSuccess_panelHistory)(MeariPanelHistoryInfo *info);
-typedef void(^MeariSuccess_panelBindInfo)(MeariPanelBindInfo *info);
+typedef void(^MeariSuccess_panelBindInfo)(NSDictionary *data);
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -102,6 +102,17 @@ typedef NS_OPTIONS(NSInteger, PPS_PRTP_DP_MODE_TYPE) {
     PPS_PRTP_PLAYBACK_MONTH_RSP = 200105,//按年月搜索 返回
     PPS_PRTP_PLAYBACK_DAY_REQ = 200106,//按天搜索 包含缩略图
     PPS_PRTP_PLAYBACK_DAY_RSP = 200107,//按天搜索 包含缩略图 返回
+    PPS_PRTP_PLAYBACK_DONWLOAD_SOURCE  =  200108, /// 下载对应的资源
+};
+
+
+typedef NS_OPTIONS(NSInteger, PPS_AP_CONFIG_CMD) {
+    PPS_AP_CONFIG_NEAR_WIFI_INFO_REQ =  200012, /// 获取周边WIFI信息
+    PPS_AP_CONFIG_NEAR_WIFI_INFO_RSP =  200013, /// 返回周边WIFI信息
+    PPS_AP_CONFIG_WIFI_AND_BIND_REQ = 200014, /// 配网和绑定指令
+    PPS_AP_CONFIG_WIFI_AND_BIND_RSP = 200015, /// 返回联网结果
+    PPS_AP_CONFIG_AP_ERROR_CODE_REQ = 200016, /// 获取失败信息
+    PPS_AP_CONFIG_AP_ERROR_CODE_RSP = 200017 /// 返回失败信息
 };
 
 /**
@@ -138,6 +149,8 @@ static int ERR_HISTORY_INTERRUPTED = 3;
 
 static NSString *const MRDEVICE_PRTP_CONNECT_CHANGE = @"MRDEVICE_PRTP_CONNECT_CHANGE";
 
+static NSString *const MRDEVICE_PHOTOBELL_RENDER = @"MRDEVICE_PHOTOBELL_RENDER";
+
 @interface MRPlayer : NSObject
 @property (nonatomic, assign) SPEECH_MODE speechMode;
 @property (strong, nonatomic) NSMutableArray *searchResult;
@@ -157,6 +170,7 @@ static NSString *const MRDEVICE_PRTP_CONNECT_CHANGE = @"MRDEVICE_PRTP_CONNECT_CH
 @property (nonatomic, copy) MRSuccessID mdevice_search_success;
 @property (nonatomic, copy) MRFailureHandler mconnect_abnormal_close;
 @property (nonatomic, copy) MRPrtpConnectHandler mdevice_prtp_connect_change;
+@property (nonatomic, copy) MRSuccessString mdevice_ap_wifi_list_success;
 @property (nonatomic, assign) unsigned int mstatus;
 
 /**
@@ -290,6 +304,14 @@ static NSString *const MRDEVICE_PRTP_CONNECT_CHANGE = @"MRDEVICE_PRTP_CONNECT_CH
              failure:(MRFailureError)error
          streamclose:(MRFailureError)streamclose;
 
+- (void)startPreview:(AppleOpenGLView *)gllayer
+             gllayer2:(AppleOpenGLView *)gllayer2
+            streamid:(VIDEO_STREAM)stream
+             channel:(int)channel
+             success:(MRSuccessHandler)success
+             failure:(MRFailureError)error
+         streamclose:(MRFailureError)streamclose;
+
 - (void)stopPreview:(MRSuccessHandler)success failure:(MRFailureError)error;
 
 - (void)changePreview:(AppleOpenGLView *)glLayer
@@ -325,7 +347,7 @@ static NSString *const MRDEVICE_PRTP_CONNECT_CHANGE = @"MRDEVICE_PRTP_CONNECT_CH
 
 /**
  *@brief start playback sd card
- *@param[in]  videoUIView -- videoUIView
+ *@param[in]  glLayer -- videoUIView
  *@param[in]  starttime -- 20150312120000
  *@param[in]  videoid -- streamid of device
  *@param[out] success  when success,then call it
@@ -337,6 +359,48 @@ static NSString *const MRDEVICE_PRTP_CONNECT_CHANGE = @"MRDEVICE_PRTP_CONNECT_CH
                 videoid:(NSInteger)videoid
                 success:(MRSuccessHandler)success
                 failure:(MRFailureError)error;
+/**
+ *@brief start playback sd card
+ *@param[in]  glLayer -- videoUIView
+ *@param[in]  streamID -- streamID
+ *@param[in]  glLayer2 -- videoUIView2
+ *@param[in]  streamID2 -- streamID2
+ *@param[in]  starttime -- 20150312120000
+ *@param[in]  videoid -- streamid of device
+ *@param[out] success  when success,then call it
+ *@param[out] error  when failed,then call it
+ */
+- (void)startPlaybackSd:(AppleOpenGLView *)glLayer
+                streamID:(int)streamID
+               gllayer2:(AppleOpenGLView *)glLayer2
+              streamID2:(int)streamID2
+              starttime:(NSString *)starttime
+                videoid:(NSInteger)videoid
+                success:(MRSuccessHandler)success
+                failure:(MRFailureError)error ;
+
+
+/**
+ *@brief start playback sd card
+ *@param[in]  gllayer -- videoUIView
+ *@param[in]  videoID -- streamID
+ *@param[in]  gllayer2 -- videoUIView2
+ *@param[in]  videoID2 -- streamID2
+ *@param[in]  stream -- 20150312120000
+ *@param[in]  channel -- streamid of device
+ *@param[out] success  when success,then call it
+ *@param[out] error  when failed,then call it
+ */
+
+- (void)startPreview:(AppleOpenGLView *)gllayer
+            videoID:(int)videoID
+            gllayer2:(AppleOpenGLView *)gllayer2
+            videoID2:(int)videoID2
+            streamid:(VIDEO_STREAM)stream
+             channel:(int)channel
+             success:(MRSuccessHandler)success
+             failure:(MRFailureError)error
+         streamclose:(MRFailureError)streamclose;
 
 /**
  *@brief send playback sd card cmd(seek,pause,resume)
@@ -366,7 +430,7 @@ static NSString *const MRDEVICE_PRTP_CONNECT_CHANGE = @"MRDEVICE_PRTP_CONNECT_CH
 
 /**
  *@brief Set playback speed
- *@param[out] speed
+ *@param[out] speed --speed
  */
 - (void)setPlaybackSpeed:(double)speed;
 /**
@@ -390,6 +454,20 @@ static NSString *const MRDEVICE_PRTP_CONNECT_CHANGE = @"MRDEVICE_PRTP_CONNECT_CH
 - (void)startDownloadPlaybackVideo:(NSString *)startTime endTime:(NSString *)endTime videoid:(NSInteger)videoid filePath:(NSString *)path success:(MRSuccessHandler)success failure:(MRFailureError)error;
 
 /**
+ *@brief start  multi download playback video
+ *@param[out] startTime 20150312120000
+ *@param[out] endTime   20150312120010
+ *@param[out] streamID   1
+ *@param[out] streamID2   2
+ *@param[out] videoid   streamid of device
+ *@param[out] path      download file path
+ *@param[out] path1      download file path
+ *@param[out] success  when success,then call it
+ *@param[out] error  when failed,then call it
+ */
+- (void)startMultiDownloadPlaybackVideo:(NSString *)startTime endTime:(NSString *)endTime videoid:(NSInteger)videoid  streamID:(NSInteger)streamID filePath:(NSString *)path streamID2:(NSInteger)streamID2 filePath1:(NSString *)path1 success:(MRSuccessHandler)success failure:(MRFailureError)error;
+
+/**
  *@brief start download playback video
  *@param[out] downloadIndex   current donwload index
  *@param[out] cmd   control of download 1:resume 2:pause 3:stop
@@ -398,6 +476,15 @@ static NSString *const MRDEVICE_PRTP_CONNECT_CHANGE = @"MRDEVICE_PRTP_CONNECT_CH
  *@param[out] error  when failed,then call it
  */
 - (void)downloadPlaybackVideoControl:(int)downloadIndex cmd:(int)cmd videoid:(NSInteger)videoid success:(MRSuccessHandler)success failure:(MRFailureError)error;
+/**
+ *@brief start multi download playback video
+ *@param[out] downloadIndex   current donwload index
+ *@param[out] cmd   control of download 1:resume 2:pause 3:stop
+ *@param[out] videoid   streamid of device
+ *@param[out] success  when success,then call it
+ *@param[out] error  when failed,then call it
+ */
+- (void)multiDownloadPlaybackVideoControl:(int)downloadIndex cmd:(int)cmd videoid:(NSInteger)videoid success:(MRSuccessHandler)success failure:(MRFailureError)error;
 /**
  *@brief Get the progress of the download
  *@param[out] videoid   streamid of device
@@ -464,7 +551,7 @@ static NSString *const MRDEVICE_PRTP_CONNECT_CHANGE = @"MRDEVICE_PRTP_CONNECT_CH
  *@param[out] success  when success,then call it
  *@param[out] error  when failed,then call it
  */
-- (void)startvoicetalk:(BOOL)isvoicebell success:(MRSuccessHandler)success failure:(MRFailureError)error;
+- (void)startvoicetalk:(BOOL)isvoicebell mic:(CGFloat)mic speak:(CGFloat)speak success:(MRSuccessHandler)success failure:(MRFailureError)error;
 
 /**
  *@brief disable voice talk
@@ -517,6 +604,19 @@ typedef enum { _BOY = 0, _Gril, _Man } _VoiceTalkType;
 /**
  *@brief snapshot
  *@param[in]  path     must be XXXX/XXX.jpg
+ *@param[in]  path2     must be XXXX/XXX.jpg
+ *@param[out] success  when success,then call it
+ *@param[out] error  when failed,then call it
+ */
+- (void)snapshot:(NSString *)path
+           path2:(NSString *)path2
+        playmode:(MR_PLAY_MODE)playmode
+         success:(MRSuccessHandler)success
+         failure:(MRFailureError)error;
+
+/**
+ *@brief snapshot
+ *@param[in]  path     must be XXXX/XXX.jpg
  *@param[out] success  when success,then call it
  *@param[out] error  when failed,then call it
  */
@@ -543,11 +643,36 @@ typedef enum { _BOY = 0, _Gril, _Man } _VoiceTalkType;
                failure:(MRFailureError)error;
 
 /**
+ *@brief multi startrecordmp4
+ *@param[in]  path     must be XXXX/XXX.mp4
+ *@param[in]  path1    must be XXXX/XXX.mp4
+ *@param[in]  playmode    play or playback
+ *@param[in]  recordVoice Mp4 has sound or no sound
+ *@param[out] disconnect  When the code stream changes,then call it
+ *@param[out] success  when success,then call it
+ *@param[out] error  when failed,then call it
+ */
+- (void)startMultiRecordmp4:(NSString *)path
+                      path2:(NSString *)path1
+                   playmode:(MR_PLAY_MODE)playmode
+                recordVoice:(BOOL)recordVoice
+                    success:(MRSuccessHandler)success
+         abnormalDisconnect:(MRAbnormalDisconnect)disconnect
+                    failure:(MRFailureError)error;
+
+/**
  *@brief stoprecordmp4
  *@param[out] success  when success,then call it
  *@param[out] error  when failed,then call it
  */
 - (void)stoprecordmp4:(MR_PLAY_MODE)mode success:(MRSuccessHandler)success failure:(MRFailureError)error;
+
+/**
+ *@brief stoprecordmp4
+ *@param[out] success  when success,then call it
+ *@param[out] error  when failed,then call it
+ */
+- (void)stopMultiRecordmp4:(MR_PLAY_MODE)mode success:(MRSuccessHandler)success failure:(MRFailureError)error;
 
 #pragma mark 8.ptz move
 /**
@@ -694,6 +819,47 @@ typedef enum { _BOY = 0, _Gril, _Man } _VoiceTalkType;
                 success:(MRSuccessHandler)success
                 failure:(MRFailureError)error;
 
+/**
+ *@brief set lan wire config with device password
+ *
+ */
+- (void)setLanWireDevice:(NSString *)deviceip
+                   token:(NSString *)token
+               devicePsw:(NSString *)devicePsw
+                 success:(MRSuccessHandler)success
+                 failure:(MRFailureError)error;
+
+/**
+ *@brief check device password
+ *
+ */
+- (void)setCheckDevicePassword:(NSString *)devicePsw
+                            ip:(NSString *)deviceip
+                       success:(MRSuccessHandler)success
+                       failure:(MRFailureError)error;
+
+#pragma mark - New Ap config
+/**
+ *@brief 开启AP配网连接
+ *   ip 默认传入192.168.0.1
+ *   port 默认传入 8091
+ */
+- (void)startApWifiConfigIP:(NSString *)ip port:(int)port Success:(MRSuccessHandler)success failure:(MRFailureError)error;
+/**
+ *@brief 停止AP配网连接
+ *
+ */
+- (void)stopApWifiConfigSuccess:(MRSuccessHandler)success failure:(MRFailureError)error;
+/**
+ *@brief 发送AP配网数据接口
+ *   cmd 为 PPS_AP_CONFIG_WIFI_AND_BIND_REQ 时 需要传入格式 {"s":"xxx","p":"xxxx",t:"xxxx"}数据
+ *   cmd 为其他值是 默认不传数据
+ */
+- (void)sendApWifiConfigCommand:(NSString *)josnString cmd:(PPS_AP_CONFIG_CMD)cmd success:(MRSuccessID)success failure:(MRFailureError)error;
+
+
+- (void)getVideoInfoDebugInfoSuccess:(MRSuccessID)success failure:(MRFailureError)error;
+
 #pragma mark 15. Encryption Method
 //二维码加密
 + (NSData *)meariQrcodeEncryption:(NSString *)content;
@@ -703,6 +869,8 @@ typedef enum { _BOY = 0, _Gril, _Man } _VoiceTalkType;
 + (char *)meariAlarmImageMd5Key:(NSString *)password;
 //新版本v2的图片加密 解密前面1024字节
 + (NSData *)meariAlarmImageDecodeHeadData:(NSString *)password data:(NSData *)data;
+//双目设备图片文件解密
++ (NSArray<NSDictionary *> *)decodeMutlImageFileData:(NSData *)fileData;
 
 #pragma mark 16. Prtp Protocol
 + (int)prtpDiscovery:(int)timeout  success:(MRSuccessID)success failure:(MRFailureError)error;
@@ -719,6 +887,8 @@ typedef enum { _BOY = 0, _Gril, _Man } _VoiceTalkType;
 
 - (int)prtpDestroy:(MRSuccessHandler)success failure:(MRFailureError)error;
 
++ (NSString *)prtpTransformToken:(NSString *)token;
+
 - (int)prtpCommonRequestData:(char*)data len:(int)len msgid:(PPS_PRTP_DP_MODE_TYPE)msgid success:(MRSuccessID)success failure:(MRFailureError)error;
 
 - (int)prtpStartLive:(AppleOpenGLView *)gllayer channel:(int)channel streamid:(int)streamid success:(MRSuccessHandler)success failure:(MRFailureError)error streamclose:(MRFailureError)streamclose;
@@ -727,8 +897,33 @@ typedef enum { _BOY = 0, _Gril, _Man } _VoiceTalkType;
 
 - (int)prtpStopLive:(int)channel streamid:(int)streamid success:(MRSuccessHandler)success failure:(MRFailureError)error;
 
-- (int)prtpStartHistory:(char*)files  channelid:(int)channelid startTime:(int)startTime endTime:(int)endTime  success:(MRSuccessHandler)success failure:(MRFailureError)error streamclose:(MRFailureError)streamclose;
+- (int)prtpStartHistory:(AppleOpenGLView *)gllayer file:(char*)files  channelid:(int)channelid startTime:(int)startTime endTime:(int)endTime  success:(MRSuccessHandler)success failure:(MRFailureError)error streamclose:(MRFailureError)streamclose;
+
+- (NSUInteger)getPrtpPlaybackTime;
+
+- (int)prtpGetHistoryPlayDuration;
+
+- (void)prtpSnapshot:(NSString *)path success:(MRSuccessHandler)success failure:(MRFailureError)error;
+
+- (void)prtpStartRecordmp4:(NSString *)path recordVoice:(BOOL)recordVoice success:(MRSuccessHandler)success abnormalDisconnect:(MRAbnormalDisconnect)disconnect failure:(MRFailureError)error;
+
+- (void)prtpStopRecordmp4:(MR_PLAY_MODE)mode success:(MRSuccessHandler)success failure:(MRFailureError)error;
 
 - (int)prtpStopHistory:(MRSuccessHandler)success failure:(MRFailureError)error;
+
+- (void)prtpStartvoicetalk:(BOOL)isvoicebell success:(MRSuccessHandler)success failure:(MRFailureError)error;
+
+- (void)prtpStopvoicetalk:(MRSuccessHandler)success failure:(MRFailureError)error;
+
+- (void)prtpSetvoicetype:(enum Voice_Type)voicetype success:(MRSuccessHandler)success failure:(MRFailureError)error;
+
+- (void)sendPrtpPlaybackCmd:(MR_CMD_PLAYBACK)cmd seektime:(NSString *)seektime success:(MRSuccessHandler)success failure:(MRFailureError)error;
+
+- (void)prtpStartDeviceUpgrade:(NSString *)localFile version:(NSString *)version success:(MRSuccessHandler)success failure:(MRFailureError)error;
+
+- (void)prtpStopDeviceUpgradeSuccess:(MRSuccessHandler)success failure:(MRFailureError)error;
+
+- (void)prtpEnableMute:(BOOL)muted;
+
 
 @end

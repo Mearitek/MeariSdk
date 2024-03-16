@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)shareInstance;
 
+- (NSString *)getOfflineTokenWithSN:(NSString *)sn;
+
 - (int)addSessionWithToken:(NSString *)token;
 
 - (int)removeSessionWithContext:(int)context;

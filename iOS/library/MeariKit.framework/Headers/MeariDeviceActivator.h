@@ -34,6 +34,9 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
 @end
 
 @interface MeariDeviceActivator : NSObject
+
+@property (nonatomic, weak) id<MeariDeviceActivatorDelegate> delegate;
+
 /**
  *  Single (单例)
  */
@@ -51,8 +54,7 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  */
 + (NSString *)currentWifiBSSID;
 
-@property (nonatomic, weak) id<MeariDeviceActivatorDelegate> delegate;
-
+#pragma mark - Token
 /**
  token for config device
  获取配网的token
@@ -70,6 +72,9 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  */
 - (void)getTokenSuccess:(MeariSuccess_Token2)success failure:(MeariFailure)failure;
 
+#pragma mark - QRCode
+- (NSString *)qrcodeMeariEncryption:(NSString *)content;
+- (NSString *)qrcodeMeariDecryption:(char *)content length:(NSInteger)length;
 /**
  Generate QR code
  生成二维码
@@ -124,6 +129,17 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  @return UUID
  */
 - (NSString *)getUUIDFromQRCodeText:(NSString *)text;
+
+/**
+ 获取设备绑定状态
+
+ @param uuid UUID (设备机身码信息里获取)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getDeviceBindStatusWithUUID:(NSString *)uuid success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+#pragma mark - AP
 /**
  AP配网传递的参数
 
@@ -148,6 +164,7 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  */
 - (void)configApModeWithSSID:(NSString *)ssid password:(NSString *)password token:(NSString *)token relay:(BOOL)relayDevice encryption:(BOOL)encryption success:(MeariSuccess)success failure:(MeariFailure)failure;
 
+#pragma mark - LAN
 /**
  有线配网传递的参数
 
@@ -157,6 +174,10 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  @param failure failure callback (失败回调)
  */
 - (void)startConfigWireDevice:(NSString *)ip token:(NSString *)token success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+- (void)checkWireDevice:(NSString *)ip password:(NSString *)password success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+- (void)startConfigWireDevice:(NSString *)ip token:(NSString *)token password:(NSString *)password success:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
     start config
  *  开始配网
@@ -189,7 +210,7 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)activatorSmartWifiWithSSID:(NSString *)ssid wifiPwd:(NSString *)password token:(NSString *)token success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure __deprecated_msg("Not recommended for use");
+- (void)activatorSmartWifiWithSSID:(NSString *)ssid wifiPwd:(NSString *)password token:(NSString *)token success:(MeariSuccess)success failure:(MeariFailure)failure __deprecated_msg("Not recommended for use");
 
 
 
@@ -208,7 +229,7 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)startSearchDevice:(MeariDeviceSearchMode)mode success:(MeariDeviceSuccess_SearchDevice)success failure:(MeariDeviceFailure)failure;
+- (void)startSearchDevice:(MeariDeviceSearchMode)mode success:(MeariDeviceSuccess_SearchDevice)success failure:(MeariFailure)failure;
 
 /**
  stop search
@@ -216,6 +237,48 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  */
 - (void)stopSearchDevice;
 
+
+#pragma mark - New Ap config
+/**
+ start Ap config
+ 开始Ap配网
+
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)startApConfigSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+
+/**
+ get support wifi from device
+ 获取设备的扫描的wifi
+*/
+- (void)getApConfigSupportWiFiSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
+
+ /**
+  AP配网传递的参数
+
+  @param ssid wifi name (wifi名称)
+  @param passsword wifi password (wifi密码)
+  @param token config token (获取的配网APtoken)
+  @param success Successful callback (成功回调)
+  @param failure failure callback (失败回调)
+*/
+- (void)setApConfigWithSSID:(NSString *)ssid psw:(NSString *)passsword token:(NSString *)token success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ AP配网的错误信息
+
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+*/
+- (void)getApConfigErrorInfoSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
+
+/**
+ stop Ap config
+ 停止Ap配网
+ */
+- (void)stopApConfig:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
  check device status
  向服务器查阅设备的状态
@@ -235,7 +298,8 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  @param failure failure callback (失败回调)
  */
 - (void)addDevice:(MeariDevice *)device nvr:(BOOL)isNvr success:(void(^)(MeariDevice *camera))success failure:(MeariFailure)failure;
-#pragma mark --- 中继添加
+
+#pragma mark - 中继添加
 /**
  the token use to add chime
  获取中继添加的token
@@ -247,11 +311,6 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  */
 - (void)getConfigRelayDeviceTokenType:(MeariDeviceGatewayTokenType)type success:(MeariSuccess_Token)success failure:(MeariFailure)failure;
 
-
-#pragma mark - Encryption  Qrcode
-
-- (NSString *)qrcodeMeariEncryption:(NSString *)content;
-- (NSString *)qrcodeMeariDecryption:(char *)content length:(NSInteger)length;
 
 @end
 

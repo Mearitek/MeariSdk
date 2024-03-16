@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface MeariMusicInfo : MeariBaseModel
-@property (nonatomic, strong) NSString * musicFormat;   // format (音乐格式)
-@property (nonatomic, strong) NSString * musicID;       // id (音乐ID)
-@property (nonatomic, strong) NSString * musicName;     // name (音乐名字)
-@property (nonatomic, strong) NSString * musicUrl;      // url for download (音乐地址)
+@property (nonatomic, copy) NSString * musicFormat;   // format (音乐格式)
+@property (nonatomic, copy) NSString * musicID;       // id (音乐ID)
+@property (nonatomic, copy) NSString * musicName;     // name (音乐名字)
+@property (nonatomic, copy) NSString * musicUrl;      // url for download (音乐地址)
 @end
