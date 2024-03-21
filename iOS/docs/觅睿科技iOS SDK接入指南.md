@@ -63,6 +63,10 @@
     * 7.17 [休眠模式](#717-休眠模式)
     * 7.18 [温湿度](#718-温湿度)
     * 7.19 [音乐](#719-音乐)
+        * 7.19.1 [获取音乐列表](#7191-获取音乐列表)
+        * 7.19.2 [音乐播放控制](#7192-音乐播放控制)
+        * 7.19.3 [音乐播放模式](#7193-音乐播放模式)
+        * 7.19.4 [音乐播放限时](#7194-音乐播放限时)
     * 7.20 [设备音量](#720-设备音量)
     * 7.21 [门铃音量](#721-门铃音量)
     * 7.22 [铃铛设置](#722-铃铛设置)
@@ -604,7 +608,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
       @param success Successful callback (成功回调)
       @param failure failure callback (失败回调)
      */
-     - (void)startSearchDevice:(MeariDeviceSearchMode)mode success:(MeariDeviceSuccess_SearchDevice)success failure:(MeariDeviceFailure)failure;
+     - (void)startSearchDevice:(MeariDeviceSearchMode)mode success:(MeariDeviceSuccess_SearchDevice)success failure:(MeariFailure)failure;
 【代码范例】
 	 // device.info.wireDevice == YES 有线设备 
 	 // device.info.wireConfigIp 有线设备的透传地址 
@@ -1004,7 +1008,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param disconnect 异常断开
       @param failure 失败回调
      */
-     - (void)startConnectSuccess:(MeariDeviceSuccess)success abnormalDisconnect:(MeariDeviceDisconnect)disconnect failure:(MeariDeviceFailure)failure;
+     - (void)startConnectSuccess:(MeariSuccess)success abnormalDisconnect:(MeariDeviceDisconnect)disconnect failure:(MeariFailure)failure;
 
 【代码范例】
      [self.device startConnectSuccess:^{
@@ -1027,7 +1031,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)stopConnectSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+     - (void)stopConnectSuccess:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
 【代码范例】
      [self.device stopConnectSuccess:^{
@@ -1090,7 +1094,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param failure 失败回调
       @param close 处于休眠模式，镜头关闭，返回值：休眠模式
     */
-    - (void)startPreviewWithPlayView:(MeariPlayView *)playView videoStream: (MeariDeviceVideoStream)videoStream success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure close:(void(^)(MeariDeviceSleepMode sleepModeType))close;
+    - (void)startPreviewWithPlayView:(MeariPlayView *)playView videoStream: (MeariDeviceVideoStream)videoStream success:(MeariSuccess)success failure:(MeariFailure)failure close:(void(^)(MeariDeviceSleepMode sleepModeType))close;
 
 
     /**
@@ -1099,7 +1103,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     @param success 成功回调
     @param failure 失败回调
     */
-    - (void)stopPreviewSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+    - (void)stopPreviewSuccess:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
 
     /**
@@ -1110,7 +1114,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     @param success 成功回调
     @param failure 失败回调
     */
-    - (void)changeVideoResolutionWithPlayView:(MeariPlayView *)playView videoStream:(MeariDeviceVideoStream)videoStream success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)changeVideoResolutionWithPlayView:(MeariPlayView *)playView videoStream:(MeariDeviceVideoStream)videoStream success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
      //创建一个MeariPlayView
@@ -1158,7 +1162,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调，返回值：json数组--[{"date" = "20171228"},...]
      @param failure 失败回调
      */
-     - (void)getPlaybackVideoDaysInMonth:(NSInteger)month year:(NSInteger)year success:(MeariDeviceSuccess_PlaybackDays)success failure:(MeariDeviceFailure)failure;
+     - (void)getPlaybackVideoDaysInMonth:(NSInteger)month year:(NSInteger)year success:(MeariDeviceSuccess_PlaybackDays)success failure:(MeariFailure)failure;
 
 
      /**
@@ -1170,7 +1174,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调：返回值：json数组--[{"endtime" = "20171228005758","starttime = 20171228000002"},...]
      @param failure 失败回调
      */
-     - (void)getPlaybackVideoTimesInDay:(NSInteger)day month:(NSInteger)month year:(NSInteger)year success:(MeariDeviceSuccess_PlaybackTimes)success failure:(MeariDeviceFailure)failure;
+     - (void)getPlaybackVideoTimesInDay:(NSInteger)day month:(NSInteger)month year:(NSInteger)year success:(MeariDeviceSuccess__PlaybackTimes)success failure:(MeariFailure)failure;
 
      /**
      开始回放录像：同一个设备同一时间只能一个人查看回放录像
@@ -1181,7 +1185,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param failure 失败回调
      @param otherPlaying 其他人在查看回放
     */
-     - (void)startPlackbackSDCardWithPlayView:(MeariPlayView *)playView startTime:(NSString *)startTime success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+     - (void)startPlackbackSDCardWithPlayView:(MeariPlayView *)playView startTime:(NSString *)startTime success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 
      /**
@@ -1190,7 +1194,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调
      @param failure 失败回调
      */
-     - (void)stopPlackbackSDCardSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+     - (void)stopPlackbackSDCardSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
 
 
      /**
@@ -1200,7 +1204,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调
      @param failure 失败回调
      */
-    - (void)seekPlackbackSDCardWithSeekTime:(NSString *)seekTime success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)seekPlackbackSDCardWithSeekTime:(NSString *)seekTime success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 
      /**
@@ -1209,7 +1213,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调
      @param failure 失败回调
      */
-     - (void)pausePlackbackSDCardSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+     - (void)pausePlackbackSDCardSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
 
 
      /**
@@ -1218,7 +1222,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调
      @param failure 失败回调
      */
-     - (void)resumePlackbackSDCardSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+     - (void)resumePlackbackSDCardSuccess:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
 【代码范例】
      //获取视频天数
@@ -1288,7 +1292,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     @param success Successful callback (成功回调)
     @param failure failure callback (失败回调)
     */
-    - (void)setPlaybackRecordVideoLevel:(MeariDeviceRecordDuration)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)setPlaybackRecordVideoLevel:(MeariDeviceRecordDuration)level success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
      //设置录像回放时长
@@ -1313,7 +1317,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success Successful callback (成功回调)
       @param failure failure callback (失败回调)
      */
-     - (void)getCloudVideoDaysWithMonthComponents:(NSDateComponents *)monthComponents success:(void(^)(NSArray <MeariDeviceTime *> *days))success failure:(MeariDeviceFailure)failure;
+     - (void)getCloudVideoDaysWithMonthComponents:(NSDateComponents *)monthComponents success:(void(^)(NSArray <MeariDeviceTime *> *days))success failure:(MeariFailure)failure;
 
      /**
        获取某天的云播放分钟
@@ -1321,7 +1325,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
        @param success Successful callback (成功回调)
        @param failure failure callback (失败回调)
      */
-     - (void)getCloudVideoMinutesWithDayComponents:(NSDateComponents *)dayComponents success:(void(^)(NSArray <MeariDeviceTime *> *mins))success failure:(MeariDeviceFailure)failure;
+     - (void)getCloudVideoMinutesWithDayComponents:(NSDateComponents *)dayComponents success:(void(^)(NSArray <MeariDeviceTime *> *mins))success failure:(MeariFailure)failure;
    
 
      /**
@@ -1331,7 +1335,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
        @param success Successful callback (成功回调)
        @param failure failure callback (失败回调)
       */
-      - (void)getCloudVideoWithStartTime:(NSDateComponents *)startTime endTime:(NSDateComponents *)endTime success:(void(^)(NSURL *m3u8Url))success failure:(MeariDeviceFailure)failure;
+      - (void)getCloudVideoWithStartTime:(NSDateComponents *)startTime endTime:(NSDateComponents *)endTime success:(void(^)(NSURL *m3u8Url))success failure:(MeariFailure)failure;
 
 【代码范例】
       //获取月份中云存储的天数
@@ -1436,7 +1440,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success Successful callback (成功回调)
      @param failure failure callback (失败回调)
      */
-     - (void)getCloud2VideoDaysWithMonthComponents:(NSDateComponents *)monthComponents success:(void(^)(NSArray <MeariDeviceTime *> *days))success failure:(MeariDeviceFailure)failure;
+     - (void)getCloud2VideoDaysWithMonthComponents:(NSDateComponents *)monthComponents success:(void(^)(NSArray <MeariDeviceTime *> *days))success failure:(MeariFailure)failure;
 
      /**
      Get the cloud play time of a day
@@ -1446,7 +1450,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success Successful callback (成功回调)
       @param failure failure callback (失败回调)
       */
-     - (void)getCloud2VideoMinutesWithDayComponents:(NSDateComponents *)dayComponents success:(void(^)(NSArray <MeariDeviceTime *> *mins, NSArray <MeariDeviceTime *> *alarms, NSString *historyEventEnable, NSString *cloudEndTime,NSInteger storageType))success failure:(MeariDeviceFailure)failure;
+     - (void)getCloud2VideoMinutesWithDayComponents:(NSDateComponents *)dayComponents success:(void(^)(NSArray <MeariDeviceTime *> *mins, NSArray <MeariDeviceTime *> *alarms, NSString *historyEventEnable, NSString *cloudEndTime,NSInteger storageType))success failure:(MeariFailure)failure;
      
     /**
      Get cloud playback video files
@@ -1456,7 +1460,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success Successful callback (成功回调)
      @param failure failure callback (失败回调)
      */
-     - (void)getCloud2VideoWithStartTime:(NSDateComponents *)startTime success:(void (^)(NSURL *m3u8Url))success failure:(MeariDeviceFailure)failure;
+     - (void)getCloud2VideoWithStartTime:(NSDateComponents *)startTime success:(void (^)(NSURL *m3u8Url))success failure:(MeariFailure)failure;
 
 【代码范例】
      //获取月份中云存储的天数
@@ -1653,7 +1657,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调
      @param failure 失败回调
     */
-    - (void)startVoiceTalkWithIsVoiceBell:(BOOL)isVoiceBell success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)startVoiceTalkWithIsVoiceBell:(BOOL)isVoiceBell success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 
     /**
@@ -1662,7 +1666,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-    - (void)stopVoicetalkSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)stopVoicetalkSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
       //设置语音对讲类型 根据支持的类型进行设置
@@ -1706,7 +1710,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调
      @param failure 失败回调
     */
-     - (void)snapshotWithSavePath:(NSString *)path isPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+     - (void)snapshotWithSavePath:(NSString *)path isPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
 【代码范例】
      [self.camera snapshotToPath:snapShotPath isPreviewing:NO success:^{
@@ -1733,7 +1737,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调
      @param failure 失败回调
     */
-    - (void)startRecordMP4WithSavePath:(NSString *)path isPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+    - (void)startRecordMP4WithSavePath:(NSString *)path isPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
 
     /**
@@ -1743,7 +1747,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调
      @param failure 失败回调
     */
-    - (void)stopRecordMP4WithIsPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+    - (void)stopRecordMP4WithIsPreviewing:(BOOL)isPreviewing success:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
 【代码范例】
      //开始录像
@@ -1773,7 +1777,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)getDeviceParamsSuccess:(MeariDeviceSuccess_Param)success failure:(MeariDeviceFailure)failure;
+     - (void)getDeviceParamsSuccess:(MeariDeviceSuccess_Param)success failure:(MeariFailure)failure;
 【代码范例】
     [device getParamsSuccesss:^(WYCameraParams *params) {
 
@@ -1794,7 +1798,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)startPTZControlWithDirection:(MeariMoveDirection)direction success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+     - (void)startPTZControlWithDirection:(MeariMoveDirection)direction success:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
 
      /**
@@ -1802,7 +1806,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)stopMoveSuccess:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+     - (void)stopMoveSuccess:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
 【代码范例】
 
@@ -1838,7 +1842,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success (成功回调,包含留言的文件的URL地址)
       @param failure failure callback (失败回调)
      */
-    - (void)getVoiceMailListSuccess:(MeariDeviceSuccess_HostMessages)success failure:(MeariDeviceFailure)failure;
+    - (void)getVoiceMailListSuccess:(MeariDeviceSuccess_HostMessages)success failure:(MeariFailure)failure;
 【代码范例】 
      [self.camera getVoiceMailListSuccess:^(NSArray *list) {
 
@@ -1874,7 +1878,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param filePath message file path(留言文件路径)
       @param finished 完成回调
      */
-     - (void)startPlayVoiceMailWithFilePath:(NSString *)filePath finished:(MeariDeviceSuccess)finished;
+     - (void)startPlayVoiceMailWithFilePath:(NSString *)filePath finished:(MeariSuccess)finished;
 
 【代码范例】 
      [camera startPlayVoiceMailWithFilePath:@"xxxx/record.wav" finished:^{
@@ -1890,7 +1894,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     @param success 成功回调
     @param failure 成功回调
     */
-    - (void)makeDeivcePlayVoiceMail:(MeariDeviceHostMessage *)hostMessage success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)makeDeivcePlayVoiceMail:(MeariDeviceHostMessage *)hostMessage success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
     //控制设备播放留言
@@ -1919,7 +1923,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调
      @param failure 失败回调
      */
-     - (void)setMotionDetectionLevel:(MeariDeviceLevel)level successs:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+     - (void)setMotionDetectionLevel:(MeariDeviceLevel)level successs:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
      //设置报警级别
@@ -1946,7 +1950,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success Successful callback (成功回调)
      @param failure failure callback (失败回调)
      */
-    - (void)setPirDetectionLevel:(MeariDeviceLevel)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)setPirDetectionLevel:(MeariDeviceLevel)level success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
      //设置报警级别
@@ -1971,7 +1975,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success Successful callback (成功回调)
      @param failure failure callback (失败回调)
      */
-    - (void)setAlarmInterval:(MeariDeviceCapabilityAFQ)level success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)setAlarmInterval:(MeariDeviceCapabilityAFQ)level success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
      //设置报警间隔
@@ -1997,7 +2001,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调，返回存储信息
      @param failure 失败回调
      */
-     - (void)getSDCardInfoSuccess:(MeariDeviceSucess_Storage)success failure:(MeariDeviceFailure)failure;
+     - (void)getSDCardInfoSuccess:(MeariDeviceSuccess_Storage)success failure:(MeariFailure)failure;
 
      /**
       格式化内存卡
@@ -2005,14 +2009,14 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回道
      */
-     - (void)formatSuccesss:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+     - (void)formatSuccesss:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
      /**
       获取内存卡格式化百分比
       @param success 成功回调,返回格式化百分比
       @param failure 失败回调
      */
-     - (void)getFormatPercentSuccesss:(MeariDeviceSucess_StoragePercent)success failure:(MeariDeviceFailure)failure;
+     - (void)getFormatPercentSuccesss:(MeariDeviceSuccess_StoragePercent)success failure:(MeariFailure)failure;
 
 【代码范例】
      //获取存储信息
@@ -2069,7 +2073,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)getFirmwareVersionSuccess:(MeariDeviceSucess_Version)success failure:(MeariDeviceFailure)failure;
+     - (void)getFirmwareVersionSuccess:(MeariDeviceSuccess_Version)success failure:(MeariFailure)failure;
 
 
      /**
@@ -2078,7 +2082,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success Successful callback (成功回调)
       @param failure failure callback (失败回调)
     */
-     - (void)getDeviceLatestVersionSuccess:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
+     - (void)getDeviceLatestVersionSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
     /**
      获取固件升级百分比
@@ -2086,7 +2090,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调
      @param failure 失败回调
     */
-    - (void)getDeviceUpgradePercentSuccess:(MeariDeviceSucess_VersionPercent)success failure:(MeariDeviceFailure)failure;
+    - (void)getDeviceUpgradePercentSuccess:(MeariDeviceSuccess_VersionPercent)success failure:(MeariFailure)failure;
 
 
     /**
@@ -2097,7 +2101,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调
      @param failure 失败回调
     */
-    - (void)startDeviceUpgradeWithUrl:(NSString *)url currentVersion:(NSString *)currentVersion successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+    - (void)startDeviceUpgradeWithUrl:(NSString *)url currentVersion:(NSString *)currentVersion successs:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
 【代码范例】
      // 查询是否需要升级
@@ -2155,7 +2159,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)setSleepmodeType:(MeariDeviceSleepmode)type successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+     - (void)setSleepmodeType:(MeariDeviceSleepmode)type successs:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
      /**
       设置休眠时间段
@@ -2165,7 +2169,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)setSleepModeTimesOpen:(BOOL)open times:(NSArray <MeariDeviceParamSleepTime *>*)times successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+     - (void)setSleepModeTimesOpen:(BOOL)open times:(NSArray <MeariDeviceParamSleepTime *>*)times successs:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
      /**
       设置地理围栏
@@ -2217,7 +2221,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
      @param success 成功回调，返回值：温度和湿度
      @param failure 失败回调
      */
-     - (void)getTemperatureHumiditySuccess:(MeariDeviceSucess_TRH)success failure:(MeariDeviceFailure)failure;
+     - (void)getTemperatureHumiditySuccess:(MeariDeviceSuccess_TRH)success failure:(MeariFailure)failure;
 
 【代码范例】
      [self.camera getTemperatureHumiditySuccess:^(CGFloat temperature, CGFloat humidty) {
@@ -2234,29 +2238,52 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
 ## 7.19 音乐 
 
+### 7.19.1 获取音乐列表
+```
+/**
+【描述】
+    获取设备音乐列表
+
+【函数调用】
+     /**
+        Query music list(查询音乐列表)
+ 
+        @param success Successful callback (成功回调)：return to music list(返回音乐列表)
+        @param failure failure callback (失败回调)
+    */
+    - (void)getMusicListSuccess:(MeariSuccess_Music)success failure:(MeariFailure)failure;
+    
+【代码范例】
+    //获取音乐播放列表
+    [[MeariUser sharedInstance] getMusicListSuccess:^(NSArray<MeariMusicInfo *> *musicList) {
+       
+    } failure:^(NSError *error) {
+       
+    }];
+
+```
+### 7.19.2 音乐播放控制
+
 ```
 【描述】
-     获取设备音乐状态，控制设备播放音乐，需要有内存卡才能播放
-
+    获取设备音乐状态，控制设备播放音乐，需要有内存卡才能播放
+    camera.supportPlayMusic //是否支持音乐播放
 【函数调用】
 
      /**
       播放音乐
-
       @param musicID 音乐ID
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)playMusicWithMusicID:(NSString *)musicID successs:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
+     - (void)playMusicWithMusicID:(NSString *)musicID success:(MeariSuccess)success failure:(MeariFailure)failure;
 
      /**
       暂停播放音乐
-
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)pauseMusicWithMusicID:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+     - (void)pauseMusicWithMusicID:(NSString *)musicID success:(MeariSuccess)success failure:(MeariFailure)failure;
 
      /**
       播放下一首
@@ -2264,33 +2291,22 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)playNextMusicWithMusicID:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
+     - (void)playNextMusicWithMusicID:(NSString *)musicID success:(MeariSuccess)success failure:(MeariFailure)failure;
 
      /**
       播放前一首
-
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)playPreviousMusicSuccesss:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
-
-
-     /**
-      获取音乐状态：包括播放和下载状态
-
-      @param success 成功回调,返回值：json字典
-      @param failure 失败回调
-     */
-     - (void)playPreviousMusicWithMusicID:(MeariDeviceSucess_MusicStateAll)success failure:(MeariDeviceFailure)failure;
-
+   - (void)playPreviousMusicWithMusicID:(NSString *)musicID success:(MeariSuccess)success failure:(MeariFailure)failure;
+     
      /**
       (获取音乐状态：包括播放和下载状态)
  
       @param success (成功回调),  (返回值：json字典)
       @param failure (失败回调)
      */
-     - (void)getPlayMusicStatus:(MeariDeviceSuccess_MusicStateAll)success failure:(MeariDeviceFailure)failure;
+     - (void)getPlayMusicStatus:(MeariDeviceSuccess_MusicStateAll)success failure:(MeariFailure)failure;
 
 【代码范例】
     //开始播放音乐
@@ -2328,8 +2344,62 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
 
     }];
 
+    
 ```
 
+### 7.19.3 音乐播放模式
+```
+/**
+【描述】
+    设置音乐播放循环模式
+    camera.supportPlayMusicMode //是否支持设置音乐播放模式
+    MeariMusicPlayModeRepeatAll // Playlist loop (全部循环)
+    MeariMusicPlayModeRepeatOne // Single cycle (单曲循环)
+    MeariMusicPlayModeRandom    // Shuffle Play (随机播放)
+
+【函数调用】
+    /**
+    Set play music mode
+    设置音乐播放模式
+ 
+    @param mode play mode(播放模式)
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)setPlayMusicMode:(MeariMusicPlayMode)mode success:(MeariSuccess)success failure:(MeariFailure)failure;
+【代码范例】
+    //获取音乐播放列表
+    [self.camera setPlayMusicMode:nextMode success:^{
+        NSLog(@"设置成功");
+    } failure:^(NSError *error) {
+        NSLog(@"设置失败");
+    }];
+```
+### 7.19.4 音乐播放限时
+```
+/**
+【描述】
+    设置音乐播放限制时间，到期自动停止播放设置音乐播放限制时间，到期自动停止播放
+    camera.supportPlayMusicMode //是否支持音乐播放限制时间 
+    /** 支持音乐限制时间数组(0表示不限时) */
+    - (NSArray <NSNumber *>*)supportMusicLimitTimeArray;
+【函数调用】
+    /**
+    Set play music limit time
+    设置播放音乐限制时间
+    
+    @param time  Limit time(限制时间)
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)setPlayMusicLimitTime:(NSInteger)time success:(MeariSuccess)success failure:(MeariFailure)failure;
+【代码范例】
+    [self.camera setPlayMusicLimitTime:seconds success:^{
+        NSLog(@"设置成功");
+    } failure:^(NSError *error) {
+        NSLog(@"设置失败");
+    }];
+```
 
 ## 7.20 设备音量 
 
@@ -2345,7 +2415,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调，返回值：设备输出音量，0-100
       @param failure 失败回调
      */
-      - (void)getMusicOutputVolumeSuccess:(MeariDeviceSucess_Volume)success failure:(MeariDeviceFailure)failure;
+      - (void)getMusicOutputVolumeSuccess:(MeariDeviceSuccess_Volume)success failure:(MeariFailure)failure;
 
 
      /**
@@ -2355,7 +2425,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-      - (void)setMusicOutputVolume:(NSInteger)volume success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+      - (void)setMusicOutputVolume:(NSInteger)volume success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
      //获取设备音乐输出音量
@@ -2388,7 +2458,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
     @param success 成功回调
     @param failure 失败回调
     */
-    - (void)setSpeakVolume:(NSInteger)volume success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;
+    - (void)setSpeakVolume:(NSInteger)volume success:(MeariDeviceSucess)success failure:(MeariFailure)failure;
 
 【代码范例】
     //设置门铃输出音量
@@ -2412,7 +2482,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)setWirelessChimeVolumeLevel:(MeariDeviceLevel)volumeLevel selectedSong:(NSString *)selectedSong repeatTimes:(NSInteger)repeatTimes success:(MeariDeviceSucess_ID)success failure:(MeariDeviceFailure)failure;
+     - (void)setWirelessChimeVolumeLevel:(MeariDeviceLevel)volumeLevel selectedSong:(NSString *)selectedSong repeatTimes:(NSInteger)repeatTimes success:(MeariDeviceSuccess_ID)success failure:(MeariFailure)failure;
 
 【代码范例】
      //设置无线铃铛
@@ -2430,7 +2500,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
        @param success (成功回调)
        @param failure (失败回调)
      */
-     - (void)bindWirelessChime:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+     - (void)bindWirelessChime:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
      //绑定无线铃铛
@@ -2448,7 +2518,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
        @param success (成功回调)
        @param failure (失败回调)
      */
-     - (void)unbindWirelessChime:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+     - (void)unbindWirelessChime:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
      //绑定无线铃铛
@@ -2474,7 +2544,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)setFloodCameraLampOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure; 
+     - (void)setFloodCameraLampOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariFailure)failure; 
 
 
 【代码范例】
@@ -2499,7 +2569,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)setFloodCameraSirenOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;     
+     - (void)setFloodCameraSirenOn:(BOOL)on success:(MeariDeviceSucess)success failure:(MeariFailure)failure;     
 
 【代码范例】
      //设置警报开关
@@ -2527,7 +2597,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       @param success 成功回调
       @param failure 失败回调
      */
-     - (void)setFloodCameraScheduleOn:(BOOL)on fromDate:(NSString *)fromDateStr toDate:(NSString *)toDateStr success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;   
+     - (void)setFloodCameraScheduleOn:(BOOL)on fromDate:(NSString *)fromDateStr toDate:(NSString *)toDateStr success:(MeariDeviceSucess)success failure:(MeariFailure)failure;   
 
 【代码范例】
      //设置灯具开灯计划
@@ -2553,7 +2623,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
        @param success 成功回调
        @param failure 失败回调
      */
-     - (void)setFloodCameraLampOnDuration:(BOOL)on durationLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess)success failure:(MeariDeviceFailure)failure;   
+     - (void)setFloodCameraLampOnDuration:(BOOL)on durationLevel:(MeariDeviceLevel)level success:(MeariDeviceSucess)success failure:(MeariFailure)failure;   
 
 【代码范例】
 
@@ -3815,34 +3885,34 @@ MeariMemberModel属性
     @param success Successful callback (成功回调)
     @param failure failure callback (失败回调)
     */
-    - (void)getSubDeviceFoundPermissionWithSuccess:(MeariDeviceSuccess_Dictionary)success failure:(MeariDeviceFailure)failure;
+    - (void)getSubDeviceFoundPermissionWithSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
     /**
      设置设备允许被发现状态：Set Sub Device Found Permission
     @param enable  0-不允许 1-允许
     @param success Successful callback (成功回调)
     @param failure failure callback (失败回调)
     */
-    - (void)setSubDeviceFoundPermission:(BOOL)enable success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)setSubDeviceFoundPermission:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
 
     /**
      获取设备允许被发现剩余时长,单位秒：Get Sub Device Found Permission Time
     @param success Successful callback (成功回调)
     @param failure failure callback (失败回调)
     */
-    - (void)getSubDeviceFoundRemainTimeWithSuccess:(MeariDeviceSuccess_Str)success failure:(MeariDeviceFailure)failure;
+    - (void)getSubDeviceFoundRemainTimeWithSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
 
     /**
     开始搜索：Start Search Nvr Sub Device
     @param success Successful callback (成功回调)
     @param failure failure callback (失败回调)
     */
-    - (void)startSearchNvrSubDeviceWithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)startSearchNvrSubDeviceWithSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
     /**
     获取搜索结果：Get Nvr Sub Device Result
     @param success Successful callback (成功回调)：返回搜索到的设备
     @param failure failure callback (失败回调)
     */
-   - (void)getSearchedNvrSubDeviceWithSuccess:(void(^)(BOOL finish, NSArray<MeariSearchNVRSubDeviceModel *>* searchArray))success failure:(MeariDeviceFailure)failure;
+   - (void)getSearchedNvrSubDeviceWithSuccess:(void(^)(BOOL finish, NSArray<MeariSearchNVRSubDeviceModel *>* searchArray))success failure:(MeariFailure)failure;
 
     /**
      Nvr添加meari子设备(app内绑定)
@@ -3851,7 +3921,7 @@ MeariMemberModel属性
      @param success Successful callback (成功回调)
      @param failure failure callback (失败回调)
      */
-    - (void)bindNvrSubDeviceWithIp:(NSString *)ip success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)bindNvrSubDeviceWithIp:(NSString *)ip success:(MeariSuccess)success failure:(MeariFailure)failure;
 
     /**
      Add child device through Nvr (onvif binding)
@@ -3863,7 +3933,7 @@ MeariMemberModel属性
      @param success Successful callback (成功回调)
      @param failure failure callback (失败回调)
      */
-    - (void)bindNvrSubDeviceWithIp:(NSString *)ip user:(NSString *)user password:(NSString *)password success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)bindNvrSubDeviceWithIp:(NSString *)ip user:(NSString *)user password:(NSString *)password success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
 
@@ -3961,7 +4031,7 @@ MeariMemberModel属性
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)getNVRNetConfigKeyWithSucess:(MeariDeviceSuccess_Str)sucess failure:(MeariDeviceFailure)failure ;
+- (void)getNVRNetConfigKeyWithSucess:(MeariSuccess_String)sucess failure:(MeariFailure)failure ;
 
 /**
  Generate NVR QR code
@@ -3992,13 +4062,13 @@ MeariMemberModel属性
 @param success Successful callback (成功回调)：返回搜索到的设备
 @param failure failure callback (失败回调)
 */
-- (void)readyForSearchRouterNvrSubDeviceWithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)readyForSearchRouterNvrSubDeviceWithSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
 获取搜索结果：Get Nvr Sub Device Result (添加子设备至路由器流程)
 @param success Successful callback (成功回调)：返回搜索到的设备
 @param failure failure callback (失败回调)
 */
-- (void)searchRouterNvrSubDeviceWithSuccess:(void(^)(NSArray<MeariSearchNVRSubDeviceModel *>* searchArray))success failure:(MeariDeviceFailure)failure;
+- (void)searchRouterNvrSubDeviceWithSuccess:(void(^)(NSArray<MeariSearchNVRSubDeviceModel *>* searchArray))success failure:(MeariFailure)failure;
 
 
 【代码范例】
@@ -4091,14 +4161,14 @@ NVR格式化硬盘
  @param success Successful callback (成功回调)
  @param failure 失败回道
  */
-- (void)startHardDiskFormatWithChannel:(NSInteger)channel Success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+- (void)startHardDiskFormatWithChannel:(NSInteger)channel Success:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
  Get memory card formatting percentage(获取格式化百分比)
  
  @param success Successful callback (成功回调),return formatting percentage(返回格式化百分比)
  @param failure failure callback (失败回调)
  */
-- (void)getSDCardFormatPercentSuccess:(MeariDeviceSuccess_StoragePercent)success failure:(MeariDeviceFailure)failure;
+- (void)getSDCardFormatPercentSuccess:(MeariSuccess_StoragePercent)success failure:(MeariFailure)failure;
 
 【代码范例】
     
@@ -4172,7 +4242,7 @@ NVR通道摄像机不支持云回放。
     @param success Successful callback (成功回调)
     @param failure failure callback (失败回调)
     */
-    - (void)setNVRAllDayRecord:(BOOL)enable WithSuccess:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+    - (void)setNVRAllDayRecord:(BOOL)enable WithSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
 
 【代码范例】
 
