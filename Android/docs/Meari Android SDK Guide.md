@@ -575,7 +575,7 @@ MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils (ssid, pwd, w
 }, false);
 
 // start searching
-mangerCameraScan.startSearchDevice (false, -1, 100, ActivityType.ACTIVITY_SEARCHCANERARESLUT, token)
+mangerCameraScan.startSearchDevice (false, -1, 100 * 1000, ActivityType.ACTIVITY_SEARCHCANERARESLUT, token)
 
 
 MeariUser.getInstance (). CheckDeviceStatus (cameraInfos, deviceTypeID, new IDeviceStatusCallback () {
