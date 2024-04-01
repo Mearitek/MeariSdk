@@ -10,8 +10,9 @@
 #import <MeariKit/MeariKit.h>
 #import <AVFoundation/AVFoundation.h>
 //#import <Braintree/BTAppSwitch.h>
-static  NSString *app_key = @"8a48b2105058489aba0c08b79325ef3f";
-static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
+static  NSString *app_key = @"eb072a578c524e67a71185afd80c9929";
+static  NSString *app_secret = @"869b2274e08d45ac824db528e9793753";
+
 @interface AppDelegate ()
 
 @end
