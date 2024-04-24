@@ -107,7 +107,6 @@
         * 9.5.32 [人形报警区域（画框）设置](#9532-人形报警区域（画框）设置)
         * 9.5.33 [人形开关设置](#9533-人形开关设置)
         * 9.5.34 [录像时长设置](#9534-录像时长设置)
-        * 9.5.35 [音乐播放设置](#9535-音乐播放设置)
     * 9.6 [门铃参数设置](#96-门铃参数设置)
         * 9.6.1 [设备对讲音量设置](#961-设备对讲音量设置)
         * 9.6.2 [解锁电池锁](#962-解锁电池锁)
@@ -196,8 +195,14 @@
         * 14.2.4 [试用流量开通](#1424-试用流量开通) 
         * 14.2.5 [流量购买](#1425-流量购买)
         * 14.2.6 [流量订单](#1426-流量订单)
-
-* 15 [更新说明](#15-更新说明)
+* 15 [宠物类设备](#15-宠物类设备) 
+    * 15.1 [添加设备](#151-添加设备)
+    * 15.2 [设置](#152-设置)
+        * 15.2.1 [投食喂食](#1521-投食喂食) 
+        * 15.2.2 [音效设置](#1522-音效设置)
+        * 15.2.3 [一键呼唤](#1523-一键呼唤)
+        * 15.2.4 [投食喂食计划](#1524-投食喂食计划)
+* 16 [更新说明](#16-更新说明)
 
 <center>
 
@@ -615,7 +620,7 @@ MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(ssid, pwd, wi
 }, false);
 
 // 开始搜索
-mangerCameraScan.startSearchDevice(false, -1, 100*1000, ActivityType.ACTIVITY_SEARCHCANERARESLUT, token)
+mangerCameraScan.startSearchDevice(false, -1, 100, ActivityType.ACTIVITY_SEARCHCANERARESLUT, token)
 
 
 MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
@@ -4274,140 +4279,6 @@ MeariUser.getInstance().setPlaybackRecordVideo(deviceParams.sdRecordType, value,
 
 
 
-### 9.5.35 音乐播放设置
-```
-【描述】
-音乐播放设置（需要sd卡可用）
-【代码范例】
-·是否支持音乐播放设置：0-不支持,1-支持
-cameraInfo.getMpc()
-·获取音乐列表
-MeariUser.getInstance().getMusicListNew(new IGetMusicListCallback(){
-            @Override
-            public void onSuccess(ArrayList<MeariMusic> songInfos) {
-                
-            }
-
-            @Override
-            public void onError(int code, String error) {
-
-            }
-        });
-·获取当前音量
-MeariUser.getInstance().getMusicVolume(new IGetMusicVolumeCallback() {
-            @Override
-            public void onSuccess(int volume) {
-                
-            }
-
-            @Override
-            public void onFailed(int errorCode, String errorMsg) {
-                
-            }
-        });  
-·设置当前音量
-MeariUser.getInstance().setMusicVolume(value, new ISetDeviceParamsCallback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onFailed(int errorCode, String errorMsg) {
-
-                    }
-                });       
-·刷新当前歌曲状态
-MeariUser.getInstance().getPlayMusicStatus(new IRefreshMusicStatusCallback() {
-            @Override
-            public void onSuccess(String currentMusicId, boolean isPlaying, ArrayList<MeariMusic> musicList) {
-                当前歌曲-currentMusicId
-                是否正在播放-isPlaying
-                音乐列表-musicList
-                当前歌曲正在下载中-info.getDownloadPercent() < 100
-            }
-
-            @Override
-            public void onFailed(int errorCode, String errorMsg) {
-            
-            }
-        });   
-·播放歌曲
-MeariUser.getInstance().playMusic(curMusicId, new IControlMusicCallback() {
-            @Override
-            public void onSuccess(String currentMusicID) {
-            
-            }
-
-            @Override
-            public void onFailed(int errorCode, String errorMsg) {
-
-            }
-        });     
-·暂停歌曲
-MeariUser.getInstance().pauseMusic(curMusicId, new IControlMusicCallback() {
-            @Override
-            public void onSuccess(String currentMusicID) {
-            
-            }
-
-            @Override
-            public void onFailed(int errorCode, String errorMsg) {
-
-            }
-        });                    
-·是否支持音乐播放时长设置 0-不支持, bit0-on(持续播放) bit1-10min bit2-30min bit3-60min
-cameraInfo.getMul()
-  -播放时长列表
-            ArrayList<Integer> times = new ArrayList<>();
-            if (1 == (1 & mul)) {
-                times.add(0);
-            }
-            if (1 << 1 == (1 << 1 & mul)) {
-                times.add(600);
-            }
-            if (1 << 2 == (1 << 2 & mul)) {
-                times.add(1800);
-            }
-            if (1 << 3 == (1 << 3 & mul)) {
-                times.add(3600);
-            }
-   -获取当前播放时长设置(s)
-   deviceParams.getMusicTime()  
-   -设置当前播放时长(s)
-   MeariUser.getInstance().setMusicTime(time, new ISetDeviceParamsCallback() {
-            @Override
-            public void onSuccess() {
-               
-            }
-
-            @Override
-            public void onFailed(int errorCode, String errorMsg) {
-                
-            }
-        });
-·是否支持音乐播放模式设置 0-不支持 bit1:顺序播放 bit2-单曲循环 bit3-随机播放
-cameraInfo.getMpm()
-   -获取当前播放模式（0表示顺序播放（默认）1表示单曲循环 2表示随机播放）
-   deviceParams.getMusicCyclical()
-   -设置播放模式（0表示顺序播放（默认）1表示单曲循环 2表示随机播放）
-   MeariUser.getInstance().setMusicCyclical(mode, new IControlMusicCallback() {
-                @Override
-                public void onSuccess(String currentMusicID) {
-                    
-                }
-
-                @Override
-                public void onFailed(int errorCode, String errorMsg) {
-
-                }
-            });
-
-
-```
-
-
-
 
 ## 9.6 门铃参数设置
 ### 9.6.1 设备对讲音量设置
@@ -5457,7 +5328,8 @@ meari SDK 支持内部的MQTT推送消息，也支持FCM等厂商推送（后续
 
 ### 11.1.1 连接MQTT服务
 
-5.3.0不需要调用，内部会自动调用
+// 用户登录成功后调用
+MeariUser.getInstance().connectMqttServer(application);
 
 ### 11.1.2 退出MQTT服务
 
@@ -6458,7 +6330,169 @@ MeariUser.getInstance().getTrafficOrderList(uuid,deviceId, new IStringResultCall
 
 ```
 
-# 15 更新说明
+
+# 15 宠物类设备
+
+## 15.1 添加设备
+
+```
+添加参考(#51-二维码配网添加设备)。
+
+```
+
+## 15.2 设置
+
+### 15.2.1 投食喂食
+```
+【描述】
+投食和喂食（区分投食器和喂食器）
+
+【函数调用】
+    /**
+     * 版本80
+     * pet:
+     * type: int
+     * description: 设备是否为宠物设备，0-不是 1-是, 默认0
+     * 1-宠物投食机 2-宠物喂食器
+     * usage:app可以用作设备类型识别
+     */
+     cameraInfo.getPet()
+/**
+     * 一键投食：
+     * id: '845'
+     * name: 一键投食
+     * type:  bool（布尔型）
+     * definition:  bool（布尔型）
+     * description: 投食控制，发送1，抛投搅拌一次,属于一个瞬时控制指令'
+     * default: 1
+     */
+     void setPetFeed(ISetDeviceParamsCallback callback) 
+
+/**
+     * 一键喂食
+     * copies：喂食份数
+     */
+public void setPetFeed2(int copies,ISetDeviceParamsCallback callback)
+
+
+```
+
+### 15.2.2 音效设置
+```
+【描述】
+设置一键呼唤的音效
+
+【函数调用】
+    /**
+     * 获取音效列表
+     */
+     public void getVoicePetMailList(String deviceID, Object tag, IStringResultCallback callback)
+
+     /**
+     * 获取当前音效（url）
+     */
+     deviceParams.getPetSoundSetting()
+    /**
+     * 设置当前音效
+     */
+     public void setVoiceSetting(String url, IStringResultCallback callback)
+
+
+【代码范例】
+MeariUser.getInstance().getVoicePetMailList(presenter.getCameraInfo().getDeviceID(), this, new IStringResultCallback() {
+            @Override
+            public void onSuccess(String result) {
+                if(!TextUtils.isEmpty(result)){
+                    VoicePetMailInfo voicePetMailInfo= GsonUtil.fromJson(result, VoicePetMailInfo.class);
+                }
+            }
+
+            @Override
+            public void onError(int code, String error) {
+                
+            }
+        });
+
+```
+
+
+
+### 15.2.3 一键呼唤
+```
+【描述】
+设置一键呼唤
+
+【函数调用】
+    /**
+     * 一键呼唤
+     */
+     public void setFeedCall(int enable, ISetDeviceParamsCallback callback)
+
+    
+【代码范例】
+MeariUser.getInstance().setFeedCall(1, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+            }
+        });
+```
+
+### 15.2.4 投食喂食计划
+```
+【描述】
+设置投食喂食计划
+
+【函数调用】
+    /**
+     * 获取喂食计划
+     */
+     deviceParams.getPetFeedPlanList()
+/**
+     * 设置喂食计划
+     */
+     public void setFeedTimes(String timeList, ISetDeviceParamsCallback callback)
+
+    
+【代码范例】
+/**
+*planString: >-
+  如果是单次投食 则{ "enable":false, "time":"10:00", "count":1, "once": 1}
+  如果是按星期计划投食则：{ "enable":false, "time":"10:00", "count":1, "repeat":[1,2,3,4,5,6,7]}
+  repeat中1代表星期一
+  示例：最多允许设置8组，JSON字符串，[{ "enable":false, "time":"10:00",
+  "repeat":[1] , "count":1}, { "enable":false, "time":"10:00", "count":1, "once": 1}]
+**/
+MeariUser.getInstance().setFeedTimes(planString, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (handler == null || isViewClose()) {
+                    return;
+                }
+                Message msg = Message.obtain();
+                msg.what = MSG_SET_PLAN_TIME_SUCCESS;
+                msg.obj = planString;
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (handler == null || isViewClose()) {
+                    return;
+                }
+                Message msg = Message.obtain();
+                msg.what = MSG_SET_PLAN_TIME_FAILED;
+                mHandler.sendMessage(msg);
+            }
+        });
+```
+
+
+# 16 更新说明
 
 ## 2022-10-10(4.4.0)
 ```
