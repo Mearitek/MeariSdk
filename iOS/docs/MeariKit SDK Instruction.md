@@ -154,6 +154,18 @@
     * 13.5 [Data order list](#135-Data-order-list)
     * 13.6 [Data purchase reminder](#136-Data-purchase-reminder)
     * 13.7 [Trial data plan](#137-Trial-data-plan)
+* 14 [Pet Camera](#14-Pet-Camera)
+    * 14.1 [Get pet camera parameters](#141-Get-pet-camera-parameters)
+    * 14.2 [Feeding](#142-Feeding)
+    * 14.3 [One-click call](#143-One-click-call)
+    * 14.4 [One-click call sound effect setting](#144-One-click-call-sound-effect-setting)
+        * 14.4.1 [One-click calling sound acquisition](#1441-One-click-calling-sound-acquisition)
+        * 14.4.2 [One-click call voice recording](#1442-One-click-call-voice-recording)
+        * 14.4.3 [One-click calling sound upload](#1443-One-click-calling-sound-upload)
+        * 14.4.4 [One-click call sound deletion](#1444-One-click-call-sound-deletion)
+        * 14.4.5 [Set one-click call sound](#1445-Set-one-click-call-sound)
+    * 14.5 [Set Feeding Plan](#145-Set-Feeding-Plan)
+    * 14.6 [Barking detection switch](#146-Barking-detection-switch)
 <center>
 
 ---
@@ -4468,9 +4480,267 @@ The differences are detailed below.
 
 【Code】
 
-        [[MeariUser sharedInstance] tryDeviceTrafficPlanWithUUID:self.uuid deviceID:self.camera.info.ID sucess:^{
+[[MeariUser sharedInstance] tryDeviceTrafficPlanWithUUID:self.uuid deviceID:self.camera.info.ID sucess:^{
             NSLog(@"Successful trial");
-        } failure:^(NSError *error) {
+ } failure:^(NSError *error) {
             
-        }];
+ }];
+```
+
+# 14 Pet Camera
+## 14.1 Get pet camera parameters
+```
+【Description】
+      Obtain the parameters of the device. You must obtain the device parameters before operating the device (#711-Get all parameters of the device)
+
+     In the declaration of MeariDeviceParam, the relevant properties are as follows:
+      //When the food feeding machine throws, whether it comes with a local throwing voice: 1-play the throwing prompt sound, 0-not play
+      @interface MeariDeviceParam
+      .....
+      @property (nonatomic, assign) BOOL playPetThrowTone;
+      //Voice setting for feeding call. Since the feeding machine involves 3 local audios, if the three local audios are selected, the url will be sent.
+      //{"url":"https://localhost/voice1.wav"} , default: '{"url":"https://localhost/voice1.wav"}'
+      @property (nonatomic, copy) NSString *petVoiceUrl;
+      //URL for sound alarm settings;
+      @property (nonatomic, copy) NSString *alarmVoiceUrl;
+      //Regular feeding plan
+      @property (nonatomic, strong) NSArray<MeariDevicePetFeedPlanModel *> *petFeedPlans;
+      //Dog barking detection
+      @property (nonatomic, assign) BOOL dogDarkDetection;
+      ....
+      @end
+
+【Function】
+     /**
+      @param success successful callback
+      @param failure failure callback
+     */
+     - (void)getDeviceParamsSuccess:(MeariDeviceSuccess_Param)success failure:(MeariFailure)failure;
+【Code】
+    [device getParamsSuccesss:^(WYCameraParams *params) {
+        // device.params.playPetThrowTone, device.params.petVoiceUrl
+        // device.params.alarmVoiceUrl, device.params.petFeedPlans
+    } failure:^(NSString *error) {
+
+    }]
+```
+## 14.2 Feeding
+```
+【Description】
+     Set pet feeding control. Throw and stir once, which is an instant control command.
+
+【Function】
+     /** One-click feeding
+      @param success success callback
+      @param failure failure callback
+    */
+    - (void)setPetFeedSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+     /** One-click feeding
+      @param copies Number of feeding copies
+      @param success success callback
+      @param failure failure callback
+    */
+    - (void)setPetFeedWithCopies:(NSUInteger)copies success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+ 【Code】
+
+    [device setPetFeedSuccess:^(void *) {
+
+    } failure:^(NSString *error) {
+
+    }]
+
+    [device setPetFeedWithCopies:2 success:^(void *) {
+
+    } failure:^(NSString *error) {
+
+    }]
+```
+## 14.3 One-click call
+
+```
+【Description】
+     Set up a one-click call for your pet
+
+【Function】
+    /** One-click call
+      @param success success callback
+      @param failure failure callback          
+    */
+    - (void)setPetCallSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+ 【Code】
+    [device setPetCallSuccess:^(void *) {
+
+    } failure:^(NSString *error) {
+
+    }]
+
+```
+## 14.4 One-click call sound effect setting
+### 14.4.1 One-click calling sound acquisition
+```
+【Description】
+     Get the one-click calling sound list for pets
+     
+【Function】
+    /**
+     @param success Successful callback, URL of the file containing the message 
+     @param failure failure callback 
+    */
+    - (void)getPetVoiceListSuccess:(MeariDeviceSuccess_HostMessages)success failure:(MeariFailure)failure;
+
+
+ 【Code】
+    [device getPetVoiceListSuccess:^(NSArray *customArray) {
+
+    } failure:^(NSError *error) {
+
+    }];
+
+```
+### 14.4.2 One-click call voice recording
+```
+【Description】
+     For the recording of voice files, please refer to (#7.12-Message)
+     To start recording a message, you need to obtain microphone permission.
+【Function】
+     /**
+      @param path Recording file path examples (likes): /var/mobile/Containers/Data/Application/78C4EAB7-D2FF-4517-B732-BEC7DE17D1CE/Documents/audio.wav  warning!!, it must be .wav format (Note!!! The file must be in wav format))
+     */
+    - (void)startRecordVoiceMailWithPath:(NSString *)path;
+ 【Code】
+      [camera startRecordVoiceMailWithPath:@"xxxx/record.wav"];
+
+【Description】
+     End recording message
+【Function】
+      /**
+       @param success Return message file path
+      */
+     - (void)stopRecordVoiceMailSuccess:(MeariDeviceSuccess_RecordAutio)success;
+【Code】 
+     [camera startRecordVoiceMailWithPath:@"xxxx/record.wav"];
+【Description】
+     Play recorded messages on mobile phone
+【Function】
+     /**
+      (The phone starts playing the message)
+      @param filePath message file path
+      @param finished 
+     */
+     - (void)startPlayVoiceMailWithFilePath:(NSString *)filePath finished:(MeariSuccess)finished;
+
+【Code】
+     [camera startPlayVoiceMailWithFilePath:@"xxxx/record.wav" finished:^{
+         NSLog(@"play end")
+      }];
+```
+
+### 14.4.3 One-click calling sound upload
+```
+【Description】
+    Upload customized one-click calling sounds to the cloud
+     
+【Function】
+    /**
+     @param voiceName 
+     @param voicePath local voice path
+     @param success Successful callback, URL of the file containing the message 
+     @param failure failure callback 
+    */
+    -(void)uploadPetVoiceWithVoiceName:(NSString *)voiceName voicePath:(NSString *)voicePath success:(MeariDeviceSuccess_PetVoiceUpload)success failure:(MeariFailure)failure;  
+
+【Code】
+    [device uploadPetVoiceWithVoiceName:@"xxx" voicePath:@"xxxx" success:^(MeariDeviceHostMessage *hostMessage) {
+        
+    } failure:^(NSError *error) {
+       
+    }]
+
+```
+
+### 14.4.4 One-click call sound deletion
+```
+【Description】
+     Delete customized one-click calling sound    
+     
+【Function】
+   /**
+    Delete pet voice message 
+ 
+    @param success Successful callback 
+    @param failure failure callback 
+    */
+    -(void)deletePetVoiceWithVoiceId:(NSString *)voiceId success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code】
+    [device deletePetVoiceWithVoiceId:@"xxxxx"  success:^(void *) {
+        
+    } failure:^(NSError *error) {
+       
+    }]
+```
+### 14.4.5 Set one-click call sound
+```
+【Description】
+     Set a custom one-touch call sound
+     
+【Function】
+   /**
+     Feeding call voice settings
+ 
+    @param success success callback
+     @param failure failure callback
+    */
+    - (void)setPetThrowVoiceWithVoiceUrl:(NSString *)voiceUrl success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code】
+    [device setPetThrowVoiceWithVoiceUrl:voiceUrl success:^{
+          //device.param.petVoiceUrl
+    } failure:^(NSError *error) {
+
+    }];
+
+```
+## 14.5 Set Feeding Plan
+```
+【Description】
+     Set a custom set of feeding times  
+【Function】
+   /**
+     Set up a feeding plan
+    @param plans Feeding plan time period array
+    @param success 
+    @param failure 
+    */
+    - (void)setPetFeedPlans:(NSArray<MeariDevicePetFeedPlanModel *> *)plans success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code】
+    [device setPetFeedPlans:plans success:^{
+       //device.param.petFeedPlans
+    } failure:^(NSError *error) {
+
+    }];
+
+```
+## 14.6 Barking detection switch
+```
+【Description】
+     Set whether to enable barking detection 
+【Function】
+   /**
+    @param isON Whether to enable barking detection
+    @param success success callback
+    @param failure failure callback
+    */
+    -(void)setDogDarkDetection:(BOOL)isOn success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code】
+    [device setDogDarkDetection:YES success:^{
+          //device.param.dogDarkDetection
+    } failure:^(NSError *error) {
+
+    }];
 ```

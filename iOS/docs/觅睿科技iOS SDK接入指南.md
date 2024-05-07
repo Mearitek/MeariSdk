@@ -152,6 +152,18 @@
     * 13.5 [流量订单列表](#135-流量订单列表)
     * 13.6 [流量购买提醒](#136-流量购买提醒)
     * 13.7 [试用流量套餐](#137-试用流量套餐)
+* 14 [宠物摄像机](#14-宠物摄像机)  
+   * 14.1 [获取宠物摄像机参数](#141-获取宠物摄像机参数)
+   * 14.2 [投食喂食](#142-投食喂食)
+   * 14.3 [一键呼唤](#143-一键呼唤)
+   * 14.4 [一键呼唤音效设置](#144-一键呼唤音效设置)
+       * 14.4.1 [一键呼唤声音获取](#1441-一键呼唤声音获取)
+       * 14.4.2 [一键呼唤声音录制](#1442-一键呼唤声音录制)
+       * 14.4.3 [一键呼唤声音上传](#1443-一键呼唤声音上传)
+       * 14.4.4 [一键呼唤声音删除](#1444-一键呼唤声音删除)
+       * 14.4.5 [设置一键呼唤声音](#1445-设置一键呼唤声音)
+   * 14.5 [设置喂食计划](#145-设置喂食计划)
+   * 14.6 [犬吠检测开关](#146-犬吠检测开关)
 <center>
 
 ---
@@ -4515,6 +4527,264 @@ NVR通道摄像机不支持云回放。
             
         }];
 ```
+
+# 14 宠物摄像机
+
+## 14.1 获取宠物摄像机参数
+```
+【描述】
+     获取设备的参数,对设备进行操作前必须先获取设备参（#711-获取设备所有参数）
+
+     在MeariDeviceParam的声明中 相关属性如下:
+     //投食机抛投的时候，是否附带抛投本地语音：1-播放投掷提示音，0-不播放
+     @interface MeariDeviceParam
+     .....
+     @property (nonatomic, assign) BOOL playPetThrowTone;
+     //投食呼唤语音设置,由于投食机涉及3首本地音频，如果选择的是本地的三个音频，则url下发
+     //{"url":"https://localhost/voice1.wav"} , default: '{"url":"https://localhost/voice1.wav"}'
+     @property (nonatomic, copy) NSString *petVoiceUrl;
+     //声音报警音设置的URL;
+     @property (nonatomic, copy) NSString *alarmVoiceUrl;
+     //定时投食计划
+     @property (nonatomic, strong) NSArray<MeariDevicePetFeedPlanModel *> *petFeedPlans;
+     //犬吠检测 
+     @property (nonatomic, assign) BOOL dogDarkDetection;
+     ....
+     @end
+
+【函数调用】
+     /**
+      @param success 成功回调
+      @param failure 失败回调
+     */
+     - (void)getDeviceParamsSuccess:(MeariDeviceSuccess_Param)success failure:(MeariFailure)failure;
+【代码范例】
+    [device getParamsSuccesss:^(WYCameraParams *params) {
+        // device.params.playPetThrowTone, device.params.petVoiceUrl
+        // device.params.alarmVoiceUrl, device.params.petFeedPlans
+    } failure:^(NSString *error) {
+
+    }]
+```
+## 14.2 投食喂食
+```
+【描述】
+     设置宠物投食控制 抛投搅拌一次,属于一个瞬时控制指令
+
+【函数调用】
+    /** 一键投食
+     @param success 成功回调
+     @param failure 失败回调
+    */
+    - (void)setPetFeedSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+     /** 一键投食
+     @param copies  喂食份数
+     @param success 成功回调
+     @param failure 失败回调
+    */
+    - (void)setPetFeedWithCopies:(NSUInteger)copies success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+
+    [device setPetFeedSuccess:^(void *) {
+
+    } failure:^(NSString *error) {
+
+    }]
+
+    [device setPetFeedWithCopies:2 success:^(void *) {
+
+    } failure:^(NSString *error) {
+
+    }]
+```
+## 14.3 一键呼唤 
+
+```
+【描述】
+     设置宠物的一键呼唤 
+
+【函数调用】
+    /**  一键呼唤
+     @param success 成功回调
+     @param failure 失败回调
+    */
+    - (void)setPetCallSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+    [device setPetCallSuccess:^(void *) {
+
+    } failure:^(NSString *error) {
+
+    }]
+
+```
+## 14.4 一键呼唤音效设置 
+### 14.4.1 一键呼唤声音获取
+```
+【描述】
+     获取宠物一键呼唤声音列表
+
+【函数调用】
+    /**
+     @param success Successful callback, URL of the file containing the message (成功回调)
+     @param failure failure callback (失败回调)
+    */
+    - (void)getPetVoiceListSuccess:(MeariDeviceSuccess_HostMessages)success failure:(MeariFailure)failure;
+
+【代码范例】
+    [device getPetVoiceListSuccess:^(NSArray *customArray) {
+
+    } failure:^(NSError *error) {
+
+    }];
+
+```
+### 14.4.2 一键呼唤声音录制
+```
+【描述】
+    语音文件的录制可以参考（#7.12-留言）
+    开始录制留言，需要获取麦克风权限。
+【函数调用】
+     /**
+      @param path 录音文件路径 例如(likes): /var/mobile/Containers/Data/Application/78C4EAB7-D2FF-4517-B732-BEC7DE17D1CE/Documents/audio.wav  warning!!, it must be .wav format (注意!!! 文件必须是wav格式))
+     */
+    - (void)startRecordVoiceMailWithPath:(NSString *)path;
+【代码范例】 
+      [camera startRecordVoiceMailWithPath:@"xxxx/record.wav"];
+
+【描述】
+     结束录制留言
+【函数调用】
+      /**
+       @param success 返回留言文件路径
+      */
+     - (void)stopRecordVoiceMailSuccess:(MeariDeviceSuccess_RecordAutio)success;
+【代码范例】 
+     [camera startRecordVoiceMailWithPath:@"xxxx/record.wav"];
+【描述】
+     手机播放录制留言
+【函数调用】
+     /**
+      (手机开始播放留言)
+      @param filePath message file path(留言文件路径)
+      @param finished 完成回调
+     */
+     - (void)startPlayVoiceMailWithFilePath:(NSString *)filePath finished:(MeariSuccess)finished;
+
+【代码范例】 
+     [camera startPlayVoiceMailWithFilePath:@"xxxx/record.wav" finished:^{
+         NSLog(@"播放留言结束")
+      }];
+```
+### 14.4.3 一键呼唤声音上传
+```
+【描述】
+     上传自定义的一键呼唤的声音到云端
+     
+【函数调用】
+    /**
+     @param voiceName 语音名称
+     @param voicePath 本地语音文件路径
+     @param success Successful callback, URL of the file containing the message (成功回调)
+     @param failure failure callback (失败回调)
+    */
+    -(void)uploadPetVoiceWithVoiceName:(NSString *)voiceName voicePath:(NSString *)voicePath success:(MeariDeviceSuccess_PetVoiceUpload)success failure:(MeariFailure)failure;  
+
+【代码范例】
+    [device uploadPetVoiceWithVoiceName:@"xxx" voicePath:@"xxxx" success:^(MeariDeviceHostMessage *hostMessage) {
+        
+    } failure:^(NSError *error) {
+       
+    }]
+
+```
+### 14.4.4 一键呼唤声音删除
+```
+【描述】
+    删除自定义的一键呼唤声音
+     
+【函数调用】
+   /**
+    Delete pet voice message (删除一键呼唤声音)
+ 
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    -(void)deletePetVoiceWithVoiceId:(NSString *)voiceId success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+    [device deletePetVoiceWithVoiceId:@"xxxxx"  success:^(void *) {
+        
+    } failure:^(NSError *error) {
+       
+    }]
+```
+### 14.4.5 设置一键呼唤声音
+```
+【描述】
+    设置自定义的一键呼唤声音
+     
+【函数调用】
+   /**
+    投食呼唤语音设置
+ 
+    @param success 成功回调
+     @param failure 失败回调
+    */
+    - (void)setPetThrowVoiceWithVoiceUrl:(NSString *)voiceUrl success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+    [device setPetThrowVoiceWithVoiceUrl:voiceUrl success:^{
+        //device.param.petVoiceUrl
+    } failure:^(NSError *error) {
+
+    }];
+
+```
+## 14.5 设置喂食计划
+```
+【描述】
+    设置自定义一组喂食时间
+【函数调用】
+   /**
+    设置喂食计划
+    @param plans 喂食计划时间段数组
+    @param success 成功回调
+    @param failure 失败回调
+    */
+    - (void)setPetFeedPlans:(NSArray<MeariDevicePetFeedPlanModel *> *)plans success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+    [device setPetFeedPlans:plans success:^{
+        //device.param.petFeedPlans
+    } failure:^(NSError *error) {
+
+    }];
+
+```
+## 14.6 犬吠检测开关
+```
+【描述】
+    设置是否开启犬吠检测
+【函数调用】
+   /**
+    @param isON 是否开启犬吠检测
+    @param success 成功回调
+    @param failure 失败回调
+    */
+    -(void)setDogDarkDetection:(BOOL)isOn success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+    [device setDogDarkDetection:YES success:^{
+        //device.param.dogDarkDetection
+    } failure:^(NSError *error) {
+
+    }];
+```
+
+
 
 
 
