@@ -53,7 +53,7 @@ dependencies {
     implementation(name: 'core-sdk-device-530-20240315', ext: 'aar')
     implementation(name: 'core-sdk-meari-530-20240315', ext: 'aar')
 
-    implementation 'com.tencent:mmkv-static:1.0.23'
+    implementation 'com.tencent:mmkv-static:1.2.15'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'com.alibaba:fastjson:1.1.67.android'
