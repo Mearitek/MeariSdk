@@ -39,6 +39,7 @@
         * 6.1.4 [设备昵称修改](#614-设备昵称修改)
         * 6.1.5 [获取设备报警消息时间片段](#615-获取设备报警消息时间片段)
         * 6.1.6 [获取设备在线状态](#616-获取设备在线状态)
+        * 6.1.7 [重启设备](#617-重启设备)
     * 6.2 [设备预览和回放](#62-设备预览和回放)
         * 6.2.1 [设备预览](#621-设备预览)
         * 6.2.2 [设备SD卡回放](#622-设备SD卡回放)
@@ -1158,6 +1159,31 @@ public Map<String, Integer> queryDeviceStatus();
 【代码范例】
 // 获取了设备列表后，循环获取设备状态，如果状态有改变，则更新设备状态
 Map<String, Integer> temStatus = MeariIotController.getInstance().queryDeviceStatus();
+```
+
+### 6.1.7 重启设备
+```
+【描述】
+重启设备
+
+【函数调用】
+
+/**
+ * 重启设备
+ * @param callback 回调
+ */
+public void setDevicesReboot(ISetDeviceParamsCallback callback);
+
+【代码范例】
+MeariUser.getInstance().setDevicesReboot(new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
 ```
 
 ## 6.2 设备预览和回放

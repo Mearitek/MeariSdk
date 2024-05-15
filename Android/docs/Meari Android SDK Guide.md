@@ -35,6 +35,7 @@
         * 6.1.4 [Device nickname modification](#614-Device-nickname-modification)
         * 6.1.5 [Get time segment of device alarm message](#615-Get-time-segment-of-device-alarm-message)
         * 6.1.6 [Get device online status](#616-Get-device-online-status)
+        * 6.1.7 [Reboot the device](#617-Reboot-the-device)
     * 6.2 [Device preview and playback](#62-Device-preview-and-playback)
         * 6.2.1 [Device preview](#621-Device-preview)
         * 6.2.2 [Device SD card playback](#622-Device-SD-card-playback)
@@ -954,6 +955,31 @@ public Map<String, Integer> queryDeviceStatus();
 [Code example]
 // After obtaining the device list, obtain the device state in a loop, and update the device state if the state changes
 Map<String, Integer> temStatus = MeariIotController.getInstance().queryDeviceStatus();
+```
+
+### 6.1.7 Reboot the device
+```
+【description】
+Reboot the device
+
+[Function call]
+
+/**
+ * Reboot the device
+ * @param callback callback
+ */
+public void setDevicesReboot(ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance().setDevicesReboot(new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
 ```
 
 ## 6.2 Device preview and playback
