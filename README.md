@@ -8,7 +8,7 @@ Insert the following dependency to `build.gradle` file of your project.
 
 ```
 dependencies {
-    implementation 'com.meari:sdk_rb_meari:5.0.0'
+    implementation 'com.meari:sdk_rb_meari:5.0.2'
 }
 ```
 
