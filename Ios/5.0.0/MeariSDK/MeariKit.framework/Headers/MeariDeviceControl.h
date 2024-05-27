@@ -1532,7 +1532,8 @@ Start record sound(开始录音)
  @param success Successful callback (成功回调)
  @param failure 成功回调
  */
-- (void)makeDeivcePlayVoiceMail:(MeariDeviceHostMessage *)hostMessage success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
+//控制设备播放主人留言
+- (void)makeDeivcePlayVoiceMail:(MeariDeviceHostMessage *)hostMessage msgID:(NSInteger)msgID success:(MeariDeviceSuccess)success failure:(MeariDeviceFailure)failure;
 
 #pragma mark -- 宠物投食机
 /**
