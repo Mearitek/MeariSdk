@@ -3,5 +3,4 @@ ${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework
 ${BUILT_PRODUCTS_DIR}/AWSCore/AWSCore.framework
 ${BUILT_PRODUCTS_DIR}/AWSS3/AWSS3.framework
 ${BUILT_PRODUCTS_DIR}/AliyunOSSiOS/AliyunOSSiOS.framework
-${BUILT_PRODUCTS_DIR}/Braintree/Braintree.framework
 ${BUILT_PRODUCTS_DIR}/MJExtension/MJExtension.framework
