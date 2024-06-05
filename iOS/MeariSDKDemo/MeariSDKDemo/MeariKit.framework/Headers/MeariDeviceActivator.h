@@ -124,6 +124,16 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  @return UUID
  */
 - (NSString *)getUUIDFromQRCodeText:(NSString *)text;
+
+/**
+ 获取设备绑定状态
+
+ @param uuid UUID (设备机身码信息里获取)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getDeviceBindStatusWithUUID:(NSString *)uuid success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
 /**
  AP配网传递的参数
 

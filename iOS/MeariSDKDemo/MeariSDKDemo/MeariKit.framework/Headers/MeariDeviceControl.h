@@ -850,7 +850,15 @@ Start record sound(开始录音)
  */
 - (void)getWifiStrengthSuccess:(MeariDeviceSuccess_NetInfo)success failure:(MeariDeviceFailure)failure;
 
-#pragma mark---  #pragma mark --- 码流H264-H265
+/**
+ Get Device Reset Status
+ 获取设备重置状态
+ 
+ @param success  成功回调 返回值：当前网络信息
+ @param failure  失败回调
+ */
+- (void)getDeviceResetStatusSuccess:(void(^)(BOOL isReset))success failure:(MeariDeviceFailure)failure;
+#pragma mark --- 码流H264-H265
 
 /**
  // Whether to enable h265 encoding
