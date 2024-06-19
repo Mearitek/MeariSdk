@@ -1943,7 +1943,7 @@ ShareUserInfo 被分享者用户信息
 - String userAccount; 用户账号
 - String userName; 用户名称
 - String userIcon; 用户头像
-- String shareStatus; 分享状态
+- String shareStatus; 分享状态。0-未分享；1-已分享；2-等待接收
 
 ShareDeviceInfo 被分享的设备信息
 - long deviceID; 设备 ID

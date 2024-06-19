@@ -1741,7 +1741,7 @@ ShareUserInfo Share user information
 -String userAccount; User account
 -String userName; User name
 -String userIcon; User avatar
--String shareStatus; Share status
+-String shareStatus; Share status.0-Not shared; 1-Shared; 2-Wait to receive
 
 ShareDeviceInfo shared device information
 -long deviceID; device ID
