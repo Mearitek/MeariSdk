@@ -29,6 +29,7 @@
    | partnerKey | string | Key (public key) |  |
    | signatureVersion | string | Signed version(the default version is 1.0) | 1.0 |
    | signature | string | Signature, signature rules: HmacSHA1 encryption is performed on the request parameters (in alphabetical order) according to the private key, and the signature is generated.| |
+   | clientId | string | Unique identifier of mobile phone, used for multi-terminal login | |
    
 - Response example
     ```
@@ -70,7 +71,8 @@
             "soundFlag":0,
             "userAccount":"",
             "userID":100000000021,
-            "userToken":""
+            "userToken":"",
+            "clientId": ""
         },
         "t":1621925563544,
         "resultCode":"1001"
