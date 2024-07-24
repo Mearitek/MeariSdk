@@ -151,11 +151,7 @@
     
 - Request parameter
 
-> URL encode the signature when requesting
-> 在请求之前需要对signature urlEncode一下
-
-> The countryCode parameters of redirect and login must be passed the same. For example, either they are both US or both are CN, one cannot be US and the other is CN.
-> redirect和login的countryCode参数要传的一样。比如要么都是US，要么都是CN，不能一个是US一个是CN   | name | type of data | instruction | for example |
+   | name | type of data | instruction | for example |
    | ------ | ------ | ------ | ------ |
    | userAccount | string | account(Preferably uuid) |  |
    | sourceApp | int | Customer Number |  |
@@ -171,3 +167,10 @@
         "resultCode":"1001"
     }
     ```
+
+
+> URL encode the signature when requesting
+> 在请求之前需要对signature urlEncode一下
+
+> The countryCode parameters of redirect and login must be passed the same. For example, either they are both US or both are CN, one cannot be US and the other is CN.
+> redirect和login的countryCode参数要传的一样。比如要么都是US，要么都是CN，不能一个是US一个是CN
