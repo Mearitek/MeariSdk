@@ -25,7 +25,7 @@
    | phoneType | string | cellphone type(android is 'a',ios is 'i') | a |
    | phoneCode | string | Phone number | 86 |
    | countryCode | string | Country code | CN |
-   | iotType | string | iot type(the default is 3) | 3 |
+   | iotType | string | iot type(the default is 4) | 4 |
    | partnerKey | string | Key (public key) |  |
    | signatureVersion | string | Signed version(the default version is 1.0) | 1.0 |
    | signature | string | Signature, signature rules: HmacSHA1 encryption is performed on the request parameters (in alphabetical order) according to the private key, and the signature is generated.| |
