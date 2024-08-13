@@ -127,6 +127,10 @@
         * 9.7.6 [灯具摄像机亮度设置](#976-灯具摄像机亮度设置)
         * 9.7.7 [灯具摄像机手动亮灯时长设置](#977-灯具摄像机手动亮灯时长设置)
         * 9.7.8 [灯具摄像机联动报警开关设置](#978-灯具摄像机联动报警开关设置)
+    * 9.8 [AOV摄像机参数设置](#98-AOV摄像机参数设置)  
+        * 9.8.1 [预览切换实时省流](#981-预览切换实时省流)
+        * 9.8.2 [工作模式](#982-工作模式)
+        * 9.8.3 [自定义参数设置](#983-自定义参数设置)
 * 10 [家庭](#10-家庭)
     * 10.1 [家庭操作](#101-家庭操作)
         * 10.1.1 [获取家庭列表](#1011-获取家庭列表)
@@ -204,7 +208,7 @@
         * 15.2.1 [投食喂食](#1521-投食喂食) 
         * 15.2.2 [音效设置](#1522-音效设置)
         * 15.2.3 [一键呼唤](#1523-一键呼唤)
-        * 15.2.4 [投食喂食计划](#1524-投食喂食计划)
+        * 15.2.4 [投食喂食计划](#1524-投食喂食计划)       
 * 16 [更新说明](#16-更新说明)
 
 <center>
@@ -4851,6 +4855,287 @@ MeariUser.getInstance().setFlightLinkSirenEnable(status, new ISetDeviceParamsCal
     public void onFailed(int errorCode, String errorMsg) {
     }
 });
+```
+
+## 9.8 AOV摄像机参数设置
+### 9.8.1 预览切换实时省流
+```
+【描述】
+预览页面切换实时省流
+
+【函数调用】
+/**
+ * 是否支持实时省流
+ */
+MeariDeviceUtil.isSupportFps(cameraInfo);
+
+/**
+*切换实时省流需要调用MeariDeviceController时将这段设置进去
+*isLowFps   实时：0   省流：1
+**/
+if (MeariDeviceUtil.isSupportFps(cameraInfo)) {
+     deviceController.setExtraPreviewParams(isLowFps);
+}
+
+【代码范例】
+//设置当前是省流还是实时模式
+if (MeariDeviceUtil.isSupportFps(cameraInfo)) {
+     deviceController.setExtraPreviewParams(isLowFps);
+}
+// 切换清晰度
+deviceController.changeVideoResolution(videoSurfaceView, videoId, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+
+    }
+}, new MeariDeviceVideoStopListener() {
+    @Override
+    public void onVideoClosed(int code) {
+        
+    }
+});
+```
+### 9.8.2 工作模式
+```
+【描述】
+工作模式
+【代码范例】
+/**
+*判断支持哪些模式
+**/
+        int lwm = -1;
+        //SMB-aov
+        int alm = cameraInfo.getAlm();
+        if (alm > 0) {
+            lwm = alm;
+            isSMB = true;
+        }
+        //CIV-aov  wifi aov
+        int lwm2 = cameraInfo.getLwm2();
+        if (lwm2 > 0) {
+            lwm = lwm2;
+            isSMB = false;
+        }
+        if (lwm > 0) {
+            if (1 == (1 & lwm)) {
+                //省电模式/Power Saving Mode
+            }
+            if (1 << 1 == (1 << 1 & lwm)) {
+                //性能模式/Performance Mode
+            }
+            if (1 << 2 == (1 << 2 & lwm)) {
+                //自定义模式/Custom Mode
+            }
+            if (1 << 3 == (1 << 3 & lwm)) {
+                //常电模式/Always-on Mode
+            }
+        }
+
+        /*
+        **当前处于哪种模式
+        *0-省电模式, 1-性能模式, 2-自定义模式  3-常电模式
+        */
+        mode = deviceParams.getAovWorkMode();
+        if(isSMB) {
+            mode = deviceParams.getAovWorkMode();
+        }else {
+            mode = deviceParams.getWorkMode();
+        }
+
+
+        //设置工作模式
+        if (isSMB) {
+            MeariUser.getInstance().setAOVWorkMode(mode, new ISetDeviceParamsCallback() {
+                @Override
+                public void onSuccess() {
+                    
+                }
+
+                @Override
+                public void onFailed(int errorCode, String errorMsg) {
+                    
+                }
+            });
+        } else {
+            MeariUser.getInstance().setWorkMode(mode, new ISetDeviceParamsCallback() {
+                @Override
+                public void onSuccess() {
+                    
+                }
+
+                @Override
+                public void onFailed(int errorCode, String errorMsg) {
+                    
+                }
+            });
+        }
+
+
+```
+### 9.8.3 自定义参数设置
+```
+【描述】
+自定义模式的参数设置
+【代码范例】
+1.事件录像延时
+        int erd = cameraInfo.getErd();
+        if (erd > 0) {
+    
+            if (1 == (1 & erd)) {
+                //3s（value=0）
+                 
+            }
+            if (1 << 1 == (1 << 1 & erd)) {
+                //6s（value=1）
+               
+            }
+            
+        }
+
+    //获取当前值
+     value=deviceParams.getAovRecordDelay();
+
+
+        //设置事件录像延时
+     MeariUser.getInstance().setAOVRecordDelay(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+
+        2.补光距离  
+        //- description: 是否支持补光距离配置，0-不支持, bit0-自动 bit1-10m bit2-20m bit3-30m
+        int sld = cameraInfo.getSld();
+        if (sld > 0) {
+           
+            if (1 == (1 & sld)) {
+                //自动（value=0）
+            
+            }
+            if (1 << 1 == (1 << 1 & sld)) {
+                //10m（value=1）
+                
+            }
+            if (1 << 2 == (1 << 2 & sld)) {
+                //20m（value=2）
+            
+            }
+            if (1 << 3 == (1 << 3 & sld)) {
+                //30m（value=3）
+            }
+
+        }
+
+        //获取当前值
+        value=deviceParams.getAovComplementaryDistance()
+        
+        //设置
+        MeariUser.getInstance().setAovComplementaryDistance(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+
+
+        3.夜景模式
+        //0-不支持, bit0-普通模式 bit1-增强模式
+        int nms = cameraInfo.getNms();
+        if (nms > 0) {
+            
+            if (1 == (1 & nms)) {
+                //普通模式/Normal Mode（value=0）
+            }
+            if (1 << 1 == (1 << 1 & nms)) {
+                //增强模式/Enhanced Mode（value=1）
+            }
+        }
+
+        //获取当前值
+        value=deviceParams.getAovNightMode()
+        //设置
+        MeariUser.getInstance().setAovNightMode(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+        4.全时录像帧率
+        if (cameraInfo.getSfi() > 0) {
+            //0-不支持, >0-支持;按bit位显示可设置的单帧间隔，bit0-1秒，bit1-2秒，bit2-3秒，bit3-5秒，bit4-10秒，bit5-15秒，bit6-20秒，bit7-30秒，bit8-60秒,bit9关闭
+            int sfi = cameraInfo.getSfi();
+            if (1 << 9 == (1 << 9 & sfi)) {
+                fpsList.add(0);
+            }
+            if (1 == (1 & sfi)) {
+                fpsList.add(1);
+            }
+            if (1 << 1 == (1 << 1 & sfi)) {
+                fpsList.add(2);
+            }
+            if (1 << 2 == (1 << 2 & sfi)) {
+                fpsList.add(3);
+            }
+            if (1 << 3 == (1 << 3 & sfi)) {
+                fpsList.add(5);
+            }
+            if (1 << 4 == (1 << 4 & sfi)) {
+                fpsList.add(10);
+            }
+            if (1 << 5 == (1 << 5 & sfi)) {
+                fpsList.add(15);
+            }
+            if (1 << 6 == (1 << 6 & sfi)) {
+                fpsList.add(20);
+            }
+            if (1 << 7 == (1 << 7 & sfi)) {
+                fpsList.add(30);
+            }
+            if (1 << 8 == (1 << 8 & sfi)) {
+                fpsList.add(60);
+            }
+        }
+
+        //获取值
+        value=deviceParams.getFullTimeFrameRate()
+
+        //设置
+        MeariUser.getInstance().setAOVFrameRate(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+               
+            }
+        });
+
 ```
 # 10 家庭
 

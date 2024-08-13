@@ -4571,6 +4571,287 @@ MeariUser.getInstance().setFlightLinkSirenEnable(status, new ISetDeviceParamsCal
     }
 });
 ```
+## 9.8 AOV Camera Setting
+### 9.8.1 Preview Change Real Time or Save Data
+```
+【description】
+Preview Change Real Time or Save Data
+
+【Function call】
+/**
+ * Whether Support Real Time or Save Data
+ */
+MeariDeviceUtil.isSupportFps(cameraInfo);
+
+/**
+*Change Real Time or Save Data
+*isLowFps   Real Time：0   Save Data：1
+**/
+if (MeariDeviceUtil.isSupportFps(cameraInfo)) {
+     deviceController.setExtraPreviewParams(isLowFps);
+}
+
+【Code example】
+//Set the current stream saving mode or real-time mode
+
+if (MeariDeviceUtil.isSupportFps(cameraInfo)) {
+     deviceController.setExtraPreviewParams(isLowFps);
+}
+deviceController.changeVideoResolution(videoSurfaceView, videoId, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+
+    }
+}, new MeariDeviceVideoStopListener() {
+    @Override
+    public void onVideoClosed(int code) {
+        
+    }
+});
+```
+### 9.8.2 WorkMode
+```
+【description】
+WorkMode
+【Code example】
+/**
+*Determine which mode are supported
+**/
+        int lwm = -1;
+        //SMB-aov
+        int alm = cameraInfo.getAlm();
+        if (alm > 0) {
+            lwm = alm;
+            isSMB = true;
+        }
+        //CIV-aov  wifi aov
+        int lwm2 = cameraInfo.getLwm2();
+        if (lwm2 > 0) {
+            lwm = lwm2;
+            isSMB = false;
+        }
+        if (lwm > 0) {
+            if (1 == (1 & lwm)) {
+                //Power Saving Mode
+            }
+            if (1 << 1 == (1 << 1 & lwm)) {
+                //Performance Mode
+            }
+            if (1 << 2 == (1 << 2 & lwm)) {
+                //Custom Mode
+            }
+            if (1 << 3 == (1 << 3 & lwm)) {
+                //Always-on Mode
+            }
+        }
+
+        /*
+        **Which mode is it currently in
+        *0-Power Saving Mode, 1-Performance Mode, 2-Custom Mode  3-Always-on Mode
+        */
+        mode = deviceParams.getAovWorkMode();
+        if(isSMB) {
+            mode = deviceParams.getAovWorkMode();
+        }else {
+            mode = deviceParams.getWorkMode();
+        }
+
+
+        //Set WorkMode
+        if (isSMB) {
+            MeariUser.getInstance().setAOVWorkMode(mode, new ISetDeviceParamsCallback() {
+                @Override
+                public void onSuccess() {
+                    
+                }
+
+                @Override
+                public void onFailed(int errorCode, String errorMsg) {
+                    
+                }
+            });
+        } else {
+            MeariUser.getInstance().setWorkMode(mode, new ISetDeviceParamsCallback() {
+                @Override
+                public void onSuccess() {
+                    
+                }
+
+                @Override
+                public void onFailed(int errorCode, String errorMsg) {
+                    
+                }
+            });
+        }
+
+
+```
+### 9.8.3 Custom Mode Setting
+```
+【description】
+Custom Mode Setting
+【Code example】
+1.Event video time lapse
+        int erd = cameraInfo.getErd();
+        if (erd > 0) {
+    
+            if (1 == (1 & erd)) {
+                //3s（value=0）
+                 
+            }
+            if (1 << 1 == (1 << 1 & erd)) {
+                //6s（value=1）
+               
+            }
+            
+        }
+
+    //Get Current Value
+     value=deviceParams.getAovRecordDelay();
+
+
+        //Set Value
+     MeariUser.getInstance().setAOVRecordDelay(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+
+        2.Fill Light Distance
+        //- description: Whether Support Fill Light Distance，0-Not Support, bit0-Auto bit1-10m bit2-20m bit3-30m
+        int sld = cameraInfo.getSld();
+        if (sld > 0) {
+           
+            if (1 == (1 & sld)) {
+                //Auto（value=0）
+            
+            }
+            if (1 << 1 == (1 << 1 & sld)) {
+                //10m（value=1）
+                
+            }
+            if (1 << 2 == (1 << 2 & sld)) {
+                //20m（value=2）
+            
+            }
+            if (1 << 3 == (1 << 3 & sld)) {
+                //30m（value=3）
+            }
+
+        }
+
+        //Get Current Value
+        value=deviceParams.getAovComplementaryDistance()
+        
+        //Set Value
+        MeariUser.getInstance().setAovComplementaryDistance(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+
+
+        3.Night Scene Mode
+        //0-Not Support, bit0-Normal Mode bit1-Enhanced Mode
+        int nms = cameraInfo.getNms();
+        if (nms > 0) {
+            
+            if (1 == (1 & nms)) {
+                //Normal Mode（value=0）
+            }
+            if (1 << 1 == (1 << 1 & nms)) {
+                //Enhanced Mode（value=1）
+            }
+        }
+
+        //Get Current Value
+        value=deviceParams.getAovNightMode()
+        //Set Value
+        MeariUser.getInstance().setAovNightMode(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+        4.Full-Time Video Frame Rate
+        if (cameraInfo.getSfi() > 0) {
+            //0-Not Support, >0-Support;
+            //bit0-1，bit1-2，bit2-3，bit3-5，bit4-10，bit5-15，bit6-20，bit7-30，bit8-60,bit9-Close
+            int sfi = cameraInfo.getSfi();
+            if (1 << 9 == (1 << 9 & sfi)) {
+                fpsList.add(0);
+            }
+            if (1 == (1 & sfi)) {
+                fpsList.add(1);
+            }
+            if (1 << 1 == (1 << 1 & sfi)) {
+                fpsList.add(2);
+            }
+            if (1 << 2 == (1 << 2 & sfi)) {
+                fpsList.add(3);
+            }
+            if (1 << 3 == (1 << 3 & sfi)) {
+                fpsList.add(5);
+            }
+            if (1 << 4 == (1 << 4 & sfi)) {
+                fpsList.add(10);
+            }
+            if (1 << 5 == (1 << 5 & sfi)) {
+                fpsList.add(15);
+            }
+            if (1 << 6 == (1 << 6 & sfi)) {
+                fpsList.add(20);
+            }
+            if (1 << 7 == (1 << 7 & sfi)) {
+                fpsList.add(30);
+            }
+            if (1 << 8 == (1 << 8 & sfi)) {
+                fpsList.add(60);
+            }
+        }
+
+        //Get Current Value
+        value=deviceParams.getFullTimeFrameRate()
+
+        //Set Value
+        MeariUser.getInstance().setAOVFrameRate(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+               
+            }
+        });
+
+```
 # 10 Family
 
 ## 10.1 Family Operation
