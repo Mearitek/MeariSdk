@@ -78,6 +78,10 @@
         * 7.23.3 [Turn on/off the lights according to the time period](#7233-Turn-on/off-the-lights-according-to-the-time-period)
         * 7.23.4 [Turn on/off the lights according to alarm events](#7234-Turn-on/off-the-lights-according-to-alarm-events)
     * 7.24 [Doorbell answering process](#724-Doorbell-answering-process)
+    * 7.25 [AOV Camera Settings](#725-AOV-Camera-Settings)  
+        * 7.25.1 [Preview Change Real Time or Save Data](#7251-Preview-Change-Real-Time-or-Save-Data)
+        * 7.25.2 [Work Mode](#7252-Work-Mode)
+        * 7.25.3 [Custom Mode Setting](#7253-Custom-Mode-Setting)
 * 8 [Share Device](#8-Share-Device) 
 * 9 [Family](#9-Family)
     * 9.1 [Family management](#91-Family-management)
@@ -2679,7 +2683,178 @@ MeariDevice Responsible for all operations on the device, including preview, pla
 - (void)requestReleaseAnswerAuthorityWithID:(NSInteger)ID success:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
 ```
+## 7.25 AOV Camera Settings
+### 7.25.1 Preview Change Real Time or Save Data
+```
+【Description】
+    Preview Change Real Time or Save Data
 
+【Function】
+/**
+ * Whether Support Real Time or Save Data
+ */
+ You can use device.supportAovMode == YES to determine whether the real-time data saving mode is supported.
+
+/**
+ set aov device preview mode
+ 
+ @param mode  Preview mode 0-Real-time mode 1-Stream-saving Aov mode After calling this method, you need to call the resolution switching method
+ */
+- (void)setAovPreviewMode:(MeariDeviceLiveMode)mode; 
+
+/**
+ change Video Resolution
+ 
+ @param playView play view
+ @param videoStream (video type)
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)changeVideoResolutionWithPlayView:(MeariPlayView *)playView videoStream:(MeariDeviceVideoStream)videoStream success:(MeariSuccess)success failure:(MeariFailure)failure;
+【Code】
+    //Set whether the current mode is saving flow or real-time mode
+    if (self.camera.supportAovMode) {
+        [self.camera setAovPreviewMode:mode];
+    }
+    // change Video Resolution
+    [self.camera changeVideoResolutionWithPlayView:self.drawableView videoStream:stream success:^{
+        //Switch successful
+    } failure:^(NSError *error) {
+        /Switch failed
+    }];
+```
+### 7.25.2 Work Mode
+```
+【Description】
+    Working Mode
+【Function】
+    /**
+    *Determine which modes are supported
+    **/
+
+    /**Whether to support full-time low-power working mode setting*/
+    @property (nonatomic, assign, readonly) BOOL supportLowPowerWorkMode;
+    /**Whether to support full-time low-power device saving working mode setting*/
+    @property (nonatomic, assign, readonly) BOOL supportLowPowerSaveWorkMode;
+    /**Whether to support full-time low-power device performance working mode setting*/
+    @property (nonatomic, assign, readonly) BOOL supportLowPowerPerformanceWorkMode;
+    /**Whether to support full-time low-power device custom working mode setting*/
+    @property (nonatomic, assign, readonly) BOOL supportLowPowerCustomWorkMode;
+        
+
+    /*
+    **Which mode is currently in?
+    *0-power saving mode, 1-performance mode, 2-custom mode 3-normal power mode
+    */
+    mode = self.camera.param.lowPowerWorkMode;
+    
+    /**
+        Set the device low power work mode
+    @param mode work mode
+    @param success Successful callback 
+    @param failure failure callback 
+    */
+    - (void)setLowPowerWorkMode:(NSInteger)mode success:(MeariSuccess)success failure:(MeariFailure)failure;
+      
+【Code】
+
+    [self.camera setLowPowerWorkMode:mode success:^{
+        NSLog(@"Set Success");
+    } failure:^(NSError *error) {
+        NSLog(@"Set Failure");
+    }];
+
+
+```
+### 7.25.3 Custom Mode Setting
+```
+【Description】
+    Custom Mode Setting
+
+【Function】
+    /** Whether to support event recording delay (record a certain amount of time after the event recording is completed)*/
+    @property (nonatomic, assign, readonly) BOOL supportEventRecordDelay;
+    /** Whether to support fill light distance configuration*/
+    @property (nonatomic, assign, readonly) BOOL supportFillLightDistance;
+    /** Whether to support night scene mode configuration*/
+    @property (nonatomic, assign, readonly) BOOL supportNightSceneMode;
+    /** Support AOV video frame rate array 0-off*/
+    - (NSArray <NSNumber *>*)supportAovModeFrameRateArray;
+
+    /** Event recording delay (record a certain amount of time after the event recording is completed)*/
+    self.camera.param.eventRecordDelay;
+    /** Fill light distance configuration*/
+    self.camera.param.fillLightDistance;
+    /** Night scene mode configuration*/
+    self.camera.param.nightSceneMode;
+    /**AOV video frame rate*/
+    self.camera.param.aovModeFrameRate;
+    
+    
+    /**
+    //Set the device Event Record Delay
+ 
+    @param delay delay
+    @param success Successful callback 
+    @param failure failure callback 
+    */
+    - (void)setEventRecordDelay:(NSInteger)delay success:(MeariSuccess)success failure:(MeariFailure)failure;
+    /**
+    //Set the device fill light distance
+
+
+    @param distance distance
+    @param success Successful callback 
+    @param failure failure callback 
+    */
+    - (void)setFillLightDistance:(NSInteger)distance success:(MeariSuccess)success failure:(MeariFailure)failure;
+    /**
+    //Set the device night scene mode
+    
+ 
+    @param mode night scene mode
+    @param success Successful callback 
+    @param failure failure callback 
+    */
+    - (void)setNightSceneMode:(NSInteger)mode success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+    /**
+    //Set the device AOV code stream single frame rate
+   
+ 
+    @param rate frame rate
+    @param success Successful callback 
+    @param failure failure callback 
+ */
+    - (void)setAOVModeFrameRate:(NSInteger)rate success:(MeariSuccess)success failure:(MeariFailure)failure;
+【Code】
+    //Event Record Delay
+    [self.camera setEventRecordDelay:delay success:^{
+        NSLog(@"Set Success");
+    } failure:^(NSError *error) {
+        NSLog(@"Set Failure");
+    }];
+    //fill light distance
+    [self.camera setFillLightDistance:distance success:^{
+        NSLog(@"Set Success");
+    } failure:^(NSError *error) {
+        NSLog(@"Set Failure");
+    }];
+    //night scene mode
+    [self.camera setNightSceneMode:mode success:^{
+        NSLog(@"Set Success");
+    } failure:^(NSError *error) {
+        NSLog(@"Set Failure");
+    }];
+
+    //frame rate
+    [self.camera setAOVModeFrameRate:rate success:^{
+        NSLog(@"Set Success");
+    } failure:^(NSError *error) {
+        NSLog(@"Set Failure");
+    }];
+
+```
 # 8. Share Device
 
 ```
@@ -3449,15 +3624,14 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 ### 10.3.1  Get whether the devices have alarm message
 ```
 【Description】
-    获取云存储2.0消息 通过判断supportAlarmVideoReport == 1 或者evt == 1判断设备支持2.0报警消息
+    Get cloud storage 2.0 messages. By judging supportAlarmVideoReport == 1 or evt == 1, determine whether the device supports 2.0 alarm messages.
 
 【Function】
      /**
      get all the alarm messgae List for cloud2
-     (获取设备是否有最新的报警消息 云存储2.0设备)
      
-     @param success Successful callback (成功回调)
-     @param failure failure callback (失败回调)
+     @param success Successful callback 
+     @param failure failure callback 
      */
      -(void)getAlarmLatestMessageListCloud2ForDeviceListSuccess:(MeariSuccess_MsgLatestAlarmList)success Failure:(MeariFailure)failure;
 【Code】
@@ -3473,19 +3647,18 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 
 ```
 【Description】
-    获取云存储2.0消息 通过判断supportAlarmVideoReport == 1 或者evt == 1判断设备支持2.0报警消息
+    Get cloud storage 2.0 messages. By judging supportAlarmVideoReport == 1 or evt == 1, determine whether the device supports 2.0 alarm messages.
 【Function】
 
      /**
-     get all the alarm messgae of one device  by day 
-     (云存储2.0获取某个设备某天的报警消息,每次最多返回20条信息)
+     Cloud Storage 2.0 obtains the alarm message of a device on a certain day, and returns up to 20 pieces of information each time
 
-     @param deviceID 设备ID
-     @param day 天，如："20200804"
-     @param channel 默认为0
-     @param msgTime  devLocaTtime，传@“0”拉取最新消息 其他 如：“20220406200300” 表示获取在20220406200300之后的消息
-     @param eventType eventType (事件报警类型，每条消息存在一种类型，取值"1" "2" "3"..."13")
-     "-1": 表示不进行筛选
+     @param deviceID Device ID
+     @param day date, such as: "20200804"
+     @param channel Default is 0
+     @param msgTime  devLocaTtime，Pass @"0" to get the latest news. Others, such as "20220406200300" means to get the news after 20220406200300
+     @param eventType eventType (Event alarm type. Each message has one type. The value is "1" "2" "3"..."13")
+     "-1": Indicates no filtering will be performed
      "1": "motion",
      "3": "bell",
      "6": "decibel",
@@ -3495,18 +3668,18 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
      "11": "human",
      "12": "face",
      "13": "safety"
-     @param aiTypes aiType (AI分析类型，每条消息可能存在多种类型，取值"0" "1" "2"..."7")  数组为空表示不进行筛选
-     "0": "人"
-     "1": "宠物"
-     "2": "有车辆驶来"
-     "3": "有车辆停滞"
-     "4": "有车辆驶离"
-     "5": "包裹被放下"
-     "6": "有滞留包裹"
-     "7": "包裹被拿走"
-     @param direction 1拉最新消息，0拉历史消息
-     @param success Successful callback (成功回调)
-     @param failure failure callback (失败回调)
+     @param aiTypes aiType (AI analysis type. Each message may have multiple types. The values ​​are "0" "1" "2"..."7")  An empty array means no filtering is performed
+     "0": "People"
+    "1": "Pet"
+    "2": "A vehicle is approaching"
+    "3": "A vehicle is parked"
+    "4": "A vehicle is leaving"
+    "5": "A package is dropped off"
+    "6": "A package is stranded"
+    "7": "A package is taken away"
+     @param direction  0-pulls historical news,1-pulls the latest news
+     @param success Successful callback 
+     @param failure failure callback 
      */
      - (void)getAlarmMessageListCloud2ForDeviceWithDeviceID:(NSInteger)deviceID
                                                   channel:(NSInteger)channel
@@ -3517,7 +3690,7 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
                                                   aiTypes:(NSArray *)aiTypes
                                                   success:(MeariSuccess_MsgAlarmDeviceList)success failure:(MeariFailure)failure;
 【Code】
-     //获取云存储2.0的最新消息 不作任何的筛选
+     //Get the latest news of Cloud Storage 2.0 without any filtering
      [[MeariUser sharedInstance] getAlarmMessageListCloud2ForDeviceWithDeviceID:deviceID channel:0 day:@"20200804" msgTime:0 direction:1 eventType:-1 aiTypes:[] success:^(NSArray<MeariMessageInfoAlarmDevice *> *newMsgs, MeariDevice *device, BOOL msgFrequently) {
             
       } failure:^(NSError *error) {
@@ -3529,42 +3702,40 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 
 ```
   【Description】
-    云存储2.0的图片可以直接访问。如果链接失效请重新获取。
-    云存储2.0的图片默认以设备的SN进行加密,需要下载图片数据之后调用解密方法后才能显示。
-    图片以 jpgx3 结尾表明设备默认密码加密。采用设备SN加密
-    图片以 jpgx2 结尾表明设备采用用户密码加密。
+    The images in Cloud Storage 2.0 can be accessed directly. If the link is invalid, please retrieve it again.
+    The images in Cloud Storage 2.0 are encrypted by the device's SN by default. You need to download the image data and call the decryption method before you can display it.
+    The image ends with jpgx3, which indicates that the device is encrypted with the default password. Encrypted with the device SN
+    The image ends with jpgx2, which indicates that the device is encrypted with the user password.
  
   【Function】
      /**
-     //Check if the v2 version of the Key matches the image
-     // 判断图片是以jepx2、jepx3版本的Key是否与图片匹配
+     // Determine whether the image is based on the jepx2 or jepx3 version of the Key and whether it matches the image.
 
-     @param url 图片url
-     @param password  用户设置的密码
-     @return 解密完成的数据 (image data)
+     @param url Image url
+     @param password  Password set by the user
+     @return Decrypted data (image data)
      */
      - (BOOL)checkImageV2EncryKey:(NSString *)url password:(NSString *)password;
 
+     /**
+     //Determine whether the image ends with jepx2 or jepx3. If it ends with jepx2 or jepx3, decryption is required.
 
-     // Determine whether the picture ends with jepx1. If it is in the format ending with jepx1, it needs to be decrypted.
-     // 判断图片是否是以jepx2、jepx3结尾 如果是以jepx2、jepx3结尾的格式 需要进行解密操作
-
-     @param deviceSN 设备的SN(device.info.sn)
-     @param imageData  图片的二进制数据 (image data)
-     @return 解密完成的数据 (image data)
+     @param deviceSN SN of the device(device.info.sn)
+     @param imageData  The binary data of the image (image data)
+     @return Decrypted data (image data)
      */
      - (NSData *)decryptImageDataV2With:(NSString *)deviceSN imageData:(NSData *)imageData;
 
   【Code】
-        //根据图片URL 检验密码是否正确
-        //imageUrl 服务器返回的图片URL
-        //password jpgx3结尾下 默认以设备SN作为密码 password = device.info.sn
+        //Verify the password is correct based on the image URL
+        //imageUrl Image URL returned by the server
+        //password jpgx3 ends with the device SN as the default password password = device.info.sn
         BOOL correct = [[MeariUser sharedInstance] checkImageV2EncryKey:imageUrl password:password];
 
-       //imageData 下载下来之后的图片数据
-       //解密之前先校验密码是否正确。 根据对下载之后的数据进行解密操作
+       //imageData  Image data after downloading
+       //Verify the password before decryption. Decrypt the downloaded data
        NSData *decodeData = [[MeariUser sharedInstance] decryptImageDataV2With:password imageData:imageData];
-       //进行图片的展示
+       //display images
 
 ```
 
@@ -3572,37 +3743,34 @@ Note: Once the alarm message is pulled by the owner of the device, the server wi
 
 ```
 【Description】
-    删除云存储2.0消息  chanel默认为0
+    Delete Cloud Storage 2.0 message chanel defaults to 0
 【Function】
           /**
-     Delete system messages in bulk
-     云存储2.0按索引批量删除事件
+    Cloud Storage 2.0 batch delete events by index
      
-     @param deviceID 设备ID
-     @param indexList 需要删除的事件时间点集合
-     @param success Successful callback (成功回调)
-     @param failure failure callback (失败回调)
+     @param deviceID Device ID
+     @param indexList The set of event time points that need to be deleted
+     @param success Successful callback 
+     @param failure failure callback 
      */
      - (void)deleteSystemMessagesCloud2WithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel indexList:(NSArray *)indexList success:(MeariSuccess)success failure:(MeariFailure)failure;
 
      /**
-     Delete system messages in bulk
-     云存储2.0按天批量删除事件
+     Cloud Storage 2.0 batch delete events by day
      
-     @param deviceID 设备ID
-     @param day 需要删除的事件天
-     @param success Successful callback (成功回调)
-     @param failure failure callback (失败回调)
+     @param deviceID  Device ID
+     @param day Event days to be deleted
+     @param success Successful callback 
+     @param failure failure callback 
      */
      - (void)deleteSystemMessagesCloud2WithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel day:(NSString *)day success:(MeariSuccess)success failure:(MeariFailure)failure;
 
      /**
-     Delete system messages in bulk
-     云存储2.0按设备删除事件
+     Cloud Storage 2.0 delete events by device
      
-     @param deviceID 设备ID
-     @param success Successful callback (成功回调)
-     @param failure failure callback (失败回调)
+     @param deviceID Device ID
+     @param success Successful callback 
+     @param failure failure callback 
      */
      - (void)deleteSystemMessagesCloud2WithDeviceID:(NSInteger)deviceID channel:(NSInteger)channel success:(MeariSuccess)success failure:(MeariFailure)failure;
 

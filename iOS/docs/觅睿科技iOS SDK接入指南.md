@@ -76,6 +76,10 @@
         * 7.23.3 [按时间段开灯](#7233-按时间段开灯)
         * 7.23.4 [按报警事件开关灯](#7234-按报警事件开关灯)
     * 7.24 [门铃接听流程](724-门铃接听流程)
+    * 7.25 [AOV摄像机参数设置](#725-AOV摄像机参数设置)  
+        * 7.25.1 [预览切换实时省流](#7251-预览切换实时省流)
+        * 7.25.2 [工作模式](#7252-工作模式)
+        * 7.25.3 [自定义参数设置](#7253-自定义参数设置)
 * 8[设备分享](#8-设备分享) 
 * 9[家庭](#9-家庭)
     * 9.1 [家庭管理](#91-家庭管理)
@@ -2694,6 +2698,184 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
  */
 - (void)requestReleaseAnswerAuthorityWithID:(NSInteger)ID success:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
+```
+## 7.25 AOV摄像机参数设置
+### 7.25.1 预览切换实时省流
+```
+【描述】
+预览页面切换实时省流
+
+【函数调用】
+/**
+ * 是否支持实时省流
+ */
+ 可以通过 device.supportAovMode == YES 来判断是否支持实时省流模式 
+
+/**
+ set aov device preview mode
+  设置aov设备预览模式
+ 
+ @param mode  预览模式 0-实时模式  1-省流Aov模式 调用该方法之后需要调用切换分辨率方法
+ */
+- (void)setAovPreviewMode:(MeariDeviceLiveMode)mode; 
+
+/**
+ change Video Resolution
+ 切换清晰度
+ 
+ @param playView play view(播放视图)
+ @param videoStream (video type)播放类型
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)changeVideoResolutionWithPlayView:(MeariPlayView *)playView videoStream:(MeariDeviceVideoStream)videoStream success:(MeariSuccess)success failure:(MeariFailure)failure;
+【代码范例】
+    //设置当前是省流还是实时模式
+    if (self.camera.supportAovMode) {
+        [self.camera setAovPreviewMode:mode];
+    }
+    // 切换清晰度
+    [self.camera changeVideoResolutionWithPlayView:self.drawableView videoStream:stream success:^{
+        //切换成功
+    } failure:^(NSError *error) {
+        //切换失败
+    }];
+```
+### 7.25.2 工作模式
+```
+【描述】
+    工作模式
+【函数调用】
+    /**
+    *判断支持哪些模式
+    **/
+
+    /**是否支持全时低功耗的工作模式设置*/
+    @property (nonatomic, assign, readonly) BOOL supportLowPowerWorkMode;
+    /**是否支持全时低功耗设备省流工作模式设置*/
+    @property (nonatomic, assign, readonly) BOOL supportLowPowerSaveWorkMode;
+    /**是否支持全时低功耗设备性能工作模式设置*/
+    @property (nonatomic, assign, readonly) BOOL supportLowPowerPerformanceWorkMode;
+    /**是否支持全时低功耗设备自定义工作模式设置*/
+    @property (nonatomic, assign, readonly) BOOL supportLowPowerCustomWorkMode;
+        
+
+    /*
+    **当前处于哪种模式
+    *0-省电模式, 1-性能模式, 2-自定义模式  3-常电模式
+    */
+    mode = self.camera.param.lowPowerWorkMode;
+    
+    /**
+        Set the device low power work mode
+        设置设备全时低功耗工作模式
+    @param mode work mode(工作模式)
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)setLowPowerWorkMode:(NSInteger)mode success:(MeariSuccess)success failure:(MeariFailure)failure;
+      
+【代码范例】
+
+    //设置工作模式
+    [self.camera setLowPowerWorkMode:mode success:^{
+        NSLog(@"设置成功");
+    } failure:^(NSError *error) {
+        NSLog(@"设置失败");
+    }];
+
+
+```
+### 7.25.3 自定义参数设置
+```
+【描述】
+自定义模式的参数设置
+
+【函数调用】
+    /** 是否支持事件录像延时 （事件录像结束后，再多录一定时间的录像）*/
+    @property (nonatomic, assign, readonly) BOOL supportEventRecordDelay;
+    /**是否支持补光距离配置*/
+    @property (nonatomic, assign, readonly) BOOL supportFillLightDistance;
+    /**是否支持夜景模式配置*/
+    @property (nonatomic, assign, readonly) BOOL supportNightSceneMode;
+    /** 支持AOV视频帧率数组 0-关闭*/
+    - (NSArray <NSNumber *>*)supportAovModeFrameRateArray;
+    
+    
+    /** 事件录像延时（事件录像结束后，再多录一定时间的录像）*/
+    self.camera.param.eventRecordDelay;
+    /**补光距离配置*/
+    self.camera.param.fillLightDistance;
+    /**夜景模式配置*/
+    self.camera.param.nightSceneMode;
+    /**AOV视频帧率*/   
+    self.camera.param.aovModeFrameRate;
+    
+    
+    /**
+    //Set the device Event Record Delay
+    // 设置设备时间录像延时
+ 
+    @param delay delay(延时)
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)setEventRecordDelay:(NSInteger)delay success:(MeariSuccess)success failure:(MeariFailure)failure;
+    /**
+    //Set the device fill light distance
+    // 设置设备补光灯距离
+
+    @param distance distance(距离)
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)setFillLightDistance:(NSInteger)distance success:(MeariSuccess)success failure:(MeariFailure)failure;
+    /**
+    //Set the device night scene mode
+    // 设置设备夜景模式
+ 
+    @param mode night scene mode(夜景模式)
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+    */
+    - (void)setNightSceneMode:(NSInteger)mode success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+    /**
+    //Set the device AOV code stream single frame rate
+    // 设置设备AOV码流单帧间隔
+ 
+    @param rate frame rate(帧率)
+    @param success Successful callback (成功回调)
+    @param failure failure callback (失败回调)
+ */
+    - (void)setAOVModeFrameRate:(NSInteger)rate success:(MeariSuccess)success failure:(MeariFailure)failure;
+【代码范例】
+    //事件录像延时
+    [self.camera setEventRecordDelay:delay success:^{
+        NSLog(@"设置成功");
+    } failure:^(NSError *error) {
+        NSLog(@"设置失败");
+    }];
+    //补光灯距离
+    [self.camera setFillLightDistance:distance success:^{
+        NSLog(@"设置成功");
+    } failure:^(NSError *error) {
+        NSLog(@"设置失败");
+    }];
+    //夜景模式
+    [self.camera setNightSceneMode:mode success:^{
+        NSLog(@"设置成功");
+    } failure:^(NSError *error) {
+        NSLog(@"设置失败");
+    }];
+
+    //码流单帧间隔
+    [self.camera setAOVModeFrameRate:rate success:^{
+        NSLog(@"设置成功");
+    } failure:^(NSError *error) {
+        NSLog(@"设置失败");
+    }];
+
 ```
 
 # 8. 设备分享 
