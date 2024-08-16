@@ -576,8 +576,10 @@ MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils (ssid, pwd, w
 }, false);
 
 // start searching
-mangerCameraScan.startSearchDevice (false, -1, 100 * 1000, ActivityType.ACTIVITY_SEARCHCANERARESLUT, token)
-
+// 130*1000:Search time
+// FLAG：Any int type flag bit, the same value will use the same object, different values will create a new object
+// token：MeariUser.getInstance().getToken()
+mangerCameraScan.startSearchDevice(false, -1, 130*1000, FLAG, token)
 
 MeariUser.getInstance (). CheckDeviceStatus (cameraInfos, deviceTypeID, new IDeviceStatusCallback () {
     @Override
@@ -716,7 +718,9 @@ MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(null, null, 0
 }, false);
 
 // start search
-mangerCameraScan.startSearchDevice(false, -1, ACTIVITY_WIRED_OPERATION);
+// 130*1000:Search time
+// FLAG：Any int type flag bit, the same value will use the same object, different values will create a new object
+mangerCameraScan.startSearchDevice(false, -1, 130*1000, FLAG)
 
 // Check device status
 MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {

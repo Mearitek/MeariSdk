@@ -627,8 +627,10 @@ MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(ssid, pwd, wi
 }, false);
 
 // 开始搜索
-mangerCameraScan.startSearchDevice(false, -1, 100*1000, ActivityType.ACTIVITY_SEARCHCANERARESLUT, token)
-
+// 130*1000:搜索时间
+// FLAG：任意int类型标志位，值相同会使用同一个对象，值不同会创建新的对象
+// token：MeariUser.getInstance().getToken()
+mangerCameraScan.startSearchDevice(false, -1, 130*1000, FLAG, token)
 
 MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
     @Override
@@ -769,7 +771,9 @@ MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(null, null, 0
 }, false);
 
 // 开始搜索
-mangerCameraScan.startSearchDevice(false, -1, ACTIVITY_WIRED_OPERATION);
+// 130*1000:搜索时间
+// FLAG：任意int类型标志位，值相同会使用同一个对象，值不同会创建新的对象
+mangerCameraScan.startSearchDevice(false, -1, 130*1000, FLAG)
 
 // 检测设备状态
 MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
