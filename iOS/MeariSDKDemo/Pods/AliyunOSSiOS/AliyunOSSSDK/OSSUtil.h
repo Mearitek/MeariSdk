@@ -17,6 +17,7 @@
 
 @interface OSSUtil : NSObject
 
++ (BOOL)isIncludeCnameExcludeList:(NSArray *)cnameExcludeList host:(NSString *)host;
 + (NSString *)calBase64Sha1WithData:(NSString *)data withSecret:(NSString *)key;
 + (NSString *)calBase64WithData:(uint8_t *)data;
 + (NSString *)encodeURL:(NSString *)url;
@@ -36,6 +37,8 @@
 + (NSString *)base64Md5ForFilePath:(NSString *)filePath;
 + (NSString *)base64Md5ForFileURL:(NSURL *)fileURL;
 + (NSString *)base64ForData:(uint8_t *)input length:(int32_t)length;
++ (NSString *)dataMD5String:(NSData *)data error:(NSError **)error;
++ (NSString *)fileMD5String:(NSString *)path error:(NSError **)error;
 
 + (NSString *)populateSubresourceStringFromParameter:(NSDictionary *)parameters;
 + (NSString *)populateQueryStringFromParameter:(NSDictionary *)parameters;
@@ -44,8 +47,6 @@
 + (NSString *)getRelativePath:(NSString *)fullPath;
 + (NSString *)detemineMimeTypeForFilePath:(NSString *)filePath uploadName:(NSString *)uploadName;
 + (BOOL)hasPhoneFreeSpace;
-+ (NSString*)buildNetWorkConnectedMsg;
-+ (NSString*)buildOperatorMsg;
 
 + (uint64_t)crc64ecma:(uint64_t)crc1 buffer:(void *)buffer length:(size_t)len;
 

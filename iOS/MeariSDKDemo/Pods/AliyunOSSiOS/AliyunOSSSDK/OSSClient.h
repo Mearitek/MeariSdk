@@ -35,6 +35,9 @@
 @class OSSPutSymlinkRequest;
 @class OSSGetSymlinkRequest;
 @class OSSRestoreObjectRequest;
+@class OSSGetObjectTaggingRequest;
+@class OSSDeleteObjectTaggingRequest;
+@class OSSPutObjectTaggingRequest;
 
 @class OSSTask;
 @class OSSExecutor;
@@ -272,6 +275,54 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (OSSTask *)restoreObject:(OSSRestoreObjectRequest *)request;
 
+/**
+ * You can call this operation to query the tags of an object.
+ *
+ * @param request
+ *          A OSSGetObjectTaggingRequest instance which specifies the bucket
+ *            name and object key.
+ *
+ * @return An instance of OSSTask. On successful execution, `task.result` will
+ *         contain an instance of `OSSGetObjectTaggingResult`,otherwise will contain
+ *         an instance of NSError.
+ *
+ * for more information,please refer to https://help.aliyun.com/document_detail/114878.html
+ */
+- (OSSTask *)getObjectTagging:(OSSGetObjectTaggingRequest *)request;
+
+/**
+ * You can call this operation to add tags to an object or update the tags added to
+ *  the bucket. The object tagging feature uses a key-value pair to tag an object.
+ *
+ * @param request
+ *          A OSSPutObjectTaggingRequest instance which specifies the bucket
+ *            name、object key and tags.
+ *
+ * @return An instance of OSSTask. On successful execution, `task.result` will
+ *         contain an instance of `OSSPutObjectTaggingResult`,otherwise will contain
+ *         an instance of NSError.
+ *
+ * for more information,please refer to https://help.aliyun.com/document_detail/114855.html
+ */
+- (OSSTask *)putObjectTagging:(OSSPutObjectTaggingRequest *)request;
+
+/**
+ * You can call this operation to delete the tags of a specified object.
+ *
+ * @param request
+ *          A OSSDeleteObjectTaggingRequest instance which specifies the bucket
+ *            name and object key.
+ *
+ * @return An instance of OSSTask. On successful execution, `task.result` will
+ *         contain an instance of `OSSDeleteObjectTaggingResult`,otherwise will contain
+ *         an instance of NSError.
+ *
+ * for more information,please refer to https://help.aliyun.com/document_detail/114879.html
+ */
+- (OSSTask *)deleteObjectTagging:(OSSDeleteObjectTaggingRequest *)request;
+
+
+
 @end
 
 @interface OSSClient (MultipartUpload)
@@ -385,6 +436,37 @@ NS_ASSUME_NONNULL_BEGIN
                                     httpMethod:(NSString *)method
                         withExpirationInterval:(NSTimeInterval)interval
                                 withParameters:(NSDictionary *)parameters;
+
+
+/// Generates a signed URL for the object and anyone has this URL will get the specified permission on the object.
+/// @param bucketName object's bucket name
+/// @param objectKey Object name
+/// @param method http method.currently only support get and head.
+/// @param interval Expiration time in seconds. The URL could be specified with the expiration time to limit the access window on the object.
+/// @param parameters it could specify allowed HTTP methods
+/// @param contentType Content-Type to url sign
+/// @param contentMd5 Content-MD5 to url sign
+- (OSSTask *)presignConstrainURLWithBucketName:(NSString *)bucketName
+                                 withObjectKey:(NSString *)objectKey
+                                    httpMethod:(NSString *)method
+                        withExpirationInterval:(NSTimeInterval)interval
+                                withParameters:(NSDictionary *)parameters
+                                   contentType:(nullable NSString *)contentType
+                                    contentMd5:(nullable NSString *)contentMd5;
+
+/// Generates a signed URL for the object and anyone has this URL will get the specified permission on the object.
+/// @param bucketName object's bucket name
+/// @param objectKey Object name
+/// @param method http method.currently only support get and head.
+/// @param interval Expiration time in seconds. The URL could be specified with the expiration time to limit the access window on the object.
+/// @param parameters it could specify allowed HTTP methods
+/// @param headers Content Type, Content-MD5, and all HTTP headers prefixed with 'x-oss-*'
+- (OSSTask *)presignConstrainURLWithBucketName:(NSString *)bucketName
+                                 withObjectKey:(NSString *)objectKey
+                                    httpMethod:(NSString *)method
+                        withExpirationInterval:(NSTimeInterval)interval
+                                withParameters:(NSDictionary *)parameters
+                                   withHeaders:(nullable NSDictionary *)headers;
 
 /**
  If the object's ACL is public read or public read-write, use this API to generate a signed url for sharing.

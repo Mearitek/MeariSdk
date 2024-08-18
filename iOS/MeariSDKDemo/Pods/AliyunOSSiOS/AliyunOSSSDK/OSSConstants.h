@@ -69,6 +69,9 @@ typedef NS_ENUM(NSInteger, OSSOperationType) {
     OSSOperationTypeRestoreObject,
     OSSOperationTypePutSymlink,
     OSSOperationTypeGetSymlink,
+    OSSOperationTypeGetObjectTagging,
+    OSSOperationTypePutObjectTagging,
+    OSSOperationTypeDeleteObjectTagging,
 };
 
 /**
@@ -85,7 +88,8 @@ typedef NS_ENUM(NSInteger, OSSClientErrorCODE) {
     OSSClientErrorCodeInvalidCRC,
     OSSClientErrorCodeCannotResumeUpload,
     OSSClientErrorCodeExcpetionCatched,
-    OSSClientErrorCodeNotKnown
+    OSSClientErrorCodeNotKnown,
+    OSSClientErrorCodeFileCantRead
 };
 
 typedef NS_ENUM(NSInteger, OSSXMLDictionaryAttributesMode)
