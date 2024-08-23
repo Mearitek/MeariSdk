@@ -572,12 +572,8 @@ public class DeviceMonitorActivity extends AppCompatActivity {
             }
         }, new MeariDeviceRecordMp4Listener() {
             @Override
-            public void RecordMp4Interrupt(int i) {
-                if (i > 0) {
-                    toastSuccess();
-                } else {
-                    toastFailed();
-                }
+            public void recordMp4Interrupt(int surfaceIndex, int code) {
+                stopRecordMP4();
             }
         });
     }

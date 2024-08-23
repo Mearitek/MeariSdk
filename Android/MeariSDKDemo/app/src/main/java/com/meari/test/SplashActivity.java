@@ -11,11 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.meari.sdk.MeariUser;
-import com.meari.test.device.DeviceListActivity;
 import com.meari.test.user.LoginActivity;
-
-import java.lang.annotation.ElementType;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -26,17 +22,15 @@ public class SplashActivity extends AppCompatActivity {
         verifyStoragePermissions(this);
     }
 
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static final int REQUEST_AUDIO = 1;
 
-    private static String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.RECORD_AUDIO};
+    private static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO};
 
     private void verifyStoragePermissions(Activity activity) {
         try {
-            int EXTERNAL_STORAGE = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int RECORD_AUDIO = ActivityCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO);
-            if (EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED || RECORD_AUDIO != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
+            if (RECORD_AUDIO != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(activity, PERMISSIONS, REQUEST_AUDIO);
             } else {
                 goHome();
             }
@@ -48,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_AUDIO) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 goHome();
             }
