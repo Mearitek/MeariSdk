@@ -23,7 +23,19 @@
         * 5.2.1 [摄像机](#521-摄像机)
         * 5.2.2 [4G摄像机](#522-4G摄像机)
     * 5.3 [热点配网(Ap配网)](#53-热点配网(Ap配网))
+        * 5.3.1 [旧AP手动配网](#531-旧AP手动配网)
+        * 5.3.2 [新AP配网](#532-新AP配网)
     * 5.4 [有线配网](#54-有线配网)
+        * 5.4.1 [搜索局域网设备](#541-搜索局域网设备)
+        * 5.4.2 [添加局域网设备](#542-添加局域网设备)
+    * 5.5 [扫码即添加](#54-扫码即添加) 
+        * 5.5.1 [扫描机身码](#551-扫描机身码)
+        * 5.5.2 [获取设备状态](#552-获取设备状态)
+        * 5.5.3 [添加设备](#553-添加设备)
+    * 5.6 [蓝牙配网添加](#54-蓝牙配网添加) 
+        * 5.6.1 [扫描连接蓝牙设备](#561-扫描连接蓝牙设备)
+        * 5.6.2 [获取蓝牙设备wifi列表](#562-获取蓝牙设备wifi列表)
+        * 5.6.3 [添加蓝牙设备](#563-添加蓝牙设备)
 * 6 [设备信息获取](#6-设备信息获取)
     * 6.1 [获取设备列表](#61-获取设备列表)
     * 6.2 [设备信息](#62-设备信息)
@@ -438,9 +450,11 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 
 ```
 所属：MeariDeviceActivator工具类
+所属：MeariDeviceBluetoothActivator工具类
 
-觅睿科技硬件模块支持三种配网模式：二维码配网模式、热点模式 (AP模式)、有线配网。
-大致流程为- 获取配网tokon - 将token以及wifi信息给到设备 - 等待设备添加成功。各个模式的主要区别在于如何将配网信息给到设备，二维码通过摄像头扫码方式，热点模式通过WIFI链接传递，有线配网通过局域网搜索等。
+觅睿科技设备添加模块支持五种配网模式：二维码配网模式、热点模式 (AP模式)、有线配网、扫码即添加、蓝牙配网。
+大致流程为- 获取配网tokon - 将token以及wifi信息给到设备 - 等待设备添加成功。各个模式的主要区别在于如何将配网信息给到设备，二维码通过摄像头扫码方式，热点模式通过WIFI链接传递，有线配网通过局域网搜索，蓝牙配网通过蓝牙链接数据传输 等。
+    扫码即添加 是通过扫描机身码获取设备信息，用户通过调用业务服务器接口，有服务器向在线设备下发配网token绑定设备。
 
 ```
 
@@ -561,6 +575,7 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
 
 ```
 ## 5.3 热点配网(Ap配网)
+### 5.3.1 旧AP手动配网
 ```
 【描述】
      将WIFI信息、配网token生成二维码, 通过热点WIFI透传给设备。
@@ -612,7 +627,114 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
 
 ```
+###5.3.2 新AP配网
+
+```
+【描述】
+    新AP配网需要配合扫描机身码使用，且机身码信息里的firstMode为ap配网才是新AP配网
+    需要手机端先连接到设备发出的热点之下, 热点名为STRN_+机身码信息中的hotspotSN
+    连接上热点之后开启AP配网模式，获取设备扫描到周围的wifi列表
+    将WIFI信息、配网token生成二维码, 通过热点WIFI透传给设备之后停止ap配网模式
+    调用成功之后, 设备会发出布谷的声音, 然后进入蓝灯快闪的状态
+【函数调用】
+/**
+ start Ap config
+ 开始Ap配网
+
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)startApConfigSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+
+/**
+ get support wifi from device
+ 获取设备的扫描的wifi
+*/
+- (void)getApConfigSupportWiFiSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
+
+ /**
+  AP配网传递的参数
+
+  @param ssid wifi name (wifi名称)
+  @param passsword wifi password (wifi密码)
+  @param token config token (获取的配网APtoken)
+  @param success Successful callback (成功回调)
+  @param failure failure callback (失败回调)
+*/
+- (void)setApConfigWithSSID:(NSString *)ssid psw:(NSString *)passsword token:(NSString *)token success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ AP配网的错误信息
+
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+*/
+- (void)getApConfigErrorInfoSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
+
+/**
+ stop Ap config
+ 停止Ap配网
+ */
+- (void)stopApConfig:(MeariSuccess)success failure:(MeariFailure)failure;
+【代码范例】
+    //开启ap配网模式
+    [[MeariDeviceActivator sharedInstance] startApConfigSuccess:^{
+       
+    } failure:^(NSError *error) {
+        
+    }];
+    //ap配网模式下获取周围Wifi列表
+    [[MeariDeviceActivator sharedInstance] getApConfigSupportWiFiSuccess:^(NSString *str) {
+        NSArray *resultArr = str.wy_jsonArray;
+    } failure:^(NSError *error) {
+                
+    }];
+    //ap配网模式下传递配网信息给设备
+    [[MeariDeviceActivator sharedInstance] setApConfigWithSSID:ssid psw:psw token:token success:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    //停止ap配网模式
+    [[MeariDeviceActivator sharedInstance] stopApConfig:^{
+           
+    } failure:^(NSError *error) {
+            
+    }];
+
+【描述】
+      等待设备自动添加成功的消息，建议手动查询设备列表，避免消息送达不及时的情况。
+【代码范例】
+    1.[MeariDeviceActivator sharedInstance].delegate = self;
+     实现代理方法
+      - (void)activator:(MeariDeviceActivator *)activator didReceiveDevice:(MeariDevice *)deviceModel error:(NSError *)error {
+         NSLog(@"配网的设备 --- netConnect  ------ %@ 设备添加状态 -------- %ld",deviceModel.info.nickname,(long)deviceModel.info.addStatus);
+         if (deviceModel.info.addStatus == MeariDeviceAddStatusSelf) {
+           NSLog(@"设备配网成功");
+         }
+      }
+
+    2.在给设备扫描二维码之前先记录下设备列表的设备, 等待设备添加成功的回调时，可以主动调用获取设备列表的接口来检查是否有新的设备加入
+    [[MeariUser sharedInstance] getDeviceListSuccess:^(MeariDeviceList *deviceList) {
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    如果想搜索局域网里的其他设备 可以调用 
+
+    [MeariDeviceActivator sharedInstance].delegate = self;
+    [[MeariDeviceActivator sharedInstance] startConfigWiFi:MeariSearchModeAll token:token type:MeariDeviceTokenTypeAP nvr:NO timeout:100];
+    
+    在上面的代理方法中会出现局域网中的设备
+    
+    停止局域网搜索其他设备
+    [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
+
+```
 ## 5.4 有线配网
+###5.4.1 搜索局域网设备
 ```
 【描述】
      确保设备插入网线,手机和设备处于同一个局域网之内
@@ -653,15 +775,27 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
       [[MeariDeviceActivator sharedInstance] checkDeviceStatus:@[device] success:^(NSArray<MeariDevice *> *devices) {
             for (MeariDevice *device in devices) {
                 if (device.info.addStatus == MeariDeviceAddStatusNone){
-                    NSLog(@"未添加的设备")
+                    NSLog(@"可添加的设备")
+                }else if (device.info.weakBind){
+                    device.info.protocolVersion = 6;
+                    device.info.iotType = 3;
+                    [device getDeviceResetStatusSuccess:^(BOOL reset) {
+                        if(reset) {
+                            NSLog(@"弱绑定已复位可添加的设备")
+                        }
+                    } failure:^(NSError *error) {
+                                
+                    }];
+                    
                 }
              }
                
         } failure:^(NSError *error) {
                 
        }];
-
-
+```
+###5.4.2 添加局域网设备
+```
 【描述】
      将配网token透传给设备
 【函数调用】
@@ -699,6 +833,312 @@ Demo工程中中有一份phoneCode文件 存储了对应的国家代码和电话
     }];
 
 ```
+## 5.5 扫码即添加
+```
+有线设备或者4G设备，扫描机身码，开始检测设备状态。如果设备可以添加，直接添加设备。
+```
+### 5.5.1 扫描机身码
+```
+扫描机身码，获取到机身码的返回结果。
+
+【函数调用】
+
+/**
+ Get the UUID in the QR code Text
+ 获取二维码信息里的UUID
+ 
+ @param text QR code info(二维码信息)
+ @return UUID
+ */
+- (NSString *)getUUIDFromQRCodeText:(NSString *)text;
+
+【代码范例】
+NSString *uuid = [[MeariDeviceActivator sharedInstance] getUUIDFromQRCodeText:qrCodeResult];
+
+```
+
+### 5.5.2 获取设备状态
+```
+通过uuid获取设备在线离线状态，设备在线才能继续添加，否则引导用户走通电流程
+【函数调用】
+
+/**
+ Check device status
+ 查询设备状态
+ 
+ @param uuid 扫码得到的唯一识别符
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)checkDeviceStatusWithUUID:(NSString *)uuid success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+【代码范例】
+    [[MeariUser sharedInstance] checkDeviceStatusWithUUID:uuid success:^(NSDictionary *dict) {
+        NSDictionary *result = dict[@"result"];
+            
+    } failure:^(NSError *error) {
+        if (error.code == 1202) {
+            //无效的uuid
+        }else{
+            
+        }
+    }];
+
+
+【JSON】
+{
+  "resultCode": "1001",
+  "result": {
+    "sn": "",
+    "licenseID": "",
+    "deviceTypeName": "",
+    "firmID": "8",
+    "capability ": "",
+    "model": "",
+    "status": 1
+  }
+}
+备注：
+status
+1: 在线
+2: 离线
+3: 休眠
+4: 未上报业务服务器信息
+5: 超时
+6: 未找到
+7: 弱绑定未复位
+8: 强绑定
+9: app账号和设备加密国家号不匹配
+
+status = 4时，该字段为空
+
+staus = 8时，返回userAccount  或 nickName(第三方登录)
+
+status = 1时，返回 capability 能力级
+
+ ```
+
+### 5.5.3 添加设备
+有线设备或者4G设备查询到在线状态，可以通过调用添加接口进行设备添加
+
+```
+【描述】
+添加设备（区分新旧机身码）
+
+【函数调用】
+
++ (instancetype)modelWithUUID:(NSString *)uuid;
+
+
+
+【代码范例】
+    NSString *uuid = [[MeariDeviceActivator sharedInstance] getUUIDFromQRCodeText:qrCodeResult];
+       
+    if (uuid != qrCodeResult){
+        //旧的机身码
+    }else{
+        MeariBodyCodeModel *model = [MeariBodyCodeModel modelWithUUID:uuid];
+        if (model){
+            //新机身码
+        }else{
+            //不支持的机身码
+        }
+    }
+    
+    
+
+/**
+ Add device
+ 添加设备 (4G旧码)
+ 
+ @param uuid 扫码得到的唯一识别符
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)add4GDeviceWithUUID:(NSString *)uuid success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+【代码范例】
+    [[MeariUser sharedInstance] add4GDeviceWithUUID:self.uuid success:^(NSDictionary *dict) {
+        NSString *licenseId = dict[@"result"][@"licenseId"];
+        //与device.info.sn对比可判断设备是否添加成功
+        
+    } failure:^(NSError *error) {
+        
+    }];
+
+
+【函数调用】
+/**
+ put device Token
+ 下发设备用户Token(新码)
+ 
+ @param sn 设备sn
+ @param devicePassword  (有线设备所需)设备密码如果没有则填nil
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)putDeviceTokenWithSn:(NSString *)sn devicePassword:(NSString *)devicePassword success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+【代码范例】
+    [[MeariUser sharedInstance] putDeviceTokenWithSn:device.info.nickname devicePassword:devicePassword success:^(NSDictionary *dict) {
+       
+    } failure:^(NSError *error) {
+            
+    }];
+
+ ```
+## 5.6 蓝牙配网添加
+### 5.6.1 扫描连接蓝牙设备
+```
+【描述】
+扫描连接蓝牙设备
+
+【函数调用】
+/**
+ 开启蓝牙搜索
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)startSearchBluetoothDeviceWithSuccess:(MeariSuccess_BluetoothPeripheral)success failure:(MeariSearchFailure)failure API_AVAILABLE(ios(10.0));
+/**
+ 获取设备类型名称
+ @param sn 设备sn
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getDeviceTypeNameWithSN:(NSString*)sn success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ 停止蓝牙搜索
+ */
+- (void)stopSearchBluetoothDevice;
+/**
+ connect Bluetooth Device
+ 连接蓝牙设备
+ 
+ @param peripheral Searched device (搜索到的设备)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)connectBluetoothDevice:(CBPeripheral *)peripheral success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+
+/**
+ disconnect Bluetooth Device
+ 断开蓝牙设备
+ 
+ @param peripheral Searched device (搜索到的设备)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)disconnectBluetoothDevice:(CBPeripheral *)peripheral success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+
+/**
+ disconnect Bluetooth Device
+ 断开当前蓝牙设备
+  
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)disconnectCurrentBluetoothDeviceWithsuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【代码范例】
+    Meari_WeakSelf
+    [[MeariDeviceBluetoothActivator sharedInstance] startSearchBluetoothDeviceWithSuccess:^(CBPeripheral *peripheral, MRBleAdvModel *model,NSString *name) {
+        if([@"" isEqualToString:name] || !name || model.hasOwner == 1 || model.netConfig == 0 || model.version != 1){ 
+            return;
+        }
+        pthread_mutex_lock(&_lock);
+        NSString *deviceTypeName = weakSelf.deviceUrlDic[model.sn] ;
+        if(deviceTypeName.length == 0){
+            [[MeariUser sharedInstance] getDeviceTypeNameWithSN:model.sn success:^(NSDictionary *dict) {
+                NSDictionary *res = dict[@"result"];
+                if([res objectForKey:@"deviceTypeName"] && [res objectForKey:@"sn"]){
+                    NSString *deviceTypeName = res[@"deviceTypeName"];
+                    NSString *sn = Meari_SafeValue(res[@"sn"]);
+                    if(![@"" isEqualToString:sn]){
+                        [weakSelf.deviceUrlDic setValue:deviceTypeName forKey:sn];
+                        NSLog(@"deviceTypeName==%@----%@",deviceTypeName,sn);
+                        [weakSelf bluetoothSearchUpdateList];
+                    }
+                }
+            } failure:^(NSError *error) {
+                NSLog(@"%@",error);
+            }];
+        }
+       
+    } failure:^(NSError *error ,CBManagerState state) {
+       
+    }];
+
+ ```
+
+### 5.6.2 获取蓝牙设备wifi列表
+```
+【描述】
+获取蓝牙设备扫描到周围的可用WiFi列表，用于选取进行配网
+
+【函数调用】
+/**
+ Gets a list of Wi-Fi scanned by Bluetooth devices
+ 获取蓝牙设备扫描的wifi列表
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getDeviceWifiListWithSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
+
+【代码范例】
+    [[MeariDeviceBluetoothActivator sharedInstance] getDeviceWifiListWithSuccess:^(NSString *str) {
+        if(str.length>0 || !weakSelf.firstWifiList ){
+            NSArray *resultArr = [str wy_jsonArray];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+
+ ```
+### 5.6.3 添加蓝牙设备
+ ```
+【描述】
+ 向蓝牙设备下发用户配网token，配网WiFi及WiFi密码，添加蓝牙设备
+
+【函数调用】
+/**
+ add Bluetooth Device
+ 添加蓝牙设备
+ 
+ @param wifi   wifi ssid(wifi 名)
+ @param password   wifi password(wifi密码)
+ @param token   user token(用户token)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)addBluetoothDeviceWithWifi:(NSString *)wifi password:(NSString *)password token:(NSString *)token success:(MeariSuccess_String)success failure:(MeariFailure)failure activeDeviceWifiBlock:(MeariSuccess_Dictionary)activeDeviceWifiBlock;
+
+【代码范例】
+    [[MeariDeviceBluetoothActivator sharedInstance] addBluetoothDeviceWithWifi:weakSelf.bluetoothModel.wifi password:weakSelf.bluetoothModel.password token:Meari_UserM.configToken success:^(NSString *str) {
+    
+    } failure:^(NSError *error) {
+                    
+    } activeDeviceWifiBlock:^(NSDictionary *dict) {
+        NSInteger errCode = [[dict objectForKey:@"1028"] integerValue];
+        404：连接密码错误
+        500:设备连接服务器失败
+        1001、1002、 1003:配网失败，请复位设备后重试
+        2000：配网等待超时
+        2001：二维码格式不支持
+        2010：未获取到有效WiFi，请将设备靠近路由器。
+        2011：WiFi信号强度弱，请尽可能靠近路由器使用
+        2020：连接路由器超时，请重试
+        2021：密码错误，请检查大小写或者特殊字符是否正确
+        2022、2023：连接路由器失败，请检查是否有特殊设置
+        2024：连接路由器失败，请检查：1、是否超过路由器最大连接数量 2、是否需要将设备MAC地址加入到白名单\n3、是否有将设备加入过黑名单
+        2050：连接路由器超时，请重试
+       
+    }];
+
+ ```    
 # 6. 设备信息获取
 ```
 所属：MeariUser

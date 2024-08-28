@@ -25,7 +25,19 @@
         * 5.2.1 [Common Camera](#521-Common-Camera)
         * 5.2.2 [4G Camera](#522-4G-Camera)
     * 5.3 [Hotspot configuration (AP configuration)](#53-Hotspot-configuration-AP-configuration)
+        * 5.3.1 [Old AP Configuration](#531-Old-AP-Configuration)
+        * 5.3.2 [New AP Configuration](#532-New-AP-Configuration)
     * 5.4 [Wired network configuration](#54-Wired-network-configuration)
+        * 5.4.1 [Search LAN Devices](#541-Search-LAN-Devices)
+        * 5.4.2 [Add LAN Device](#542-Add-LAN-Device)
+    * 5.5 [Scan the QR code to add](#54-Scan-the-QR-code-to-add) 
+        * 5.5.1 [Scan the body code](#551-Scan-the-body-code)
+        * 5.5.2 [Get Device Status](#552-Get-Device-Status)
+        * 5.5.3 [Add Device](#553-Add-Device)
+    * 5.6 [Bluetooth Configuration](#54-Bluetooth-Configuration) 
+        * 5.6.1 [Scan and connect to Bluetooth device](#561-Scan-and-connect-to-Bluetooth-device)
+        * 5.6.2 [Get the Bluetooth device WiFi list](#562-Get-the-Bluetooth-device-WiFi-list)
+        * 5.6.3 [Add Bluetooth Device](#563-Add-Bluetooth-Device)
 * 6 [Get device information](#6-Get-device-information)
     * 6.1 [Get device list](#61-Get-device-list)
     * 6.2 [Device Information](#62-Device-Information)
@@ -430,10 +442,12 @@ Timely message notification means MeariSDK notifies the current user on the App 
 # 5. Device configuration
 
 ```
-Belong to: MeariDeviceActivator tool class
+Belongs to: MeariDeviceActivator tool class
+Belongs to: MeariDeviceBluetoothActivator tool class
 
-The hardware module of Meari Technology supports three network configuration: QR code configuration, hotspot configuration (AP mode), and wired network configuration.
-The general process is-get the network tokon-give the token and wifi information to the device-wait for the device to be added successfully. The main difference between each mode is how to send the network configuration information to the device, the QR code is scanned by the camera, the hotspot mode is transmitted through the WIFI link, and the wired distribution network is searched through the LAN.
+Meari Technology's device adding module supports five network configuration modes: QR code network configuration mode, hotspot mode (AP mode), wired network configuration, scan code to add, and Bluetooth network configuration.
+The general process is - Get network configuration token - Give token and wifi information to the device - Wait for the device to be added successfully. The main difference between each mode is how to give the network configuration information to the device. The QR code is scanned by the camera, the hotspot mode is transmitted through the WIFI link, the wired network configuration is searched through the LAN, and the Bluetooth network configuration is transmitted through the Bluetooth link data transmission, etc.
+Scan code to add is to obtain device information by scanning the body code. The user calls the business server interface, and the server sends the network configuration token to the online device to bind the device.
 
 ```
 ## 5.1 Get configuration token
@@ -514,19 +528,19 @@ The general process is-get the network tokon-give the token and wifi information
 ###5.2.2 4G Camera
 ```
 【Description】
-     4G设备使用蜂窝网络，不需要连接wifi
-     将WIFI信息(传空字符串),配网token 生成二维码 给设备扫描。
-     在设备发出提示声音之后表明识别成功，设备会进入蓝灯快闪的状态
+     4G devices use cellular networks and do not need to connect to wifi.
+Send WIFI information (pass an empty string) and network token to generate a QR code for the device to scan.
+After the device emits a prompt sound, it indicates that the recognition is successful, and the device will enter a state where the blue light flashes quickly.
      
 【Function】
      /**
-      @param ssid wifi name(wifi名称)
-      @param password wifi password(wifi密码)
-      @param token code token(二维码token)
-      @param size QR code size(二维码大小)
-      @param subDevice Sub device (是否为添加子设备)
-      @param encryption encryption (是否加密)
-      @return QR code image(二维码图片)
+      @param ssid wifi name
+      @param password wifi password
+      @param token code token
+      @param size QR code size
+      @param subDevice Sub device 
+      @param encryption encryption 
+      @return QR code image
      */
      - (UIImage *)createQRCodeWithSSID:(NSString *)ssid pasword:(NSString *)password token:(NSString *)token addSubDevice:(BOOL)subDevice size:(CGSize)size encryption:(BOOL)encryption;
 
@@ -534,18 +548,18 @@ The general process is-get the network tokon-give the token and wifi information
     UIImage *image = [[MeariDeviceActivator sharedInstance] createQRCodeWithSSID:@"Meari" pasword:@"12345678" token:token addSubDevice:NO size:CGSizeMake(300, 300) encryption:YES];
 
 【Description】
-      等待设备自动添加成功的消息，建议手动查询设备列表，避免消息送达不及时的情况。
+     Wait for the message that the device has been automatically added successfully. It is recommended to manually query the device list to avoid delayed message delivery.
 【Code】
     1.[MeariDeviceActivator sharedInstance].delegate = self;
-     实现代理方法
+     //Implementing the proxy method
       - (void)activator:(MeariDeviceActivator *)activator didReceiveDevice:(MeariDevice *)deviceModel error:(NSError *)error {
-         NSLog(@"配网的设备 --- netConnect  ------ %@ 设备添加状态 -------- %ld",deviceModel.info.nickname,(long)deviceModel.info.addStatus);
+         NSLog(@"Network configuration device --- netConnect ------ %@ Device adding status -------- %ld",deviceModel.info.nickname,(long)deviceModel.info.addStatus);
          if (deviceModel.info.addStatus == MeariDeviceAddStatusSelf) {
-           NSLog(@"设备配网成功");
+           NSLog(@"Device network configuration successful");
          }
       }
 
-    2.在给设备扫描二维码之前先记录下设备列表的设备, 等待设备添加成功的回调时，可以主动调用获取设备列表的接口来检查是否有新的设备加入
+    2.Before scanning the QR code for the device, record the devices in the device list. When waiting for the callback of successful device addition, you can actively call the interface for obtaining the device list to check whether there is a new device added.
     [[MeariUser sharedInstance] getDeviceListSuccess:^(MeariDeviceList *deviceList) {
 
     } failure:^(NSError *error) {
@@ -554,6 +568,7 @@ The general process is-get the network tokon-give the token and wifi information
 
 ```
 ## 5.3 Hotspot configuration (AP configuration)
+### 5.3.1 Old AP Configuration
 ```
 【Description】
      Generate a QR code with WiFi information and configuration token which will be transparently transmitted to the device through the hotspot WiFi.
@@ -609,7 +624,114 @@ The general process is-get the network tokon-give the token and wifi information
     [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
 
 ```
+###5.3.2 New AP Configuration
+
+```
+【Description】
+The new AP network configuration needs to be used in conjunction with scanning the fuselage code, and the firstMode in the fuselage code information is ap network configuration for the new AP network configuration
+The mobile phone needs to first connect to the hotspot issued by the device. The hotspot name is STRN_+hotspotSN in the fuselage code information
+After connecting to the hotspot, turn on the AP network configuration mode and obtain the list of wifi networks scanned by the device
+Generate a QR code with WIFI information and network configuration token, and stop the ap network configuration mode after passing it to the device through the hotspot WIFI
+After the call is successful, the device will make a cuckoo sound and then enter the state of blue light flashing quickly
+【Function】
+/**
+ start Ap config
+
+ @param success Successful callback
+ @param failure failure callback
+ */
+- (void)startApConfigSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+
+/**
+ get support wifi from device
+*/
+- (void)getApConfigSupportWiFiSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
+
+ /**
+  Parameters transmitted by AP Configuration
+
+  @param ssid wifi name 
+  @param passsword wifi password 
+  @param token config token 
+  @param success Successful callback
+  @param failure failure callback 
+*/
+- (void)setApConfigWithSSID:(NSString *)ssid psw:(NSString *)passsword token:(NSString *)token success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ AP configuration error message
+
+ @param success Successful callback 
+ @param failure failure callback 
+*/
+- (void)getApConfigErrorInfoSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
+
+/**
+ stop Ap config
+ */
+- (void)stopApConfig:(MeariSuccess)success failure:(MeariFailure)failure;
+【Code】
+    //Start AP network configuration mode
+    [[MeariDeviceActivator sharedInstance] startApConfigSuccess:^{
+       
+    } failure:^(NSError *error) {
+        
+    }];
+    //Get the list of surrounding WiFi in AP network configuration mode
+    [[MeariDeviceActivator sharedInstance] getApConfigSupportWiFiSuccess:^(NSString *str) {
+        NSArray *resultArr = str.wy_jsonArray;
+    } failure:^(NSError *error) {
+                
+    }];
+    //In AP network configuration mode, network configuration information is transmitted to the device.
+    [[MeariDeviceActivator sharedInstance] setApConfigWithSSID:ssid psw:psw token:token success:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    //Stop AP network configuration mode
+    [[MeariDeviceActivator sharedInstance] stopApConfig:^{
+           
+    } failure:^(NSError *error) {
+            
+    }];
+
+【Description】
+       Wait for the successful message which the device added automatically. It is recommended to manually query the device list to avoid the situation that the message is not delivered in time.
+       
+【Code】
+    1.[MeariDeviceActivator sharedInstance].delegate = self;
+    
+     Implement proxy method
+      - (void)activator:(MeariDeviceActivator *)activator didReceiveDevice:(MeariDevice *)deviceModel error:(NSError *)error {
+         NSLog(@"device --- netConnect  ------ %@ status -------- %ld",deviceModel.info.nickname,(long)deviceModel.info.addStatus);
+         if (deviceModel.info.addStatus == MeariDeviceAddStatusSelf) {
+           NSLog(@"config success");
+         }
+      }
+
+    2. Before scanning the QR code by the device, record the device in the device list, and when waiting for the callback of the successful adding of the device, you can actively call the interface for obtaining the device list to check whether a new device has been added.
+    
+    [[MeariUser sharedInstance] getDeviceListSuccess:^(MeariDeviceList *deviceList) {
+
+    } failure:^(NSError *error) {
+
+    }];
+
+    If you want to search for other devices in the LAN, you can call: 
+
+    [MeariDeviceActivator sharedInstance].delegate = self;
+    [[MeariDeviceActivator sharedInstance] startConfigWiFi:MeariSearchModeAll token:token type:MeariDeviceTokenTypeQRCode nvr:NO timeout:100];
+    
+    Devices in the Lan will be appeared in the proxy method above
+
+    Stop LAN searching for other devices:
+    [[MeariDeviceActivator sharedInstance] stopConfigWiFi];
+
+```
 ## 5.4 Wired network configuration
+###5.4.1 Search LAN Devices
 ```
 【Description】
      Make sure the device is plugged with network cable, the phone and device are in the same local area network
@@ -650,7 +772,18 @@ The general process is-get the network tokon-give the token and wifi information
       [[MeariDeviceActivator sharedInstance] checkDeviceStatus:@[device] success:^(NSArray<MeariDevice *> *devices) {
             for (MeariDevice *device in devices) {
                 if (device.info.addStatus == MeariDeviceAddStatusNone){
-                    NSLog(@"Device not added")
+                    NSLog(@"Addable devices")
+                }else if (device.info.weakBind){
+                    device.info.protocolVersion = 6;
+                    device.info.iotType = 3;
+                    [device getDeviceResetStatusSuccess:^(BOOL reset) {
+                        if(reset) {
+                            NSLog(@"Weak binding has been reset and can add devices")
+                        }
+                    } failure:^(NSError *error) {
+                                
+                    }];
+                    
                 }
              }
                
@@ -658,7 +791,9 @@ The general process is-get the network tokon-give the token and wifi information
                 
        }];
 
-
+```
+###5.4.2 Add LAN Device
+```
 【Description】
      Transparently transmit the configuration network token to the device
 【Function】
@@ -696,6 +831,301 @@ The general process is-get the network tokon-give the token and wifi information
 
     }];
 ```
+## 5.5 Scan the QR code to add
+```
+Wired device or 4G device, scan the body code to start detecting the device status. If the device can be added, add the device directly.
+```
+### 5.5.1 Scan the body code
+```
+Scan the body code and get the returned result of the body code.
+
+【Function】
+
+/**
+ Get the UUID in the QR code Text
+ 
+ @param text QR code info
+ @return UUID
+ */
+- (NSString *)getUUIDFromQRCodeText:(NSString *)text;
+
+【Code】
+NSString *uuid = [[MeariDeviceActivator sharedInstance] getUUIDFromQRCodeText:qrCodeResult];
+
+```
+
+### 5.5.2 Get Device Status
+```
+Get the online and offline status of the device through uuid. The device can be added only when it is online. Otherwise, the user will be guided to go through the power-on process.
+【Function】
+
+/**
+ Check device status
+ 
+ @param uuid Scan the QR code to get the unique identifier
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)checkDeviceStatusWithUUID:(NSString *)uuid success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+【Code】
+    [[MeariUser sharedInstance] checkDeviceStatusWithUUID:uuid success:^(NSDictionary *dict) {
+        NSDictionary *result = dict[@"result"];
+            
+    } failure:^(NSError *error) {
+        if (error.code == 1202) {
+            //Invalid uuid
+        }else{
+            
+        }
+    }];
+
+
+【JSON】
+{
+  "resultCode": "1001",
+  "result": {
+    "sn": "",
+    "licenseID": "",
+    "deviceTypeName": "",
+    "firmID": "8",
+    "capability ": "",
+    "model": "",
+    "status": 1
+  }
+}
+Notes:
+status
+1: Online
+2: Offline
+3: Sleeping
+4: No service server information reported
+5: Timeout
+6: Not found
+7: Weak binding not reset
+8: Strong binding
+9: The app account and the device encryption country code do not match
+
+When status = 4, this field is empty
+
+When status = 8, userAccount or nickName (third-party login) is returned
+
+When status = 1, capability level is returned
+
+ ```
+
+### 5.5.3 Add Device
+When a wired device or 4G device is found to be online, you can add the device by calling the add interface.
+
+```
+【Description】
+Add device (distinguish new and old body codes)
+
+【Function】
+
++ (instancetype)modelWithUUID:(NSString *)uuid;
+
+
+
+【Code】
+    NSString *uuid = [[MeariDeviceActivator sharedInstance] getUUIDFromQRCodeText:qrCodeResult];
+       
+    if (uuid != qrCodeResult){
+        //Old body code
+    }else{
+        MeariBodyCodeModel *model = [MeariBodyCodeModel modelWithUUID:uuid];
+        if (model){
+            //New body code
+        }else{
+            //Not Support body code
+        }
+    }
+【Function】 
+/**
+ Add device(4G Device old code)
+ 
+ @param uuid 
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)add4GDeviceWithUUID:(NSString *)uuid success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+【Code】
+    [[MeariUser sharedInstance] add4GDeviceWithUUID:self.uuid success:^(NSDictionary *dict) {
+        NSString *licenseId = dict[@"result"][@"licenseId"];
+        //Compare with device.info.sn to determine whether the device is added successfully
+        
+    } failure:^(NSError *error) {
+        
+    }];
+
+
+【Function】
+/**
+ put device Token(New Body code)
+ 
+ @param sn Device sn
+ @param devicePassword  (Required for wired devices) If the device password is not available, fill in nil
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)putDeviceTokenWithSn:(NSString *)sn devicePassword:(NSString *)devicePassword success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+【Code】
+    [[MeariUser sharedInstance] putDeviceTokenWithSn:device.info.nickname devicePassword:devicePassword success:^(NSDictionary *dict) {
+       
+    } failure:^(NSError *error) {
+            
+    }];
+
+ ```
+## 5.6 Bluetooth Configuration
+### 5.6.1 Scan and connect to Bluetooth device
+```
+【Description】
+Scan and connect to Bluetooth devices
+
+【Function】
+/**
+ Start Bluetooth search
+ 
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)startSearchBluetoothDeviceWithSuccess:(MeariSuccess_BluetoothPeripheral)success failure:(MeariSearchFailure)failure API_AVAILABLE(ios(10.0));
+/**
+ Get the device name
+ @param sn Device sn
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)getDeviceTypeNameWithSN:(NSString*)sn success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ Stop Bluetooth Search
+ */
+- (void)stopSearchBluetoothDevice;
+/**
+ connect Bluetooth Device
+ 
+ @param peripheral Searched device 
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)connectBluetoothDevice:(CBPeripheral *)peripheral success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+
+/**
+ disconnect Bluetooth Device
+ 
+ @param peripheral Searched device 
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)disconnectBluetoothDevice:(CBPeripheral *)peripheral success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+
+/**
+ Disconnect the current Bluetooth device
+ 
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)disconnectCurrentBluetoothDeviceWithsuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+【Code】
+    Meari_WeakSelf
+    [[MeariDeviceBluetoothActivator sharedInstance] startSearchBluetoothDeviceWithSuccess:^(CBPeripheral *peripheral, MRBleAdvModel *model,NSString *name) {
+        if([@"" isEqualToString:name] || !name || model.hasOwner == 1 || model.netConfig == 0 || model.version != 1){ 
+            return;
+        }
+        pthread_mutex_lock(&_lock);
+        NSString *deviceTypeName = weakSelf.deviceUrlDic[model.sn] ;
+        if(deviceTypeName.length == 0){
+            [[MeariUser sharedInstance] getDeviceTypeNameWithSN:model.sn success:^(NSDictionary *dict) {
+                NSDictionary *res = dict[@"result"];
+                if([res objectForKey:@"deviceTypeName"] && [res objectForKey:@"sn"]){
+                    NSString *deviceTypeName = res[@"deviceTypeName"];
+                    NSString *sn = Meari_SafeValue(res[@"sn"]);
+                    if(![@"" isEqualToString:sn]){
+                        [weakSelf.deviceUrlDic setValue:deviceTypeName forKey:sn];
+                        NSLog(@"deviceTypeName==%@----%@",deviceTypeName,sn);
+                        [weakSelf bluetoothSearchUpdateList];
+                    }
+                }
+            } failure:^(NSError *error) {
+                NSLog(@"%@",error);
+            }];
+        }
+       
+    } failure:^(NSError *error ,CBManagerState state) {
+       
+    }];
+
+ ```
+
+### 5.6.2 Get the Bluetooth device WiFi list
+```
+【Description】
+Get the list of available WiFi networks scanned by the Bluetooth device for selection and network configuration
+
+【Function】
+/**
+ Gets a list of Wi-Fi scanned by Bluetooth devices
+ 
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)getDeviceWifiListWithSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
+
+【Code】
+    [[MeariDeviceBluetoothActivator sharedInstance] getDeviceWifiListWithSuccess:^(NSString *str) {
+        if(str.length>0 || !weakSelf.firstWifiList ){
+            NSArray *resultArr = [str wy_jsonArray];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+
+ ```
+### 5.6.3 Add Bluetooth Device
+ ```
+【Description】
+ Send user network configuration token to Bluetooth devices, configure WiFi and WiFi password, and add Bluetooth devices
+
+【Function】
+/**
+ add Bluetooth Device
+ 
+ @param wifi   wifi ssid
+ @param password   wifi password
+ @param token   user token
+ @param success Successful callback 
+ @param failure failure callback 
+ */
+- (void)addBluetoothDeviceWithWifi:(NSString *)wifi password:(NSString *)password token:(NSString *)token success:(MeariSuccess_String)success failure:(MeariFailure)failure activeDeviceWifiBlock:(MeariSuccess_Dictionary)activeDeviceWifiBlock;
+
+【Code】
+    [[MeariDeviceBluetoothActivator sharedInstance] addBluetoothDeviceWithWifi:weakSelf.bluetoothModel.wifi password:weakSelf.bluetoothModel.password token:Meari_UserM.configToken success:^(NSString *str) {
+    
+    } failure:^(NSError *error) {
+                    
+    } activeDeviceWifiBlock:^(NSDictionary *dict) {
+        NSInteger errCode = [[dict objectForKey:@"1028"] integerValue];
+        404: Connection password error
+        500: Device failed to connect to the server
+        1001, 1002, 1003: Network configuration failed, please reset the device and try again
+        2000: Network configuration waiting timeout
+        2001: QR code format is not supported
+        2010: No valid WiFi was obtained, please move the device closer to the router.
+        2011: WiFi signal strength is weak, please use it as close to the router as possible
+        2020: Connection to router timeout, please try again
+        2021: Password error, please check whether the case or special characters are correct
+        2022, 2023: Connection to router failed, please check if there are any special settings
+        2024: Connection to router failed, please check: 1. Whether the maximum number of connections to the router is exceeded 2. Whether the device MAC address needs to be added to the whitelist\n3. Whether the device has been added to the blacklist
+        2050: Connection to router timeout, please try again
+       
+    }];
+
+ ```   
 # 6. Get device information
 ```
 Belong to：MeariUser
