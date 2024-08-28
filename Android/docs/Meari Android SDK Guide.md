@@ -27,6 +27,17 @@
     * 5.3 [Add device via wired network](#53-Add-device-via-wired-network)
         * 5.3.1 [Search device](#531-Search-device)
         * 5.3.2 [Add device](#532-Add-device)
+    * 5.4 [Scan QR Code to Add](#54-Scan-QR-Code-to-Add) 
+        * 5.4.1 [Scan QR Code](#541-Scan-QR-Code)
+        * 5.3.2 [Get Device Status](#542-Get-Device-Status)
+        * 5.3.2 [Add device](#543-Add-device)
+    * 5.5 [Bluetooth Distribution Network](#55-Bluetooth-Distribution-Network) 
+        * 5.5.1 [Search Devices](#551-Search-Devices)
+        * 5.5.2 [Connect Device](#552-Connect-Device)
+        * 5.5.3 [Get WiFi List](#553-Get-WiFi-List)
+        * 5.5.4 [Add device](#554-Add-device)
+    * 5.6 [Device QR Code](#56-Device-QR-Code) 
+        * 5.6.1 [Get Device Information](#561-Get-Device-Information)
 * 6 [Device Control](#6-Device-Control)
     * 6.1 [Basic device operations](#61-Basic-device-operations)
         * 6.1.1 [Introduction of device-related classes](#611-Introduction-of-device-related-classes)
@@ -179,6 +190,7 @@ Version number | Development team | Update date | Notes
 :-:|:-:|:-:|:-:
 3.1.0 | Meari Technical Team | 2021.07.02 | Optimization
 4.1.0 | Meari Technical Team | 2022.03.31 | Optimization
+5.3.0 | Meari Technical Team | 2023.08.28 | Bluetooth Distribution Network,Device QR Code
 
 <center>
 
@@ -765,6 +777,443 @@ public void addDevice(CameraInfo info) {
     deviceController.setWireDevice(info.getWireConfigIp(), mToken);
 }
 ```
+## 5.4 Scan QR Code to Add
+```
+For wired devices or 4G devices, scan the QR code to start detecting the device status. If the device can be added, add the device directly.
+```
+### 5.4.1 Scan QR Code
+```
+Scan the fuselage code to obtain the value of the fuselage code.
+
+[Function call]
+
+/**
+ * Process the body QR Code and obtain the uuid of the device
+ *
+ * @param result      
+ * 
+ * return  uuid
+ */
+public static String dealUUiD(String result)
+
+【Code example】
+val dealUUiD = SdkUtils.dealUUiD(result)
+
+```
+
+### 5.4.2 Get Device Status
+```
+Get the online and offline status of the device through uuid. Only when the device is online can you continue to add it. Otherwise, the user will be guided to go through the power-on process.
+
+[Function call]
+
+/**
+ * Get device online status by body QR Code
+ *
+ * @param uuid       uuid
+ * 
+ *
+ */
+
+public void getDeviceStatus(String uuid, IStringResultCallback callback)
+
+【Code Example】
+MeariUser.getInstance().getDeviceStatus(uuid, object : IStringResultCallback {
+            override fun onSuccess(result: String) {
+                
+            }
+
+            override fun onError(code: Int, error: String) {
+                
+            }
+        })
+
+
+【JSON】
+{
+  "resultCode": "1001",
+  "result": {
+    "sn": "",
+    "licenseID": "",
+    "deviceTypeName": "",
+    "firmID": "8",
+    "capability ": "",
+    "model": "",
+    "status": 1
+  }
+}
+
+status
+1: online
+2: offline
+8: strong binding
+9: The app account number and the device encryption country code do not match
+
+
+ ```
+
+### 5.4.3 Add device
+A wired device or 4G device queries the online status and can add the device by calling the add interface.
+
+```
+【description】
+Add device(Distinguish between old and new QR codes)
+
+[Function call]
+
+/**
+ * 
+ *
+ * @param result      QR code
+ * return      ture:new code    
+               false：old code
+ *
+ */
+public static boolean dealUUiDisNew(String result)
+
+【Code Example】
+SdkUtils.dealUUiDisNew(scanResult)
+
+
+
+/**
+ * Add device (old code)
+ *
+ * @param sn           licenseID
+ *
+ *
+ */
+
+public void add4GDeviceNew(String sn, IStringResultCallback callback) 
+
+【Code Example】
+MeariUser.getInstance().add4GDeviceNew(uuid, object : IStringResultCallback {
+            override fun onSuccess(result: String) {
+                
+            }
+
+            override fun onError(code: Int, error: String) {
+                
+            }
+        })
+
+
+
+/**
+ * Add device (new code)
+ *
+ * @param licenseID       设备的licenseID
+ * 
+ *
+ */
+
+public void addDeviceServerSendToken(String licenseID,IStringResultCallback callback)
+
+【Code Example】
+MeariUser.getInstance().getDeviceStatusGet(sn, new IGetDeviceStatusCallback() {
+            @Override
+            public void onSuccess(boolean isOnline) {
+                //It only means that the adding command is sent successfully. If the adding is successful, you still need to wait for mqtt or poll the device list to confirm whether the adding is successful.
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+ ```
+
+
+## 5.5 Bluetooth Distribution Network
+```
+Bluetooth Distribution Network
+```
+### 5.5.1 Search Devices
+Search for surrounding Bluetooth devices
+
+```
+【description】
+Search device tools
+
+【Code Example】
+public class DeviceBleHelper {
+    
+    public static final int AUTO_CLOSE_BLE_TIME_MS = 130_000;
+    
+    private static volatile DeviceBleHelper helper;
+    private final DeviceNetConfigBle deviceNetConfigBle;
+
+    private final Handler closeHandler = new Handler(Looper.getMainLooper());
+    private Runnable r = new Runnable() {
+        @Override
+        public void run() {
+            Logger.i("deviceBleHelper", "auto " +
+                    "disconnect ble device! not impl!!!!!!!!!!!!!!!!!!");
+//            deviceNetConfigBle.stopConnect();
+        }
+    };
+
+    public static DeviceBleHelper getInstance() {
+        if (helper == null) {
+            synchronized (DeviceBleHelper.class) {
+                if (helper == null) {
+                    helper = new DeviceBleHelper();
+                }
+            }
+        }
+        return helper;
+    }
+
+    private DeviceBleHelper() {
+        deviceNetConfigBle = new DeviceNetConfigBle(){
+            @Override
+            public void stopConnect() {
+                super.stopConnect();
+            }
+        };
+    }
+
+    public DeviceNetConfigBle getDeviceNetConfigBle() {
+        if(closeHandler!=null) {
+            closeHandler.removeCallbacks(r);
+            closeHandler.postDelayed(r, AUTO_CLOSE_BLE_TIME_MS);
+        }
+        return deviceNetConfigBle;
+    }
+}
+
+
+/**
+**
+* init     activity-onCreate
+*/
+【Code Example】
+DeviceNetConfigBle.init(getApplication());
+deviceNetConfigBle = DeviceBleHelper.getInstance().getDeviceNetConfigBle();
+
+/**
+*activity-ondestory
+*/
+
+if (deviceNetConfigBle != null) {
+    deviceNetConfigBle.stopConnect();
+    deviceNetConfigBle.unregisterStateCallback(meariBleCallback);
+    deviceNetConfigBle.stopDeviceWifiScan();
+ }
+
+/**
+ * Start searching for Bluetooth
+ *
+ *
+ */
+
+【Code Example】
+if (!DeviceNetConfigBle.bleEnable()) {
+ //Bluetooth cannot be used  
+     return;
+}
+deviceNetConfigBle.setScanDeviceTimeoutMs(Constant.ADD_DEVICE_WAIT_TIME_MS);
+        deviceScanCallback = new DeviceScanCallback() {
+            @Override
+            public void finish(Set<MeariBleDevice> data) {
+                
+            }
+
+            @Override
+            public void scanning(MeariBleDevice device) {
+                
+            }
+
+            @Override
+            public void onScanStarted(boolean success) {
+                
+            }
+        };
+        deviceNetConfigBle.scanDevice(deviceScanCallback);
+
+
+```
+### 5.5.2 Connect Device
+
+Connect Device
+
+```
+
+/**
+ * Connect Device
+ * 
+ *
+ */
+
+【Code Example】
+        if (bleCallback == null) {
+            bleCallback = new MeariBleCallback() {
+                @Override
+                public void tokenCallback(String token) {
+                    
+                }
+
+                @Override
+                public void connect() {
+                    //Device connected successfully
+                }
+
+                @Override
+                public void disconnect() {
+                    
+        //       showToast("Device bluetooth disconnected");
+                }
+
+                @Override
+                public void failed(String err) {
+                    
+                }
+            };
+        }
+       deviceNetConfigBle.startConnectByDevice(meariBleDevice, bleCallback);
+
+```
+### 5.5.3 Get WiFi List
+
+Get the list of WiFi devices that the device can connect to
+
+```
+【Code Example】
+deviceNetConfigBle.startDeviceWifiScan(new MeariBleOpCallback() {
+                @Override
+                public void onFail(int code, String error) {
+                    //If it fails, try again.
+                }
+
+                @Override
+                public void onSuccess() {
+                    
+                }
+            }, new DeviceWifiCallback() {
+                @Override
+                public void callback(Set<DeviceWifi> data) {
+                    //wifi list
+                }
+            });
+```
+### 5.5.4 Add device
+
+Add device
+
+```
+【Code Example】
+        DeviceNetConfigBle deviceNetConfigBle = DeviceBleHelper.getInstance().getDeviceNetConfigBle();
+        if (setWifiInfoErrorListener == null) {
+            setWifiInfoErrorListener = new DeviceNetConfigErrorListener() {
+                @Override
+                public void onError(int code, String msg) {
+                    //Error reason
+                }
+            };
+        }
+        deviceNetConfigBle.setNetConfigErrorListener(setWifiInfoErrorListener);
+
+        if (deviceNetConfigBle.getDeviceBtWifiMode() == 1 || deviceNetConfigBle.getDeviceBtWifiMode() == 2) {
+            deviceNetConfigBle.enableAutoConnect(true);
+            deviceNetConfigBle.enableGetLastSetWifiResultOnConnect(true);
+            Logger.i(TAG, "enable bt auto connect! auto get errorCode");
+        } else {
+            Logger.i(TAG, "not bt auto connect. mode=" + deviceNetConfigBle.getDeviceBtWifiMode());
+        }
+
+        //connect
+        if (bleDevice != null && (deviceNetConfigBle.getDeviceBtWifiMode() == -1 || deviceNetConfigBle.getDeviceBtWifiMode() == 1)) {
+            Logger.i(TAG, "ble device[not support get-wifi] need connect first.");
+            deviceNetConfigBle.enableAutoConnect(true);
+            if (meariBleCallback == null) {
+                meariBleCallback = new MeariBleCallback() {
+                    @Override
+                    public void connect() {
+                        //Close reconnection
+                        deviceNetConfigBle.enableAutoConnect(false);
+                        //Sending information while connected
+                        setWifiInfo();
+                    }
+
+                    @Override
+                    public void disconnect() {
+
+                    }
+
+                    @Override
+                    public void failed(String err) {
+                        Logger.i(TAG, "ble connect error.");
+                    }
+                };
+            }
+            deviceNetConfigBle.startConnectByDevice(bleDevice, meariBleCallback);
+        } else {
+            setWifiInfo();
+        }
+
+        //Send distribution network information
+        deviceNetConfigBle.setWifiInfo(ssid, pwd, token, new MeariBleOpCallback() {
+                @Override
+                public void onFail(int code, String error) {
+
+                    //Retry immediately after failure
+                    
+                }
+
+                @Override
+                public void onSuccess() {
+                    //The device receives the information successfully and traverses the device list to determine whether the addition is successful.
+                    getdevicelist();
+                }
+            });
+
+            //Determine whether there is a new device in the device list
+            MeariUser.getInstance().getDeviceList(new IDevListCallback()
+
+```
+## 5.6 Device QR Code
+```
+Body QR code processing, including analyzing the device type and network distribution method from the QR code information, which is convenient and fast
+```
+### 5.6.1 Get Device Information
+```
+Obtain device information through uuid, which is the scan result of the fuselage code.
+【function call】
+
+/**
+ * Obtain device information by body code
+ *
+ * @param uuid       uuid
+ * QR Code rules
+ QR code format = Product category code + device code + Add device mode code + Sales country
+ Example： LWCN056565099123AL
+ Explain： 
+ N056565099 express sn: 056565099
+ 123 express AP first、QR code and LAN next
+      No distribution options 0
+      Add device via AP mode  1
+      Add device via QR code  2
+      Add device via wired network 3 
+      Bluetooth Distribution Network 4
+      Scan QR Code to Add     5
+ *
+ */
+
+public void getDeviceStatus(String uuid, IStringResultCallback callback)
+
+【Code Example】
+MeariUser.getInstance().getDeviceStatus(uuid, object : IStringResultCallback {
+            override fun onSuccess(result: String) {
+                
+            }
+
+            override fun onError(code: Int, error: String) {
+                
+            }
+        })
+
+ ```
 
 
 # 6 Device Control
@@ -5782,6 +6231,12 @@ See Demo for details
 ```
 
 # 14 Release Notes
+
+## 2024-08-28(5.3.0)
+```
+1. Bluetooth Distribution Network
+2. Device QR Code
+```
 
 ## 2022-10-10(4.4.0)
 ```

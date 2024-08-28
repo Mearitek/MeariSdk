@@ -31,6 +31,13 @@
         * 5.4.1 [扫描机身码](#541-扫描机身码)
         * 5.3.2 [获取设备状态](#542-获取设备状态)
         * 5.3.2 [添加设备](#543-添加设备)
+    * 5.5 [蓝牙添加](#55-蓝牙添加) 
+        * 5.5.1 [搜索设备](#551-搜索设备)
+        * 5.5.2 [连接设备](#552-连接设备)
+        * 5.5.3 [获取WiFi列表](#553-获取WiFi列表)
+        * 5.5.4 [添加设备](#554-添加设备)
+    * 5.6 [机身二维码](#56-机身二维码) 
+        * 5.6.1 [获取设备信息](#561-获取设备信息)
 * 6 [设备控制](#6-设备控制)
     * 6.1 [设备基本操作](#61-设备基本操作)
         * 6.1.1 [设备相关类介绍](#611-设备相关类介绍)
@@ -219,6 +226,7 @@
 3.1.0 | 觅睿技术团队 | 2020.07.02 | 优化
 4.1.0 | 觅睿技术团队 | 2022.03.31 | 优化
 5.0.0 | 觅睿技术团队 | 2023.06.09 | 4G,云存储2.0
+5.3.0 | 觅睿技术团队 | 2023.08.28 | 机身码说明,蓝牙配网
 
 <center>
 
@@ -973,6 +981,286 @@ MeariUser.getInstance().getDeviceStatusGet(sn, new IGetDeviceStatusCallback() {
 
  ```
 
+
+## 5.5 蓝牙添加
+```
+蓝牙添加方式
+```
+### 5.5.1 搜索设备
+搜索周围蓝牙设备
+
+```
+【描述】
+搜索设备工具类
+
+【代码范例】
+public class DeviceBleHelper {
+    
+    public static final int AUTO_CLOSE_BLE_TIME_MS = 130_000;
+    
+    private static volatile DeviceBleHelper helper;
+    private final DeviceNetConfigBle deviceNetConfigBle;
+
+    private final Handler closeHandler = new Handler(Looper.getMainLooper());
+    private Runnable r = new Runnable() {
+        @Override
+        public void run() {
+            Logger.i("deviceBleHelper", "auto " +
+                    "disconnect ble device! not impl!!!!!!!!!!!!!!!!!!");
+//            deviceNetConfigBle.stopConnect();
+        }
+    };
+
+    public static DeviceBleHelper getInstance() {
+        if (helper == null) {
+            synchronized (DeviceBleHelper.class) {
+                if (helper == null) {
+                    helper = new DeviceBleHelper();
+                }
+            }
+        }
+        return helper;
+    }
+
+    private DeviceBleHelper() {
+        deviceNetConfigBle = new DeviceNetConfigBle(){
+            @Override
+            public void stopConnect() {
+                super.stopConnect();
+            }
+        };
+    }
+
+    public DeviceNetConfigBle getDeviceNetConfigBle() {
+        if(closeHandler!=null) {
+            closeHandler.removeCallbacks(r);
+            closeHandler.postDelayed(r, AUTO_CLOSE_BLE_TIME_MS);
+        }
+        return deviceNetConfigBle;
+    }
+}
+
+
+/**
+**
+* 初始化     activity-onCreate
+*/
+【代码范例】
+DeviceNetConfigBle.init(getApplication());
+deviceNetConfigBle = DeviceBleHelper.getInstance().getDeviceNetConfigBle();
+
+/**
+ * 开始搜索蓝牙
+ *
+ *
+ */
+
+【代码范例】
+if (!DeviceNetConfigBle.bleEnable()) {
+ //蓝牙无法使用   
+     return;
+}
+deviceNetConfigBle.setScanDeviceTimeoutMs(Constant.ADD_DEVICE_WAIT_TIME_MS);
+        deviceScanCallback = new DeviceScanCallback() {
+            @Override
+            public void finish(Set<MeariBleDevice> data) {
+                
+            }
+
+            @Override
+            public void scanning(MeariBleDevice device) {
+                
+            }
+
+            @Override
+            public void onScanStarted(boolean success) {
+                
+            }
+        };
+        deviceNetConfigBle.scanDevice(deviceScanCallback);
+
+
+```
+### 5.5.2 连接设备
+
+连接蓝牙设备
+
+```
+
+/**
+ * 连接设备
+ * 
+ *
+ */
+
+【代码范例】
+        if (bleCallback == null) {
+            bleCallback = new MeariBleCallback() {
+                @Override
+                public void tokenCallback(String token) {
+                    
+                }
+
+                @Override
+                public void connect() {
+                    //连接成功
+                }
+
+                @Override
+                public void disconnect() {
+                    
+        //       showToast("设备蓝牙断开连接");
+                }
+
+                @Override
+                public void failed(String err) {
+                    
+                }
+            };
+        }
+       deviceNetConfigBle.startConnectByDevice(meariBleDevice, bleCallback);
+
+```
+### 5.5.3 获取WiFi列表
+
+获取设备可连接的WiFi列表
+
+```
+【代码范例】
+deviceNetConfigBle.startDeviceWifiScan(new MeariBleOpCallback() {
+                @Override
+                public void onFail(int code, String error) {
+                    //失败了再重新获取几次
+                }
+
+                @Override
+                public void onSuccess() {
+                    
+                }
+            }, new DeviceWifiCallback() {
+                @Override
+                public void callback(Set<DeviceWifi> data) {
+                    //wifi列表
+                }
+            });
+```
+### 5.5.4 添加设备
+
+添加设备
+
+```
+【代码范例】
+        DeviceNetConfigBle deviceNetConfigBle = DeviceBleHelper.getInstance().getDeviceNetConfigBle();
+        if (setWifiInfoErrorListener == null) {
+            setWifiInfoErrorListener = new DeviceNetConfigErrorListener() {
+                @Override
+                public void onError(int code, String msg) {
+                    //错误原因
+                }
+            };
+        }
+        deviceNetConfigBle.setNetConfigErrorListener(setWifiInfoErrorListener);
+
+        if (deviceNetConfigBle.getDeviceBtWifiMode() == 1 || deviceNetConfigBle.getDeviceBtWifiMode() == 2) {
+            deviceNetConfigBle.enableAutoConnect(true);
+            deviceNetConfigBle.enableGetLastSetWifiResultOnConnect(true);
+            Logger.i(TAG, "enable bt auto connect! auto get errorCode");
+        } else {
+            Logger.i(TAG, "not bt auto connect. mode=" + deviceNetConfigBle.getDeviceBtWifiMode());
+        }
+
+        //连接
+        if (bleDevice != null && (deviceNetConfigBle.getDeviceBtWifiMode() == -1 || deviceNetConfigBle.getDeviceBtWifiMode() == 1)) {
+            Logger.i(TAG, "ble device[not support get-wifi] need connect first.");
+            deviceNetConfigBle.enableAutoConnect(true);
+            if (meariBleCallback == null) {
+                meariBleCallback = new MeariBleCallback() {
+                    @Override
+                    public void connect() {
+                        //关闭重连
+                        deviceNetConfigBle.enableAutoConnect(false);
+                        //连接上在发送信息
+                        setWifiInfo();
+                    }
+
+                    @Override
+                    public void disconnect() {
+
+                    }
+
+                    @Override
+                    public void failed(String err) {
+                        Logger.i(TAG, "ble connect error.");
+                    }
+                };
+            }
+            deviceNetConfigBle.startConnectByDevice(bleDevice, meariBleCallback);
+        } else {
+            setWifiInfo();
+        }
+
+        //发送配网信息
+        deviceNetConfigBle.setWifiInfo(ssid, pwd, token, new MeariBleOpCallback() {
+                @Override
+                public void onFail(int code, String error) {
+
+                    //失败后立即重试
+                    
+                }
+
+                @Override
+                public void onSuccess() {
+                    //设备接收信息成功，遍历设备列表判断是否添加成功
+                    getdevicelist();
+                }
+            });
+
+            //判断设备列表中是否有新增的设备
+            MeariUser.getInstance().getDeviceList(new IDevListCallback()
+
+```
+## 5.6 机身二维码
+```
+机身二维码处理，包括从二维码信息中分析出设备类型和配网方式等，方便快捷
+```
+### 5.6.1 获取设备信息
+```
+通过uuid获取设备信息，uuid为机身码扫描结果
+【函数调用】
+
+/**
+ * 机身码获取设备在线状态
+ *
+ * @param uuid       设备的uuid
+ * 机身码规则
+ 二维码格式 = 产品类别代号 + 设备代码 + 添加设备方式代码 + 销售国家
+ 完整示例： LWCN056565099123AL
+ 解释示例： 
+ N056565099 表示 SN 号 056565099
+ 123 表示 AP 优先、二维码和局域网其次
+      无配网选项 0
+      AP 配网 1
+      二维码配网 2
+      局域网添加 3 
+      蓝牙配网 4
+      扫码即添加 5
+ *
+ */
+
+public void getDeviceStatus(String uuid, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().getDeviceStatus(uuid, object : IStringResultCallback {
+            override fun onSuccess(result: String) {
+                
+            }
+
+            override fun onError(code: Int, error: String) {
+                
+            }
+        })
+
+ ```
 
 
 
@@ -6942,6 +7230,11 @@ MeariUser.getInstance().setFeedTimes(planString, new ISetDeviceParamsCallback() 
 
 
 # 16 更新说明
+## 2024-08-28(5.3.0)
+```
+1. 新增蓝牙配网
+2. 新增机身码说明
+```
 
 ## 2022-10-10(4.4.0)
 ```
