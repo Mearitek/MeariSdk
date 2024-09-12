@@ -1806,7 +1806,8 @@ MeariDevice Responsible for all operations on the device, including preview, pla
       startTime.month = 7;
       startTime.day = 1;
       startTime.hour = 12;
-      startTime.minute = 0;
+      startTime.minute = 10;
+      startTime.second = 20;
 
       NSDateComponents *endTime = [[NSDateComponents alloc]init];
       endTime.year = 2021;
@@ -1814,6 +1815,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
       endTime.day = 1;
       endTime.hour = 12;
       endTime.minute = 30;
+      endTime.second = 20;
 
       [self.camera getCloudVideoWithStartTime:startTime endTime:endTime success:^(NSURL *m3u8Url) {
         
@@ -1932,6 +1934,7 @@ MeariDevice Responsible for all operations on the device, including preview, pla
       startTime.day = 1;
       startTime.hour = 12;
       startTime.minute = 10;
+      startTime.second = 20;
 
       [self.camera getCloud2VideoWithStartTime:startTime success:^(NSURL *m3u8Url) {
         

@@ -1826,6 +1826,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       startTime.day = 1;
       startTime.hour = 12;
       startTime.minute = 0;
+      startTime.second = 20;
 
       NSDateComponents *endTime = [[NSDateComponents alloc]init];
       endTime.year = 2021;
@@ -1833,6 +1834,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       endTime.day = 1;
       endTime.hour = 12;
       endTime.minute = 30;
+      endTime.second = 20;
 
       [self.camera getCloudVideoWithStartTime:startTime endTime:endTime success:^(NSURL *m3u8Url) {
         
@@ -1955,6 +1957,7 @@ MeariDevice 负责对设备的所有操作，包括预览、回放、设置等�
       startTime.day = 1;
       startTime.hour = 12;
       startTime.minute = 10;
+      startTime.second = 20;
 
       [self.camera getCloud2VideoWithStartTime:startTime success:^(NSURL *m3u8Url) {
         
