@@ -181,10 +181,17 @@
     * 11.3 [集成谷歌推送](#113-集成谷歌推送)
     * 11.4 [集成其他推送](#114-集成其他推送)
 * 12 [云存储服务](#12-云存储服务)
-    * 12.1 [云存储服务状态](#121-云存储服务状态)
-    * 12.2 [云存储试用](#122-云存储试用)
+    * 12.1 [云存储服务介绍](#121-云存储服务介绍)
+    * 12.2 [免费6s云存储](#122-免费6s云存储)
     * 12.3 [云存储激活码使用](#123-云存储激活码使用)
     * 12.4 [云存储购买](#124-云存储购买)
+        * 12.4.1 [服务购买相关类](#1241-服务购买相关类)
+        * 12.4.2 [支付相关错误码](#1242-支付相关错误码)
+        * 12.4.3 [PayPal Web 支付购买流程](#1243-PayPal-Web-支付购买流程)
+        * 12.4.4 [PayPal Web 信用卡支付购买流程](#1244-PayPal-Web-信用卡支付购买流程)
+        * 12.4.5 [谷歌支付购买流程](#1245-谷歌支付购买流程)
+        * 12.4.6 [支付宝购买流程](#1246-支付宝购买流程)
+        * 12.4.7 [微信支付购买流程](#1247-微信支付购买流程)
 * 13 [NVR](#13-NVR)
     * 13.1 [添加NVR](#131-添加NVR)
     * 13.2 [添加摄像机到NVR通道](#132-添加摄像机到NVR通道)
@@ -6223,10 +6230,20 @@ boolean isCheck; 是否选中
 ```
 
 # 12 云存储服务
-## 12.1 云存储服务状态
+## 12.1 云存储服务介绍
 ```
 【描述】
 获取云存储信息
+
+云存储相关能力集
+- int cst; 是否支持云存储服务：0-不支持；1-支持
+- int evt; 是否支持云存储服务2.0：0-不支持；1-支持；新接入的设备都是2.0
+
+- int evt3; 是否支持4G设备的云存储服务：0-不支持；1-支持；4G设备不判断cst，判断evt3
+
+
+// 云存储开通状态判断：1、未开通可试用（已不可试用，改为免费6s云存储）；2、未开通不可试用；3、已开通；4、已过期。
+int cloudStatus =  mCameraInfo.getCloudStatus();
 
 【函数调用】
 /**
@@ -6249,77 +6266,44 @@ MeariUser.getInstance().getCloudServiceInfo(mCameraInfo.getDeviceID(), new IClou
 
     }
 });
-
-
-// 1、未开通可试用；2、未开通不可试用；3、已开通；4、已过期。
-int cloudStatus =  mCameraInfo.getCloudStatus();
-
-CloudServiceInfo：
-
-// 云服务事件录像价格信息
-private CloudPriceInfo eventCloudPriceInfo;
-// 云服务全天录像价格信息
-private CloudPriceInfo continueCloudPriceInfo;
-// 视频保存时间
-private int storageTime;
-// 价格符号：￥ $
-private String currencySymbol;
-// 云服务可以试用的时间。默认为7
-private int tryTime = 7;
-// 云服务试用时间的单位。默认为天。
-private String tryUnit = "D";
-// 云服务的截止日期
-private long dueDate=0;
-
-
-CloudPriceInfo：
-
-// 3天包月价格
-private BigDecimal threeM;
-// 3天包季价格
-private BigDecimal threeS;
-// 3天包年价格
-private BigDecimal threeY;
-// 7天包月价格
-private BigDecimal sevenM;
-// 7天包季价格
-private BigDecimal sevenS;
-// 7天包年价格
-private BigDecimal sevenY;
-// 30天包月价格
-private BigDecimal thirtyM;
-// 30天包季价格
-private BigDecimal thirtyS;
-// 30天包年价格
-private BigDecimal thirtyY;
 ```
-## 12.2 云存储试用
+
+## 12.2 免费6s云存储
 ```
 【描述】
-云存储试用
+免费6s云存储
+
+// 能力集支持，且未开通云存储，显示6s开关
+- int evt2; 是否支持免费6s云存储服务：0-不支持；1-支持
+
+// 开关状态：0-关闭；1-开启；
+deviceParams.getUploadVideo()
 
 【函数调用】
 /**
- * 云存储试用
- *
- * @param deviceID deviceID
- * @param callback callback
+ * 6s云存储设置
+ * 
+ * @param SN       cameraInfo.getSnNum()
+ * @param enable   false-close；true-open；
+ * @param callback Function callback
  */
-public void freeTrialCloudService(String deviceID, IResultCallback callback)
+public void setUploadVideoEnable(String SN, boolean enable, IStringResultCallback callback)
 
 【代码范例】
-MeariUser.getInstance().freeTrialCloudService(mCameraInfo.getDeviceID(), new IResultCallback() {
+MeariUser.getInstance().setUploadVideoEnable(cameraInfo.getSnNum(), enable, new IStringResultCallback() {
     @Override
-    public void onSuccess() {
+    public void onSuccess(String result) {
         
     }
 
     @Override
-    public void onError(int code, String error) {
-        
+    public void onError(int errorCode, String errorMsg) {
+
     }
 });
+
 ```
+
 ## 12.3 云存储激活码使用
 ```
 【描述】
@@ -6329,28 +6313,611 @@ MeariUser.getInstance().freeTrialCloudService(mCameraInfo.getDeviceID(), new IRe
 /**
  * 云存储激活码使用
  *
+ * @param servicePackageType service type
  * @param actCode activation code
  * @param deviceID deviceID
+ * @param uuid If the 4G device does not have a deviceID, use the uuid
  * @param callback callback
  */
-public void requestActive(String actCode, String deviceID, final IResultCallback callback, Object tag)
+public void requestActive(int servicePackageType, String actCode, String deviceID, String uuid, final IResultCallback callback, Object tag)
 
 【代码范例】
-MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IResultCallback() {
+MeariUser.getInstance().requestActive(BuyServiceType.CLOUD, actCode, cameraInfo.getDeviceID(), "", new IResultCallback() {
     @Override
     public void onSuccess() {
-
+        
     }
 
     @Override
-    public void onError(int code, String error) {
+    public void onError(int errorCode, String errorMsg) {
 
     }
 }, this);
 ```
+
 ## 12.4 云存储购买
+### 12.4.1 服务购买相关类
 ```
-详见Demo
+云存储相关能力集
+- int cst; 是否支持云存储服务：0-不支持；1-支持
+- int evt; 是否支持云存储服务2.0：0-不支持；1-支持；sdk接入用户的设备都是2.0
+
+BuyServiceType：服务类型
+int CLOUD = 0; // 云存储服务
+int AI = 1; // AI服务
+int TRAFFIC = 2; // 4G流量服务
+int CLOUD1 = 3; // 老的云存储服务，sdk接入用户不用考虑
+
+PayType：支付类型
+int ALI = 1; // 支付宝
+int PAYPAL = 2; // PayPal
+int GOOGLE = 3; // 谷歌
+int APPLE = 4; // 苹果
+int CREDIT_CARD = 5; // PayPal 信用卡
+int YOO_MONEY = 6; // 俄罗斯支付
+int WECHAT = 7; // 微信支付
+
+ServicePackageInfo：服务套餐信息
+private List<ServicePackageBean> packageList; // 套餐服务包列表
+private List<ServicePackageBean> discountsPackageList; // 优惠套餐服务包列表
+private List<Integer> notSupportPayList; // 不支持的支付方式列表，不配置默认是空
+
+ServicePackageBean：服务套餐类
+private String id; //套餐id
+private String productId; // 谷歌支付的产品ID
+private int payType; // 支付类型
+private int storageTime; // 云视频存储的天数：3、7、30
+private String mealType; // Y-年；X-半年；S-季；M-月
+private int storageType; // 0-事件存储；1-全天存储
+private BigDecimal money; // 金额
+private int bindDeviceNum; // 可以绑定的设备数量
+private String currencyCode; // 国家代号
+private String currencySymbol; // 货币符号
+private boolean subscribe; // 是否是订阅套餐
+private int subState; // 谷歌订阅的状态：0-未订阅；1-已订阅
+private String clientId; // PayPal支付使用的参数
+private int AiType; // 是否支持带ai的云存储：0-不支持；1-支持；
+// 优惠活动相关的属性
+private boolean discountSaleNew; // 是否是优惠套餐
+private String discountProductId; // 优惠套餐服务包列表中才有的活动谷歌支付的产品ID
+private BigDecimal discountMoney; // 优惠套餐服务包列表中才有的活动价格
+private String originalPackageId; // 用于判断非谷歌套餐，当前优惠套餐对应的非优惠套餐的id
+private long startTime; // 优惠活动的开始时间戳
+private long endTime; //  优惠活动的结束时间戳
+// 4G流量套餐相关的属性
+private int unlimited; // 是否是不限量的套餐：0-否；1-是；sdk接入的都是不限量
+private int cloudType; // 是否是4G流量加云存储的套餐：0-否；1-是
+```
+
+### 12.4.2 支付相关错误码
+```
+1203：当前套餐已订阅
+1208：您已经有一个在有效期的订阅，已经恢复了此订阅，在有效期内暂时不支持更换账号和设备
+1209：订阅已恢复
+1211：不支持跨区域订阅
+1212：Paypal将在24小时内审核你的资金，请在paypal钱包查看审核结果
+1213：重复捕获，按成功处理
+1240：无法获取您的付款，请确认您的付款方式是否有足够金额
+1241：Paypal支付平台繁忙，请切换支付方式或稍后再试
+1242：Paypal平台处理您的付款失败，请申请退款，稍后重新购买
+1243：GOOGLE支付平台繁忙，稍后会自动退款，请重新购买
+1244：APPLE支付平台繁忙，请申请退款，稍后重新购买
+```
+
+### 12.4.3 PayPal Web 支付购买流程
+```
+1.获取云存储套餐，展示套餐信息
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2.选择套餐，创建订单
+// currentPackageBean: 选中的服务包
+val currentPrice = currentPackageBean.money.toString()
+val id = currentPackageBean.id
+// deviceIdList: 选中的设备id列表
+val deviceIdList: MutableList<String> = mutableListOf()
+deviceIdList.add(cameraInfo.deviceID)
+val currencySymbol = currentPackageBean.currencySymbol
+MeariUser.getInstance().createPaymentOrder(BuyServiceType.CLOUD, currentPrice, PayType.PAYPAL, 1,
+    id, deviceIdList, currencySymbol, "", "", object : IStringResultCallback {
+    override fun onSuccess(result: String) {
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+
+3.WebView加载paypal支付网页，完成支付并捕获订单
+// 详细代码参考 demo 中的 PaypalCheckoutActivity
+MeariUser.getInstance().capturePaymentOrder(BuyServiceType.CLOUD, "orderId", PayType.PAYPAL, object :IStringResultCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(result: String?) {
+    }
+})
+```
+
+### 12.4.4 PayPal Web 信用卡支付购买流程
+```
+1.获取云存储套餐，展示套餐信息
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2.初始化webView，并加载PayPal信用卡支付url
+private var baseUrl = MeariSmartSdk.apiServer + "/html/paypalCardH5/dist/index.html"
+private fun initWebView() {
+    webView.webViewClient = object : WebViewClient() {
+        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+            return super.shouldOverrideUrlLoading(view, url)
+        }
+
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
+            return super.shouldOverrideUrlLoading(view, request)
+        }
+
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+            super.onPageStarted(view, url, favicon)
+        }
+
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+        }
+    }
+    webView.addJavascriptInterface(
+        NativeBridge(this@Activity),
+        "NativeBridge"
+    )
+    webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+    val webSettings = webView.settings
+    webSettings.javaScriptEnabled = true
+    webSettings.defaultTextEncodingName = "UTF-8"
+    webSettings.setSupportZoom(false)
+    webSettings.builtInZoomControls = true
+    webSettings.useWideViewPort = true
+    webSettings.loadWithOverviewMode = true
+    webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+    webSettings.domStorageEnabled = true
+
+    val url: String = if (isSubscribe) {
+        "$baseUrl?paypalType=subscription&currency=${currentPackageBean?.currencyCode}&clientId=${currentPackageBean?.clientId}"
+    } else {
+        "$baseUrl?paypalType=createOrder&currency=${currentPackageBean?.currencyCode}&clientId=${currentPackageBean?.clientId}"
+    }
+    webView.loadUrl(url)
+}
+
+3.通过桥接对象 NativeBridge 来进行后续的交互
+class NativeBridge(val context: Context) {
+    @JavascriptInterface
+    fun NativeAndroidBridgePaypalCallback(resData: String) {
+        val paypalResData: PaypalResData = GsonUtil.fromJson(resData, PaypalResData::class.java)
+        if (paypalResData.type == "buttonInit") {
+            // 支付按钮初始化完成
+            (context as Activity).initButton(full = false)
+        } else if (paypalResData.type == "createOrder") {
+            // 创建订单
+            (context as Activity).createCreditCardOrder()
+        } else if (paypalResData.type == "createSubscription") {
+            // 创建订阅订单
+            (context as Activity).createCreditCardOrder()
+        } else if (paypalResData.type == "capture") {
+            // 捕获交易
+            (context as Activity).captureCreditCardOrder(paypalResData.token)
+        } else if (paypalResData.type == "cancel") {
+            // 交易取消
+        } else if (paypalResData.type == "error") {
+            // 交易失败
+        }
+    }
+}
+
+// 网页上的支付按钮不支持自定义，可以将WebView覆盖在Android自定义的按钮上，WebView设置成透明不可见，来达到自定义按钮的效果。
+// 订单创建成功以后，WebView扩大至全屏，并恢复透明度和背景，展示正常的支付网页进行支付。
+private fun initButton(full: Boolean) {
+    webView.post {
+        webView.visibility = View.VISIBLE
+        val params = webView.layoutParams
+        if (full) {
+            webView.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.bg_color_white,
+                    null
+                )
+            )
+            webView.background.alpha = 255
+            params.width = RelativeLayout.LayoutParams.MATCH_PARENT
+            params.height = RelativeLayout.LayoutParams.MATCH_PARENT
+        } else {
+            webView.setBackgroundColor(0)
+            webView.background.alpha = 0
+        }
+        webView.layoutParams = params
+    }
+}
+
+private fun createCreditCardOrder() {
+    // PayType： PayType.PAYPAL
+    MeariUser.getInstance().createPaymentCreditCardOrder(BuyServiceType.CLOUD, currentPrice, PayType.PAYPAL, 1,
+        id, deviceIdList, currencySymbol, object : IStringResultCallback {
+            override fun onError(errorCode: Int, errorMsg: String?) {
+            }
+
+            override fun onSuccess(result: String?) {
+                val dataObject = BaseJSONObject()
+                if (isSubscribe) {
+                    dataObject.put("type", "subscriptionId")
+                } else {
+                    dataObject.put("type", "orderId")
+                }
+                dataObject.put("value", result)
+                val data = dataObject.toString()
+                initButton(full = true)
+                webView.loadUrl("javascript:NativeBridgePaypalCallback('$data')")
+            }
+    })
+}
+
+private fun captureCreditCardOrder(orderId: String) {
+    // PayType： PayType.PAYPAL
+    MeariUser.getInstance().capturePaymentOrder(BuyServiceType.CLOUD, orderId, PayType.PAYPAL, object : IStringResultCallback {
+        override fun onSuccess(result: String) {
+        }
+
+        override fun onError(errorCode: Int, errorMsg: String) {
+        }
+    })
+}
+```
+
+### 12.4.5 谷歌支付购买流程
+```
+注意：谷歌支付的接入请参考官方文档，这里仅说明谷歌支付的购买流程
+
+1.获取云存储套餐，展示套餐信息
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2.查询谷歌套餐
+public void queryProductDetails(Activity activity, String productId, boolean isSubscribe) {
+    QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
+            .setProductList(ImmutableList.of(QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId(productId)
+                    .setProductType(isSubscribe ? BillingClient.ProductType.SUBS : BillingClient.ProductType.INAPP)
+                    .build())
+            ).build();
+
+    billingClient.queryProductDetailsAsync(queryProductDetailsParams,
+            new ProductDetailsResponseListener() {
+                public void onProductDetailsResponse(BillingResult billingResult,
+                                                     List<ProductDetails> productDetailsList) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        launchBilling(activity, productDetailsList.get(0), isSubscribe);
+                    }
+                }
+            }
+    );
+}
+
+2.调起支付页面，并完成支付
+private void launchBilling(Activity activity, ProductDetails productDetails, boolean isSubscribe) {
+    // An activity reference from which the billing flow will be launched.
+    // Activity activity = ...;
+    String selectedOfferToken = "";
+    if (productDetails.getSubscriptionOfferDetails() != null && !productDetails.getSubscriptionOfferDetails().isEmpty()) {
+        selectedOfferToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
+    }
+    ImmutableList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList;
+    if (isSubscribe) {
+        productDetailsParamsList = ImmutableList.of(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                        // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
+                        .setProductDetails(productDetails)
+                        // to get an offer token, call ProductDetails.getSubscriptionOfferDetails()
+                        // for a list of offers that are available to the user
+                        .setOfferToken(selectedOfferToken)
+                        .build()
+        );
+    } else {
+        productDetailsParamsList = ImmutableList.of(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                        // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
+                        .setProductDetails(productDetails)
+                        .build()
+        );
+    }
+
+    BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+            .setProductDetailsParamsList(productDetailsParamsList)
+            .setIsOfferPersonalized(true)
+            .build();
+
+    // Launch the billing flow
+    BillingResult billingResult = billingClient.launchBillingFlow(activity, billingFlowParams);
+}
+
+3.在谷歌支付监听中处理回调状态
+private final PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
+        // To be implemented in a later section.
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (Purchase purchase : purchases) {
+                if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                    // 支付成功，去创建订单
+                    createOrder(purchase)
+                }
+            }
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+            // 取消支付
+        } else {
+            // 其他错误
+        }
+    }
+};
+
+4.创建订单
+private fun createOrder(purchase: Purchase) {
+    // currentPackageBean: 选中的服务包
+    val currentPrice = currentPackageBean.money.toString()
+    val id = currentPackageBean.id
+    // deviceIdList: 选中的设备id列表
+    val deviceIdList: MutableList<String> = mutableListOf()
+    deviceIdList.add(cameraInfo.deviceID)
+    val currencySymbol = currentPackageBean.currencySymbol
+    val currencyCode = currentPackageBean.currencyCode
+    val devNum = currentPackageBean.bindDeviceNum
+    val productId = currentPackageBean.productId
+    MeariUser.getInstance().createCloudGooglePayOrder(devNum, deviceIdList, id, currentPrice, purchase.quantity,
+        productId, purchase.orderId, purchase.purchaseToken, currencySymbol, currencyCode, object :IPayCallback{
+            override fun onError(errorCode: Int, errorMsg: String?) {
+            }
+
+            override fun onSuccess(orderInfo: OrderInfo?) {
+                handlePurchase(purchase)
+            }
+        })
+}
+
+5.确认购买
+public void handlePurchase(Purchase purchase) {
+    if (purchase.isAutoRenewing()) {
+        // 确认订阅购买
+        handleSubscriptionPurchase(purchase);
+    } else {
+        // 确认一次性购买
+        handleOncePurchase(purchase);
+    }
+}
+
+public void handleSubscriptionPurchase(GooglePurchase purchase) {
+    AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
+        @Override
+        public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                // Handle the success of the consume operation.
+            }
+        }
+    };
+
+    if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+        if (!purchase.isAcknowledged()) {
+            AcknowledgePurchaseParams acknowledgePurchaseParams =
+                    AcknowledgePurchaseParams.newBuilder()
+                            .setPurchaseToken(purchase.getPurchaseToken())
+                            .build();
+            billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
+        }
+    }
+}
+
+public void handleOncePurchase(GooglePurchase purchase) {
+    ConsumeParams consumeParams =
+            ConsumeParams.newBuilder()
+                    .setPurchaseToken(purchase.getPurchaseToken())
+                    .build();
+
+    ConsumeResponseListener listener = new ConsumeResponseListener() {
+        @Override
+        public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                // Handle the success of the consume operation.
+            }
+        }
+    };
+    billingClient.consumeAsync(consumeParams, listener);
+}
+```
+
+### 12.4.6 支付宝购买流程
+```
+注意：支付宝的接入请参考官方文档，这里仅说明支付宝的购买流程
+
+1.获取云存储套餐，展示套餐信息
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. 创建订单
+// List<String> deviceIdList：购买设备的deviceId列表；其他是ServicePackageBean中的属性
+MeariUser.getInstance().createCloudAliPayOrder(bindDeviceNum, deviceIdList, id, money.toString(), currencySymbol, 1, new IPayCallback() {
+    @Override
+    public void onSuccess(OrderInfo orderInfo) {
+        payAlipay(orderInfo.getPayUrl());
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+
+3.调起支付页面，并完成支付
+public void payAlipay(final String sigPay) {
+    Runnable payRunnable = () -> {
+        // 构造PayTask 对象
+        PayTask alipay = new PayTask(CloudPayNewActivity.this);
+        // 调用支付接口，获取支付结果
+        Map<String, String> result = alipay.payV2(sigPay, true);
+
+        Message msg = Message.obtain();
+        msg.what = SDK_PAY_FLAG;
+        msg.obj = result;
+        mHandler.sendMessage(msg);
+    };
+    Thread payThread = new Thread(payRunnable);
+    payThread.start();
+}
+
+4.处理支付回调
+private final Handler mHandler = new Handler(msg -> {
+    if (msg.what == SDK_PAY_FLAG) {
+        PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+        String resultStatus = payResult.getResultStatus();
+        // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+        if (TextUtils.equals(resultStatus, "9000")) {
+            // 支付成功
+        } else {
+            // 支付失败
+        }
+    }
+    return false;
+});
+```
+
+### 12.4.7 微信支付购买流程
+```
+注意：微信支付的接入请参考官方文档，这里仅说明微信支付的购买流程
+
+1.获取云存储套餐，展示套餐信息
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2.选择套餐，创建订单
+// currentPackageBean: 选中的服务包
+val currentPrice = currentPackageBean.money.toString()
+val id = currentPackageBean.id
+// deviceIdList: 选中的设备id列表
+val deviceIdList: MutableList<String> = mutableListOf()
+deviceIdList.add(cameraInfo.deviceID)
+val currencySymbol = currentPackageBean.currencySymbol
+MeariUser.getInstance().createPaymentOrder(BuyServiceType.CLOUD, currentPrice, PayType.WECHAT, 1,
+    id, deviceIdList, currencySymbol, "", "", object : IStringResultCallback {
+    override fun onSuccess(result: String) {
+        toWechatPay(result)
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+3.跳转支付页面，完成支付
+private fun toWechatPay(result: String) {
+    WechatPayManager.init(this@Activity)
+    val obj = BaseJSONObject(result)
+    wechatOrderId = obj.optString("thirdOrderId")
+    val partnerId = obj.optString("partnerId")
+    val prepayId = obj.optString("prepayId")
+    val nonceStr = obj.optString("noncestr")
+    val timeStamp = obj.optLong("timeStamp")
+    val sign = obj.optString("sign")
+    WechatPayManager.toWechatPay(partnerId, prepayId, nonceStr, timeStamp, sign)
+}
+object WechatPayManager {
+    lateinit var api: IWXAPI
+
+    fun init(context: Context) {
+        api = WXAPIFactory.createWXAPI(context, Config.WECHART_APPID)
+        api.registerApp(Config.WECHART_APPID)
+    }
+
+    fun toWechatPay(partnerId: String, prepayId: String, nonceStr: String, timeStamp: Long, sign: String) {
+        Thread {
+            val request = PayReq()
+            request.appId = Config.WECHART_APPID
+            request.partnerId = partnerId
+            request.prepayId = prepayId
+            request.packageValue = "Sign=WXPay"
+            request.nonceStr = nonceStr
+            request.timeStamp = timeStamp.toString()
+            request.sign = sign
+            api.sendReq(request)
+        }.start()
+    }
+}
+
+4.处理支付回调结果
+public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
+    private IWXAPI api;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        api = WXAPIFactory.createWXAPI(this, Config.WECHART_APPID);
+        api.handleIntent(getIntent(), this);
+    }
+    @Override
+    public void onReq(BaseReq baseReq) {
+
+    }
+    @Override
+    public void onResp(BaseResp baseResp) {
+        int type = baseResp.getType();
+        if (type == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            int code = baseResp.errCode;
+            Logger.i("tag", "--->WeChart-ErrCode: " + code);
+            switch (code) {
+                case BaseResp.ErrCode.ERR_OK:
+                    //成功
+                    paySuccess(0);
+                    break;
+                case BaseResp.ErrCode.ERR_USER_CANCEL:
+                    //用户取消
+                    paySuccess(-2);
+                    break;
+                case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                case BaseResp.ErrCode.ERR_SENT_FAILED:
+                case BaseResp.ErrCode.ERR_UNSUPPORT:
+                case BaseResp.ErrCode.ERR_COMM:
+                default:
+                    //失败
+                    break;
+            }
+        }
+    }
+}
 ```
 
 # 13 NVR
@@ -7230,6 +7797,10 @@ MeariUser.getInstance().setFeedTimes(planString, new ISetDeviceParamsCallback() 
 
 
 # 16 更新说明
+## 2024-10-22(5.5.0)
+```
+1.新增云存储服务购买文档
+```
 ## 2024-08-28(5.3.0)
 ```
 1. 新增蓝牙配网
