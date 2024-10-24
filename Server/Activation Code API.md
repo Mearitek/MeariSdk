@@ -152,3 +152,18 @@
       "resultCode": "1001"
   }
   ```
+
+
+
+#### Network request status code
+
+| code | describe                 |
+| ---- | ------------------------ |
+| 1001 | Request successful       |
+| 1003 | The parameter is invalid |
+| 1005 | System exception         |
+| 1007 | Invalid device           |
+| 1023 | Invalid signature        |
+| 1067 | Invalid activation code  |
+| 1068 | Invalid activation code  |
+
