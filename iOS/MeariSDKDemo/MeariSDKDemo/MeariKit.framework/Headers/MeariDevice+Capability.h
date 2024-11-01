@@ -27,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** Only support HD */
 /** 码流是否只支持高清 */
 @property (nonatomic, assign, readonly) BOOL supportVideoOnlyHD;
+/** Whether to support adaptive bitrate*/
+/** 是否支持自适应码率*/
+@property (nonatomic, assign, readonly) BOOL supportAutoStream;
 
 #pragma mark - PTZ
 /** Whether to support PTZ*/
@@ -41,6 +44,13 @@ NS_ASSUME_NONNULL_BEGIN
 /** Whether to support PTZ preset points*/
 /** 是否支持PTZ预置点*/
 @property (nonatomic, assign, readonly) BOOL supportPtzPoint;
+/** Whether to support PTZ watch position*/
+/** 是否支持云台守望位*/
+@property (nonatomic, assign, readonly) BOOL supportPTZWatchPosition;
+/** Whether zoom focus control is supported*/
+/**是否支持变焦聚焦控制*/
+@property (nonatomic, assign, readonly) BOOL supportZoomFocusAperture;
+
 
 #pragma mark - Playback
 /** Whether to support downloading local playback videos*/
@@ -95,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 是否支持设置多边形报警区域*/
 @property (nonatomic, assign, readonly) BOOL supportPolygonRoiAlarm;
 
-#pragma mark --People Detection
+#pragma mark - People Detection
 ///人形检测依赖于移动侦测开启
 /** Whether to support Humanoid detection */
 /** 是否支持人形检测 */
@@ -112,7 +122,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** Whether to support humanoid detection frame */
 /** 是否支持人形检测画框 */
 @property (nonatomic, assign, readonly) BOOL supportPeopleTrackBorder;
-#pragma mark --VoiceLight Alarm
+#pragma mark - VoiceLight Alarm
 ///低功耗设备声光报警依赖于移动侦测开启
 /** 是否支持声光报警 */
 @property (nonatomic, assign, readonly) BOOL supportVoiceLightAlarm;
@@ -120,6 +130,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) BOOL supportVoiceLightAlarmPlan;
 /** 是否支持声光报警铃声 */
 @property (nonatomic, assign, readonly) BOOL supportVoiceLightAlarmRing;
+/** 支持声光报警录音的数量*/
+@property (nonatomic, assign, readonly) NSInteger supportAudioVoiceLightAlarmNum;
+/** 声光报警录音最大音频录制长度*/
+@property (nonatomic, assign, readonly) NSInteger maxAudioVoiceLightAlarmSecond;
 
 #pragma mark - Cry Detection
 
@@ -135,6 +149,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** Whether to support the noise anomaly patrol function*/
 /** 是否支持噪声异常巡查功能*/
 @property (nonatomic, assign, readonly) BOOL supportDbPatrol;
+/** Whether to support the noise abnormality inspection function (same level as noise detection)*/
+/** 是否支持噪声异常巡查功能(噪声侦测同级,无需噪声侦测开关才能设置)*/
+@property (nonatomic, assign, readonly) BOOL supportOutDbPatrol;
 /** Whether the noise alarm supports recording*/
 /** 噪音报警是否支持录像*/
 @property (nonatomic, assign, readonly) BOOL supportNoiseRecord;
@@ -203,7 +220,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** Whether to support event recording*/
 /** 是否支持事件录像*/
 @property (nonatomic, assign, readonly) BOOL supportEventRecord;
-#pragma mark - OTA升级
+#pragma mark - OTA
 /** Whether to support upgrade device */
 /** 是否支持OTA升级固件版本 */
 @property (nonatomic, assign, readonly) BOOL supportOTA;
@@ -222,6 +239,16 @@ NS_ASSUME_NONNULL_BEGIN
 /** 是否支持设置音乐播放模式 */
 /** Whether to support setting music play mode */
 @property (nonatomic, assign, readonly) BOOL supportPlayMusicMode;
+/** 是否支持音乐播放顺序循环模式 */
+/** Whether to support music play order loop mode */
+@property (nonatomic, assign, readonly) BOOL supportPlayMusicLoopMode;
+/** 是否支持音乐播放单曲循环模式 */
+/** Whether to support music play single loop mode */
+@property (nonatomic, assign, readonly) BOOL supportPlayMusicSingleLoopMode;
+/** 是否支持音乐播放随机模式 */
+/** Whether to support music play random mode */
+@property (nonatomic, assign, readonly) BOOL supportPlayMusicRandomMode;
+
 /** 是否支持音乐播放限制时间 */
 /** Whether to support music play limit time */
 @property (nonatomic, assign, readonly) BOOL supportPlayMusicLimitTime;
@@ -238,6 +265,13 @@ NS_ASSUME_NONNULL_BEGIN
 /** Whether to support RGB light control function*/
 /** 是否支持RGB灯控制功能*/
 @property (nonatomic, assign, readonly) BOOL supportRGB;
+/** 是否支持呼吸和心率数据展示， 0表示不支持 1表示支持（毫米雷达波） */
+- (BOOL)supportBreatheAndHeartBeat;
+/** 是否支持遮脸报警 */
+- (BOOL)supportCoverFace;
+/** 是否支持趴睡报警 */
+- (BOOL)supportDownSleep;
+
 #pragma mark - Bell
 /** Whether to support host Message */
 /** 是否支持主人录制留言 */
@@ -264,6 +298,17 @@ NS_ASSUME_NONNULL_BEGIN
 /** 是否支持无线信号歌曲，用于控制无线铃铛歌曲选择 */
 @property (nonatomic, assign, readonly) BOOL supportWirelessSongsEnable;
 
+#pragma mark - 4G Device
+/**Whether it supports inserting dual SIM cards*/
+/**是否支持插入双SIM卡 */
+@property (nonatomic, assign, readonly) BOOL supportDualSIMCard;
+/**Whether to support limiting the traffic usage of 4G devices */
+/**是否支持限制4G设备流量使用 */
+@property (nonatomic, assign, readonly) BOOL supportLimitTraffic;
+/**Whether it supports obtaining 4G SIM card operator information */
+/**是否支持获取4GSIM卡运营商信息 */
+@property (nonatomic, assign, readonly) BOOL supportOperatorInfo;
+
 #pragma mark - Light
 /** Whether to support switching warm light */
 /** 是否支持开关暖光灯*/
@@ -284,6 +329,31 @@ NS_ASSUME_NONNULL_BEGIN
 /** 是否支持亮灯计划*/
 @property (nonatomic, assign, readonly) BOOL supportLightSchedule;
 
+#pragma mark - Night Vision 
+/**  Whether to support day and night mode */
+/**  是否支持日夜模式 */
+@property (nonatomic, assign, readonly) BOOL supportDayNightMode;
+/** Whether to support non-light day and night mode */
+/** 是否支持非照明灯的日夜模式 */
+@property (nonatomic, assign, readonly) BOOL supportDayNightModeDefault;
+/** Whether to support the full color mode of lighting */
+/** 是否支持照明灯的全彩模式 */
+@property (nonatomic, assign, readonly) BOOL supportDayNightModeFullColor;
+/** Whether to support the low-light full-color mode of the lighting */
+/** 是否支持照明灯的微光全彩模式 */
+@property (nonatomic, assign, readonly) BOOL supportDayNightModeDimlight;
+/** Whether to support the timing mode of night vision mode */
+/** 是否支持夜视模式的定时模式 */
+@property (nonatomic, assign, readonly) BOOL supportDayNightModeTiming;
+
+/** Whether to support black light AOV mode in night vision mode */
+/** 是否支持夜视模式的黑光AOV模式 */
+@property (nonatomic, assign, readonly) BOOL supportDayNightModeBlackLight;
+
+#pragma mark - Pet
+/** Whether to support Time Album*/
+/** 是否支持时光相册 */
+-(BOOL)supportTimeAlbum;
 @end
 
 NS_ASSUME_NONNULL_END

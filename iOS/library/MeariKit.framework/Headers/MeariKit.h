@@ -64,3 +64,4 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 #import <MeariKit/MeariFamilyModel.h>
 
 #import <MeariKit/MeariDevicePetFeedPlanModel.h>
+#import <MeariKit/MeariRadarMonitorModel.h>

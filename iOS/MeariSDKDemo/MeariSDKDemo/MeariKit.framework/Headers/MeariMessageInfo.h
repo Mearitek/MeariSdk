@@ -44,6 +44,9 @@ typedef NS_ENUM(NSInteger, MeariAlarmMessageType) {
     MeariAlarmMessageTypeLowtemp = 23,               //lowtemp(低温报警)
     MeariAlarmMessageTypeAirdry = 24,               //Airdry(空气干燥报警)
     MeariAlarmMessageTypeAirhumid = 25,               //airhumid(空气湿润报警)
+    MeariAlarmMessageTypeBird = 26,               //(智能检测到鸟)
+    MeariAlarmMessageTypeCoverFace = 28,               //(遮脸报警)
+    MeariAlarmMessageTypeDownSleep = 29,               //(趴睡报警)
 };
 
 typedef NS_ENUM(NSInteger, MeariVisitorMessageType) {
@@ -143,6 +146,8 @@ typedef NS_ENUM(NSInteger, MeariShareMessageType) {
 @property (nonatomic, assign)NSInteger cloudImgType; //AWS Image
 
 @property (nonatomic, strong) NSArray *faceInfo;//人脸识别信息
+
+@property (nonatomic, assign) NSInteger aiPasswordStatus; //AI密码，1：密码为空 2：密码错误
 @end
 
 @interface MeariMessageInfoVisitor : MeariMessageInfo

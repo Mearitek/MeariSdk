@@ -28,7 +28,6 @@ typedef void(^MeariDeviceSuccess_Result)(NSString *jsonString);
 typedef void(^MeariDeviceSuccess_PlaybackTimes)(NSArray *times);
 typedef void(^MeariDeviceSuccess_PlaybackDays)(NSArray *days);
 typedef void(^MeariDeviceSuccess_HostMessages)(NSArray *customArray);
-typedef void(^MeariDeviceSuccess_MusicStateCurrent)(NSDictionary *currentMusicState);
 typedef void(^MeariDeviceSuccess_MusicStateAll)(NSDictionary *allMusicState);
 typedef void(^MeariDeviceSuccess_Mirror)(BOOL mirror);
 typedef void(^MeariDeviceSuccess_Storage)(MeariDeviceParamStorage *storage);
@@ -91,6 +90,11 @@ typedef NS_ENUM(NSInteger, MeariDeviceSoundChangeType) {
     MeariDeviceSoundChangeTypeBoy,
     MeariDeviceSoundChangeTypeGirl,
     MeariDeviceSoundChangeTypeMan,
+};
+typedef NS_ENUM (NSInteger, ZoomFocus) {
+    ZoomFocus_scale = 1 << 1,
+    ZoomFocus_focus = 1 << 2,
+    ZoomFocus_aperture = 1 << 3,
 };
 
 typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAlertType);
@@ -828,7 +832,57 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param failure failure callback (失败回调)
  */
 - (void)startPTZCorrectionSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ Start PTZ Correction(开始云台校准
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)uploadPTZPresetImage:(UIImage *)image success:(MeariSuccess_String)success failure:(MeariFailure)failure;
+/**
+ Start PTZ Correction(开始云台校准
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+-(void)getPTZPresetListWithSuccess:(void(^)(NSDictionary * dic))success failure:(MeariFailure)failure;
+/**
+ Start PTZ Correction(开始云台校准
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+-(void)savePTZPresetListWithPresetPointList:(NSString *)presetPointListStr success:(void(^)(NSDictionary * dic))success failure:(MeariFailure)failure;
+/**
+ 设置预置点
+ @param pointArr 预置点列表
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setPTZPresetPoint:(NSArray <MeariDevicePtzPresetPoint *> *)pointArr success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置当前显示预置点
+ @param index 当前预置点位置
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setPTZCurrentShowPresetPoint:(NSInteger)index success:(MeariSuccess)success failure:(MeariFailure)failure;
 
+/**
+ 获取预置点
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getPtzPresetPointSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ PTZ Watch Position(PTZ守望配置)
+ 
+ @param position 守望配置
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setPTZWatchPosition:(MeariDeviceParamPtzWatchPosition *)position success:(MeariSuccess)success failure:(MeariFailure)failure;
 #pragma mark -- LED
 
 /**
@@ -870,6 +924,15 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param failure 失败回调
  */
 -(void)setNightLightSwitch:(BOOL)open success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ LED灯调整亮度
+ @param value 亮度值
+ @param success 成功回调
+ @param failure 失败回调
+ */
+
+-(void)setNightLightAdjustValue:(NSInteger)value success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  亮灯定时计划（RGB灯）
@@ -933,14 +996,15 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 - (void)setFullColorModeType:(MeariDeviceFullColorMode)type success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
- // Set full color mode,
- // 设置微光全彩模式
+ // Set timing mode for night vision,
+ // 设置夜视的定时模式
  
- @param type  MeariDeviceFullColorMode(夜视模式)
+ @param startTime  start time(开始时间) eg：00:00
+ @param endTime  end time(结束时间) eg：00:00
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setDimFullColorModeType:(MeariDeviceDimFullColorMode)type success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)setTimingModeFromTime:(NSString *)startTime toTime:(NSString *)endTime success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 #pragma mark -- homeKit
 /**
@@ -1159,11 +1223,11 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  // Setting up an alarm plan
  // 设置报警计划
  
- @param times Array of MeariDeviceParamSleepTime (MeariDeviceParamSleepTime的数组)
+ @param times Array of MeariDeviceParamTimePeriod (MeariDeviceParamTimePeriod的数组)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setAlarmTimes:(NSArray<MeariDeviceParamSleepTime *> *)times success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)setAlarmTimes:(NSArray<MeariDeviceParamTimePeriod *> *)times success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  // Whether people detection  are on
@@ -1312,7 +1376,7 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param success Successful callback (成功回调)
  @param failure 失败回道
  */
-- (void)startHardDiskFormatWithChannel:(NSInteger)channel Success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)startHardDiskFormatWithChannel:(NSInteger)channel success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 #pragma mark -- 固件版本
 
@@ -1431,7 +1495,7 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  设置休眠时间段
  
  @param open Whether to enable sleep mode(是否开启休眠模式)
- @param times 休眠时间段 : 数组里面存放MeariDeviceParamSleepTime, 例如MeariDeviceParamSleepTime格式如下
+ @param times 休眠时间段 : 数组里面存放MeariDeviceParamTimePeriod, 例如MeariDeviceParamTimePeriod格式如下
  {
  enable = 1;
  repeat =     (
@@ -1444,7 +1508,7 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setSleepModeTimesOpen:(BOOL)open times:(NSArray <MeariDeviceParamSleepTime *>*)times success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)setSleepModeTimesOpen:(BOOL)open times:(NSArray <MeariDeviceParamTimePeriod *>*)times success:(MeariSuccess)success failure:(MeariFailure)failure;
 #pragma mark -- 地理围栏
 
 /**
@@ -1626,7 +1690,13 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 /// @param success 成功回调
 /// @param failure 失败回调
 - (void)setRecordAudioEnable:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
-
+/**
+ 定时录像时间段
+ @param times [MeariDeviceParamTimePeriod] 勿扰时间段
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setRecordTimes:(NSArray<MeariDeviceParamTimePeriod *> *)times success:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
  Set the doorbell PIR (human body detection) alarm type (设置门铃单PIR(人体侦测)报警类型) warning : level can contain MeariDeviceLevelOff
  
@@ -1808,6 +1878,38 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  */
 - (void)makeDeivcePlayVoiceMail:(MeariDeviceHostMessage *)hostMessage success:(MeariSuccess)success failure:(MeariFailure)failure;
 
+
+#pragma mark -- 可添加音频声光报警
+/**
+ Get pet camera message list (获取声光摄像机可添加音频声光报警音列表)
+ 
+ @param success Successful callback, URL of the file containing the message (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getAlarmVoiceListSuccess:(MeariDeviceSuccess_HostMessages)success failure:(MeariFailure)failure;
+
+/**
+ Upload pet camera voice message (上传声光摄像机声光报警音)
+ 
+ @param success Successful callback, URL of the file containing the message (成功回调)
+ @param failure failure callback (失败回调)
+ */
+-(void)uploadAlarmVoiceWithVoiceName:(NSString *)voiceName voicePath:(NSString *)voicePath success:(MeariDeviceSuccess_PetVoiceUpload)success failure:(MeariFailure)failure;
+/**
+ Delete pet voice message (删除声光报警音)
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+-(void)deleteAlarmVoiceWithVoiceId:(NSString *)voiceId success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/// 可添加音频声光报警 语音设置
+/// Pet throw voice
+/// @param success 成功回调
+/// @param failure 失败回调
+///
+- (void)setAlarmThrowVoiceWithVoiceUrl:(NSString *)voiceUrl success:(MeariSuccess)success failure:(MeariFailure)failure ;
+
 #pragma mark -- 宠物投食机
 /**
  Get pet camera message list (获取宠物摄像机留言列表)
@@ -1832,6 +1934,14 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param failure failure callback (失败回调)
  */
 -(void)deletePetVoiceWithVoiceId:(NSString *)voiceId success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ Get pet time Album (获取时光相册)
+ 
+ @param yearMonth Year&Month (年月) 例如 202312
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getPetTimeAlbumWithYearMonth:(NSString *)yearMonth success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 #pragma mark --- voiceBell(语音门铃)
 
 /**
@@ -1952,10 +2062,10 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 
 /// 亮灯计划，最大支持设置4组，每组支持设置每周循环天数，每组最大不超过30分钟
 /// Lighting plan, support up to 4 groups, each group supports setting the number of days per week, each group does not exceed 30 minutes
-/// @param scheduleArray MeariDeviceParamSleepTime data array
+/// @param scheduleArray MeariDeviceParamTimePeriod data array
 /// @param success Successful callback (成功回调)
 /// @param failure  failure callback (失败回调)
-- (void)setLowPowerFloodCameraScheduleArray:(NSArray<MeariDeviceParamSleepTime *> *)scheduleArray success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)setLowPowerFloodCameraScheduleArray:(NSArray<MeariDeviceParamTimePeriod *> *)scheduleArray success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  Set up the movement monitoring of the luminaire
@@ -2026,10 +2136,10 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 - (void)setVoiceLightAlarmRingType:(MeariDeviceVoiceLightRingType)type success:(MeariSuccess)success failure:(MeariFailure)failure;
 /// 声光报警计划，最大支持设置4组，每组支持设置每周循环天数，
 /// voice light alarm plan, support up to 4 groups, each group supports setting the number of days per week,
-/// @param planArray MeariDeviceParamSleepTime data array
+/// @param planArray MeariDeviceParamTimePeriod data array
 /// @param success Successful callback (成功回调)
 /// @param failure  failure callback (失败回调)
-- (void)setVoiceLightAlarmPlanArray:(NSArray<MeariDeviceParamSleepTime *> *)planArray success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)setVoiceLightAlarmPlanArray:(NSArray<MeariDeviceParamTimePeriod *> *)planArray success:(MeariSuccess)success failure:(MeariFailure)failure;
 #pragma mark --- NVR
 /// 设置NVR无线抗干扰开关
 /// Set sound and light alarm enable switch
@@ -2054,10 +2164,10 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 - (void)setJingleSleepModeEnable:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /// set jingle sleepmode time
-/// @param times      (NSArray <MeariDeviceParamSleepTime *>*)
+/// @param times      (NSArray <MeariDeviceParamTimePeriod *>*)
 /// @param success  成功回调
 /// @param failure 失败回调
-- (void)setJingleSleepModeTimes:(NSArray <MeariDeviceParamSleepTime *>*)times success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)setJingleSleepModeTimes:(NSArray <MeariDeviceParamTimePeriod *>*)times success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 - (void)setJingleVolumeLevel:(MeariDeviceLevel)volumeLevel success:(MeariDeviceSuccess_ID)success failure:(MeariFailure)failure;
 
@@ -2089,6 +2199,13 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 /// @param success 成功回调
 /// @param failure 失败回调
 - (void)setPetFeedSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/// 一键喂食
+/// Pet Feed
+/// @param copies   喂食份数
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setPetFeedWithCopies:(NSUInteger)copies success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /// 设置投掷提示音
 /// Pet throw topne
@@ -2192,7 +2309,7 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 /**
  Chime Do Not Disturb Interval
  
- @param times [MeariDeviceParamSleepTime] 勿扰时间段
+ @param times [MeariDeviceParamTimePeriod] 勿扰时间段
  [{
  enable = 1;
  repeat =     (
@@ -2205,7 +2322,7 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)setChimeSnoozeTimes:(NSArray<MeariDeviceParamSleepTime *> *)times success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)setChimeSnoozeTimes:(NSArray<MeariDeviceParamTimePeriod *> *)times success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  Set current ring uri
@@ -2764,6 +2881,24 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param failure failure callback (失败回调)
  */
 - (void)setPoweronPassword:(NSString *)password success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ Set the device output volume (设置设备开机声音开关)
+ 
+ @param enable enable （是否打开）
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setPowerOnVolumeEnable:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ Set the device output volume (设置设备开机声音音量)
+ 
+ @param volume volume(音量)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setPowerOnVolume:(NSInteger)volume success:(MeariSuccess)success failure:(MeariFailure)failure;
+
 
 - (void)setOSDEnable:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
 
@@ -2899,31 +3034,55 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  */
 - (void)startMultiCameraPTZCorrectionSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
 
-/**
- 多目设置预置点
- @param pointArr 预置点列表
- @param success Successful callback (成功回调)
- @param failure failure callback (失败回调)
- */
-- (void)setMultiCameraPtzPresetPoint:(NSArray <MeariDevicePtzPresetPoint *> *)pointArr success:(MeariSuccess)success failure:(MeariFailure)failure;
-/**
- 显示预置点
- @param index 预置点位置
- @param success Successful callback (成功回调)
- @param failure failure callback (失败回调)
- */
-- (void)setShowCameraPtzPresetPoint:(NSInteger)index success:(MeariSuccess)success failure:(MeariFailure)failure;
-
-/**
- 多目获取预置点
- @param success Successful callback (成功回调)
- @param failure failure callback (失败回调)
- */
-- (void)getPtzPresetPointSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 #pragma mark - Debug
 - (void)getDebugVideoInfo:(MeariSuccess_String)success failure:(MeariFailure)failure;
 #pragma mark - 毫米波雷达
--(void)getVitalSignsDataSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure ;
--(void)getRadarWaveVitalSignsSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure ;
+
+/// 获取生命体征数据
+/// - Parameters:
+///   - success: 成功回调
+///   - failure: 失败回调
+-(void)getVitalSignsDataSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/// 雷达波生命体征数据上报服务器
+/// - Parameters:
+///   - success: 成功回调
+///   - failure: 失败回调
+-(void)getRadarWaveVitalSignsSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/// 设置遮脸报警
+/// - Parameters:
+///   - enable: 开关
+///   - success: 成功回调
+///   - failure: 失败回调
+- (void)setCoverFaceEnable:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/// 设置趴睡报警
+/// - Parameters:
+///   - enable: 开关
+///   - success: 成功回调
+///   - failure: 失败回调
+- (void)setDownSleepEnable:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+/*
+ 变倍聚焦控制
+ scale代表控制相机缩放，0代表缩放-，1代表缩放+
+ focus代表控制相机聚焦，0代表聚焦-，1代表聚焦+
+ aperture代表控制光圈，0代表光圈-，1代表光圈+
+ */
+- (void)startSetZoomFocusType:(ZoomFocus)type scale:(NSInteger)scale focus:(NSInteger)focus aperture:(NSInteger)aperture success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 停止变倍聚焦控制
+ */
+- (void)stopZoomFocuSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+#pragma mark - AI智能侦测
+/// 设置AI智能侦测开关
+/// - Parameters:
+///   - enable: 总开关, 0表示关闭, 1表示开启
+///   - type: 需要设置的AI类型
+///   - typeEnable：类型开关，0-关闭，1-开启
+///   - success: 成功回调
+///   - failure: 失败回调
+- (void)setAIAnalysisEnable:(BOOL)enable type:(MeariDeviceAIAnalysisType)type typeEnable:(BOOL)typeEnable success:(MeariSuccess)success failure:(MeariFailure)failure;
 @end
 #endif /* MeariDeviceControl_h */

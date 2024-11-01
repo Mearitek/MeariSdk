@@ -7,7 +7,7 @@
 //
 
 #import "LoginVC.h"
-
+#import <MJExtension/MJExtension.h>
 @interface LoginVC ()
 @property (weak, nonatomic) IBOutlet UITextField *accountTF;
 @property (weak, nonatomic) IBOutlet UIButton *loginInButton;

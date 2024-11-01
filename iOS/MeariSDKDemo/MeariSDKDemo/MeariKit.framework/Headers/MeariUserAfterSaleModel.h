@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *facebook;
 @property (nonatomic, copy) NSString *afterSalePhone;
 @property (nonatomic, copy) NSString *afterSaleEmail;
+@property (nonatomic, copy) NSString *tooltip;
 
 @end
 

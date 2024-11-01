@@ -22,6 +22,7 @@ typedef NS_ENUM (NSInteger, MeariPackagePayType) {
     MeariPackagePayTypeGoogle   = 3,  // 谷歌支付
     MeariPackagePayTypeApple    = 4,  // 苹果支付
 };
+@class MeariTrafficSubscriberQuota;
 @interface MeariBasePackage : MeariBaseModel
 @property (nonatomic, copy) NSString *packageId;    // 套餐ID
 @property (nonatomic, copy) NSString *mealType;     //（M是月套餐，S是季套餐）
@@ -58,6 +59,12 @@ typedef NS_ENUM (NSInteger, MeariPackagePayType) {
 @property (nonatomic, assign) NSInteger startTime;  // 折扣开始时间
 
 @property (nonatomic, assign) NSInteger endTime;    // 折扣结束时间
+
+@property (nonatomic, copy) NSString *groupFlag; // 订阅群组标识
+@property (nonatomic, assign, readonly) BOOL isSubscription; //是否是订阅,YES：表示是订阅，NO表示非订阅
+@property (nonatomic, assign) BOOL isSubscriptionOrdered; //是否已经订阅了
+
+@property (nonatomic, assign) int bindDeviceNum;
 @end
 
 @interface MeariCloudPackageInfo : MeariBasePackage
@@ -66,15 +73,7 @@ typedef NS_ENUM (NSInteger, MeariPackagePayType) {
 
 @property (nonatomic, copy) NSString *storageType;
 
-@property (nonatomic, assign) int bindDeviceNum;
-
 @property (nonatomic, assign) int AiType;
-
-@property (nonatomic, copy) NSString *groupFlag; // 订阅群组标识
-
-@property (nonatomic, assign, readonly) BOOL isSubscription; //是否是订阅,YES：表示是订阅，NO表示非订阅
-@property (nonatomic, assign) BOOL isSubscriptionOrdered; //是否已经订阅了
-
 @end
 
 @interface MeariDataPackage : MeariBasePackage
@@ -85,7 +84,41 @@ typedef NS_ENUM (NSInteger, MeariPackagePayType) {
 @property(nonatomic, assign) NSInteger quantity;        //套餐流量
 @property(nonatomic, copy) NSString *trafficPackage;    //套餐流量单位
 
+@property(nonatomic, assign) NSInteger cloudType;      // 为1代表支持云存储
+@property(nonatomic, assign) NSInteger expireTime;
+
+@property(nonatomic, strong ) MeariTrafficSubscriberQuota *subscriberQuota; // 不为空表示是当前正在使用的流量包
+
 +(MeariDataPackage *)dataPackageWithDictionary:(NSDictionary *)obj;
+@end
+
+@interface MeariTrafficSubscriberQuota : MeariBaseModel
+@property(nonatomic, copy) NSString *qtavalue;
+@property(nonatomic, copy) NSString *qtabalance;
+@property(nonatomic, copy) NSString *qtaconsumption;
+@property(nonatomic, assign) NSInteger expireTime;
+@property(nonatomic, assign) NSInteger unlimited;
+@property(nonatomic, copy) NSString *packageId;
+@property(nonatomic, copy) NSString *groupFlag;
+@property(nonatomic, assign) NSInteger cloudType;
+/** 是否是试用，1-试用，0-正常 */
+@property(nonatomic, assign) NSInteger trialType;
+@end
+
+@interface MeariTrialPackage : MeariBaseModel
+@property (nonatomic, copy) NSString *packageId;
+@property (nonatomic, assign) MeariPackageType packageType;
+@property (nonatomic, copy) NSString *storageType;
+@property (nonatomic, copy) NSString *mealType;
+@property(nonatomic, assign) NSInteger serverTime;
+@property (nonatomic, assign) int aiType;
+@property (nonatomic, assign) int cloudType;
+@end
+
+@interface MeariTrialOrder : MeariTrialPackage
+@property(nonatomic, copy) NSString *orderNum;
+
++(instancetype)trialOrderWithPackage:(MeariTrialPackage *)package;
 @end
 
 NS_ASSUME_NONNULL_END
