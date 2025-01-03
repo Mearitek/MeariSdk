@@ -41,10 +41,10 @@
 @property (nonatomic, assign, readonly, getter = isVoiceBell) BOOL voiceBell;
 /** FloodCamera*/
 /** 灯具摄像机*/
-@property (nonatomic, assign, readonly, getter = isFloodCamera) BOOL FloodCamera;
+@property (nonatomic, assign, readonly, getter = isFloodCamera) BOOL floodCamera;
 /** ForthGeneration*/
 /** 4G摄像机*/
-@property (nonatomic, assign, readonly, getter = isForthGeneration) BOOL ForthGeneration;
+@property (nonatomic, assign, readonly, getter = isForthGeneration) BOOL forthGeneration;
 /** jingle*/
 /** 铃铛jingle*/
 @property (nonatomic, assign, readonly, getter = isJing) BOOL jing;
@@ -184,24 +184,11 @@
 /** 是否支持麦克风*/
 @property (nonatomic, assign, readonly) BOOL supportMicrophone;
 
-
-/** 彩色日夜模式*/
-@property (nonatomic, assign, readonly) MeariDeviceDayNightMode dayNightType;
-
-/**
- dnm2
- 彩色日夜模式
- supportdnm2 是否有 dnm2 能力级
- supportDayNightModeDefaultMode  支持非暖光灯的夜视模式
- supportDayNightModeFullColorMode 支持暖光灯的夜视模式
- supportDayNightModeDimlightMode  支持微光全彩模式
- */
-@property (nonatomic, assign, readonly) BOOL supportdnm2;
-@property (nonatomic, assign, readonly) BOOL supportDayNightModeDefaultMode;
-@property (nonatomic, assign, readonly) BOOL supportDayNightModeFullColorMode;
-@property (nonatomic, assign, readonly) BOOL supportDayNightModeDimlightMode;
 /** 设备链接加密*/
 @property (nonatomic, assign, readonly) BOOL supportConnectEncryption;
+
+/** 支持AI分析使用用户密码(*/
+@property (nonatomic, assign, readonly) BOOL supportAIAnalysisConnectEncryption;
 
 
 /** 是否支持时区设置*/
@@ -218,15 +205,13 @@
 /** 设备视频是否支持AI处理 */
 @property (nonatomic, assign, readonly) BOOL supportAlarmAI;
 
-
-
-
 /** 支持回放视频倍速*/
 @property (nonatomic, assign, readonly) NSArray *supportPlayBackSpeed;
-/** 支持自适应码率*/
-@property (nonatomic, assign, readonly) BOOL supportAutoStream;
+
 /** 是否为宠物投食机*/
 @property (nonatomic, assign, readonly) BOOL isPetCamera;
+/** 是否为宠物喂食器*/
+@property (nonatomic, assign, readonly) BOOL isPetFeedCamera;
 /** 是否支持一键投食*/
 @property (nonatomic, assign, readonly) BOOL supportPetFeed;
 /** 是否支持投食计划*/
@@ -285,25 +270,36 @@
 -(NSString *)multiCameraParams;
 /**是否支持AOV模式 */
 @property (nonatomic, assign, readonly) BOOL supportAovMode;
+/**是否支持 wifi AOV 模式**/
+- (BOOL)supportNewAovPreviewModel;
+/** wifi aov 实时预览模式 */
+- (BOOL)supportNewAovPreviewCurrentModel;
+/** wifi aov 省流预览模式 */
+- (BOOL)supportNewAovPreviewSaveModel;
 
 /**是否支持全时低功耗的工作模式设置*/
 @property (nonatomic, assign, readonly) BOOL supportLowPowerWorkMode;
 @property (nonatomic, assign, readonly) BOOL supportLowPowerSaveWorkMode;
 @property (nonatomic, assign, readonly) BOOL supportLowPowerPerformanceWorkMode;
 @property (nonatomic, assign, readonly) BOOL supportLowPowerCustomWorkMode;
+/**是否支持 wifi aov 低功耗的报警工作模式设置*/
+@property (nonatomic, assign, readonly) BOOL supportNewLowPowerWorkMode;
+@property (nonatomic, assign, readonly) BOOL supportNewLowPowerSaveWorkMode;
+@property (nonatomic, assign, readonly) BOOL supportNewLowPowerPerformanceWorkMode;
+@property (nonatomic, assign, readonly) BOOL supportNewLowPowerCustomWorkMode;
+@property (nonatomic, assign, readonly) BOOL supportNewLowPowerGeneralWorkMode;
 /** 是否支持事件录像延时 （事件录像结束后，再多录一定时间的录像）*/
 @property (nonatomic, assign, readonly) BOOL supportEventRecordDelay;
 /**是否支持补光距离配置*/
 @property (nonatomic, assign, readonly) BOOL supportFillLightDistance;
 /**是否支持夜景模式配置*/
 @property (nonatomic, assign, readonly) BOOL supportNightSceneMode;
+/**是否支持定时计划*/
+@property (nonatomic, assign, readonly) BOOL supportRecordTimePlan;
 
-/**是否支持双SIM卡 */
-@property (nonatomic, assign, readonly) BOOL supportDualSIMCard;
-/**是否支持限制4G设备流量 */
-@property (nonatomic, assign, readonly) BOOL supportLimitTraffic;
-
-/** 支持AOV视频帧率数组*/
+/** 支持PTZ守望位等待时间数组*/
+- (NSArray <NSNumber *>*)supportptzWatchPositionTimeArray;
+/** 支持AOV视频帧率数组 0-关闭*/
 - (NSArray <NSNumber *>*)supportAovModeFrameRateArray;
 /** 支持实时视频帧率数组*/
 - (NSArray <NSNumber *>*)supportLiveVideoFrameRateArray;

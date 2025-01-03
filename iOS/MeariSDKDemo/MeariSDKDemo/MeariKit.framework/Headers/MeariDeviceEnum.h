@@ -155,6 +155,13 @@ typedef NS_ENUM (NSUInteger, MeariDeviceSupportLowPowerWorkMode) {
     MeariDeviceSupportLowPowerWorkModePerformance = 0b10,//support performance Work Mode(支持性能模式)
     MeariDeviceSupportLowPowerWorkModeCustom = 0b100,   //support custom Work Mode (支持自定义模式)
 };
+
+typedef NS_ENUM (NSUInteger, MeariDeviceSupportNewLowPowerWorkMode) {
+    MeariDeviceSupportNewLowPowerWorkModeSave = 0b1,       //support save power Work Mode (支持省电模式)
+    MeariDeviceSupportNewLowPowerWorkModePerformance = 0b10,//support performance Work Mode(支持性能模式)
+    MeariDeviceSupportNewLowPowerWorkModeCustom = 0b100,   //support custom Work Mode (支持自定义模式)
+    MeariDeviceSupportNewLowPowerWorkModeGeneral = 0b1000,   //support custom Work Mode (支持常电模式模式)
+};
 //事件录像延时
 typedef NS_ENUM (NSUInteger, MeariDeviceSupportEventRecordDelay) {
     MeariDeviceSupportEventRecordDelayNone = 0,             //not support (不支持)
@@ -211,38 +218,22 @@ typedef NS_OPTIONS(NSUInteger, MeariDevicePtzAdvanceType) {
     MeariDevicePtzCruise = 0b10, // ptz高级功能 多点巡航 (Cruise between multiple points)
     MeariDevicePtzPatrol = 0b100, // ptz高级功能 巡逻一周 （Patrol for a week）
 };
-//夜视功能
-typedef NS_ENUM (NSUInteger, MeariDeviceNightVisionMode) {
-    MeariDeviceNightVisionModeAuto, // auto mode (自动改变)
-    MeariDeviceNightVisionModeDay, // day mode (白天)
-    MeariDeviceNightVisionModeNight // night mode (黑夜)
-};
-//全彩模式
-typedef NS_ENUM (NSUInteger, MeariDeviceFullColorMode) {
-    MeariDeviceFullColorModeAuto, // auto mode 智能夜视（默认黑白夜视效果，检测到移动或人形时自动切换为全彩）
-    MeariDeviceFullColorModeNormal, // full color 全彩夜视（暖光灯开启，彩色画面呈现，同时起到照明作用）
-    MeariDeviceFullColorModeNightVision // night mode 黑白夜视（红外灯开启，黑白画面呈现，暖光灯自动关闭）
-};
-//微光全彩模式
-typedef NS_ENUM (NSUInteger, MeariDeviceDimFullColorMode) {
-    MeariDeviceDimFullColorModeAuto, // auto mode 智能夜视（默认黑白夜视效果，检测到移动或人形时自动切换为全彩）
-    MeariDeviceDimFullColorModeNormal, // full color 全彩夜视（暖光灯开启，彩色画面呈现，同时起到照明作用）
-    MeariDeviceDimFullColorModeNightVision, // night mode 黑白夜视（红外灯开启，黑白画面呈现，暖光灯自动关闭）
-    MeariDeviceDimFullColorModeDimlight //微光模式（夜间默认不开灯，微光全彩）
-};
-
-// 是否支持日夜切换开关(自动/日/夜)的能力级
-typedef NS_ENUM(NSUInteger, MeariDeviceDayNightMode) {
-    MeariDeviceDayNightModeNone, // 0=不支持
-    MeariDeviceDayNightModeNightVision, // 1=支持非暖光灯的夜视模式(自动/日/夜)
-    MeariDeviceDayNightModeFullColor, // 2=支持暖光灯的夜视模式（智能夜视/全彩夜视/黑白夜视）
+// dnm 是否支持日夜切换开关(自动/日/夜)的能力级
+typedef NS_ENUM(NSUInteger, MeariDeviceSupportDayNightMode) {
+    MeariDeviceSupportDayNightModeNone, // 0=不支持
+    MeariDeviceSupportDayNightModeNightVision, // 1=支持非照明灯的夜视模式(自动/日/夜)
+    MeariDeviceSupportDayNightModeFullColor, // 2=支持照明灯的全彩模式（智能夜视/全彩夜视/黑白夜视）
+    MeariDeviceSupportDayNightModeDimlight, //3=支持微光全彩模式（智能夜视/全彩夜视/黑白夜视/微光全彩）
 };
 
 // dnm2 是否支持日夜切换开关(自动/日/夜)的能力级
-typedef NS_ENUM(NSUInteger, MeariDeviceDayNightDNM2Mode) {
-    MeariDeviceDayNightModeDefaultMode  = 0b1, // 1=支持非暖光灯的夜视模式(自动/日/夜)
-    MeariDeviceDayNightModeFullColorMode = 0b10, // 2=支持暖光灯的夜视模式（智能夜视/全彩夜视/黑白夜视）
-    MeariDeviceDayNightModeDimlightMode = 0b100 ,// 4=支持微光全彩模式（智能夜视/全彩夜视/黑白夜视/微光全彩）
+typedef NS_ENUM(NSUInteger, MeariDeviceSupportNewDayNightMode) {
+    MeariDeviceSupportNewDayNightModeNone,              // 0=不支持
+    MeariDeviceSupportNewDayNightModeNightVision = 0b1, // 支持非照明灯的夜视模式(自动/日/夜)
+    MeariDeviceSupportNewDayNightModeFullColor = 0b10,  // 支持照明灯的全彩模式（智能夜视/全彩夜视/黑白夜视）
+    MeariDeviceSupportNewDayNightModeDimlight  = 0b100, // 支持微光全彩模式（智能夜视/全彩夜视/黑白夜视/微光全彩）
+    MeariDeviceSupportNewDayNightModeTiming  = 0b1000, // 支持定时模式
+    MeariDeviceSupportNewDayNightModeBlackLight  = 0b10000, // 支持黑光AOV模式（全彩夜视/关闭白光灯）
 };
 //云存储状态
 typedef NS_ENUM (NSInteger, MeariDeviceCloudState) {
@@ -320,8 +311,28 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
     MeariDevicePlaybackSpeedSubFrame = 0b10, // 支持 8、 16 倍速度
 };
 
+// 支持AI生成相册类型
+typedef NS_ENUM(NSUInteger, MeariDeviceSupportAlbumType) {
+    MeariDeviceSupportAlbumTypeTime = 0b1, // 时光相册
+};
 #pragma mark - Param
-
+//夜视功能
+typedef NS_ENUM (NSUInteger, MeariDeviceNightVisionMode) {
+    MeariDeviceNightVisionModeAuto = 0, // auto mode (自动改变)
+    MeariDeviceNightVisionModeDay, // day mode (白天)
+    MeariDeviceNightVisionModeNight, // night mode (黑夜)
+    MeariDeviceNightVisionModeDimlight, //Low-light mode 微光模式（夜间默认不开灯，微光全彩）
+    MeariDeviceNightVisionModeTiming, //time plan mode 定时模式
+};
+//全彩模式
+typedef NS_ENUM (NSUInteger, MeariDeviceFullColorMode) {
+    MeariDeviceFullColorModeAuto = 0, // auto mode 智能夜视（默认黑白夜视效果，检测到移动或人形时自动切换为全彩）
+    MeariDeviceFullColorModeNormal, // full color 全彩夜视（暖光灯开启，彩色画面呈现，同时起到照明作用）
+    MeariDeviceFullColorModeNightVision, // night mode 黑白夜视（红外灯开启，黑白画面呈现，暖光灯自动关闭）
+    MeariDeviceFullColorModeDimlight, //Low-light mode 微光模式（夜间默认不开灯，微光全彩）
+    MeariDeviceFullColorModeTiming, //time plan mode 定时模式
+    MeariDeviceFullColorModeCloseLight //time plan mode 关闭白光灯
+};
 /** Sleep mode status */
 /** 休眠模式状态 */
 typedef NS_ENUM(NSInteger, MeariDevicePreviewAbnormalType) {
@@ -374,9 +385,10 @@ typedef NS_ENUM(NSInteger, MeariDeviceRecordDuration) {
     MeariDeviceRecordDuration20Seconds = 0b10000, //20s
     MeariDeviceRecordDuration40Seconds = 0b100000, //40s
     MeariDeviceRecordDuration10Seconds = 0b1000000, //10s
-    MeariDeviceRecordDurationOff = 0b10000000, // record is close 关闭录像
-    MeariDeviceRecordDurationOn = 0b100000000, // record is open(If you only want to open the record and use the previous value, this action will only open the record)  只开启录像
-    MeariDeviceRecordDuration24Hours = 0b1000000000, // 全天录像
+    MeariDeviceRecordDurationAuto = 0b10000000, //自动
+    MeariDeviceRecordDurationOff = 0b100000000, // record is close 关闭录像
+    MeariDeviceRecordDurationOn = 0b1000000000, // record is open(If you only want to open the record and use the previous value, this action will only open the record)  只开启录像
+    MeariDeviceRecordDuration24Hours = 0b10000000000, // 全天录像
 };
 /** alarm frequency interval*/
 /** 设备报警频率间隔时长 */
@@ -448,15 +460,12 @@ typedef NS_ENUM (NSInteger, MeariDeviceVoiceLightRingType) {
 };
 
 typedef NS_ENUM (NSInteger, MeariDevicePhotoResolution) {
-    MeariDevicePhotoResolution30MP = 0, // 30MP
-    MeariDevicePhotoResolution24MP = 1, // 24MP
-    MeariDevicePhotoResolution20MP = 2,  // 20MP
-    MeariDevicePhotoResolution16MP = 3, // 16MP
-    MeariDevicePhotoResolution12MP = 4, // 12MP
-    MeariDevicePhotoResolution8MP = 5, //  8MP
-    MeariDevicePhotoResolution5MP = 6, //  5MP
-    MeariDevicePhotoResolution3MP = 7, //  3MP
-    MeariDevicePhotoResolution1MP = 8, //  1MP
+    MeariDevicePhotoResolution64MP = 0, // 64MP
+    MeariDevicePhotoResolution33MP = 1, // 33MP
+    MeariDevicePhotoResolution23MP = 2, // 23MP
+    MeariDevicePhotoResolution15MP = 3,  // 15MP
+    MeariDevicePhotoResolution8MP = 4, // 8MP
+    MeariDevicePhotoResolution4MP = 5, // 4MP
 };
 
 typedef NS_ENUM (NSInteger, MeariDeviceRecordResolution) {
@@ -527,5 +536,24 @@ typedef NS_ENUM (NSInteger, MeariMusicSupportPlayMode) {
     MeariMusicSupportPlayModeRandom    = 0b100, // Shuffle Play (随机播放)
     
 };
-
+typedef NS_ENUM (NSInteger, MeariDevicePwdSetting) {
+    MeariDevicePwdNotSupport    =  0, // 不支持用户密码
+    MeariDevicePwdSupport = 0b1, // 支持用户密码
+    MeariDeviceAIAnalysisPwdSupport = 0b10, // 支持AI分析使用用户密码
+};
+//AI识别类目
+typedef NS_ENUM (NSInteger, MeariDeviceAIAnalysisType) {
+    MeariDeviceAIAnalysisPerson = 1, //人
+    MeariDeviceAIAnalysisCar = 2, //车
+    MeariDeviceAIAnalysisPet = 3, //宠物
+    MeariDeviceAIAnalysisPackage = 4, //包裹
+    MeariDeviceAIAnalysisCry = 5, //哭声
+    MeariDeviceAIAnalysisBark = 6, //犬吠
+    MeariDeviceAIAnalysisWildlife = 7, //野生动物
+    MeariDeviceAIAnalysisBirds = 8, //鸟类
+    MeariDeviceAIAnalysisShot = 9, //枪声
+    MeariDeviceAIAnalysisGlassBroken = 10, //玻璃碎裂
+    MeariDeviceAIAnalysisBabyCoverFace = 11, //婴儿遮挡
+    MeariDeviceAIAnalysisBabyLieDown = 12, //婴儿趴睡
+};
 #endif /* MeariDeviceEnum_h */

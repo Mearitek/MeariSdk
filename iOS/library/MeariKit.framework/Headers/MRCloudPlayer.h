@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
 #import "MRCloudPlayerProtocol.h"
 
 
@@ -45,6 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param colors 颜色数组 默认为红色
 /// @param imagePath 输出图片路径
 + (int)creatDrawRectangleImageWith:(NSString *)filePath frameIndex:(int)index rectangleArray:(NSArray <NSValue *>*)rectArray colors:(NSArray <UIColor *>*)colors imagePath:(NSString *)imagePath;
+
++ (int)transformH264ToVideo:(NSString *)sourceVideo audioPath:(NSString *)sourceAudio password:(NSString *)password filePath:(NSString *)targetPath;
++ (int)captureFirstFrameWithMP4:(NSString *)mp4Path jpgPath:(NSString *)imgPath;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MeariDeviceEnum.h"
+#import <MeariKit/MeariDeviceEnum.h>
 @interface MeariDeviceInfoCapabilityFunc : MeariBaseModel
 // Voice intercom type
 /** 语音对讲类型 */
@@ -165,6 +165,10 @@
 @property (nonatomic, assign) NSInteger crm;
 /** 声光报警*/
 @property (nonatomic, assign) NSInteger sla;
+/** 声光报警可录音  是否支持声光报警录音提示音,  高16位代表支持能录制报警提示音的个数，低16位代表每段录制报警提示音最长时长秒数；
+ 比如：高16位数值为1---表示能录制一段报警提示音，高16位数值为2---能录制二段报警提示音....
+       低16位数值为1---每段录制报警提示音最长时长为1s，低16位数值为2---每段录制报警提示音最长时长为2s....*/
+@property (nonatomic, assign) NSInteger slv;
 /** 时间风格设置*/
 @property (nonatomic, assign) NSInteger ttp;
 /** 音乐播放能力级*/
@@ -211,7 +215,7 @@
 @property (nonatomic, assign) NSInteger lgl;
 /** 是否支持录像声音开关，0-不支持，1-支持，备注：如果麦克声音也关闭了，则录像声音开启也是无效的*/
 @property (nonatomic, assign) NSInteger rae;
-/** 是否支持链接加密  - 0-不支持，1-支持 需要设置device.info.connectPwd 字段*/
+/** 设备是否支持用户密码设置，0-不支持；bit0=1-支持(需要设置device.info.connectPwd 字段)；bit1=1-支持AI分析使用用户密码(APP购买AI界面需要提示用户授权用户密码) */
 @property (nonatomic, assign) NSInteger mup;
 /** 是否支持上报警报最大时间*/
 @property (nonatomic, assign) NSInteger sot;
@@ -256,6 +260,8 @@
 @property (nonatomic, assign) NSInteger lem;
 /** 支持事件报警类型设置 0-不支持, >=1-支持设置选项; 设备evt2>=1,*/
 @property (nonatomic, assign) NSInteger evt2;
+/** 4G设备是否支持云存储*/
+@property (nonatomic, assign) NSInteger evt3;
 
 /** 支持多边形报警区域设置*/
 @property (nonatomic, assign) NSInteger plg;
@@ -315,17 +321,31 @@
 @property (nonatomic, assign) NSInteger lmf;
 /**是否支持全时低功耗的工作模式设置*/
 @property (nonatomic, assign) NSInteger alm;
+/**
+ 是否支持wifi aov  低功耗的工作模式设置，0-不支持，bit0-支持省电模式，bit1-支持性能模式，bit2-支持自定义模式，bit3-支持常电模式
+ */
+@property (nonatomic, assign) NSInteger lwm2;
+/**
+ 是否支持 wifi aov 预览模式设置，0-不支持，bit0-支持实时模式，bit1-支持省流模式; 能力集版本号大于或等于91时，根据pvm显示预览模式设置功能；能力集版本号小于91时，根据sfi非0时显示预览模式设置功能
+ */
+@property (nonatomic, assign) NSInteger pvm;
+
 /** 是否支持事件录像延时 （事件录像结束后，再多录一定时间的录像）*/
 @property (nonatomic, assign) NSInteger erd;
 /**是否支持补光距离配置*/
 @property (nonatomic, assign) NSInteger sld;
 /**是否支持夜景模式配置*/
 @property (nonatomic, assign) NSInteger nms;
+/**是否支持定时录像计划*/
+@property (nonatomic, assign) NSInteger trp;
 
 /**是否支持音乐播放时长设置*/
 @property (nonatomic, assign) NSInteger mul;
 /**是否支持音乐播放模式设置*/
 @property (nonatomic, assign) NSInteger mpm;
+
+/**是否支云台守望位配置*/
+@property (nonatomic, assign) NSInteger wtl;
 
 //狩猎相机
 /** 设置唤醒后抓拍保存图像方式能力级，枚举类型 0-不支持，1-支持三个选项（录像or拍照or录像+拍照）*/
@@ -374,6 +394,35 @@
 /** 是否支持毫米波雷达 bit0=1支持开关 bit1:呼吸使能 bit2:心跳使能 bit3:身体状态使能 bit4:身体运动状态量 */
 @property (nonatomic, assign) NSInteger mrda;
 
+/** 0：不支持, bit0=1倍速回放，bit1=2倍速回放，bit2=4倍速回放，bit3=8倍速回放，bit4=16倍速回放 bit5=0.5倍速回放 */
+@property (nonatomic, assign) NSInteger pbs;
+
+/** 倍速回放抽帧能力级,bit0=1倍速回放抽帧，bit1=2倍速回放抽帧，bit2=4倍速回放抽帧，bit3=8倍速回放抽帧，bit4=16倍速回放抽帧 */
+@property (nonatomic, assign) NSInteger pbe;
+
+/**是否支持变倍聚焦控制 0:不支持 1:支持*/
+@property (nonatomic, assign) NSInteger zmf;
+
+/**获取SIM卡运营商信息, 0:不支持 1:支持*/
+@property (nonatomic, assign) NSInteger cqr;
+
+/**是否支持呼吸和心率数据展示， 0表示不支持 1表示支持（毫米雷达波）*/
+@property (nonatomic, assign) NSInteger hhs;
+
+/**是否支持遮脸报警，0表示不支持 1表示支持*/
+@property (nonatomic, assign) NSInteger cfs;
+
+/** 是否支持趴睡报警，0表示不支持 1表示支持 */
+@property (nonatomic, assign) NSInteger lds;
+
+/** 是否支持本地AI识别设置，格式为json数组，例如[1,2,3,4,5] ，含义见MeariDeviceAIAnalysisType*/
+@property (nonatomic, strong) NSArray *dai;
+
+/** 是否支持云AI识别设置，格式为json数组，例如[1,2,3,4,5]，含义见MeariDeviceAIAnalysisType*/
+@property (nonatomic, strong) NSArray *cai;
+
+/** 是否支持时光相册(album), bit0 = 时光相册v0, 后续若有版本2, 版本3，通过bit1, bit2...进行区分 */
+@property (nonatomic, assign) NSInteger alb;
 @end
 
 
@@ -442,6 +491,14 @@
 @property (nonatomic, assign) NSInteger simID;
 // device sim card nedd to buy data(the device is 4G)
 @property (nonatomic, assign) BOOL needBuy;
+// device sim card data expired date(the device is 4G)
+@property (nonatomic, copy) NSString *dataExpireDate;
+// Whether the device sim card data is expired(the device is 4G)
+@property (nonatomic, assign) BOOL dataExpired;
+//是否是试用套餐 Is it a trial plan?
+@property (nonatomic, assign) BOOL trialPlan;
+// Whether the device supports unlimited traffic
+@property (nonatomic, assign) BOOL unlimited;
 // device bind id(the device is jingle)
 @property (nonatomic, assign) NSInteger bindDeviceID;
 // device had be bind

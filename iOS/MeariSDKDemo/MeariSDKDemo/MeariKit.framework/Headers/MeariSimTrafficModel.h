@@ -31,6 +31,7 @@
 @property(nonatomic, copy) NSString *quantity;      //套餐流量
 @property(nonatomic, copy) NSString *money;    //套餐金额
 @property(nonatomic, assign) NSInteger unlimited;    //1 为不限量
+@property(nonatomic, assign) NSInteger trialType;    //1 为试用套餐
     
 @end
 
@@ -73,4 +74,15 @@
 @property(nonatomic, assign) NSInteger status;    //提醒状态， 0-未到期 1-已到期 2-即将到期
 @property(nonatomic, assign) NSInteger isForce;   //是否强制提醒 false:返回countDownSecond（倒计时）字段
 @property(nonatomic, assign) NSInteger countDownSecond; //默认值为0, 表示轻提醒多少秒后自动关闭
+@property(nonatomic, copy) NSString *serverEndTime; //4G服务到期时间
+@property(nonatomic, assign) NSInteger serverEndTimeAdventPeriod;  //4G服务是否到期
+@property(nonatomic, assign) NSInteger trialType; //是否是试用套餐
+@end
+
+@interface MeariSimApnModel : NSObject
+@property(nonatomic, copy) NSString *apn;  //apn
+@property(nonatomic, copy) NSString *mnc;    //mnc
+@property(nonatomic, copy) NSString *mcc;   //mcc
+//@property(nonatomic, copy) NSString *mvno_type; //类型
+//@property(nonatomic, copy) NSString *mvno_match_data; //匹配数据
 @end

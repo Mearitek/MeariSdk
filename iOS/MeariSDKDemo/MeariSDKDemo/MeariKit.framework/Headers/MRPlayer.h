@@ -151,6 +151,8 @@ static NSString *const MRDEVICE_PRTP_CONNECT_CHANGE = @"MRDEVICE_PRTP_CONNECT_CH
 
 static NSString *const MRDEVICE_PHOTOBELL_RENDER = @"MRDEVICE_PHOTOBELL_RENDER";
 
+static NSString *const MRDEVICE_LIVE_STREAM_AUTO_CHANGE = @"MRDEVICE_LIVE_STREAM_AUTO_CHANGE";
+
 @interface MRPlayer : NSObject
 @property (nonatomic, assign) SPEECH_MODE speechMode;
 @property (strong, nonatomic) NSMutableArray *searchResult;
@@ -180,6 +182,8 @@ static NSString *const MRDEVICE_PHOTOBELL_RENDER = @"MRDEVICE_PHOTOBELL_RENDER";
 
 - (instancetype)init NS_UNAVAILABLE;
 
+
++ (void)registterRenderFree;
 
 - (void)reset;
 /**
@@ -347,7 +351,7 @@ static NSString *const MRDEVICE_PHOTOBELL_RENDER = @"MRDEVICE_PHOTOBELL_RENDER";
 
 /**
  *@brief start playback sd card
- *@param[in]  glLayer -- videoUIView
+ *@param[in]  videoUIView -- videoUIView
  *@param[in]  starttime -- 20150312120000
  *@param[in]  videoid -- streamid of device
  *@param[out] success  when success,then call it
@@ -361,10 +365,10 @@ static NSString *const MRDEVICE_PHOTOBELL_RENDER = @"MRDEVICE_PHOTOBELL_RENDER";
                 failure:(MRFailureError)error;
 /**
  *@brief start playback sd card
- *@param[in]  glLayer -- videoUIView
- *@param[in]  streamID -- streamID
- *@param[in]  glLayer2 -- videoUIView2
- *@param[in]  streamID2 -- streamID2
+ *@param[in]  videoUIView -- videoUIView
+ *@param[in]  streamID-- streamID
+ *@param[in]  videoUIView -- videoUIView2
+ *@param[in]  streamID2-- streamID2
  *@param[in]  starttime -- 20150312120000
  *@param[in]  videoid -- streamid of device
  *@param[out] success  when success,then call it
@@ -382,12 +386,12 @@ static NSString *const MRDEVICE_PHOTOBELL_RENDER = @"MRDEVICE_PHOTOBELL_RENDER";
 
 /**
  *@brief start playback sd card
- *@param[in]  gllayer -- videoUIView
- *@param[in]  videoID -- streamID
- *@param[in]  gllayer2 -- videoUIView2
- *@param[in]  videoID2 -- streamID2
- *@param[in]  stream -- 20150312120000
- *@param[in]  channel -- streamid of device
+ *@param[in]  videoUIView -- videoUIView
+ *@param[in]  streamID -- streamID
+ *@param[in]  videoUIView -- videoUIView2
+ *@param[in]  streamID2-- streamID2
+ *@param[in]  starttime -- 20150312120000
+ *@param[in]  videoid -- streamid of device
  *@param[out] success  when success,then call it
  *@param[out] error  when failed,then call it
  */
@@ -430,7 +434,7 @@ static NSString *const MRDEVICE_PHOTOBELL_RENDER = @"MRDEVICE_PHOTOBELL_RENDER";
 
 /**
  *@brief Set playback speed
- *@param[out] speed --speed
+ *@param[out] speed
  */
 - (void)setPlaybackSpeed:(double)speed;
 /**
@@ -503,6 +507,15 @@ static NSString *const MRDEVICE_PHOTOBELL_RENDER = @"MRDEVICE_PHOTOBELL_RENDER";
 - (void)getDeleteVideoPercent:(int)videoid
                       success:(MRSuccessID)success
                       failure:(MRFailureError)error;
+/**
+ *@brief set Aov playback speed
+ *@param[out] speed aov fps
+ *@param[out] success  when success,then call it
+ *@param[out] error  when failed,then call it
+ */
+- (void)setPlaybackAovSpeed:(NSInteger)speed
+                    success:(MRSuccessID)success
+                    failure:(MRFailureError)error;
 
 #pragma mark 4.mute
 /**
@@ -645,7 +658,7 @@ typedef enum { _BOY = 0, _Gril, _Man } _VoiceTalkType;
 /**
  *@brief multi startrecordmp4
  *@param[in]  path     must be XXXX/XXX.mp4
- *@param[in]  path1    must be XXXX/XXX.mp4
+ *@param[in]  path 1    must be XXXX/XXX.mp4
  *@param[in]  playmode    play or playback
  *@param[in]  recordVoice Mp4 has sound or no sound
  *@param[out] disconnect  When the code stream changes,then call it
@@ -838,6 +851,12 @@ typedef enum { _BOY = 0, _Gril, _Man } _VoiceTalkType;
                        success:(MRSuccessHandler)success
                        failure:(MRFailureError)error;
 
+//设置抽帧倍速设备的速度
+- (void)setPlaybackFrameSpeed:(double)speed
+                channel:(NSInteger)channel
+                success:(MRSuccessHandler)success
+                failure:(MRFailureError)error;
+
 #pragma mark - New Ap config
 /**
  *@brief 开启AP配网连接
@@ -871,6 +890,8 @@ typedef enum { _BOY = 0, _Gril, _Man } _VoiceTalkType;
 + (NSData *)meariAlarmImageDecodeHeadData:(NSString *)password data:(NSData *)data;
 //双目设备图片文件解密
 + (NSArray<NSDictionary *> *)decodeMutlImageFileData:(NSData *)fileData;
+
++ (NSString *)encUserDevicePwd:(NSString *)pwd sn:(NSString *)deviceSN;
 
 #pragma mark 16. Prtp Protocol
 + (int)prtpDiscovery:(int)timeout  success:(MRSuccessID)success failure:(MRFailureError)error;

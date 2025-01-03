@@ -46,6 +46,13 @@ typedef NS_ENUM(NSInteger, MeariServicePackageType) {
 @property (nonatomic, assign) NSInteger trialDays; // 免费试用天数
 @property (nonatomic, strong) NSArray<MeariDeviceBindInfo *> *bindDeviceList;
 @property (nonatomic, assign) NSInteger AiType; // 1：云+AI套餐订单  0: 纯云套餐
+@property (nonatomic, assign) NSInteger cloudType; // 1：4G+云存储套餐订单  0: 其他
+@property (nonatomic, copy) NSString *simServerStartTime; //流量服务开始时间
+@property (nonatomic, copy) NSString *simServerEndTime; //流量服务结束时间
+@property (nonatomic, copy) NSString *cloudServerStartTime; //云存储服务开始时间
+@property (nonatomic, copy) NSString *cloudServerEndTime; //云存储服务结束时间
+@property (nonatomic, assign) NSInteger supportCancelSub; // 是否允许取消订阅，1:支持 2:已取消
+@property (nonatomic, copy) NSString *subID;  // 取消的订阅ID
 @end
 
 @interface MeariDeviceBindInfo : MeariBaseModel
@@ -56,5 +63,7 @@ typedef NS_ENUM(NSInteger, MeariServicePackageType) {
 @property (nonatomic, assign) NSInteger unbindStatus;     // 设备解绑状态      0：未解绑   1： 解绑
 @property (nonatomic, assign) NSInteger ai;               // 1:设备支持ai   0:设备不支持ai
 @property (nonatomic, assign) NSInteger bindAiStatus;     // 0：未绑定订单    1：绑定订单
+@property (nonatomic, assign) NSInteger cst;
+@property (nonatomic, assign) NSInteger evt;
 @end
 NS_ASSUME_NONNULL_END

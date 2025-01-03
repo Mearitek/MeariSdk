@@ -23,8 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, copy)NSString *sn;//sn
 @property(nonatomic, assign)MRBleWifiMode wifiMode;//WIFI模块类型
 @property(nonatomic, copy)NSString *reserved;//预留
+@property(nonatomic, assign)BOOL addByBase;//是否添加到Base
 
-+ (instancetype)modelWithMagic:(NSString *)magic version:(int)version netConfig:(int)net owner:(int)own sn:(NSString *)sn wifiMode:(int)wifiMode reserved:(NSString *)reserved;
++ (instancetype)modelWithMagic:(NSString *)magic version:(int)version netConfig:(int)net owner:(int)own sn:(NSString *)sn wifiMode:(int)wifiMode reserved:(NSString *)reserved addByBase:(BOOL)addByBase;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -132,6 +132,27 @@ NS_ASSUME_NONNULL_BEGIN
  @param failure failure callback (失败回调)
  */
 - (void)getBluetoothTokenWithSn:(NSString *)sn success:(MeariSuccess_Token)success failure:(MeariFailure)failure;
+
+/**
+ Get 4G device SIM card information
+ 获取4G设备SIM卡信息
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getForthGDeviceSimInfoWithSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
+
+/**
+ add 4G Device
+ 添加4G设备
+ 
+ @param info   APN Info(APN 信息)
+ @param token   user token(用户token)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)addForthGDeviceWithAPNInfo:(NSDictionary *)info token:(NSString *)token success:(MeariSuccess_String)success failure:(MeariFailure)failure ;
+
 #pragma mark - Device Cap & Param
 /**
  Get Bluetooth Device Capability
