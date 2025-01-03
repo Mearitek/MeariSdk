@@ -60,11 +60,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.zxing:core:3.3.3'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-    def aws_version = "2.16.+"
-    implementation("com.amazonaws:aws-android-sdk-iot:$aws_version") {
-        exclude group: 'org.eclipse.paho'
-    }
-    implementation ("com.amazonaws:aws-android-sdk-mobile-client:$aws_version") { transitive = true }
+//    def aws_version = "2.16.+"
+//    implementation("com.amazonaws:aws-android-sdk-iot:$aws_version") {
+//        exclude group: 'org.eclipse.paho'
+//    }
+//    implementation ("com.amazonaws:aws-android-sdk-mobile-client:$aws_version") { transitive = true }
     implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 

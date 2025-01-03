@@ -29,8 +29,8 @@
         * 5.3.2 [添加设备](#532-添加设备)
     * 5.4 [扫码即添加](#54-扫码即添加) 
         * 5.4.1 [扫描机身码](#541-扫描机身码)
-        * 5.3.2 [获取设备状态](#542-获取设备状态)
-        * 5.3.2 [添加设备](#543-添加设备)
+        * 5.4.2 [获取设备状态](#542-获取设备状态)
+        * 5.4.3 [添加设备](#543-添加设备)
     * 5.5 [蓝牙添加](#55-蓝牙添加) 
         * 5.5.1 [搜索设备](#551-搜索设备)
         * 5.5.2 [连接设备](#552-连接设备)
@@ -922,67 +922,28 @@ status = 1时，返回 capability 能力级
 
 ```
 【描述】
-添加设备（区分新旧机身码）
-
-【函数调用】
-
-/**
- * 添加设备（旧码）
- *
- * @param result      机身码结果
- * return      ture:新机身码    false：旧机身码
- *
- */
-public static boolean dealUUiDisNew(String result)
-
-【代码范例】
-SdkUtils.dealUUiDisNew(scanResult)
-
-
-
-/**
- * 添加设备（旧码）
- *
- * @param sn       设备的licenseID
- * @param sn       设备的licenseID
- *
- */
-
-public void add4GDeviceNew(String sn, IStringResultCallback callback) 
-
-【代码范例】
-MeariUser.getInstance().add4GDeviceNew(uuid, object : IStringResultCallback {
-            override fun onSuccess(result: String) {
-                
-            }
-
-            override fun onError(code: Int, error: String) {
-                //(返回1150是设备未激活，1013被别的绑定)
-            }
-        })
-
-
+添加设备
 
 /**
  * 下发token给设备 （新码）
  *
- * @param licenseID       设备的licenseID
- * 
+ * @param sn       getDeviceStatus()接口返回的sn
+ * @param safePwd   设备密码，没有设置的传 “” 空字符串
  *
  */
 
-public void addDeviceServerSendToken(String licenseID,IStringResultCallback callback)
+public void addDeviceServerSendToken(String sn,String safePwd,IStringResultCallback callback)
 
 【代码范例】
-MeariUser.getInstance().getDeviceStatusGet(sn, new IGetDeviceStatusCallback() {
+MeariUser.getInstance().addDeviceServerSendToken(sn, safePwd, new IStringResultCallback() {
             @Override
-            public void onSuccess(boolean isOnline) {
+            public void onSuccess(String result) {
                 //仅代表添加指令发送成功，添加成功还需等待mqtt或者轮询设备列表确认是否添加成功
             }
 
             @Override
-            public void onFailed(int errorCode, String errorMsg) {
-                
+            public void onError(int errorCode, String errorMsg) {
+
             }
         });
 

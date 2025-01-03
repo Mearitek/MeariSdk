@@ -29,8 +29,8 @@
         * 5.3.2 [Add device](#532-Add-device)
     * 5.4 [Scan QR Code to Add](#54-Scan-QR-Code-to-Add) 
         * 5.4.1 [Scan QR Code](#541-Scan-QR-Code)
-        * 5.3.2 [Get Device Status](#542-Get-Device-Status)
-        * 5.3.2 [Add device](#543-Add-device)
+        * 5.4.2 [Get Device Status](#542-Get-Device-Status)
+        * 5.4.3 [Add device](#543-Add-device)
     * 5.5 [Bluetooth Distribution Network](#55-Bluetooth-Distribution-Network) 
         * 5.5.1 [Search Devices](#551-Search-Devices)
         * 5.5.2 [Connect Device](#552-Connect-Device)
@@ -857,7 +857,7 @@ A wired device or 4G device queries the online status and can add the device by 
 
 ```
 【description】
-Add device(Distinguish between old and new QR codes)
+Add device
 
 [Function call]
 
@@ -876,43 +876,22 @@ SdkUtils.dealUUiDisNew(scanResult)
 
 
 
-/**
- * Add device (old code)
- *
- * @param sn           licenseID
- *
- *
- */
-
-public void add4GDeviceNew(String sn, IStringResultCallback callback) 
-
-【Code Example】
-MeariUser.getInstance().add4GDeviceNew(uuid, object : IStringResultCallback {
-            override fun onSuccess(result: String) {
-                
-            }
-
-            override fun onError(code: Int, error: String) {
-                
-            }
-        })
-
 
 
 /**
- * Add device (new code)
+ * Add device 
  *
- * @param licenseID       设备的licenseID
- * 
+ * @param sn       Interface getDeviceStatus()  returned sn
+ * @param safePwd   Device password. If no value is set, pass "" as an empty string
  *
  */
 
-public void addDeviceServerSendToken(String licenseID,IStringResultCallback callback)
+public void addDeviceServerSendToken(String sn,String safePwdIStringResultCallback callback)
 
 【Code Example】
-MeariUser.getInstance().getDeviceStatusGet(sn, new IGetDeviceStatusCallback() {
+MeariUser.getInstance().addDeviceServerSendToken(sn, safePwd, new IStringResultCallback() {
             @Override
-            public void onSuccess(boolean isOnline) {
+            public void onSuccess(String result) {
                 //It only means that the adding command is sent successfully. If the adding is successful, you still need to wait for mqtt or poll the device list to confirm whether the adding is successful.
             }
 
