@@ -223,7 +223,11 @@
         * 15.2.2 [音效设置](#1522-音效设置)
         * 15.2.3 [一键呼唤](#1523-一键呼唤)
         * 15.2.4 [投食喂食计划](#1524-投食喂食计划)       
-* 16 [更新说明](#16-更新说明)
+* 16 [AI服务](#12-AI服务)
+    * 16.1 [AI服务状态](#161-AI服务状态)
+    * 16.2 [AI服务激活码使用](#162-AI服务激活码使用)
+    * 16.3 [AI服务购买](#163-AI服务购买)
+* 17 [更新说明](#17-更新说明)
 
 <center>
 
@@ -7756,8 +7760,106 @@ MeariUser.getInstance().setFeedTimes(planString, new ISetDeviceParamsCallback() 
         });
 ```
 
+# 16 AI服务
 
-# 16 更新说明
+## 16.1 AI服务介绍
+```
+AI相关能力集
+- int ai; 是否支持ai：0-不支持；1-支持
+- int cai; 是否支持云端ai：""/"[]"-不支持；非空数组-支持
+- int dai; 是否支持本地ai：""/"[]"-不支持；非空数组-支持
+
+cai和dai的格式为json数组字符串，例如'[1,2,3,4,5]'，
+字段定义说明：1-人，2-车，3-宠物，4-包裹，5-哭声，6-犬吠，7-野生动物，8-鸟类，9-枪声，10-玻璃碎裂，11-婴儿遮挡，12-婴儿趴睡。
+
+不通设备的AI支持说明：
+1.ai=0,不支持ai功能
+2.ai=1,dai=支持,cai=支持,支持本地AI和云端AI：未购买时展示本地AI开关和云端AI购买入口，购买后展示云端AI开关
+3.ai=1,dai=支持,cai=不支持,仅支持本地AI：显示本地AI开关，不显示购买云端AI入口
+4.ai=1,dai=不支持,cai=支持,仅支持云端AI：显示云端AI开关，但不可操作，显示云端AI购买入口，购买后可操作。
+5.ai=1,dai=不支持,cai=不支持,早期AI版本(仅支持人，车，宠物，包裹)：显示云端AI开关，但不可操作，显示云端AI购买入口，购买后可操作。
+```
+
+## 16.2 AI服务状态
+```
+【描述】
+获取AI服务的开通状态和开关状态
+
+【代码范例】
+MeariUser.getInstance().getAiProjects(cameraInfo?.deviceID, object :IStringResultCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(result: String?) {
+        val jsonResult = BaseJSONObject(result)
+        if (jsonResult.has("result")) {
+            val resultObject = jsonResult.optString("result")
+            val projects = GsonUtil.fromJson(resultObject, object : TypeToken<AiAnalyzeProjectBean?>() {})
+        }
+    }
+})
+
+// 更新AI开关状态：data：{"person":"1","car":"0"}
+// key："person"、"car"、"pet"、"packageAi"、"cry"、"bark"、"wild_animal"、"bird"、"shot"、"glassbroken"、"baby_cover_face"、"baby_lie_down"
+MeariUser.getInstance().updateAiProjects(data, cameraInfo.getDeviceID(), new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+AiAnalyzeProjectBean：AI分析
+private String packageAiType;//"0"-未开通；"2"-已开通
+private ProjectsDTO projects;//
+
+ProjectsDTO：AI开关状态
+private String person;//人："0"-关；"1"-开
+private String car;//车："0"-关；"1"-开
+private String pet;//宠物/："0"-关；"1"-开
+private String packageX;//包裹："0"-关；"1"-开
+private String cry;//哭声："0"-关；"1"-开
+private String bark;//犬吠："0"-关；"1"-开
+private String wildAnimal;//野生动物："0"-关；"1"-开
+private String bird;//鸟类："0"-关；"1"-开
+private String shot;//枪声："0"-关；"1"-开
+private String glassBroken;//玻璃碎裂："0"-关；"1"-开
+private String babyCoverFace;//婴儿遮挡："0"-关；"1"-开
+private String babyLieDown;//婴儿趴睡："0"-关；"1"-开
+```
+
+## 16.3 AI服务激活码使用
+```
+【描述】
+使用激活码激活AI服务
+
+【代码范例】
+// actCode-激活码
+MeariUser.getInstance().requestActive(BuyServiceType.AI, actCode, cameraInfo.getDeviceID(), "", object : IResultCallback {
+    override fun onSuccess() {
+    }
+
+    override fun onError(code: Int, error: String) {
+    }
+}, this)
+```
+
+## 16.4 AI服务购买
+```
+【描述】
+购买AI服务和购买云存储服务基本一致
+参数BuyServiceType.CLOUD 替换成 BuyServiceType.AI
+```
+
+# 17 更新说明
+
+## 2025-2-8(5.5.0)
+```
+1.新增AI服务文档
+```
+
 ## 2024-10-22(5.5.0)
 ```
 1.新增云存储服务购买文档

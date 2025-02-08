@@ -181,8 +181,11 @@
     * 12.2 [Cloud Storage Trial](#122-Cloud-Storage-Trial)
     * 12.3 [Cloud storage activation code usage](#123-Cloud-storage-activation-code-usage)
     * 12.4 [Cloud storage purchases](#124-Cloud-storage-purchases)
-* 14 [Release Notes](#14-Release-Notes)
-
+* 16 [AI service](#12-AI service)
+    * 16.1 [AI service status](#161-AI service status)
+    * 16.2 [AI service activation code usage](#162-AI service activation code usage)
+    * 16.3 [AI service purchase](#163-AI service purchase)
+* 17 [Release Notes](#14-Release-Notes)
 <center>
 
 ---
@@ -6209,7 +6212,110 @@ MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IR
 See Demo for details
 ```
 
-# 14 Release Notes
+# 16 AI service
+
+## 16.1 AI service introduction
+```
+AI related capability set
+- int ai; Whether to support ai: 0-not supported; 1-supported
+- int cai; Whether to support cloud ai: ""/"[]"-not supported; non-empty array-supported
+- int dai; Whether to support local AI: ""/"[]"-not supported; non-empty array-supported
+
+The format of cai and dai is JSON array string, such as '[1,2,3,4,5]',
+Field definition description: 1-person, 2-car, 3-pet, 4-package, 5-crying, 6-barking, 7-wild animal, 8-bird, 9-gunshot, 10-glass shattering, 11-baby blocking, 12-baby sleeping on their stomach.
+
+AI support description for unconnected devices:
+1.ai=0, does not support AI function
+2.ai=1,dai=support,cai=support, supports local AI and cloud AI: displays the local AI switch and cloud AI purchase entrance when not purchased, and displays the cloud AI switch after purchase
+3.ai=1,dai=support,cai=unsupport, only supports local AI: displays the local AI switch, does not display the purchase entrance of cloud AI
+4.ai=1,dai=unsupport,cai=support, only supports cloud AI: displays the cloud AI switch, but cannot be operated, displays the cloud AI purchase entrance, and can be operated after purchase.
+5. ai=1, dai=not supported, cai=not supported, early AI version (only supports people, cars, pets, packages): cloud AI switch is displayed, but it cannot be operated. Cloud AI purchase entrance is displayed and can be operated after purchase.
+```
+
+## 16.2 AI service status
+```
+[Description]
+Get the activation status and switch status of AI service
+
+[Code example]
+MeariUser.getInstance().getAiProjects(cameraInfo?.deviceID, object :IStringResultCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(result: String?) {
+        val jsonResult = BaseJSONObject(result)
+        if (jsonResult.has("result")) {
+            val resultObject = jsonResult.optString("result")
+            val projects = GsonUtil.fromJson(resultObject, object : TypeToken<AiAnalyzeProjectBean?>() {})
+        }
+    }
+})
+
+// Update AI switch status: data: {"person":"1","car":"0"}
+// key: "person", "car", "pet", "packageAi", "cry", "bark", "wild_animal", "bird", "shot", "glassbroken", "baby_cover_face", "baby_lie_down"
+MeariUser.getInstance().updateAiProjects(data, cameraInfo.getDeviceID(), new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+AiAnalyzeProjectBean: AI analysis
+private String packageAiType; //"0"-Not enabled; "2"-Enabled
+private ProjectsDTO projects; //
+
+ProjectsDTO: AI switch status
+private String person; //Person: "0"-Off; "1"-On
+private String car;//Car: "0"-off; "1"-on
+private String pet;//Pet/: "0"-off; "1"-on
+private String packageX;//Package: "0"-off; "1"-on
+private String cry;//Crying: "0"-off; "1"-on
+private String bark;//Barking: "0"-off; "1"-on
+private String wildAnimal;//Wild Animal: "0"-off; "1"-on
+private String bird;//Bird: "0"-off; "1"-on
+private String shot;//Gunshot: "0"-off; "1"-on
+private String glassBroken;//GlassBroken: "0"-off; "1"-on
+private String babyCoverFace;//BabyCover: "0"-off; "1"-on
+private String babyLieDown; //Baby lying on its stomach: "0"-off; "1"-on
+```
+
+## 16.3 Use of AI service activation code
+```
+[Description]
+Use activation code to activate AI service
+
+[Code example]
+// actCode-activation code
+MeariUser.getInstance().requestActive(BuyServiceType.AI, actCode, cameraInfo.getDeviceID(), "", object : IResultCallback {
+    override fun onSuccess() {
+    }
+
+    override fun onError(code: Int, error: String) {
+    }
+}, this)
+```
+
+## 16.4 AI service purchase
+```
+[Description]
+Purchasing AI service is basically the same as purchasing cloud storage service
+Parameter BuyServiceType.CLOUD is replaced by BuyServiceType.AI
+```
+
+# 17 Release Notes
+
+## 2025-2-8(5.5.0)
+```
+1. Added AI service documentation
+```
+
+## 2024-10-22(5.5.0)
+```
+1. Added cloud storage service purchase documentation
+```
 
 ## 2024-08-28(5.3.0)
 ```
