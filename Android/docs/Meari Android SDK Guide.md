@@ -181,10 +181,24 @@
     * 12.2 [Cloud Storage Trial](#122-Cloud-Storage-Trial)
     * 12.3 [Cloud storage activation code usage](#123-Cloud-storage-activation-code-usage)
     * 12.4 [Cloud storage purchases](#124-Cloud-storage-purchases)
-* 16 [AI service](#12-AI service)
-    * 16.1 [AI service status](#161-AI service status)
-    * 16.2 [AI service activation code usage](#162-AI service activation code usage)
-    * 16.3 [AI service purchase](#163-AI service purchase)
+* 13 [NVR](#13-NVR)
+    * 13.1 [Add NVR](#131-Add-NVR)
+    * 13.2 [Add camera to NVR channel](#132-Add-camera-to-NVR-channel)
+        * 13.2.1 [Add online camera](#1321-Add-online-camera)
+        * 13.2.2 [Connect NVR to add camera](#1322-Connect-NVR-to-add-camera)
+        * 13.2.3 [Connect router to add camera](#1323-Connect-router-to-add-camera)
+    * 13.3 [NVR and channel judgment](#133-NVR-and-channel-judgment)
+    * 13.4 [NVR settings](#134-NVR-settings)
+        * 13.4.1 [NVR obtain parameters](#1341-NVR-obtain-parameters)
+        * 13.4.2 [NVR Disk Management](#1342-NVR-Disk-Management)
+    * 13.5 [NVR Channel Camera](#135-NVR-Channel-Camera)
+        * 13.5.1 [NVR Channel Camera Information](#1351-NVR-Channel-Camera-Information)
+        * 13.5.2 [NVR Channel Camera Parameters](#1352-NVR-Channel-Camera-Parameters)
+        * 13.5.3 [NVR Channel Camera Firmware Upgrade](#1353-NVR-Channel-Camera-Firmware-Upgrade)
+* 16 [AI service](#12-AI-service)
+    * 16.1 [AI service status](#161-AI-service-status)
+    * 16.2 [AI service activation code usage](#162-AI-service-activation-code-usage)
+    * 16.3 [AI service purchase](#163-AI-service-purchase)
 * 17 [Release Notes](#14-Release-Notes)
 <center>
 
@@ -6210,6 +6224,383 @@ MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IR
 ## 12.4 Cloud storage purchases
 ```
 See Demo for details
+```
+
+# 13 NVR
+
+## 13.1 Add NVR
+```
+For details, see: Add device to wired network
+```
+## 13.2 Add camera to NVR channel
+
+### 13.2.1 Add online camera
+```
+[Description]
+If the camera is already online, make the camera and NVR in the same LAN, and enable the camera to be connected by NVR. Within 5 minutes, NVR searches and adds the camera to the channel
+
+[Function call]
+/**
+* Get the status of being allowed to be discovered by NVR
+*/
+public void getNvrConnectableStatus(INvrConnectableCallback callback)
+/**
+* Set whether to allow connection by NVR: 0-no; 1-yes
+* Automatically close after 5 minutes of opening
+*/
+public void setNvrConnectable(int enable, IStringResultCallback callback)
+/**
+* Get the remaining time allowed to be connected by NVR, in seconds
+*/
+public void getNvrConnectableTimeLeft(IIntegerPropertyCallback callback)
+
+/**
+* nvr starts searching for devices
+*/
+public void nvrStartSearchDevice(IStringResultCallback callback)
+/**
+* nvr gets search results
+*/
+public void nvrGetSearchResult(INVRSearchCallback callback)
+/**
+* nvr adds meari devices
+* ip-searched IP address of the device
+*/
+public void nvrAddDevice(String ip, INVRAddCallback callback)
+/**
+* nvr adds onvif devices
+* ip-searched IP address of the device; user-onvif user name; pwd-onvif password
+*/
+public void nvrAddOnvifDevice(String ip, String user, String pwd, INVRAddCallback callback)
+
+[Code Example]
+
+// Does the camera support being connected by Nvr?
+if (cameraInfo.getCpn() > 0) {
+}
+
+MeariUser.getInstance().getNvrConnectableStatus(new INvrConnectableCallback() {
+    @Override
+    public void onSuccess(NvrConnectableInfo nvrConnectableInfo) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+NvrConnectableInfo：
+// Has the camera been added to the NVR?
+private boolean isAdded;
+// Can the camera be connected to the NVR?
+private int connectable;
+// ID of the NVR to which the camera is connected?
+private String NvrId;
+
+MeariUser.getInstance().setNvrConnectable(1, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+
+MeariUser.getInstance().getNvrConnectableTimeLeft(new IIntegerPropertyCallback() {
+    @Override
+    public void onSuccess(int value) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().nvrStartSearchDevice(new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().nvrGetSearchResult(new INVRSearchCallback() {
+    @Override
+    public void onSuccess(boolean finish, List<NvrAddInfo> nvrAddInfoList) {
+    // finish: false-searching, continue to get results; true-searching is over, stop getting results
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+NvrAddInfo:
+// Unique identifier
+private String id;
+// 0-Meari camera; 1-onvif camera
+private int type;
+// Meari camera sn
+private String sn;
+// Camera IP address
+private String ip;
+// 0-Not added; 1-Added; 2-Add failed
+private int addStatus;
+
+MeariUser.getInstance().nvrAddDevice(nvrAddInfo.getIp(), new INVRAddCallback() {
+    @Override
+    public void onSuccess(NvrAddInfo nvrAddInfo) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().nvrAddOnvifDevice(nvrAddInfo.getIp(), "user", "pwd", new INVRAddCallback() {
+    @Override
+    public void onSuccess(NvrAddInfo nvrAddInfo) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+### 13.2.2 Connect to NVR to add camera
+```
+[Description]
+If the camera is not online, get the token of NVR to generate QR code. After scanning the code, the camera will connect to NVR and add it to NVR channel
+
+[Function call]
+/**
+* Create Token QR code
+*/
+public void createNvrTokenQRCode(String token, ICreateQRCodeCallback callback)
+
+[Code example]
+
+MeariUser.getInstance().getDeviceParams(new IGetDeviceParamsCallback() {
+    @Override
+    public void onSuccess(DeviceParams deviceParams) {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().createNvrTokenQRCode(deviceParams.nvrNeutralParams.getQrCodeToken(), new ICreateQRCodeCallback() {
+    @Override
+    public void onSuccess(Bitmap bitmap) {
+    }
+});
+```
+
+### 13.2.3 Connect to the router and add the camera
+```
+[Description]
+If the camera is not online, obtain the key and wifi name of the NVR, and the password to generate a QR code. After the camera scans the code, it will connect to the router, and the NVR will automatically add the device to the channel, search for the addition results, and display them.
+
+【Function call】
+/**
+* Create key QR code
+* ssid-WiFi name; password-WiFi password; key-nvr Key
+*/
+public void createNvrKeyQRCode(String ssid, String password, String key, ICreateQRCodeCallback callback)
+/**
+* Get NVR add result
+*/
+MeariUser.getInstance().nvrGetAddResult(new INVRGetAddResultCallback()
+
+【Code example】
+
+MeariUser.getInstance().createNvrKeyQRCode("wifi_name", "pwd", deviceParams.nvrNeutralParams.getQrCodeKey(), new ICreateQRCodeCallback() {
+    @Override
+    public void onSuccess(Bitmap bitmap) {
+    }
+});
+
+// Set the timeout (130s) and loop to get the add result. If the add fails due to the timeout, stop searching
+MeariUser.getInstance().nvrGetAddResult(new INVRGetAddResultCallback() {
+@Override
+public void onSuccess(List<NvrAddInfo> nvrAddInfoList) {
+        List<NvrAddInfo> list = filterOnvif(nvrAddInfoList);
+        if (list.size() > 0) {
+        // Add successfully, display the result
+        } else {
+            if (!isFinishSearch) {
+                nvrGetAddResult();
+            }
+        }
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+        if (!isFinishSearch) {
+            nvrGetAddResult();
+        }
+    }
+});
+
+private List<NvrAddInfo> filterOnvif(List<NvrAddInfo> nvrAddInfoList) {
+    List<NvrAddInfo> list = new ArrayList<>();
+    if (nvrAddInfoList != null && nvrAddInfoList.size() > 0) {
+        for (NvrAddInfo nvrAddInfo : nvrAddInfoList) {
+            if (nvrAddInfo.getType() == 0) {
+                list.add(nvrAddInfo);
+            }
+        }
+    }
+    return list;
+}
+``` 
+## 13.4 NVR settings
+### 13.4.1 NVR get parameters
+```
+[Description]
+Get NVR channel, hard disk and other parameter information
+
+[Function call]
+/**
+* Get the params of the device
+* Get the device parameters
+*
+* @param callback Function callback
+*/
+public void getDeviceParams(IGetDeviceParamsCallback callback)
+
+[Code example]
+// Only need to set once to operate the same device
+MeariUser.getInstance().setCameraInfo(cameraInfo);
+// Get device parameters
+MeariUser.getInstance().getDeviceParams(new IGetDeviceParamsCallback() {
+    @Override
+    public void onSuccess(DeviceParams deviceParams) {
+        NvrNeutralParams nvrNeutralParams = deviceParams.nvrNeutralParams;
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+NvrNeutralParams：
+// nvr maximum number of channels
+private int maxChannelNumber;
+// nvr QR code Token
+private String qrCodeToken;
+// nvr QR code key
+private String qrCodeKey;
+// Whether to enable all-day recording
+private int allDayRecordEnable;
+// Channel information
+private List<NvrNeutralChannel> channels = new ArrayList<>();
+// Hard disk information
+private List<NvrNeutralDisk> disks = new ArrayList<>();
+// Channel capability set
+private List<String> caps = new ArrayList<>();
+
+NvrNeutralChannel：
+private int id;
+private String name;
+// state: 0-unbound; 1-online; 2-offline; 3-sleep;
+private int state;
+// 0-private protocol; 1-onvif protocol
+private int type;
+
+NvrNeutralDisk:
+private int name;
+// 0: no SD card; 1: normal use; 2: card read and write abnormality; 3: formatting; 4: file system not supported; 5: card is being identified; 6: not formatted; 7: other errors;
+private int state;
+// total capacity
+private String total;
+// remaining capacity
+private String free;
+// used capacity
+private String used;
+
+```
+### 13.4.2 NVR disk management
+```
+[Description]
+NVR format hard disk
+
+[Function call]
+/**
+ * Start formatting hard disk
+ * @param seq hard disk serial number, starting from 1
+ */
+public void startSDCardFormat(int seq, ISDCardFormatCallback callback) 
+/** 
+ * Get the progress of formatting hard disk 
+ */ public void getSDCardFormatPercent(ISDCardFormatPercentCallback callback) 
+【Code example】 
+MeariUser.getInstance().startSDCardFormat(1, new ISDCardFormatCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().getSDCardFormatPercent(new ISDCardFormatPercentCallback() {
+    @Override
+    public void onSuccess(int percent) {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+## 13.5 NVR channel camera
+```
+The use of NVR channel camera is basically the same as that of ordinary camera. You can preview, replay and set it by using CameraInfo of NVR channel camera information. For the specific process, refer to the preview, playback and setting of ordinary camera.
+NVR channel camera does not support cloud playback.
+The differences will be explained in detail below.
+```
+
+### 13.5.1 NVR channel camera information
+```
+// Get NVR channel camera information
+if (DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID()) {
+List<CameraInfo> channelCameraInfoList = cameraInfo.getNvrChannelList();
+}
+```
+
+### 13.5.2 NVR channel camera parameters
+```
+// Only need to set once to operate the same NVR channel
+MeariUser.getInstance().setCameraInfo(channelCameraInfo);
+// Get device parameters
+MeariUser.getInstance().getDeviceParams(new IGetDeviceParamsCallback() {
+    @Override
+    public void onSuccess(DeviceParams deviceParams) {
+        DeviceParams channelDeviceParams = deviceParams;
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 13.5.3 NVR channel camera firmware upgrade
+```
+// The sn and tp in checkNewFirmwareForDev are obtained in different ways
+if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() && cameraInfo.getNvrChannelId() > 0) {
+    sn = channelDeviceParams.getSnNum();
+    tp = channelDeviceParams.getTp();
+}
 ```
 
 # 16 AI service
