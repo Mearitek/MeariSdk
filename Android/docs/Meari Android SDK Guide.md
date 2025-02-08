@@ -196,9 +196,10 @@
         * 13.5.2 [NVR Channel Camera Parameters](#1352-NVR-Channel-Camera-Parameters)
         * 13.5.3 [NVR Channel Camera Firmware Upgrade](#1353-NVR-Channel-Camera-Firmware-Upgrade)
 * 16 [AI service](#16-AI-service)
-    * 16.1 [AI service status](#161-AI-service-status)
-    * 16.2 [AI service activation code usage](#162-AI-service-activation-code-usage)
-    * 16.3 [AI service purchase](#163-AI-service-purchase)
+    * 16.1 [AI Service Introduction](#161-AI-Service-Introduction)
+    * 16.2 [AI service status](#162-AI-service-status)
+    * 16.3 [AI service activation code usage](#163-AI-service-activation-code-usage)
+    * 16.4 [AI service purchase](#164-AI-service-purchase)
 * 17 [Release Notes](#17-Release-Notes)
 <center>
 
