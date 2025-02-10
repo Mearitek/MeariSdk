@@ -195,6 +195,13 @@
         * 13.5.1 [NVR Channel Camera Information](#1351-NVR-Channel-Camera-Information)
         * 13.5.2 [NVR Channel Camera Parameters](#1352-NVR-Channel-Camera-Parameters)
         * 13.5.3 [NVR Channel Camera Firmware Upgrade](#1353-NVR-Channel-Camera-Firmware-Upgrade)
+* 15 [Pet Camera](#15-Pet-Camera) 
+    * 15.1 [Add Device](#151-Add-Device)
+    * 15.2 [Setting](#152-Setting)
+        * 15.2.1 [Feeding](#1521-Feeding) 
+        * 15.2.2 [Sound setting](#1522-Sound-setting)
+        * 15.2.3 [Summon pet](#1523-Summon-pet)
+        * 15.2.4 [Feeding plan](#1524-Feeding-plan)   
 * 16 [AI service](#16-AI-service)
     * 16.1 [AI Service Introduction](#161-AI-Service-Introduction)
     * 16.2 [AI service status](#162-AI-service-status)
@@ -6602,6 +6609,151 @@ if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() &&
     sn = channelDeviceParams.getSnNum();
     tp = channelDeviceParams.getTp();
 }
+```
+# 15 Pet Camera
+
+## 15.1 Add Device
+
+```
+Add reference (#51 - Add device via QR code).
+
+```
+
+## 15.2 Setting
+
+### 15.2.1 Feeding
+```
+【Description】
+Feeding
+
+【Function call】
+
+    /**
+     *
+     * pet:
+     * type: int
+     * description: Whether the device is a pet device, 0- not 1- Yes, the default is 0.
+     * 1. Automatic Pet Feeder   2. Manual Pet Feeder
+     * 
+     */
+     cameraInfo.getPet()
+/**
+     * One click feed：
+     * description: Feed control, send 1, instantaneous control command
+     * default: 1
+     */
+     void setPetFeed(ISetDeviceParamsCallback callback) 
+
+/**
+     * One-click feeding
+     * copies：Feeding portion
+     */
+public void setPetFeed2(int copies,ISetDeviceParamsCallback callback)
+
+
+```
+
+### 15.2.2 Sound setting
+```
+【Description】
+Set the sound for summoning pets
+
+【Function call】
+    /**
+     * Get sound list
+     */
+     public void getVoicePetMailList(String deviceID, Object tag, IStringResultCallback callback)
+
+     /**
+     * Get current sound（url）
+     */
+     deviceParams.getPetSoundSetting()
+    /**
+     * Set current sound
+     */
+     public void setVoiceSetting(String url, IStringResultCallback callback)
+
+
+【Code example】
+MeariUser.getInstance().getVoicePetMailList(presenter.getCameraInfo().getDeviceID(), this, new IStringResultCallback() {
+            @Override
+            public void onSuccess(String result) {
+                if(!TextUtils.isEmpty(result)){
+                    VoicePetMailInfo voicePetMailInfo= GsonUtil.fromJson(result, VoicePetMailInfo.class);
+                }
+            }
+
+            @Override
+            public void onError(int code, String error) {
+                
+            }
+        });
+
+```
+
+
+
+### 15.2.3 Summon pet
+```
+【Description】
+Set Summon pet
+
+【Function call】
+    /**
+     * Summon pet
+     */
+     public void setFeedCall(int enable, ISetDeviceParamsCallback callback)
+
+    
+【Code example】
+MeariUser.getInstance().setFeedCall(1, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+            }
+        });
+```
+
+### 15.2.4 Feeding plan
+```
+【Description】
+Set Feeding plan
+
+【Function call】
+    /**
+     * Get Feeding plan
+     */
+     deviceParams.getPetFeedPlanList()
+/**
+     * Set Feeding plan
+     */
+     public void setFeedTimes(String timeList, ISetDeviceParamsCallback callback)
+
+    
+【Code example】
+/**
+*planString: >-
+  If it is a single feeding{ "enable":false, "time":"10:00", "count":1, "once": 1}
+  If the feeding is on a weekly schedule：{ "enable":false, "time":"10:00", "count":1, "repeat":[1,2,3,4,5,6,7]}
+  1 in repeat represents Monday
+  Example: A maximum of 8 groups of JSON strings are allowed，[{ "enable":false, "time":"10:00",
+  "repeat":[1] , "count":1}, { "enable":false, "time":"10:00", "count":1, "once": 1}]
+**/
+MeariUser.getInstance().setFeedTimes(planString, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
 ```
 
 # 16 AI service
