@@ -195,13 +195,19 @@
         * 13.5.1 [NVR Channel Camera Information](#1351-NVR-Channel-Camera-Information)
         * 13.5.2 [NVR Channel Camera Parameters](#1352-NVR-Channel-Camera-Parameters)
         * 13.5.3 [NVR Channel Camera Firmware Upgrade](#1353-NVR-Channel-Camera-Firmware-Upgrade)
-* 15 [Pet Camera](#15-Pet-Camera) 
+* 14 [4G](#14-4G)
+    * 14.1 [Add 4G](#141-Add-4G)
+    * 14.2 [4G traffic service](#142-4G-traffic-service)
+        * 14.2.1 [Use of traffic service activation code](#1421-Use-of-traffic-service-activation-code)
+        * 14.2.2 [Get traffic service information](#1422-Get-traffic-service-information)
+        * 14.2.3 [Purchase traffic service](#1423-Purchase-traffic-service)
+* 15 [Pet Camera](#15-Pet-Camera)
     * 15.1 [Add Device](#151-Add-Device)
     * 15.2 [Setting](#152-Setting)
         * 15.2.1 [Feeding](#1521-Feeding) 
         * 15.2.2 [Sound setting](#1522-Sound-setting)
         * 15.2.3 [Summon pet](#1523-Summon-pet)
-        * 15.2.4 [Feeding plan](#1524-Feeding-plan)   
+        * 15.2.4 [Feeding plan](#1524-Feeding-plan)
 * 16 [AI service](#16-AI-service)
     * 16.1 [AI Service Introduction](#161-AI-Service-Introduction)
     * 16.2 [AI service status](#162-AI-service-status)
@@ -6610,6 +6616,91 @@ if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() &&
     tp = channelDeviceParams.getTp();
 }
 ```
+
+# 14 4G
+
+## 14.1 Add 4G
+
+```
+Add reference (#51-QR code network configuration to add devices) or (#54-Scan the code to add).
+
+```
+
+## 14.2 4G traffic service
+
+## 14.2.1 Use of traffic service activation code
+```
+[Description]
+Use of traffic service activation code
+
+[Function call]
+/**
+* Use of traffic service activation code
+*
+* @param servicePackageType service type
+* @param actCode activation code
+* @param deviceID deviceID
+* @param uuid If the 4G device does not have a deviceID, use the uuid
+* @param callback callback
+*/
+public void requestActive(int servicePackageType, String actCode, String deviceID, String uuid, final IResultCallback callback, Object tag)
+
+[Code example]
+MeariUser.getInstance().requestActive(BuyServiceType.TRAFFIC, actCode, cameraInfo.getDeviceID(), "", new IResultCallback() {
+@Override
+public void onSuccess() {
+}
+
+@Override
+public void onError(int errorCode, String errorMsg) {
+}
+}, this);
+```
+
+### 14.2.2 Get traffic service information
+```
+[Description]
+Get traffic service information
+
+[Function call]
+/**
+* Get traffic service information
+* @param deviceId device devivceid
+* @param uuid uuid parsed from the body code, pass ""
+*/
+public void get4gTrafficInfo(String deviceID, String uuid, ITraffic4gInfoCallback callback)
+
+[Code example]
+MeariUser.getInstance().get4gTrafficInfo(cameraInfo?.deviceID, "", object :ITraffic4gInfoCallback{
+override fun onError(errorCode: Int, errorMsg: String?) {
+}
+
+override fun onSuccess(traffic4gInfo: Traffic4gInfo?) {
+}
+})
+
+Traffic4gInfo
+- String simID; SIM card number
+- PackageInfo currentPackageInfo; Current effective package information
+- List<PackageInfo> prePackageInfoList; To-be-effective package information
+
+PackageInfo
+- private int unlimited; Is it an unlimited package (now all 1): 0-no; 1-yes
+- private int trialType; Is it a trial package: 0-No; 1-Yes
+- private long expireTime; Expiration time
+- private String groupFlag; If not empty, it is a subscription package, if empty, it is a non-subscription package
+- private int cloudType; Is it a traffic plus cloud storage package: 0-No; 1-Yes
+
+```
+
+### 14.2.3 Purchase traffic service
+
+```
+[Description]
+Purchasing traffic service is basically the same as purchasing cloud storage service
+Parameter BuyServiceType.CLOUD is replaced by BuyServiceType.TRAFFIC
+```
+
 # 15 Pet Camera
 
 ## 15.1 Add Device

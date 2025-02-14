@@ -208,14 +208,10 @@
         * 13.5.3 [NVR通道摄像机固件升级](#1353-NVR通道摄像机固件升级)
 * 14 [4G](#14-4G) 
     * 14.1 [添加4G](#141-添加4G)
-    * 14.2 [4G流量](#142-4G流量)
-        * 14.2.1 [流量充值套餐](#1421-流量充值套餐) 
-        * 14.2.2 [流量查询（不可频繁查询）](#1422-流量查询（不可频繁查询）)
-        * 14.2.3 [兑换流量](#1423-兑换流量)
-        * 14.2.4 [试用流量开通](#1424-试用流量开通) 
-        * 14.2.5 [流量购买](#1425-流量购买)
-        * 14.2.6 [流量订单](#1426-流量订单)
-
+    * 14.2 [4G流量服务](#142-4G流量服务)
+        * 14.2.1 [流量服务激活码使用](#1421-流量服务激活码使用)
+        * 14.2.2 [获取流量服务信息](#1422-获取流量服务信息)
+        * 14.2.3 [购买流量服务](#1423-购买流量服务)
 * 15 [宠物类设备](#15-宠物类设备) 
     * 15.1 [添加设备](#151-添加设备)
     * 15.2 [设置](#152-设置)
@@ -7281,7 +7277,6 @@ if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() &&
 }
 ```
 
-
 # 14 4G
 
 ## 14.1 添加4G
@@ -7291,314 +7286,80 @@ if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() &&
 
 ```
 
-## 14.2 4G流量
+## 14.2 4G流量服务
 
-### 14.2.1 流量充值套餐
+## 14.2.1 流量服务激活码使用
 ```
 【描述】
-随设备绑定的SIM卡的流量充值套餐获取
+流量服务激活码使用
 
 【函数调用】
 /**
- * 获取4G套餐
- * @param uuid   机身码解析的uuid
- * @param deviceId   设备的devivceid
- * @param payType   支付类型 1:alipay 2: paypal 3:google 4:apple
- * deviceID和uuid传其中1个，另一个传null或""
+ * 流量服务激活码使用
+ *
+ * @param servicePackageType service type
+ * @param actCode activation code
+ * @param deviceID deviceID
+ * @param uuid If the 4G device does not have a deviceID, use the uuid
+ * @param callback callback
  */
-public void get4GDeviceFlowV2(String uuid,String deviceId,String payType, IStringResultCallback callback)
-
+public void requestActive(int servicePackageType, String actCode, String deviceID, String uuid, final IResultCallback callback, Object tag)
 
 【代码范例】
-MeariUser.getInstance().get4GDeviceFlowV2(uuid,deviceId, "1",new IStringResultCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    
-                }
-                @Override
-                public void onError(int errorCode, String errorMsg) {
-
-                }
-            });
-
-【JSON】
-{
-    "resultCode":"1001",
-    "result":{
-        "simID":"",
-        "maxMonthQuantity":12,（限制最多买多少个月）
-        "trialStatus": false,  （套餐列表中是否有试用套餐）
-        "packageList":[
-            {
-                "id":"",  （套餐id，对应packageId）
-                "mealType":"M",  （M是月套餐，S是季套餐，Y是年套餐，X是半年套餐）
-                "money":"",
-                "currencyCode": "USD",
-                "currencySymbol": "$",
-                "trafficPackage":"M",   （M是MB，G是GB）
-                "quantity":500   （数量），
-                "unlimited": 1    (显示不限量)
-                "type":0   (0是试用套餐，需要单独筛选出来)
-            },
-            {
-                "id":"",
-                "mealType":"",
-                "money":"",
-                "currencyCode": "USD",
-                "currencySymbol": "$",
-                "trafficPackage":"G",
-                "quantity":3,
-                "unlimited": 0
-            }
-        ]
+MeariUser.getInstance().requestActive(BuyServiceType.TRAFFIC, actCode, cameraInfo.getDeviceID(), "", new IResultCallback() {
+    @Override
+    public void onSuccess() {
     }
-}
 
-【错误码】
-返回状态码1201，未绑定sim卡（不用展示套餐）
-返回状态码1202，无效的uuid
-
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+}, this);
 ```
-### 14.2.2 流量查询（不可频繁查询）
+
+### 14.2.2 获取流量服务信息
 ```
 【描述】
-随设备绑定的SIM卡的流量查询，频繁查询会被运营商停止。
+获取流量服务信息
 
 【函数调用】
 /**
- * 获取4G流量
- * @param uuid   机身码解析的uuid
+ * 获取流量服务信息
  * @param deviceId   设备的devivceid
- * deviceID和uuid传其中1个，另一个传null或""
+ * @param uuid   机身码解析的uuid，传""
  */
-public void getTrafficNumber(String uuid, String deviceId, IStringResultCallback callback)
+public void get4gTrafficInfo(String deviceID, String uuid, ITraffic4gInfoCallback callback)
 
 
 【代码范例】
-MeariUser.getInstance().getTrafficNumber(uuid,deviceId, new IStringResultCallback() {
-            @Override
-            public void onSuccess(String result) {
-                
-            }
+MeariUser.getInstance().get4gTrafficInfo(cameraInfo?.deviceID, "", object :ITraffic4gInfoCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
 
-            @Override
-            public void onError(int errorCode, String errorMsg) {
-            }
-        });
+    override fun onSuccess(traffic4gInfo: Traffic4gInfo?) {
+    }
+})
 
-【JSON】
-{
-	"resultCode": "1001",
-	"simID": "4375345345",
-	"resultData": {
-		"subscriberQuota": { //当前使用套餐
-			"qtavalue": "2048.00", //总流量（M）
-			"qtabalance": "1960.57", //剩余流量（M）
-			"qtaconsumption": "87.43", //已使用流量（M）
-			"activeTime": "1658926803000", //激活时间
-			"mealType": "M", //套餐类型
-			"expireTime": "1658927512000", //过期时间，
-			"money": "0.01",
-			"unlimited": 1 //(显示不限量)
-		},
-		"preActivePackageList": [ //未使用套餐
-			{
-				"mealType": "",
-				"trafficPackage": "G",
-				"quantity": 3,
-				"money": "0.01",
-				"unlimited": 1 //(显示不限量)
-			}
-		],
-		"historyQuota": [{ //历史用量
-				"time": "20220720",
-				"qtaconsumption": "87.43"
-			},
-			{
-				"time": "20220721",
-				"qtaconsumption": "87.43"
-			}
-		]
-	}
-}
+Traffic4gInfo
+- String simID; SIM卡编号
+- PackageInfo currentPackageInfo; 当前生效的套餐包信息
+- List<PackageInfo> prePackageInfoList; 待生效的套餐包信息
 
-1. 返回值中的subscriberQuota是正在使用中的套餐使用情况，如果设备从来没使用过流量，也就是没激活过sim卡，则这个值里面没有数据
-2. historyQuota中是正在使用的套餐的历史流量使用情况，但是因为提供商只能提供中国时区的按天的流量使用明细，所以流量使用明细这一块肯定是和用户本地时区的一天是对应不起来的，这个数据不准，因为时区问题，有可能返回的日期比用户本地时区还晚，有可能会出现流量明细有明天使用量的情况，这个需要app在本地加个逻辑，最少展示的时间不能超过用户本地时间
+PackageInfo
+- private int unlimited; 是否是不限量套餐(现在都是1)：0-不是；1-是
+- private int trialType; 是否是试用套餐：0-不是；1-是
+- private long expireTime; 过期时间
+- private String groupFlag; 不为空是订阅套餐，为空是非订阅套餐
+- private int cloudType; 是否是流量加云存储套餐：0-不是；1-是
 
 ```
-### 14.2.3 兑换流量
+
+### 14.2.3 购买流量服务
+
 ```
 【描述】
-激活码兑换流量
-
-【函数调用】
-/**
- * 获取4G流量
- * @param uuid   机身码解析的uuid
- * @param deviceId   设备的devivceid
- * @param code       激活码
- * deviceID和uuid传其中1个，另一个传null或""
- */
-public void getTrafficCode(String uuid, String deviceId, String code, IStringResultCallback callback)
-
-
-【代码范例】
-MeariUser.getInstance().getTrafficCode(uuid,deviceId,code, new IStringResultCallback() {
-            @Override
-            public void onSuccess(String result) {
-            
-            }
-
-            @Override
-            public void onError(int errorCode, String errorMsg) {
-                showToast(CommonUtils.getRequestDesc(TrafficManagerActivity.this, errorCode));
-            }
-        });
-
-
-
-```
-### 14.2.4 试用流量开通
-```
-【描述】
-试用流量的开通
-
-【函数调用】
-/**
- * 获取4G流量
- * @param uuid   机身码解析的uuid
- * @param deviceId   设备的devivceid
- * @param code       激活码
- * deviceID和uuid传其中1个，另一个传null或""
- */
-public void getTrafficCode(String uuid, String deviceId, String code, IStringResultCallback callback)
-
-
-【代码范例】
-MeariUser.getInstance().getTrafficCode(uuid,deviceId,code, new IStringResultCallback() {
-            @Override
-            public void onSuccess(String result) {
-            
-            }
-
-            @Override
-            public void onError(int errorCode, String errorMsg) {
-                showToast(CommonUtils.getRequestDesc(TrafficManagerActivity.this, errorCode));
-            }
-        });
-
-
-
-```
-### 14.2.5 流量购买
-```
-【描述】
-流量的购买（已拥有的套餐加上正要购买的套餐不能超过流量充值套餐接口中的maxMonthQuantity，如果无值默认为12个月）
-
-【函数调用】
-/**
- * 获取4G流量
- * @param uuid   机身码解析的uuid
- * @param deviceID   设备的devivceid
- * @param packageId   套餐id 
- * @param payMoney   支付金额 
- * @param payType   支付类型 1:alipay 2: paypal 
- deviceID和uuid传其中1个，另一个传null或""
- */
-public void postTrafficPayOrderV2(String deviceID,String uuid,String packageId, String payMoney,String payType, IStringResultCallback callback)
-
-
-【代码范例】
-MeariUser.getInstance().postTrafficPayOrderV2("deviceId",
-                    "uuid",
-                    "packageId",
-                    payMoney, mPayType,
-                    new IStringResultCallback() {
-                        @Override
-                        public void onSuccess(String result) {
-                            
-                        }
-
-                        @Override
-                        public void onError(int errorCode, String errorMsg) {
-                            
-                        }
-                    });
-
-【JSON】
-payType = 1（即支付宝支付） 
-返回
-{
-      "resultCode": "1001",
-       "result": {
-              "payMoney": "108",
-              "orderNum": "",
-               "payUrl ": " ",
-               "LeastTime ": 9906,
-               "createDate ": 167940449392
-        }
-}
-
-
-```
-
-### 14.2.6 流量订单
-```
-【描述】
-流量的订单查询
-
-【函数调用】
-/**
- * 获取4G流量
- * @param uuid   机身码解析的uuid
- * @param deviceID   设备的devivceid
- *deviceID和uuid传其中1个，另一个传null或""
- */
-public void getTrafficOrderList(String uuid, String deviceId, IStringResultCallback callback)
-
-
-【代码范例】
-MeariUser.getInstance().getTrafficOrderList(uuid,deviceId, new IStringResultCallback() {
-            @Override
-            public void onSuccess(String result) {
-                if(!TextUtils.isEmpty(result)) {
-                    Logger.i(TAG, "--->getTrafficOrderList: " + result);
-                    trafficOrderBean = GsonUtil.fromJson(result, TrafficOrderBean.class);
-                    if(trafficOrderBean!=null){
-                        mHandler.sendEmptyMessage(GET_4G_TRAFFIC_ORDER_SUCCESS);
-                    }
-                }
-            }
-
-            @Override
-            public void onError(int errorCode, String errorMsg) {
-                mHandler.sendEmptyMessage(GET_4G_TRAFFIC_ORDER_FAIL);
-            }
-        });
-
-【JSON】
-{
-  "resultCode": "1001",
-  "result": {
-    "orderList": [
-      {
-        "orderNum": "",
-        "mealType": "M",
-        "payMoney": "",
-        "payDate": "",
-        "quantity": 3,
-        "trafficPackage": "G",
-        "trafficQuantity": 3,
-        "currencyCode": "USD",
-        "currencySymbol": "$",
-        "payType": 3,
-        "unlimited": 0
-      }
-    ]
-  }
-}
-
-
+购买流量服务和购买云存储服务基本一致
+参数BuyServiceType.CLOUD 替换成 BuyServiceType.TRAFFIC
 ```
 
 # 15 宠物类设备
