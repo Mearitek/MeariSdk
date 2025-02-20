@@ -51,7 +51,7 @@ dependencies {
 
     // aar required
     implementation(name: 'core-sdk-device-550-20241022', ext: 'aar')
-    implementation(name: 'core-sdk-meari-550-20241022', ext: 'aar')
+    implementation(name: 'core-sdk-meari-550-20250220', ext: 'aar')
 
     implementation 'com.tencent:mmkv-static:1.2.15'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
