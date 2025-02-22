@@ -208,12 +208,16 @@
         * 15.2.2 [Sound setting](#1522-Sound-setting)
         * 15.2.3 [Summon pet](#1523-Summon-pet)
         * 15.2.4 [Feeding plan](#1524-Feeding-plan)
-* 16 [AI service](#16-AI-service)
-    * 16.1 [AI Service Introduction](#161-AI-Service-Introduction)
-    * 16.2 [AI service status](#162-AI-service-status)
-    * 16.3 [AI service activation code usage](#163-AI-service-activation-code-usage)
-    * 16.4 [AI service purchase](#164-AI-service-purchase)
-* 17 [Release Notes](#17-Release-Notes)
+* 16 [Baby Camera](#16-Baby-Camera)
+    * 16.1 [Add Device](#161-Add-Device)
+    * 16.2 [Health Services](#162-Health-Services)
+        * 16.2.1 [Obtain monitoring data](#1621-Obtain-monitoring-data)
+* 17 [AI service](#17-AI-service)
+    * 17.1 [AI Service Introduction](#171-AI-Service-Introduction)
+    * 17.2 [AI service status](#172-AI-service-status)
+    * 17.3 [AI service activation code usage](#173-AI-service-activation-code-usage)
+    * 17.4 [AI service purchase](#174-AI-service-purchase)
+* 18 [Release Notes](#18-Release-Notes)
 <center>
 
 ---
@@ -6847,9 +6851,54 @@ MeariUser.getInstance().setFeedTimes(planString, new ISetDeviceParamsCallback() 
         });
 ```
 
-# 16 AI service
+# 16 Baby Camera
 
-## 16.1 AI service introduction
+## 16.1 Add Device
+
+```
+Add reference (#51 - Add device via QR code).
+
+```
+
+## 16.2 Health Services
+
+### 16.2.1 Obtain monitoring data
+```
+【Description】
+Obtain monitoring data
+
+【Function call】
+    /**
+     * Obtain monitoring data
+     * deviceID:
+     * day:
+     * typeName: "bav"(Breathe),"hav"(Heartbeat),"sleepState"(Sleep state)
+     *          typeName = "bav","hav",Return data field: avgHeartRate//Average heart rate/minute heartRange//Heart rate zones avgBreathe//Average respiration/minute breatheRange//Breathing interval startTime//Start time (timestamp in seconds) minuteData//5-minute average data {"index" (corresponding to the 5-minute index): 1, "bav" (average breathing): 20, "hav" (average heart rate): 79}
+     *          typeName = "sleepState",Return data field: lightSleep//Sleep duration (light sleep)(minute) deepSleep//Sleep duration (deep sleep)(minute) awake//Length of wakefulness(minute) startTime//Start time (timestamp in seconds) sleepTimeLine//Sleep timeline (filled in minutes, default value is 0, 1: deep sleep, 2: light sleep, 3: no sleep, 4: awake)
+     */
+     public void getMrdaMonitorData(String deviceID, String day, String typeName, Object tag, IStringResultCallback callback)
+
+    
+【Code example】
+MeariUser.getInstance().getMrdaMonitorData(cameraInfo.getDeviceID(), date, type, this, new IStringResultCallback() {
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                
+            }
+        });
+
+
+```
+
+# 17 AI service
+
+## 17.1 AI service introduction
 ```
 AI related capability set
 - int ai; Whether to support ai: 0-not supported; 1-supported
@@ -6867,7 +6916,7 @@ AI support description for unconnected devices:
 5. ai=1, dai=not supported, cai=not supported, early AI version (only supports people, cars, pets, packages): cloud AI switch is displayed, but it cannot be operated. Cloud AI purchase entrance is displayed and can be operated after purchase.
 ```
 
-## 16.2 AI service status
+## 17.2 AI service status
 ```
 [Description]
 Get the activation status and switch status of AI service
@@ -6917,7 +6966,7 @@ private String babyCoverFace;//BabyCover: "0"-off; "1"-on
 private String babyLieDown; //Baby lying on its stomach: "0"-off; "1"-on
 ```
 
-## 16.3 Use of AI service activation code
+## 17.3 Use of AI service activation code
 ```
 [Description]
 Use activation code to activate AI service
@@ -6933,14 +6982,14 @@ MeariUser.getInstance().requestActive(BuyServiceType.AI, actCode, cameraInfo.get
 }, this)
 ```
 
-## 16.4 AI service purchase
+## 17.4 AI service purchase
 ```
 [Description]
 Purchasing AI service is basically the same as purchasing cloud storage service
 Parameter BuyServiceType.CLOUD is replaced by BuyServiceType.AI
 ```
 
-# 17 Release Notes
+# 18 Release Notes
 
 ## 2025-2-8(5.5.0)
 ```

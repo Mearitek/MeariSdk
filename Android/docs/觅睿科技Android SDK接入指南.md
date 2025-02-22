@@ -219,12 +219,16 @@
         * 15.2.2 [音效设置](#1522-音效设置)
         * 15.2.3 [一键呼唤](#1523-一键呼唤)
         * 15.2.4 [投食喂食计划](#1524-投食喂食计划)       
-* 16 [AI服务](#12-AI服务)
-    * 16.1 [AI服务介绍](#161-AI服务介绍)
-    * 16.2 [AI服务状态](#162-AI服务状态)
-    * 16.3 [AI服务激活码使用](#163-AI服务激活码使用)
-    * 16.4 [AI服务购买](#164-AI服务购买)
-* 17 [更新说明](#17-更新说明)
+* 16 [婴儿类设备](#16-婴儿类设备)
+    * 16.1 [添加设备](#161-添加设备)
+    * 16.2 [健康服务](#162-健康服务)
+        * 16.2.1 [获取监测数据](#1621-获取监测数据)
+* 17 [AI服务](#17-AI服务)
+    * 17.1 [AI服务介绍](#171-AI服务介绍)
+    * 17.2 [AI服务状态](#172-AI服务状态)
+    * 17.3 [AI服务激活码使用](#173-AI服务激活码使用)
+    * 17.4 [AI服务购买](#164-AI服务购买)
+* 18 [更新说明](#18-更新说明)
 
 <center>
 
@@ -7522,9 +7526,54 @@ MeariUser.getInstance().setFeedTimes(planString, new ISetDeviceParamsCallback() 
         });
 ```
 
-# 16 AI服务
+# 16 婴儿类设备
 
-## 16.1 AI服务介绍
+## 16.1 添加设备
+
+```
+添加参考(#51-二维码配网添加设备)。
+
+```
+
+## 16.2 健康服务
+
+### 16.2.1 获取监测数据
+```
+【描述】
+获取监测数据
+
+【函数调用】
+    /**
+     * 获取监测数据
+     * deviceID:
+     * day:
+     * typeName: "bav"(呼吸),"hav"(心跳),"sleepState"(睡眠状态)
+     *          typeName = "bav","hav",返回数据字段: avgHeartRate//平均心率/分钟 heartRange//心率区间 avgBreathe//平均呼吸/分钟 breatheRange//呼吸区间 startTime//开始时间（时间戳秒级） minuteData//5分钟平均数据 {"index"(对应第几个5分钟索引):1, "bav"(平均呼吸):20, "hav"(平均心跳):79}
+     *          typeName = "sleepState",返回数据字段: lightSleep//睡眠时长（浅睡）（分钟） deepSleep//睡眠时长（深睡）（分钟） awake//清醒时长（分钟） startTime//开始时间（时间戳秒级） sleepTimeLine//睡眠时间轴（按分钟填充，默认值为 0，1：深睡，2：浅睡，3：没睡觉，4：清醒）
+     */
+     public void getMrdaMonitorData(String deviceID, String day, String typeName, Object tag, IStringResultCallback callback)
+
+    
+【代码范例】
+MeariUser.getInstance().getMrdaMonitorData(cameraInfo.getDeviceID(), date, type, this, new IStringResultCallback() {
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                
+            }
+        });
+
+
+```
+
+# 17 AI服务
+
+## 17.1 AI服务介绍
 ```
 AI相关能力集
 - int ai; 是否支持ai：0-不支持；1-支持
@@ -7542,7 +7591,7 @@ cai和dai的格式为json数组字符串，例如'[1,2,3,4,5]'，
 5.ai=1,dai=不支持,cai=不支持,早期AI版本(仅支持人，车，宠物，包裹)：显示云端AI开关，但不可操作，显示云端AI购买入口，购买后可操作。
 ```
 
-## 16.2 AI服务状态
+## 17.2 AI服务状态
 ```
 【描述】
 获取AI服务的开通状态和开关状态
@@ -7592,7 +7641,7 @@ private String babyCoverFace;//婴儿遮挡："0"-关；"1"-开
 private String babyLieDown;//婴儿趴睡："0"-关；"1"-开
 ```
 
-## 16.3 AI服务激活码使用
+## 17.3 AI服务激活码使用
 ```
 【描述】
 使用激活码激活AI服务
@@ -7608,14 +7657,14 @@ MeariUser.getInstance().requestActive(BuyServiceType.AI, actCode, cameraInfo.get
 }, this)
 ```
 
-## 16.4 AI服务购买
+## 17.4 AI服务购买
 ```
 【描述】
 购买AI服务和购买云存储服务基本一致
 参数BuyServiceType.CLOUD 替换成 BuyServiceType.AI
 ```
 
-# 17 更新说明
+# 18 更新说明
 
 ## 2025-2-8(5.5.0)
 ```
