@@ -184,7 +184,7 @@ public class PaypalCheckoutActivity extends AppCompatActivity {
     }
 
     private void capturePaymentOrder(String orderId) {
-        MeariUser.getInstance().capturePaymentOrder(servicePackageType, orderId, payType, new IStringResultCallback() {
+        MeariUser.getInstance().capturePaymentOrder(servicePackageType, orderId, payType, " ", new IStringResultCallback() {
             @Override
             public void onSuccess(String result) {
                 Intent intent = new Intent();

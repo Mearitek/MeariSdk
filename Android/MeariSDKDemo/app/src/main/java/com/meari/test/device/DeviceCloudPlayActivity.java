@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.meari.sdk.CloudPlayerController;
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.VideoInfo;
 import com.meari.sdk.bean.CameraInfo;
