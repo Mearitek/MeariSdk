@@ -27,6 +27,7 @@ UIKIT_EXTERN  NSString *const MeariDeviceCloudPromotionNotification; // The devi
 UIKIT_EXTERN NSString *const MeariDeviceAIPromotionNotification;  // The device's AI Promotion is open (设备AI促销活动开启)
 UIKIT_EXTERN NSString *const MeariDeviceCloudSubscriptionNotification; // The device's Cloud Subscription succeed (设备云存储订阅成功)
 UIKIT_EXTERN NSString *const MeariDeviceAISubscriptionNotification; // The device's AI Subscription succeed (设备AI订阅成功)
+UIKIT_EXTERN NSString *const MeariDeviceBabyScreenConnectedChangeNotification; // The baby device status of connecting screen changed (Baby设备屏幕连接状态改变了)
 
 UIKIT_EXTERN  NSString *const MeariDeviceAutoAddNotification; //Automatic device add (设备自动添加)
 UIKIT_EXTERN  NSString *const MeariDeviceAutoAddFailureNotification; //Automatic device add failure (设备自动添加失败)
@@ -59,7 +60,7 @@ UIKIT_EXTERN NSString *const MeariIotCustomerServerRemind ; //Customer service m
 
 UIKIT_EXTERN NSString *const MeariIotCustomerServerChange ; //Customer service change（客服聊天切换客服）
 
-
+UIKIT_EXTERN NSString *const MeariIotDeviceLocationInfoNotification;// device Location Info (设备定位信息)
 
 UIKIT_EXTERN NSString *const MeariIotDeviceAlarmFrequentNotification ; //device alarm frequent （设备报警频繁）
 UIKIT_EXTERN NSString *const MeariIotDeviceAlarmDistortNotification ;//device alarm distort （设备报警误报频繁）

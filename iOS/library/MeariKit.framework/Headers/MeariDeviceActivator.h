@@ -279,6 +279,50 @@ UIKIT_EXTERN  NSString *const MeariDeviceAddNotification; // Add device (添加�
  停止Ap配网
  */
 - (void)stopApConfig:(MeariSuccess)success failure:(MeariFailure)failure;
+
+#pragma mark - LAN Config Static IP
+/**
+ Search LAN to support configuration of IP devices
+ 搜索局域网支持配置IP设备
+
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)startSearchLANDeviceSuccess:(MeariDeviceSuccess_SearchDevice)success failure:(MeariFailure)failure;
+/**
+ Start connecting to the specified IP LAN device
+ 开始连接指定IP局域网设备
+
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)startConnectLANConfigIP:(NSString *)ip success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ Get LAN device IP information
+ 获取局域网设备IP信息
+
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getLANIPInfoSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
+/**
+ Configure static IP information for LAN devices
+ 配置局域网设备静态IP信息
+
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)configLANStaticIP:(BOOL)staticIP ipAddress:(NSString *)ip mask:(NSString *)mask gateway:(NSString *)gateway success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ Disconnect LAN device
+ 断开局域网设备连接
+
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)disconnectLANConfigIP:(MeariSuccess)success failure:(MeariFailure)failure;
+
 /**
  check device status
  向服务器查阅设备的状态

@@ -25,8 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) MeariCloudRecordState recordState; // record state(录制状态)
 
 - (instancetype)initWithSuperView:(AppleOpenGLView *)superView videoID:(NSInteger)videoID superView:(AppleOpenGLView *)superView2 videoID2:(NSInteger)videoID2;
+- (instancetype)initWithSuperView:(AppleOpenGLView *)superView videoID:(NSInteger)videoID;
 - (void)setEncryptedVersion:(NSInteger)version password:(NSString *)password;
 - (void)setLocalPlay:(BOOL)local;
++ (int)transformMultiFileToLocalMp4:(NSString *)tsFile password:(NSString *)password streamID:(NSInteger)streamID filePath:(NSString *)mp4Path;
 + (int)transformMultiFileToLocalMp4:(NSString *)tsFile password:(NSString *)password streamID:(NSInteger)streamID filePath:(NSString *)mp4Path streamID2:(NSInteger )streamID2 filePath2:(NSString *)mp4Path2;
 
 @end

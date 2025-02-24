@@ -45,6 +45,8 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
 
 /** 是否支持智能检测*/
 @property (nonatomic, assign, readonly) BOOL supportIntelligentDetection;
+/** 是否支持智能检测开关*/
+@property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionSwitch;
 /** 是否支持智能检测人形*/
 @property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionPerson;
 /** 是否支持智能检测宠物*/
@@ -59,9 +61,36 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
 @property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionFrame;
 /** 是否支持智能检测布防时间*/
 @property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionTime;
+/** 是否支持智能检测布防时间跨天设置*/
+@property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionTimeCrossDays;
 /** 是否支持智能检测区域*/
 @property (nonatomic, assign, readonly) BOOL supportIntelligentDetectionArea;
 
+/** 是否支持前端智能检测*/
+@property (nonatomic, assign, readonly) BOOL supportFrontIntelligentDetection;
+/** 是否支持前端智能检测开关*/
+@property (nonatomic, assign, readonly) BOOL supportFrontIntelligentDetectionSwitch;
+/** 是否支持前端智能检测人形*/
+@property (nonatomic, assign, readonly) BOOL supportFrontIntelligentDetectionPerson;
+/** 是否支持前端智能检测宠物*/
+@property (nonatomic, assign, readonly) BOOL supportFrontIntelligentDetectionPet;
+/** 是否支持前端智能检测车辆*/
+@property (nonatomic, assign, readonly) BOOL supportFrontIntelligentDetectionCar;
+/** 是否支持前端智能检测包裹*/
+@property (nonatomic, assign, readonly) BOOL supportFrontIntelligentDetectionPackage;
+/** 是否支持前端智能检测烟火*/
+@property (nonatomic, assign, readonly) BOOL supportFrontIntelligentDetectionFire;
+/** 是否支持前端智能检测画框*/
+@property (nonatomic, assign, readonly) BOOL supportFrontIntelligentDetectionFrame;
+/** 是否支持前端智能检测布防时间*/
+@property (nonatomic, assign, readonly) BOOL supportFrontIntelligentDetectionTime;
+/** 是否支持前端智能检测布防时间跨天设置*/
+@property (nonatomic, assign, readonly) BOOL supportFrontIntelligentDetectionTimeCrossDays;
+/** 是否支持前端智能检测区域*/
+@property (nonatomic, assign, readonly) BOOL supportFrontIntelligentDetectionArea;
+
+/** 是否支持4G子设备*/
+@property (nonatomic, assign, readonly) BOOL supportForthGeneration;
 /** 是否NVR支持删除子设备*/
 @property (nonatomic, assign, readonly) BOOL supportDeleteIpc;
 /** 是否支持无线抗干扰*/
@@ -135,6 +164,17 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
  @param failure failure callback (失败回调)
  */
 - (void)bindNvrSubDeviceWithIp:(NSString *)ip user:(NSString *)user password:(NSString *)password success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ Add child device through Nvr (bluetooth binding)
+ Nvr添加子设备(bluetooth 协议设备)
+ 
+ @param type 子设备类型
+ @param sn  sn
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)bindNvrSubDeviceWithBluetoothType:(NSString *)type sn:(NSString *)sn success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
 /**
  Get  Nvr Net Config Key
  获取Nvr添加子设备扫码所需key
@@ -233,6 +273,78 @@ typedef NS_ENUM(NSInteger,MeariDeviceChannelState) {
 @param failure failure callback (失败回调)
 */
 - (void)setSubDeviceIntelligentDetectionArea:(NSArray <MeariDevicePolygonRoiArea *> *)areas success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ 设置设备前端智能侦测开关：Set device smart detection switch
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceFrontIntelligentDetection:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置设备前端智能侦测灵敏度：Set device smart detection level
+@param level  0-低 1-中 2-高
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceFrontIntelligentDetectionLevel:(NSInteger)level success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置设备前端智能侦测人形：Set device smart detection person
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceFrontIntelligentDetectionPerson:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置设备前端智能侦测宠物：Set device smart detection pet
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceFrontIntelligentDetectionPet:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置设备前端智能侦测车辆：Set device smart detection car
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceFrontIntelligentDetectionCar:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置设备前端智能侦测包裹：Set device smart detection package
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceFrontIntelligentDetectionPackage:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置设备前端智能侦测烟火：Set device smart detection Fire
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceFrontIntelligentDetectionFire:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置设备前端智能侦测画框：Set device smart detection frame
+@param enable  0-不允许 1-允许
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceFrontIntelligentDetectionFrame:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置设备前端智能侦测开关：Set device smart detection switch
+@param start  开始时间（00:00）
+@param end  结束时间（00:00）
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceFrontIntelligentDetectionStartTime:(NSString *)start endTime:(NSString *)end success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置设备前端智能侦测区域：Set device smart detection area
+@param areas (X1,Y1,X2,Y2,X3,Y3,X4,Y4) 数组
+@param success Successful callback (成功回调)
+@param failure failure callback (失败回调)
+*/
+- (void)setSubDeviceFrontIntelligentDetectionArea:(NSArray <MeariDevicePolygonRoiArea *> *)areas success:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
  设置设备提示音量：Set device prompt volume
 @param volume  1-100

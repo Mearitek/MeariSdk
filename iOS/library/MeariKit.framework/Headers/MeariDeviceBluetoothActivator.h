@@ -107,12 +107,12 @@ NS_ASSUME_NONNULL_BEGIN
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)addBluetoothDeviceWithWifi:(NSString *)wifi password:(NSString *)password token:(NSString *)token success:(MeariSuccess_String)success failure:(MeariFailure)failure activeDeviceWifiBlock:(MeariSuccess_Dictionary)activeDeviceWifiBlock;
+- (void)addBluetoothDeviceWithWifi:(NSString *)wifi password:(NSString *)password token:(NSString *)token success:(MeariSuccess_String)success failure:(MeariFailure)failure activeDeviceResultBlock:(MeariSuccess_Dictionary)activeDeviceBlock;
 /**
- activate bluetooth device wifi
- 激活蓝牙设备wifi
+ Activate Bluetooth device callback
+ 激活蓝牙设备回调
  */
-@property(nonatomic, copy) MeariSuccess_Dictionary activeDeviceWifiBlock;
+@property(nonatomic, copy) MeariSuccess_Dictionary activeDeviceResultBlock;
 
 /**
  Activate Bluetooth device hotspot
@@ -151,7 +151,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)addForthGDeviceWithAPNInfo:(NSDictionary *)info token:(NSString *)token success:(MeariSuccess_String)success failure:(MeariFailure)failure ;
+- (void)addForthGDeviceWithAPNInfo:(NSDictionary *)info token:(NSString *)token success:(MeariSuccess_String)success failure:(MeariFailure)failure activeDeviceResultBlock:(MeariSuccess_Dictionary)activeDeviceBlock;;
+
 
 #pragma mark - Device Cap & Param
 /**
@@ -181,6 +182,23 @@ NS_ASSUME_NONNULL_BEGIN
  @param failure failure callback (失败回调)
  */
 - (void)setDeviceParamWithDP:(NSString *)dp jsonData:(NSString *)jsonData success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ Get the static IP information of the Bluetooth device
+ 获取蓝牙设备静态IP信息
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getDeviceNetIPInfoWithSuccess:(MeariSuccess_String)success failure:(MeariFailure)failure;
+/**
+ Set the Bluetooth device static IP related parameters
+ 设置蓝牙设备静态IP相关参数
+ 
+ @param info   静态IP参数
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)configDeviceStaticIP:(NSDictionary *)info success:(MeariSuccess_String)success failure:(MeariFailure)failure;
 @end
 
 NS_ASSUME_NONNULL_END

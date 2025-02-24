@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "MeariDeviceEnum.h"
+#import "MeariDevicePetFeedPlanModel.h"
 @class MeariDevice;
-@class MeariDevicePetFeedPlanModel;
 
 #pragma mark -- 亮灯定时计划
 @interface MeariDeviceParamNightLightSchedule : MeariBaseModel
@@ -28,9 +28,11 @@
 #pragma mark -- 夜灯设置
 @interface MeariDeviceParamNightLight : MeariBaseModel
 @property (nonatomic, assign) BOOL on;
+@property (nonatomic, assign) BOOL warmLightOn;
 @property (nonatomic, strong) MeariDeviceParamNightLightSchedule *schedule;
 @property (nonatomic, strong) MeariDeviceParamNightLightColor *color;
 @property (nonatomic, assign) NSInteger mode;
+@property (nonatomic, assign) NSInteger warmLightBrightness;
 @end
 
 #pragma mark -- 自动更新
@@ -195,7 +197,8 @@
 
 @property (nonatomic, strong) NSArray <MeariDevicePolygonRoiArea *> *polygonRoi;
 
-- (instancetype)initWithIotDic:(NSDictionary *)dic device:(MeariDevice *)device;
++ (instancetype)frontModelWithIotDictionary:(NSDictionary *)dic device:(MeariDevice *)device;
++ (instancetype)backModelWithIotDictionary:(NSDictionary *)dic device:(MeariDevice *)device;
 @end
 
 #pragma mark - TimePeriod
@@ -538,8 +541,37 @@
 /** 4G SIM卡运营商 */
 @property (nonatomic, copy) NSString *operators;
 
-+ (NSArray *)arrayWithDict:(NSDictionary *)dict operatorDict:(NSDictionary *)operatorDict;
+/** 4G SIM card Type  0-unknown 1-built-in card 2-external card*/
+/** 4G SIM卡类型 0-未知 1-内置卡 2-外置卡 */
+@property (nonatomic, assign) NSInteger cardType;
+
++ (NSArray *)arrayWithDict:(NSDictionary *)dict operatorDict:(NSDictionary *)operatorDict typeDict:(NSDictionary *)typeDict;
 @end
+@interface MeariDeviceParamSIMCardInfo: MeariBaseModel
+
+@property (nonatomic, copy) NSString *STA;
+@property (nonatomic, copy) NSString *NET;
+@property (nonatomic, copy) NSString *T_F;
+@property (nonatomic, copy) NSString *APN;
+@property (nonatomic, copy) NSString *MCC;
+@property (nonatomic, copy) NSString *MNC;
+@property (nonatomic, copy) NSString *CELL;
+@property (nonatomic, copy) NSString *PCI;
+@property (nonatomic, copy) NSString *EARFCN;
+@property (nonatomic, copy) NSString *BAND;
+@property (nonatomic, copy) NSString *ULBW;
+
+@property (nonatomic, copy) NSString *DLBW;
+@property (nonatomic, copy) NSString *TAC;
+@property (nonatomic, copy) NSString *RSRP;
+@property (nonatomic, copy) NSString *RSRQ;
+@property (nonatomic, copy) NSString *RSSI;
+@property (nonatomic, copy) NSString *SRXLEV;
+@property (nonatomic, copy) NSString *SINR;
+
+- (instancetype)initWithIotDictionary:(NSDictionary *)dic;
+@end
+
 
 @interface MeariDeviceJingle : MeariBaseModel
 @property (nonatomic, assign) BOOL enable;
@@ -600,9 +632,41 @@
 @property (nonatomic, strong) NSString *toTime;
 @end
 
+@interface MeariDeviceParamLocator : MeariBaseModel
+
+@property(nonatomic, assign) MeariLocatorWorkMode workMode;
+
+@property (nonatomic, assign) BOOL buzzerEnable; //蜂鸣器开关
+@property (nonatomic, assign) NSInteger buzzerTime; //蜂鸣器时长
+
+@property (nonatomic, assign) BOOL lightEnable; //警示灯开关
+@property (nonatomic, assign) NSInteger lightTime; //警示灯时长
+
+@end
+ 
+// 逗宠相机
+@interface MeariDeviceParamTeasePet: MeariBaseModel
+/** whether tease pet light  is open    0-close 1-open default 0 */
+/** 逗宠激光灯是否开启  0-关闭 1-打开 默认0 290 */
+@property (nonatomic, assign) NSInteger teaseLightEnable;
+/** ptz mode 0-auto 1-cycle 2-Horizontal 3-vertical  4-custom */
+/** 云台模式 0 手动模式 1 循环逗宠 2 左右逗宠 3 上下逗宠 4 自定义逗宠 */
+@property (nonatomic, assign) MeariDevicePetTeaseMode teasePtzMode;
+/** tease pet time  */
+/** 逗宠时长 最大值10 最小值1，默认3 */
+@property (nonatomic, assign) NSInteger teaseDuration;
+/** tease pet plan  */
+/** 逗宠计划*/
+@property (nonatomic, copy) NSArray<MeariDevicePetFeedPlanModel *> *petTeasePlans;
+/** 激光灯亮度*/
+@property (nonatomic, assign) NSInteger laserBrightness;
+
+@end
+
 #pragma mark -- 设备参数
 @interface MeariDeviceParam : MeariBaseModel
 #pragma mark - Info
+@property (nonatomic, copy) NSString *sn;
 @property (nonatomic, copy) NSString *licenseID;
 @property (nonatomic, copy) NSString *tp;
 @property (nonatomic, copy) NSString *mac;
@@ -618,18 +682,31 @@
 /**AOV Mode Frame Rate */
 /** AOV码流单帧间隔 */
 @property (nonatomic, assign) NSInteger aovModeFrameRate;
+/**Main stream bitrate */
+/** 主码流码率 */
+@property (nonatomic, assign) NSInteger mainStreamBitrate;
 /**Video Frame Rate */
 /** 主码流单帧间隔 */
 @property (nonatomic, assign) NSInteger liveVideoFrameRate;
+/**Dual-SIM devices give priority to card mode */
+/** 双卡设备优先使用卡模式 */
+@property (nonatomic, assign) NSInteger useSIMCardMode;
 /**Dual card devices are currently using card */
 /** 双卡设备当前使用卡 */
 @property (nonatomic, assign) NSInteger currentCardNumber;
+/** Current SIM card registration information */
+/** 当前使用SIM卡注网信息 */
+@property (nonatomic, strong) MeariDeviceParamSIMCardInfo * simCardInfo;
+/** Dual SIM card information array */
+/** 双SIM卡信息数组 */
 @property (nonatomic, strong) NSArray <MeariDeviceParamSIMCard *>* simCard;
 /** Time zone of the device */
 /** 设备时区 */
 @property (nonatomic, copy) NSString *timezone;
 
-
+/** Set the device time zone */
+/** 设置的设备时区 */
+@property (nonatomic, assign) MeariDeviceGMTOffsetTimeZone setTimeZone;
 /** current time */
 /** 设备当前时间 */
 @property (nonatomic, copy) NSString *time_now;
@@ -640,17 +717,22 @@
 /** 湿度 */
 @property (nonatomic, assign) CGFloat humidity;
 
+/**Full-time low power consumption working mode*/
 /**全时低功耗的工作模式*/
 @property (nonatomic, assign) NSInteger lowPowerWorkMode;
+/** Event recording delay (after the event recording is finished, record a certain amount of time more)*/
 /** 事件录像延时（事件录像结束后，再多录一定时间的录像）*/
 @property (nonatomic, assign) NSInteger eventRecordDelay;
+/**Fill light distance configuration*/
 /**补光距离配置*/
 @property (nonatomic, assign) NSInteger fillLightDistance;
+/**Night scene mode configuration*/
 /**夜景模式配置*/
 @property (nonatomic, assign) NSInteger nightSceneMode;
-
+/**Music Play time limit*/
 /**音乐限制时长*/
 @property (nonatomic, assign) NSInteger musicLimitTime;
+/**Music Play mode*/
 /**音乐模式*/
 @property (nonatomic, assign) NSInteger musicPlayMode;
 
@@ -665,6 +747,10 @@
 /** 门铃参数 */
 /** Doorbell parameters */
 @property (nonatomic, strong) MeariDeviceParamBell *bell;
+/** 定位器参数 */
+/** Locator parameters */
+@property (nonatomic, strong) MeariDeviceParamLocator *locator;
+
 /** 设备版本信息 */
 /** device version info */
 @property (nonatomic, strong) MeariDeviceParamFirmInfo *firmInfo;
@@ -696,8 +782,11 @@
 /** 噪声监测参数 */
 @property (nonatomic, strong) MeariDeviceParamDBDetection *decibel_alarm;
 /** Intelligent Detection parameters */
-/** 智能侦测参数 */
+/** 智能侦测参数（后端） */
 @property (nonatomic, strong) MeariDeviceParamIntelligentDetect *intelligent_detect;
+/** Intelligent Detection parameters */
+/** 智能侦测参数（前端） */
+@property (nonatomic, strong) MeariDeviceParamIntelligentDetect *frontIntelligent_detect;
 
 @property (nonatomic, strong) MeariDeviceParamSleepGeographic *home_geographic;
 /**  sleep mode time */
@@ -725,6 +814,7 @@
 @property (nonatomic, strong) MeariDeviceParamNightVision *nightVision;
 
 @property (nonatomic, assign) MeariDeviceFlickerLevel antiflicker;
+@property (nonatomic, assign) MeariDeviceImageQualityLevel imageQualityLevel;
 @property (nonatomic, strong) MeariDeviceCloudStorage *cloud_storage;
 @property (nonatomic, strong) MeariDeviceFlight *flight;
 /**  current network mode */
@@ -796,6 +886,10 @@
 //投食呼唤语音设置,由于投食机涉及3首本地音频，如果选择的是本地的三个音频，则url下发
 //{"url":"https://localhost/voice1.wav"} , default: '{"url":"https://localhost/voice1.wav"}'
 @property (nonatomic, copy) NSString *petVoiceUrl;
+//逗宠相机语音设置,和petVoiceUrl一样内容， 另开一个字段
+//Voice settings for pet camera, same content as petVoiceUrl, open another field
+//{"url":"https://localhost/voice1.wav"} , default: '{"url":"https://localhost/voice1.wav"}'
+@property (nonatomic, copy) NSString *teasePetVoiceUrl;
 //声音报警音设置的URL;
 @property (nonatomic, copy) NSString *alarmVoiceUrl;
 //定时投食计划
@@ -911,6 +1005,9 @@
 @property (nonatomic, assign) BOOL downSleep;
 /** 遮脸 0关 1开*/
 @property (nonatomic, assign) BOOL coverFace;
+/** Check whether there is a baby, 0 - no baby, 1 - baby*/
+/**  检测是否有baby，0表示没有baby 1、表示有baby*/
+@property (nonatomic, assign) BOOL hasBaby;
 /**
  JSON字符串: { "enable":0,"type":{ "person": 0, "pet": 0, "car": 0, "package":0 } }， 其中 :
  1)enable总开关, 整形, 0表示关闭, 1表示开启; 默认为0; 2)type表示需要设置的AI类型开关，0-关闭，1-开启；不支持的类型可以不填。类型定义如下："person"-人形，"car"-车辆，"pet"-宠物， "package"-包裹，"cry"-哭声 ，"bark"-犬吠，"wildlife"-野生动物，"birds"-鸟类，"shot
@@ -918,6 +1015,14 @@
  */
 @property (nonatomic, copy)NSString *aiAnalysisInfo;
 
+@property (nonatomic, strong) MeariDeviceParamTeasePet *teasePet;
+/**
+ 0：表示IPC在线正常
+ 1：表示IPC即将因屏幕连接占用而APP端显示离线
+ 3783的摄像头只有一个网卡，在摄像头被屏幕连接时，APP预览会显示离线，需要APP通过新的DP点显示类似“摄像头已连接屏幕，APP预览失败”的离线提示
+ */
+@property (nonatomic, assign) NSInteger onlineStatus;
+
 - (instancetype)initWithIotDic:(NSDictionary *)dic device:(MeariDevice *)device;
- 
+- (NSDictionary *)safeDictionary:(id)dict;
 @end

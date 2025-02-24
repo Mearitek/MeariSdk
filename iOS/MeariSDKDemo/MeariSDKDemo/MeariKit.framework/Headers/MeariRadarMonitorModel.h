@@ -10,10 +10,10 @@
 #import "MeariMessageInfo.h"
 
 typedef NS_ENUM(NSInteger, MeariRadarSleepType) {
-    MeariRadarSleepTypeNone, // 默认
-    MeariRadarSleepTypeDeep, // 深睡
-    MeariRadarSleepTypeLight, // 浅睡
-    MeariRadarSleepTypeActive // 活动中
+    MeariRadarSleepTypeNone = 0, // 默认
+    MeariRadarSleepTypeDeep = 1, // 深睡
+    MeariRadarSleepTypeLight = 2, // 浅睡
+    MeariRadarSleepTypeActive = 4 // 清醒
 };
 
 NS_ASSUME_NONNULL_BEGIN
@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger lightSleep;
 //睡眠时长（深睡） 分钟
 @property (nonatomic, assign) NSInteger deepSleep;
+//睡眠中清醒时长 分钟
+@property (nonatomic, assign) NSInteger awake;
 // 开始时间戳
 @property (nonatomic, assign) NSInteger startTime;
 // 睡眠时段 （按分钟填充，默认值为 0，1：深睡，2：浅睡，3：没睡觉）
@@ -66,6 +68,7 @@ typeName 为 "sleepState" ，minuteData返回数据格式｛"str":1709521746, "e
 @property (nonatomic, assign) NSInteger bodyMoveWeekCount;
 @property (nonatomic, assign) NSInteger lightWeekSleep;
 @property (nonatomic, assign) NSInteger deepWeekSleep;
+@property (nonatomic, assign) NSInteger sleepCount;
 @end
 
 @interface MeariRadarDayMinuteDataModel : MeariBaseModel
@@ -79,10 +82,16 @@ typeName 为 "sleepState" ，minuteData返回数据格式｛"str":1709521746, "e
 @interface MeariRadarSleepWeekModel : MeariBaseModel
 @property (nonatomic, assign) NSInteger deepSleep;
 @property (nonatomic, assign) NSInteger lightSleep;
+@property (nonatomic, assign) NSInteger awake; //睡眠中清醒时长 分钟
 //当天总睡眠时长  分钟
 @property (nonatomic, assign) NSInteger sumSleep;
 //日期
 @property (nonatomic, strong) NSString *day;
+// 睡眠时段 类型数组
+@property (nonatomic, copy) NSMutableArray<NSString *> *sleepTimeArray;
+// 睡眠时段 （按分钟填充，默认值为 0，1：深睡，2：浅睡，3：没睡觉）
+@property (nonatomic, copy) NSString *sleepTimeLine;
+
 @end
 
 @interface MeariRadarMonitorBodySubModel : MeariBaseModel

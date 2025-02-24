@@ -11,6 +11,7 @@
 typedef NS_ENUM(NSInteger, MeariAddSubDeviceType){
     MeariAddSubDeviceTypeMeari = 0,
     MeariAddSubDeviceTypeOnvif = 1,
+    MeariAddSubDeviceTypeBluetooth = 2,
 };
 typedef NS_ENUM(NSInteger, MeariAddSubDeviceStatus){
     MeariAddSubDeviceStatusNone = 0,

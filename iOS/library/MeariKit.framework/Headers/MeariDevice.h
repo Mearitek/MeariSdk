@@ -11,6 +11,8 @@
 #import <MeariKit/MeariDeviceParam.h>
 #import <MeariKit/MeariDeviceControl.h>
 #import <MeariKit/MeariDeviceEnum.h>
+#import <MeariKit/MeariPetInfo.h>
+#import <MeariKit/MeariTeaseTimeModel.h>
 @interface MeariDevice : MeariBaseModel<MeariDeviceControl>
 + (instancetype)deviceWithDeviceId:(NSInteger)deviceId;
 + (instancetype)deviceWithDeviceSn:(NSString *)sn;
@@ -22,7 +24,9 @@
 /** device params*/
 /** 控制功能的参数信息*/
 @property (nonatomic, strong) MeariDeviceParam *param;
-
+/** Pet Info*/
+/** 宠物信息*/
+@property (nonatomic, strong) MeariPetInfo *pet;
 
 /** normal device*/
 /** 是否是普通摄像机*/
@@ -33,6 +37,9 @@
 /** doorbell*/
 /** 是否是门铃摄像机*/
 @property (nonatomic, assign, readonly, getter = isIpcBell) BOOL ipcBell;
+/** Battery Ccamera*/
+/** 是否是电池摄像机*/
+@property (nonatomic, assign, readonly, getter = isIpcBattery) BOOL ipcBattery;
 /** chime*/
 /** 中继铃铛 */
 @property (nonatomic, assign, readonly, getter = isChime) BOOL chime;
@@ -57,7 +64,9 @@
 /** petfeeder*/
 /** 宠物投食器*/
 @property (nonatomic, assign, readonly, getter = isPetfeeder) BOOL petfeeder;
-
+/** Pet Locator*/
+/** 宠物定位器 */
+@property (nonatomic, assign, readonly, getter = isPetLocator) BOOL petLocator;
 /** Whether the device is support iot*/
 /** 是否iOT设备*/
 @property (nonatomic, assign) BOOL iotDevice;
@@ -121,6 +130,10 @@
 
 /**是否支持AOV模式下 回放速度的设定 */
 - (NSInteger)supportAovPlaybackSpeed;
+
+/** Get the stream type of playback for device*/
+/** 获取支持的回放码流类型*/
+- (NSArray *)supportPlayBackVideoStreams;
 
 
 /** Whether to support local server */
@@ -208,20 +221,6 @@
 /** 支持回放视频倍速*/
 @property (nonatomic, assign, readonly) NSArray *supportPlayBackSpeed;
 
-/** 是否为宠物投食机*/
-@property (nonatomic, assign, readonly) BOOL isPetCamera;
-/** 是否为宠物喂食器*/
-@property (nonatomic, assign, readonly) BOOL isPetFeedCamera;
-/** 是否支持一键投食*/
-@property (nonatomic, assign, readonly) BOOL supportPetFeed;
-/** 是否支持投食计划*/
-@property (nonatomic, assign, readonly) BOOL supportPetFeedPlan;
-/** 是否支持设置播放抛投效果音(固件写死的提示音，非主人留言)*/
-@property (nonatomic, assign, readonly) BOOL supportPetFeedVoice;
-/** 是否支持主人投食留言语音设置*/
-@property (nonatomic, assign, readonly) BOOL supportPetMasterMessageSetting;
-
-
 /** 支持狩猎相机工作模式设置  */
 @property (nonatomic, assign, readonly) BOOL supportVopSetting ;
 /** 支持狩猎相机拍照管理设置  */
@@ -254,8 +253,7 @@
 @property (nonatomic, assign, readonly) BOOL supportPrtpPirSetting;
 /**门铃绑定相关，是否显示门铃关联 */
 @property (nonatomic, assign, readonly) BOOL supportRelayFunction;
-/** 是否支持切换WIFI */
-@property (nonatomic, assign, readonly) BOOL supportSwitchWifi;
+
 /** 是否支持设置安全访问密码*/
 @property (nonatomic, assign, readonly) BOOL supportDevicePassword;
 /** 是否支持犬吠检测 */
@@ -266,6 +264,11 @@
 
 /** 支持双目 */
 @property (nonatomic, assign, readonly) BOOL supportMultiCamera;
+
+/** 是否支持IPC离线时APP弹出提示框 */
+@property (nonatomic, assign, readonly) BOOL supportAlertTipWhenOffline;
+/** 支持SMB cloud 2.0 */
+@property (nonatomic, assign, readonly) BOOL supportCSFCamera;
 
 -(NSString *)multiCameraParams;
 /**是否支持AOV模式 */
@@ -297,13 +300,17 @@
 /**是否支持定时计划*/
 @property (nonatomic, assign, readonly) BOOL supportRecordTimePlan;
 
+/**是否支持4G流量终身免费*/
+@property (nonatomic, assign, readonly) BOOL support4GTrafficLifetimeFree;
+
 /** 支持PTZ守望位等待时间数组*/
 - (NSArray <NSNumber *>*)supportptzWatchPositionTimeArray;
 /** 支持AOV视频帧率数组 0-关闭*/
 - (NSArray <NSNumber *>*)supportAovModeFrameRateArray;
 /** 支持实时视频帧率数组*/
 - (NSArray <NSNumber *>*)supportLiveVideoFrameRateArray;
-
+/** 支持设置码率数组*/
+- (NSArray <NSNumber *>*)supportSetBitrateArray;
 /** 支持音乐限制时间数组(0-不限时) */
 - (NSArray <NSNumber *>*)supportMusicLimitTimeArray;
 /** 是否支持毫米波雷达 bit0=1支持开关 bit1:呼吸使能 bit2:心跳使能 bit3:身体状态使能 bit4:身体运动状态量*/
@@ -312,6 +319,8 @@
 - (BOOL)supportMrdaHeartBeatEnable;
 - (BOOL)supportMrdaConditionEnable;
 - (BOOL)supportMrdaMotionStateQuantity; 
+/** 支持NVR 添加蓝牙子设备*/
+- (BOOL)supportNVRAddBluetoothSubDevice;
 @end
 
 @interface MeariDeviceList : MeariBaseModel
@@ -357,6 +366,9 @@
 /** prtpDevice  */
 /** prtp设备存本地*/
 @property (nonatomic, strong) NSArray <MeariDevice *> *prtpDevices;
+/** petlocator */
+/** 宠物定位器 */
+@property(nonatomic, strong) NSArray <MeariDevice *> *petLocators;
 
 - (NSMutableArray<MeariDevice *> *)allDeviceList;
 @end

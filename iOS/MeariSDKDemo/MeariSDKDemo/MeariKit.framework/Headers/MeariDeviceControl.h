@@ -12,13 +12,13 @@
 #import <UIKit/UIKit.h>
 #import "MeariBlock.h"
 #import "MeariDeviceEnum.h"
+#import "MeariDevicePetFeedPlanModel.h"
 
 @class MeariDevice;
 @class MeariPlayView;
 @class MeariDeviceTime;
 @class MeariDeviceHostMessage;
 @class MeariChimeRingInfo;
-@class MeariDevicePetFeedPlanModel;
 
 typedef void(^MeariDeviceDisconnect)(void);
 typedef void(^MeariDeviceSuccess_Online)(BOOL online);
@@ -49,6 +49,7 @@ typedef void(^MeariDeviceSuccess_PlayBackLevel)(MeariDeviceRecordDuration level)
 typedef void(^MeariDeviceSuccess_DetectFace)(int quality);
 typedef void(^MeariDeviceSuccess_PetVoiceUpload)(MeariDeviceHostMessage *hostMessage);
 typedef void(^MeariDeviceSuccess_PrtpTBatterySP)(CGFloat temperature, NSInteger isCharging , NSInteger percent);
+typedef void(^MeariDeviceSuccess_SIMCardInfo)(MeariDeviceParamSIMCardInfo *info);
 /**
  search mode for searching device
 
@@ -507,6 +508,13 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  */
 - (void)getDownloadPlaybackVideoPercent:(void(^)(NSInteger percent))success failure:(MeariFailure)failure;
 
+/**
+  set play back video Stream，It takes effect only after the “stopPlackbackSDCardSuccess” and "startPlackbackSDCardWithPlayView" method （设置回放分辨率，需要停止当前回放，重新开启回放才生效）
+ @param videoStream MeariDeviceVideoStream.value from camera.supportPlayBackVideoStreams (回放分辨率 从camera.supportPlayBackVideoStreams 获取)
+
+ */
+- (void)setPlaybackVideoStream:(MeariDeviceVideoStream)videoStream;
+
 #pragma mark -- 云回放
 
 /**
@@ -897,13 +905,21 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 #pragma mark - Flicker
 
 /**
- set  Flicker(设置抗闪烁)
+ Set Flicker(设置抗闪烁)
  
  @param level Flicker level
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
 - (void)setFLickerLevel:(MeariDeviceFlickerLevel)level success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ Set Image Quality Level(设置图像质量等级)
+ 
+ @param level image quality level
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setImageQualityLevel:(MeariDeviceImageQualityLevel)level success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 #pragma mark - AutoUpdate
 
@@ -973,6 +989,14 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  */
 -(void)setFillLightSwitch:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure ;
 
+/**
+ 暖光灯亮度调节
+ 
+ @param value 亮度值，取值范围是1-100
+ @param success 成功回调
+ @param failure 失败回调
+ */
+-(void)setWarmLightValue:(NSInteger)value success:(MeariSuccess)success failure:(MeariFailure)failure;
 #pragma mark -- 日夜模式
 
 /**
@@ -1122,6 +1146,15 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param failure failure callback (失败回调)
  */
 - (void)setSleepBatteryThreshold:(NSInteger)threshold success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ //Set the device bitrate
+ // 设置设备码率
+ 
+ @param rate frame rate(帧率)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setDeviceBitrate:(NSInteger)rate success:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
  //Set the target frame rate of the device's main stream
  // 设置设备主码流目标帧率
@@ -1914,9 +1947,11 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 /**
  Get pet camera message list (获取宠物摄像机留言列表)
  
+ @param deviceType  0 - pet/alarm voice list   1- tease pet device voice list
  @param success Successful callback, URL of the file containing the message (成功回调)
  @param failure failure callback (失败回调)
  */
+- (void)getVoiceListSuccess:(MeariDeviceSuccess_HostMessages)success withURL:(NSString *)url deviceType:(NSNumber *)deviceType failure:(MeariFailure)failure;
 - (void)getPetVoiceListSuccess:(MeariDeviceSuccess_HostMessages)success failure:(MeariFailure)failure;
 
 /**
@@ -2128,6 +2163,13 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 /// @param success 成功回调
 /// @param failure 失败回调
 - (void)setFloodCameraVoiceLightAlarmType:(MeariDeviceVoiceLightType)type success:(MeariSuccess)success failure:(MeariFailure)failure;
+/// 设置声光报警开关和事件类型
+/// Set the sound and light alarm switch and event type
+/// @param enable 是否开启
+/// @param type 事件类型
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setVoiceLightAlarmEnable:(BOOL)enable type:(MeariDeviceVoiceLightType)type success:(MeariSuccess)success failure:(MeariFailure)failure;
 /// 设置声光报警铃声类型
 /// Set sound and light alarm ringtone type
 /// @param type 类型
@@ -2236,6 +2278,72 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 /// @param success 成功回调
 /// @param failure 失败回调
 -(void)setPetDetection:(BOOL)isOn success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/// 逗宠计划
+/// Pet tease plan
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setPetTeasePlans:(NSArray<MeariDevicePetFeedPlanModel *> *)plans success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/// 宠物激光灯开关
+/// Pet tease light switch
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setPetTeaseLightEnable:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/// 逗宠ptz  模式设置
+/// Pet tease ptz mode
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setPetTeasePtzMode:(MeariDevicePetTeaseMode)mode success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/// 获取逗宠激光灯开关状态
+/// get tease pet camera  light status
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)getPetTeaseLightEnableSuccess:(MeariSuccess)success failure:(MeariFailure)failure;
+
+// 设置逗宠时长
+// Set the teasing duration
+/// @param duration duration
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setPetTeaseDuration:(NSInteger)duration success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/// 逗宠语音设置
+/// Tease Pet Voice Settings
+/// @param voiceUrl voice url
+/// @param success 成功回调
+/// @param failure 失败回调
+- (void)setTeasePetVoiceWithVoiceUrl:(NSString *)voiceUrl success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ Get pet camera message list (获取宠物摄像机留言列表)
+ 
+ @param success Successful callback, URL of the file containing the message (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)getTeasePetVoiceListSuccess:(MeariDeviceSuccess_HostMessages)success failure:(MeariFailure)failure;
+
+/// Upload tease pet camera voice message (上传逗宠摄像机留言)
+/// @param voiceName name
+/// @param voicePath path
+/// @param success Successful callback, URL of the file containing the message (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)uploadTeasePetVoiceWithVoiceName:(NSString *)voiceName voicePath:(NSString *)voicePath success:(MeariDeviceSuccess_PetVoiceUpload)success failure:(MeariFailure)failure;
+
+/// Delete pet voice message (删除语音留言)
+/// @param voiceId voice id
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)deleteTeasePetVoiceWithVoiceId:(NSString *)voiceId success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/// 设置激光灯亮度
+/// @param brightness 亮度
+/// @param success Successful callback (成功回调)
+/// @param failure failure callback (失败回调)
+- (void)setLaserBrightness:(NSInteger)brightness success:(MeariSuccess)success failure:(MeariFailure)failure;
+
 #pragma mark --- chime (中继)
 /**
  删除中继
@@ -2474,6 +2582,15 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
  @param failure failure callback (失败回调)
  */
 - (void)setTimeZoneAuto:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ Set device time zone
+ 设置设备时区
+ 
+ @param timeZone Time zone enumeration value (时区枚举值)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)setTimeZone:(MeariDeviceGMTOffsetTimeZone)timeZone success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  Set tamper alarm
@@ -3044,13 +3161,15 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 ///   - failure: 失败回调
 -(void)getVitalSignsDataSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
-/// 雷达波生命体征数据上报服务器
+/// 获取睡眠数据
+/// Obtaining radar wave vital signs data
 /// - Parameters:
 ///   - success: 成功回调
 ///   - failure: 失败回调
 -(void)getRadarWaveVitalSignsSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
 /// 设置遮脸报警
+/// Set up face cover alarm
 /// - Parameters:
 ///   - enable: 开关
 ///   - success: 成功回调
@@ -3058,11 +3177,20 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 - (void)setCoverFaceEnable:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /// 设置趴睡报警
+/// Set up a sleeping alarm
 /// - Parameters:
 ///   - enable: 开关
 ///   - success: 成功回调
 ///   - failure: 失败回调
 - (void)setDownSleepEnable:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/// 是否有baby出现
+/// Is there a baby?
+/// - Parameters:
+///   - success: 成功回调
+///   - failure: 失败回调
+- (void)getHasBabySuccess:(MeariSuccess_BOOL)success failure:(MeariFailure)failure;
+
 /*
  变倍聚焦控制
  scale代表控制相机缩放，0代表缩放-，1代表缩放+
@@ -3084,5 +3212,78 @@ typedef void(^MeariDeviceSuccess_ChimeAlertType)(MeariDeviceChimeAlert chimeAler
 ///   - success: 成功回调
 ///   - failure: 失败回调
 - (void)setAIAnalysisEnable:(BOOL)enable type:(MeariDeviceAIAnalysisType)type typeEnable:(BOOL)typeEnable success:(MeariSuccess)success failure:(MeariFailure)failure;
+/** 
+ 双卡4G设备使用SIM卡模式
+ @param mode 使用SIM卡模式
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setUseSIMCardMode:(MeariDeviceUseSIMCardMode)mode success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 获取双卡4G设备使用SIM卡信息
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)getSIMCardInfoSuccess:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ 获取SIM卡运营商信息
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)getSIMCardOperatorsWithSimID:(NSString *)simID success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ 获取SIM卡网络信息
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)getSIMCardNetworkInfoSuccess:(MeariDeviceSuccess_SIMCardInfo)success failure:(MeariFailure)failure;
+
+#pragma mark - PetLocator
+/**
+ 设置Wifi围栏
+ @param enable  是否开启
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setWifiFencePowerSavingMode:(BOOL)enable fenceList:(NSArray *)list success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置定位轨迹上报工作模式
+ @param mode  独自外出模式 - 0,陪同模式 - 1,在家模式- 2.
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setLocatorWorkMode:(MeariLocatorWorkMode)mode success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置定位上报模式
+ @param mode  APP定位查看模式
+ @param userID 用户ID
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setLocationReportMode:(MeariLocatorReportMode)mode userID:(NSString *)userID success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置定位蜂鸣器
+ @param enable  是否开启
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setLocationBuzzerEnable:(NSInteger)enable time:(NSInteger)second success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置宠物寻回指示灯
+ @param enable  是否开启
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setFindPetLightEnable:(NSInteger)enable time:(NSInteger)second success:(MeariSuccess)success failure:(MeariFailure)failure;
+/**
+ 设置蓝牙开关
+ @param enable  是否开启
+ @param success 成功回调
+ @param failure 失败回调
+ */
+- (void)setLocationBluetooth:(BOOL)enable success:(MeariSuccess)success failure:(MeariFailure)failure;
+
 @end
 #endif /* MeariDeviceControl_h */

@@ -7,7 +7,7 @@
 //
 
 #import "LoginVC.h"
-#import <MJExtension/MJExtension.h>
+//#import <MJExtension/MJExtension.h>
 @interface LoginVC ()
 @property (weak, nonatomic) IBOutlet UITextField *accountTF;
 @property (weak, nonatomic) IBOutlet UIButton *loginInButton;
@@ -64,8 +64,81 @@
     
     //必须先通过云云对接 通过自己的服务器和Meari服务器交互 登录之后 才能使用登录接口
     //将从Meari服务器获取的数据传递给App
+    NSDictionary *loginDic = @{
+        @"result": @{
+            @"updateDate": @"",
+            @"jpushAlias": @"",
+            @"tyPassword": @"",
+            @"iosUserId": @"",
+            @"sourceApp": @"",
+            @"loginType": @0,
+            @"userRecycle": @"",
+            @"iotType": @0,
+            @"userID": @"",
+            @"iot": @{
+                @"pfKey": @{
+                    @"accessid": @"",
+                    @"platformSignature": @"",
+                    @"platformDomain": @"",
+                    @"accesskey": @"",
+                    @"openapiDomain": @""
+                },
+                @"mqtt_aws": @{
+                    @"subTopic": @"",
+                    @"clientId": @"",
+                    @"iotPolicyName": @"",
+                    @"port": @"",
+                    @"host": @"",
+                    @"cognitoRegion": @"",
+                    @"certId": @"",
+                    @"cognitoPoolId": @""
+                },
+                @"mqtt": @{
+                    @"subTopic": @"",
+                    @"clientId": @"",
+                    @"keepalive": @"",
+                    @"dn": @"",
+                    @"iotId": @"",
+                    @"deviceSecret": @"",
+                    @"protocol": @"",
+                    @"port": @"",
+                    @"crtUrls": @"",
+                    @"host": @"",
+                    @"pk": @"b",
+                    @"region": @"",
+                    @"iotToken": @""
+                },
+                @"iotVersion": @1
+            },
+            @"password": @"",
+            @"lngType": @"",
+            @"countryCode": @"CN",
+            @"imageUrl": @"",
+            @"phoneCode": @"86",
+            @"emailAuthFlag": @"0",
+            @"createDate": @"",
+            @"nickName": @"",
+            @"openID": @"",
+            @"deviceSecretDesk": @"",
+            @"soundFlag": @0,
+            @"iotDeviceName": @"",
+            @"thirdLoginId": @"",
+            @"iotProductKey": @"",
+            @"userToken": @"",
+            @"deviceSecret": @"",
+            @"iotId": @"",
+            @"userAccount": @"",
+            @"ringDuration": @"",
+            @"iotDeviceSecret": @"",
+            @"timeFlag": @"",
+            @"promotion": @0
+        },
+        @"t": @"1739949912464",
+        @"resultCode": @"1001"
+    };
 
-    [[MeariUser sharedInstance] loginUidWithExtraParamInfo:@{} complete:^(NSError *error) {
+    
+    [[MeariUser sharedInstance] loginUidWithExtraParamInfo:loginDic complete:^(NSError *error) {
         if (!error) {
             NSLog(@"login Success");
         }else {

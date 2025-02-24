@@ -29,7 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) MeariCloudStatus playState; // play state (播放状态)
 @property (nonatomic, assign, readonly) MeariCloudRecordState recordState; // record state(录制状态)
 @property (nonatomic, assign) BOOL muted; // mute (是否静音)
-
+//设置鱼眼的矫正信息
+- (void)setFisheyeInfo:(CGFloat)ra rb:(CGFloat)rb x:(CGFloat)x y:(CGFloat)y;
 //下载m3u8 转为ts文件
 //会堵塞当前线程
 + (int)downloadUrlToTsFile:(NSURL *)url password:(NSString *)password filePath:(NSString *)localPath;

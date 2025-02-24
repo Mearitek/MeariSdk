@@ -183,6 +183,10 @@ typedef NS_ENUM(NSInteger, MeariUserCode) {
     MeariUserCodeFamilyNameExist        = 1114,
     
     MeariUserCodeLoginLimit             = 1224,
+    MeariUserRefundForbidden            = 1250,
+    MeariUserRefundExcessive            = 1251,
+    MeariUserCodeDeviceTransferAccountError = 3005,
+    MeariUserCodeDeviceTransferAccountLoading = 3009,
     
     MeariUserCodeNetworkProxyError      = 9999,//自定义code 网络代理
 };

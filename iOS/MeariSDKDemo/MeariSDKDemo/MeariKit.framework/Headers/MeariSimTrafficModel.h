@@ -77,6 +77,7 @@
 @property(nonatomic, copy) NSString *serverEndTime; //4G服务到期时间
 @property(nonatomic, assign) NSInteger serverEndTimeAdventPeriod;  //4G服务是否到期
 @property(nonatomic, assign) NSInteger trialType; //是否是试用套餐
+@property(nonatomic, assign) NSInteger packageTime;    //当前正在使用套餐时长 (毫秒值)，返回此字段表明已免费获得该时长的流量服务
 @end
 
 @interface MeariSimApnModel : NSObject

@@ -21,10 +21,12 @@ typedef NS_ENUM (NSInteger, MeariPackagePayType) {
     MeariPackagePayTypePaypal   = 2,  // Paypal
     MeariPackagePayTypeGoogle   = 3,  // 谷歌支付
     MeariPackagePayTypeApple    = 4,  // 苹果支付
+    MeariPackagePayTypeRussianPay    = 6,  // 俄罗斯支付支付
 };
 @class MeariTrafficSubscriberQuota;
 @interface MeariBasePackage : MeariBaseModel
-@property (nonatomic, copy) NSString *packageId;    // 套餐ID
+@property (nonatomic, copy) NSString *packageId;    // 套餐ID（如果是打折套餐则是打折套餐）
+@property (nonatomic, copy) NSString *originalPackageId;  // 原始套餐ID
 @property (nonatomic, copy) NSString *mealType;     //（M是月套餐，S是季套餐）
 @property (nonatomic, copy) NSString *mealQuantity;   // 套餐时长数量
 @property (nonatomic, assign) NSInteger mealCount;   // 套餐时长数量 int
@@ -59,6 +61,14 @@ typedef NS_ENUM (NSInteger, MeariPackagePayType) {
 @property (nonatomic, assign) NSInteger startTime;  // 折扣开始时间
 
 @property (nonatomic, assign) NSInteger endTime;    // 折扣结束时间
+
+@property (nonatomic, copy) NSString *couponOfferId; // 折扣标识符（用于苹果支付）
+
+@property (nonatomic, copy) NSString *couponSign;  // 折扣签名（用于苹果支付）
+
+@property (nonatomic, copy) NSString *couponNonce; // 生成签名的nonce（用于苹果支付）
+
+@property (nonatomic, assign) NSInteger couponTimestamp; // 生成签名的时间戳（用于苹果支付）
 
 @property (nonatomic, copy) NSString *groupFlag; // 订阅群组标识
 @property (nonatomic, assign, readonly) BOOL isSubscription; //是否是订阅,YES：表示是订阅，NO表示非订阅
@@ -117,6 +127,7 @@ typedef NS_ENUM (NSInteger, MeariPackagePayType) {
 
 @interface MeariTrialOrder : MeariTrialPackage
 @property(nonatomic, copy) NSString *orderNum;
+@property (nonatomic, assign) NSInteger trialTime;
 
 +(instancetype)trialOrderWithPackage:(MeariTrialPackage *)package;
 @end

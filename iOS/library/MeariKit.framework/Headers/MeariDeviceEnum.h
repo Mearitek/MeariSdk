@@ -60,6 +60,7 @@ typedef NS_ENUM(NSInteger, MeariDeviceSubType) {
     MeariDeviceSubTypeIpcPhotoBell = 15,
     MeariDeviceSubTypeIpcHunting = 16,
     MeariDeviceSubTypeBase = 17,
+    MeariDeviceSubTypePetLocator = 19,
 };
 
 #pragma mark - Preview
@@ -99,6 +100,7 @@ typedef NS_ENUM (NSInteger, MeariDeviceVideoStream) {
     MeariDeviceVideoStream_NEW_HD = 101,
     MeariDeviceVideoStream_NEW_FHD = 102,
     MeariDeviceVideoStream_NEW_UHD = 103,
+    MeariDeviceVideoStream_NEW_4K  = 104,
     MeariDeviceVideoStream_NEW_AUTO = 105,
     MeariDeviceVideoStreamNone = 999,
 };
@@ -167,6 +169,9 @@ typedef NS_ENUM (NSUInteger, MeariDeviceSupportEventRecordDelay) {
     MeariDeviceSupportEventRecordDelayNone = 0,             //not support (不支持)
     MeariDeviceSupportEventRecordDelayThreeS = 0b1,         //3s
     MeariDeviceSupportEventRecordDelaySixS = 0b10,          //6s
+    MeariDeviceSupportEventRecordDelayTenS = 0b100,      //10s
+    MeariDeviceSupportEventRecordDelayTwentyS = 0b1000,     //20s
+    MeariDeviceSupportEventRecordDelayThirtyS = 0b10000,     //30s
 };
 //补光灯距离
 typedef NS_ENUM (NSUInteger, MeariDeviceSupportFillLightDistance) {
@@ -303,6 +308,8 @@ typedef NS_ENUM(NSUInteger, MeariDeviceVoiceLightAlarmType) {
     MeariDeviceVoiceLightAlarmTypeTotal = 0b1, // 是否支持声光报警总开关
     MeariDeviceVoiceLightAlarmTypePlan = 0b10, // 是否支持声光报警时间段
     MeariDeviceVoiceLightAlarmTypeRing = 0b100, // 是否支持声光报警铃声
+    MeariDeviceVoiceLightAlarmTypeVoice = 0b1000, // 是否支持声报警
+    MeariDeviceVoiceLightAlarmTypeLight = 0b10000, // 是否支持光报警
 };
 
 // 支持回放快进速率
@@ -374,6 +381,19 @@ typedef NS_ENUM(NSInteger, MeariDeviceFlickerLevel) {
     MeariDeviceFlickerLevelAuto    = 3, // Auto
 };
 
+/** Device image quality level*/
+/** 设备图像质量等级 */
+typedef NS_ENUM(NSInteger, MeariDeviceImageQualityLevel) {
+    MeariDeviceImageQualityLevelOne     = 0, // 低
+    MeariDeviceImageQualityLevelTwo     = 1,
+    MeariDeviceImageQualityLevelThree   = 2,
+    MeariDeviceImageQualityLevelFour    = 3,
+    MeariDeviceImageQualityLevelFive    = 4, // 中等
+    MeariDeviceImageQualityLevelSix     = 5,
+    MeariDeviceImageQualityLevelSeven   = 6,
+    MeariDeviceImageQualityLevelEight   = 7,
+    MeariDeviceImageQualityLevelNine    = 8, // 高
+};
 /** sdcard record duration*/
 /** 设备录像时长 */
 typedef NS_ENUM(NSInteger, MeariDeviceRecordDuration) {
@@ -556,4 +576,104 @@ typedef NS_ENUM (NSInteger, MeariDeviceAIAnalysisType) {
     MeariDeviceAIAnalysisBabyCoverFace = 11, //婴儿遮挡
     MeariDeviceAIAnalysisBabyLieDown = 12, //婴儿趴睡
 };
+//SIM卡选择
+typedef NS_ENUM (NSUInteger, MeariDeviceUseSIMCardMode) {
+    MeariDeviceUseSIMCardModeAuto = 0, // auto mode (自动改变)
+    MeariDeviceUseSIMCardModeFirst, // First Card (卡1)
+    MeariDeviceUseSIMCardModeSecond, // Second Card (卡2)
+};
+
+typedef NS_ENUM (NSInteger, MeariLocatorReportMode) {
+    MeariLocatorReportModeBackground = 0, //后台上报模式，APP未查看
+    MeariLocatorReportModeNormal = 1,  // 地图模式，按APP请求上报
+    MeariLocatorReportModeRealTime = 2, //实时模式，按APP请求上报，上报间隔30s
+    MeariLocatorReportModeTracking = 3 //追踪模式,按APP请求上报，上报间隔5s
+};
+
+typedef NS_ENUM (NSInteger, MeariLocatorSupportWorkMode) {
+    MeariLocatorSupportAwayAloneWorkMode = 0b1, // Away alone mode (独自外出模式)
+    MeariLocatorSupportAccompanyWorkMode = 0b10,  // Escort mode (陪同模式)
+    MeariLocatorSupportHomeWorkMode    = 0b100,  // at home mode (在家模式)
+};
+typedef NS_ENUM (NSInteger, MeariLocatorWorkMode) {
+    MeariLocatorWorkModeAwayAlone    =  0,     // Away alone mode (独自外出模式)
+    MeariLocatorWorkModeAccompany = 1,         // Escort mode (陪同模式)
+    MeariLocatorWorkModeHome = 2,              // at home mode (在家模式)
+};
+typedef NS_ENUM (NSInteger, MeariLocatorLocationSupportMode) {
+    MeariLocatorLocationSupportGPS          = 0b1,     // 支持GPS定位
+    MeariLocatorLocationSupportWifi         = 0b10,    // 支持WiFi定位
+    MeariLocatorLocationSupportBaseStation  = 0b100,   // 支持基站定位
+};
+typedef NS_ENUM (NSInteger, MeariDevicePetType) {
+    MeariDevicePetTypeNormal = 1,  //Pet food dispenser
+    MeariDevicePetTypeFeed   = 2,  //pet feeder
+    MeariDevicePetTypeTease  = 3,  //Pet teasing camera
+};
+
+typedef NS_ENUM(NSInteger, MeariWarmLightFuncType) {
+    MeariWarmLightFuncNotSupport           = 0,      //不支持
+    MeariWarmLightFuncSupportLampSwitch    = 0b1,    //支持灯控开关
+    MeariWarmLightFuncSupportScheduleTime  = 0b10,   //支持定时开启
+    MeariWarmLightFuncSupportLightMode     = 0b100,  //支持亮灯模式
+    MeariWarmLightFuncSupportBrightness    = 0b1000, //支持亮度
+};
+typedef NS_ENUM(NSInteger, MeariSmartCareItemType) {
+    MeariSmartCareItemTypeDownSleep           = 1,      // 趴睡
+    MeariSmartCareItemTypeCoverFace           = 2,      // 遮脸
+    MeariSmartCareItemTypeCry                 = 3,      // 哭声
+    MeariSmartCareItemTypeNightLight          = 4,      // 趴睡
+    MeariSmartCareItemTypeMotion              = 5,      // 移动侦测
+    MeariSmartCareItemTypeTrack               = 6,      // 移动追踪
+    MeariSmartCareItemTypeNoise               = 7,      // 噪声
+};
+typedef NS_OPTIONS(NSUInteger, MeariDeviceLightMode) {
+    MeariDeviceLightModeAll = 0, //
+    MeariDeviceLightModeNone = 0b1, // 全部不支持
+    MeariDeviceLightModeAlwaysLight = 0b10, // 常量
+    MeariDeviceLightModeMarquee = 0b100, // 跑马灯
+    MeariDeviceLightModeBreath = 0b1000, // 呼吸灯
+};
+typedef NS_OPTIONS(NSUInteger, MeariDevicePetBatteryMode) {
+    MeariDevicePetBatteryModeNone = 0, // 不支持电量显示
+    MeariDevicePetBatteryModeGrid = 1// 格子 显示电池
+};
+
+typedef NS_ENUM(NSInteger, MeariDeviceGMTOffsetTimeZone) {
+    MeariDeviceGMTOffsetTimeZoneMinus12     = 0,      // GMT-12:00
+    MeariDeviceGMTOffsetTimeZoneMinus11     = 1,      // GMT-11:00
+    MeariDeviceGMTOffsetTimeZoneMinus10     = 2,      // GMT-10:00
+    MeariDeviceGMTOffsetTimeZoneMinus9      = 3,      // GMT-09:00
+    MeariDeviceGMTOffsetTimeZoneMinus8      = 4,      // GMT-08:00
+    MeariDeviceGMTOffsetTimeZoneMinus7      = 5,      // GMT-07:00
+    MeariDeviceGMTOffsetTimeZoneMinus6      = 6,      // GMT-06:00
+    MeariDeviceGMTOffsetTimeZoneMinus5      = 7,      // GMT-05:00
+    MeariDeviceGMTOffsetTimeZoneMinus430    = 8,      // GMT-04:30
+    MeariDeviceGMTOffsetTimeZoneMinus4      = 9,      // GMT-04:00
+    MeariDeviceGMTOffsetTimeZoneMinus330    = 10,      // GMT-03:30
+    MeariDeviceGMTOffsetTimeZoneMinus3      = 11,      // GMT-03:00
+    MeariDeviceGMTOffsetTimeZoneMinus2      = 12,      // GMT-02:00
+    MeariDeviceGMTOffsetTimeZoneMinus1      = 13,      // GMT-01:00
+    MeariDeviceGMTOffsetTimeZonePlus0       = 14,      // GMT+00:00
+    MeariDeviceGMTOffsetTimeZonePlus1       = 15,      // GMT+01:00
+    MeariDeviceGMTOffsetTimeZonePlus2       = 16,      // GMT+02:00
+    MeariDeviceGMTOffsetTimeZonePlus3       = 17,      // GMT+03:00
+    MeariDeviceGMTOffsetTimeZonePlus330     = 18,      // GMT+03:30
+    MeariDeviceGMTOffsetTimeZonePlus4       = 19,      // GMT+04:00
+    MeariDeviceGMTOffsetTimeZonePlus430     = 20,      // GMT+04:30
+    MeariDeviceGMTOffsetTimeZonePlus500     = 21,      // GMT+05:00
+    MeariDeviceGMTOffsetTimeZonePlus530     = 22,      // GMT+05:30
+    MeariDeviceGMTOffsetTimeZonePlus545     = 23,      // GMT+05:45
+    MeariDeviceGMTOffsetTimeZonePlus6       = 24,      // GMT+06:00
+    MeariDeviceGMTOffsetTimeZonePlus630     = 25,      // GMT+06:30
+    MeariDeviceGMTOffsetTimeZonePlus7       = 26,      // GMT+07:00
+    MeariDeviceGMTOffsetTimeZonePlus8       = 27,      // GMT+08:00
+    MeariDeviceGMTOffsetTimeZonePlus9       = 28,      // GMT+09:00
+    MeariDeviceGMTOffsetTimeZonePlus930     = 29,      // GMT+09:30
+    MeariDeviceGMTOffsetTimeZonePlus10      = 30,      // GMT+10:00
+    MeariDeviceGMTOffsetTimeZonePlus11      = 31,      // GMT+11:00
+    MeariDeviceGMTOffsetTimeZonePlus12      = 32,      // GMT+12:00
+    MeariDeviceGMTOffsetTimeZonePlus13      = 33,      // GMT+13:00
+};
+
 #endif /* MeariDeviceEnum_h */

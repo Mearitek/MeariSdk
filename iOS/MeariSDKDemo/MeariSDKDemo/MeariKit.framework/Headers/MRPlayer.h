@@ -107,12 +107,19 @@ typedef NS_OPTIONS(NSInteger, PPS_PRTP_DP_MODE_TYPE) {
 
 
 typedef NS_OPTIONS(NSInteger, PPS_AP_CONFIG_CMD) {
-    PPS_AP_CONFIG_NEAR_WIFI_INFO_REQ =  200012, /// 获取周边WIFI信息
-    PPS_AP_CONFIG_NEAR_WIFI_INFO_RSP =  200013, /// 返回周边WIFI信息
+    PPS_AP_CONFIG_NEAR_WIFI_INFO_REQ = 200012, /// 获取周边WIFI信息
+    PPS_AP_CONFIG_NEAR_WIFI_INFO_RSP = 200013, /// 返回周边WIFI信息
     PPS_AP_CONFIG_WIFI_AND_BIND_REQ = 200014, /// 配网和绑定指令
     PPS_AP_CONFIG_WIFI_AND_BIND_RSP = 200015, /// 返回联网结果
     PPS_AP_CONFIG_AP_ERROR_CODE_REQ = 200016, /// 获取失败信息
     PPS_AP_CONFIG_AP_ERROR_CODE_RSP = 200017 /// 返回失败信息
+};
+
+typedef NS_OPTIONS(NSInteger, PPS_NET_IP_CMD) {
+    PPS_NET_IP_GET_INFO_REQ = 201000, /// 获取设备IP信息
+    PPS_NET_IP_GET_INFO_RSP = 201001, /// 返回设备IP信息
+    PPS_NET_IP_SET_INFO_REQ = 201002, /// 设置设备静态IP信息指令
+    PPS_NET_IP_SET_INFO_RSP = 201003, /// 返回设置设备静态IP信息结果
 };
 
 /**
@@ -892,6 +899,8 @@ typedef enum { _BOY = 0, _Gril, _Man } _VoiceTalkType;
 + (NSArray<NSDictionary *> *)decodeMutlImageFileData:(NSData *)fileData;
 
 + (NSString *)encUserDevicePwd:(NSString *)pwd sn:(NSString *)deviceSN;
+//蓝牙加密token
++ (NSString *)createMrIoTBleAuthToken:(NSString *)uuid userID:(NSString *)userid timestamp:(NSString *)timestamp;
 
 #pragma mark 16. Prtp Protocol
 + (int)prtpDiscovery:(int)timeout  success:(MRSuccessID)success failure:(MRFailureError)error;

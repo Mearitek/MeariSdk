@@ -223,7 +223,7 @@ Whether has meari iot info   (是否有自研iot信息)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)registerWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode nickname:(NSString *)nickname promotion:(int)promotion success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)registerWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode verificationCode:(NSString *)verificationCode nickname:(NSString *)nickname promotion:(int)promotion clientId:(NSString *)clientId success:(MeariSuccess)success failure:(MeariFailure)failure ;
 
 /**
  登录账号
@@ -232,10 +232,11 @@ Whether has meari iot info   (是否有自研iot信息)
  @param password User password(用户密码)
  @param countryCode country code (国家代号)
  @param phoneCode country phone code(国际手机前缀).
+ @param clientId  Multi Client clientId (多端登录).
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)loginWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure __deprecated_msg("Not recommended for use");
+- (void)loginWithAccount:(NSString *)userAccount password:(NSString *)password countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode clientId:(NSString *)clientId success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure __deprecated_msg("Not recommended for use");
 
 /**
  third type login
@@ -248,10 +249,11 @@ Whether has meari iot info   (是否有自研iot信息)
  @param thirdUserName username(昵称)
  @param thirdImageUrl user Image (头像)
  @param loginType login type(登录方式 1: fackbook)
+ @param clientId  Multi Client clientId (多端登录).
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)loginThirdWithUserId:(NSString *)userId thirdToken:(NSString *)thirdToken countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode thirdUserName:(NSString *)thirdUserName thirdImageUrl:(NSString *)thirdImageUrl loginType:(MeariThirdLoginType)loginType success:(MeariSuccess)success failure:(MeariFailure)failure __deprecated_msg("Not recommended for use");
+- (void)loginThirdWithUserId:(NSString *)userId thirdToken:(NSString *)thirdToken countryCode:(NSString *)countryCode phoneCode:(NSString *)phoneCode thirdUserName:(NSString *)thirdUserName thirdImageUrl:(NSString *)thirdImageUrl loginType:(MeariThirdLoginType)loginType clientId:(NSString *)clientId  success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure __deprecated_msg("Not recommended for use");
 
 /**
  Change-find password
@@ -548,6 +550,20 @@ Whether has meari iot info   (是否有自研iot信息)
 - (void)aiActivationWithDeviceID:(NSInteger)deviceID code:(NSString *)code success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
+ Activation code
+ 激活码
+ 
+ @param deviceID  device ID (设备ID)
+ @param uuid UUID
+ @param code activate code
+ @param type type of activation (增值服务类型，0：云存储，1：AI，2:4G)
+ @param originType origin of type (激活码来源类型, 1:首页)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)activationWithDeviceID:(NSInteger)deviceID uuid:(NSString *)uuid code:(NSString *)code type:(NSInteger)type originType:(NSString *)originType success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
  Cloud storage creation order
  云存储创建订单
 
@@ -598,7 +614,7 @@ Whether has meari iot info   (是否有自研iot信息)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)cloud2GetAllServiceInfo:(void(^)(NSArray<MeariCloudServiceInfo *> *serviceList, NSArray<MeariDeviceBindInfo *> *availableCloudBindList, NSArray<MeariDeviceBindInfo *> *availableAIBindList))success failure:(MeariFailure)failure;
+- (void)cloud2GetAllServiceInfo:(void(^)(NSArray<MeariCloudServiceInfo *> *serviceList))success failure:(MeariFailure)failure;
 
 /**
  Cloud 2.0 Cancel Paypal's Subscription
@@ -611,6 +627,28 @@ Whether has meari iot info   (是否有自研iot信息)
  @param failure failure callback (失败回调)
  */
 - (void)cloud2CancelPaypalSubscriptionWithSubID:(NSString *)subID orderNum:(NSString *)orderNum packageType:(MeariServicePackageType)packageType success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ Order apply for refund
+ 申请退款
+ 
+ @param orderNum Order num (订单号)
+ @param packageType Package Type(套餐类型)
+ @param reason reason(退款理由)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)orderApplyForRefundWithOrderNum:(NSString *)orderNum packageType:(int)packageType reason:(NSString *)reason success:(MeariSuccess_String)success failure:(MeariFailure)failure;
+
+/**
+ Revoke refund
+ 撤销退款
+ 
+ @param refundId refundId(退款id)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)orderRevokeRefundWithRefundId:(NSString *)refundId success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  Cloud 2.0 Package Info
@@ -662,10 +700,11 @@ Whether has meari iot info   (是否有自研iot信息)
  
  @param packageType PackageType Type （套餐类型，0 ：云存储  1：AI  2: 4G）
  @param deviceIdList deviceId list
+ @param saleId Promotion ID
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
--(void)appGetPackageInfoWithPackageType:(MeariPackageType)packageType deviceIdList:(NSArray *)deviceIdList success:(void(^)(NSArray<MeariCloudPackageInfo *> *aliPayPackageList, NSArray<MeariCloudPackageInfo *> *paypalPackageList, NSArray<MeariCloudPackageInfo *> *applePackageList, NSArray *notSupportPayType))success failure:(MeariFailure)failure;
+-(void)appGetPackageInfoWithPackageType:(MeariPackageType)packageType deviceIdList:(NSArray *)deviceIdList saleId:(NSString *)saleId success:(void(^)(NSArray<MeariCloudPackageInfo *> *aliPayPackageList, NSArray<MeariCloudPackageInfo *> *paypalPackageList, NSArray<MeariCloudPackageInfo *> *applePackageList, NSArray<MeariCloudPackageInfo *> *russianPayPackageList, NSArray *notSupportPayType, BOOL isEligibleForPromotionOffer))success failure:(MeariFailure)failure;
 
 /**
  Trial info and trial order
@@ -698,7 +737,7 @@ Whether has meari iot info   (是否有自研iot信息)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
--(void)appTrialStatusWithDeviceID:(NSInteger)deviceID success:(void(^)(NSInteger cloudStatus))success failure:(MeariFailure)failure;
+-(void)appTrialStatusWithDeviceID:(NSInteger)deviceID success:(void(^)(NSInteger cloudStatus, NSInteger aiStatus))success failure:(MeariFailure)failure;
 
 /**
  Get 4G package info
@@ -706,10 +745,11 @@ Whether has meari iot info   (是否有自研iot信息)
  
  @param deviceID device ID
  @param uuid uuid
+ @param saleId Promotion ID
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
--(void)get4GPackageInfoWithDeviceID:(NSString *)deviceID uuid:(NSString *)uuid success:(void(^)(NSArray<MeariDataPackage *> *aliPayPackageList, NSArray<MeariDataPackage *> *paypalPackageList, NSArray<MeariDataPackage *> *applePackageList, NSString *simId, BOOL tryStatus, NSString *maxMonth, NSArray *notSupportPayType))success failure:(MeariFailure)failure;
+-(void)get4GPackageInfoWithDeviceID:(NSString *)deviceID uuid:(NSString *)uuid saleId:(NSString *)saleId success:(void(^)(NSArray<MeariDataPackage *> *aliPayPackageList, NSArray<MeariDataPackage *> *paypalPackageList, NSArray<MeariDataPackage *> *applePackageList, NSArray<MeariDataPackage *> *russianPayPackageList, NSString *simId, BOOL tryStatus, NSString *maxMonth, NSArray *notSupportPayType, BOOL isEligibleForPromotionOffer))success failure:(MeariFailure)failure;
 
 /**
  Get 4G package info
@@ -717,11 +757,26 @@ Whether has meari iot info   (是否有自研iot信息)
  
  @param deviceID device ID
  @param uuid uuid
+ @param saleId Promotion ID
  @param supportOffers Support Offers（是否支持打折）
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
--(void)get4GPackageInfoWithDeviceID:(NSString *)deviceID uuid:(NSString *)uuid supportOffers:(NSString *)supportOffers success:(void(^)(NSArray<MeariDataPackage *> *aliPayPackageList, NSArray<MeariDataPackage *> *paypalPackageList, NSArray<MeariDataPackage *> *applePackageList, NSString *simId, BOOL tryStatus, NSString *maxMonth, NSArray *notSupportPayType))success failure:(MeariFailure)failure;
+-(void)get4GPackageInfoWithDeviceID:(NSString *)deviceID uuid:(NSString *)uuid saleId:(NSString *)saleId supportOffers:(NSString *)supportOffers success:(void(^)(NSArray<MeariDataPackage *> *aliPayPackageList, NSArray<MeariDataPackage *> *paypalPackageList, NSArray<MeariDataPackage *> *applePackageList, NSArray<MeariDataPackage *> *russianPayPackageList, NSString *simId, BOOL tryStatus, NSString *maxMonth, NSArray *notSupportPayType, BOOL isEligibleForPromotionOffer))success failure:(MeariFailure)failure;
+
+/**
+ Get 4G package info
+ 获取4G套餐信息(v4)
+ 
+ @param deviceIDList device ID list
+ @param uuid uuid
+ @param saleId Promotion ID
+ @param supportOffers Support Offers（是否支持打折）
+ @param bindDeviceNum number of package for 4G（G对应台数套餐）
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+-(void)get4GPackageInfoWithDeviceIDList:(NSArray *)deviceIDList uuid:(NSString *)uuid saleId:(NSString *)saleId supportOffers:(NSString *)supportOffers bindDeviceNum:(int)bindDeviceNum success:(void(^)(NSArray<MeariDataPackage *> *aliPayPackageList, NSArray<MeariDataPackage *> *paypalPackageList, NSArray<MeariDataPackage *> *applePackageList, NSArray<MeariDataPackage *> *russianPayPackageList, NSString *simId, BOOL tryStatus, NSString *maxMonth, NSArray *notSupportPayType, BOOL isEligibleForPromotionOffer))success failure:(MeariFailure)failure;
 
 /**
  Query 4G traffic card
@@ -775,6 +830,15 @@ Whether has meari iot info   (是否有自研iot信息)
 -(void)cloud2GetAvailableBindDevicesWithSuccess:(void(^)(NSArray *deviceList))success failure:(MeariFailure)failure;
 
 /**
+ 4G Bind Devices List
+ 4G获取可以绑定的设备列表
+ 
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+-(void)fourthGGetAvailableBindDevicesWithSuccess:(void(^)(NSDictionary *result))success failure:(MeariFailure)failure;
+
+/**
  Cloud 2.0 Binding Devices
  云存储2.0设备绑定
  
@@ -786,13 +850,39 @@ Whether has meari iot info   (是否有自研iot信息)
 -(void)cloud2DeviceBindingWithDeviceIDList:(NSArray *)deviceIDList orderNum:(NSString *)orderNum success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
+ Binding Devices
+ 单台套餐设备换绑
+ 
+ @param originDeviceID original device ID  (原来订单绑定的设备ID)
+ @param toDeviceID new device ID  (新绑定的设备ID)
+ @param orderNum order num  (订单ID)
+ @param orderType order type  (订单类型 0：cloud  1:ai  2:4g)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+-(void)oneDeviceBindingFromDeviceID:(NSInteger)originDeviceID toDeviceID:(NSInteger)toDeviceID orderNum:(NSString *)orderNum orderType:(int)orderType success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ Binding Devices
+ 单台套餐设备换绑
+ 
+ @param deviceIDList device ID list  (换绑的设备ID列表)
+ @param deviceOps devices binding status array  (要换绑的设备状态列表)
+ @param orderNum order num  (订单ID)
+ @param orderType order type  (订单类型 0：cloud  1:ai  2:4g)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+-(void)multiDevicesBindingFromDeviceIDList:(NSArray *)deviceIDList deviceOps:(NSArray *)deviceOps orderNum:(NSString *)orderNum orderType:(int)orderType success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
  Cloud 2.0 Create Order
  云存储2.0/AI创建订单
  
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
--(void)cloud2CreateOrderWithPayMoney:(NSString *)payMoney payType:(int)payType serverTime:(int)serverTime paymentMethodNonce:(NSString *)paymentMethodNonce packageId:(NSString *)packageId deviceIdList:(NSArray *)deviceIdList isBindSingle:(BOOL)isBindSingle transactionID:(NSString *)transactionID receiptData:(NSString *)receiptData currencySymbol:(NSString *)currencySymbol currencyCode:(NSString *)currencyCode aiOrCloud:(BOOL)aiOrCloud success:(void(^)(NSDictionary *payResult))success failure:(MeariFailure)failure;
+-(void)cloud2CreateOrderWithPayMoney:(NSString *)payMoney payType:(int)payType serverTime:(int)serverTime paymentMethodNonce:(NSString *)paymentMethodNonce packageId:(NSString *)packageId deviceIdList:(NSArray *)deviceIdList isBindSingle:(BOOL)isBindSingle transactionID:(NSString *)transactionID receiptData:(NSString *)receiptData currencySymbol:(NSString *)currencySymbol currencyCode:(NSString *)currencyCode saleId:(NSString *)saleId aiOrCloud:(BOOL)aiOrCloud success:(void(^)(NSDictionary *payResult))success failure:(MeariFailure)failure;
 
 /**
  Cloud 2.0 Create Web Order
@@ -810,7 +900,7 @@ Whether has meari iot info   (是否有自研iot信息)
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
--(void)cloud2CreatePaypalPreorderWithPayMoney:(NSString *)payMoney payType:(int)payType serverTime:(int)serverTime packageId:(NSString *)packageId deviceIdList:(NSArray *)deviceIdList isBindSingle:(BOOL)isBindSingle currencySymbol:(NSString *)currencySymbol aiOrCloud:(BOOL)aiOrCloud success:(void(^)(NSString *approveUrl, NSString *planID))success failure:(MeariFailure)failure;
+-(void)cloud2CreatePaypalPreorderWithPayMoney:(NSString *)payMoney payType:(int)payType yooPayType:(NSString *)yooPayType serverTime:(int)serverTime packageId:(NSString *)packageId deviceIdList:(NSArray *)deviceIdList isBindSingle:(BOOL)isBindSingle currencySymbol:(NSString *)currencySymbol saleId:(NSString *)saleId aiOrCloud:(BOOL)aiOrCloud success:(void(^)(NSString *approveUrl, NSString *planID))success failure:(MeariFailure)failure;
 
 /**
  Cloud 2.0/AI Capture Paypal Payment
@@ -818,11 +908,12 @@ Whether has meari iot info   (是否有自研iot信息)
  
  @param paypalToken Token
  @param payType PayType
+ @param saleId Promotion ID
  @param aiOrCloud  AI Or Cloud
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
--(void)cloud2CapturePaypalPaymentWithPaypalToken:(NSString *)paypalToken payType:(int)payType aiOrCloud:(BOOL)aiOrCloud success:(void(^)(NSString *orderNum))success failure:(MeariFailure)failure;
+-(void)cloud2CapturePaypalPaymentWithPaypalToken:(NSString *)paypalToken payType:(int)payType saleId:(NSString *)saleId aiOrCloud:(BOOL)aiOrCloud success:(void(^)(NSString *orderNum))success failure:(MeariFailure)failure;
 
 /**
  Cloud 2.0 Order Bind Devices
@@ -856,6 +947,17 @@ Whether has meari iot info   (是否有自研iot信息)
 -(void)getDiscountList:(void(^)(NSArray *arr))success failure:(MeariFailure)failure;
 
 /**
+ Create trial sale order
+ 促销试用订单创建
+ 
+ @param deviceIDList Device ID list (设备ID列表)
+ @param saleId Promotion ID (促销活动ID)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+-(void)trialSaleOrderWithDeviceIDList:(NSArray *)deviceIDList saleId:(NSString *)saleId success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
  Get Enjoy Order Into
  获取畅享订单信息
  
@@ -863,6 +965,16 @@ Whether has meari iot info   (是否有自研iot信息)
  @param failure failure callback (失败回调)
  */
 -(void)getEnjoyOrderInfo:(void(^)(NSDictionary *info))success failure:(MeariFailure)failure;
+
+/**
+ Get Order Wait Deal Status
+ 获取用户等待支付订单状态
+ 
+ @param deviceIdList Device ID List (设备ID列表)
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+-(void)getOrderWaitDealStatusWithDeviceIdList:(NSArray *)deviceIdList success:(void(^)(NSArray *statusRes))success failure:(MeariFailure)failure;
 
 /**
  My order list
@@ -1225,7 +1337,7 @@ deviceList.count must  ==  modeList.count
  @param success Successful callback (成功回调)
  @param failure failure callback (失败回调)
  */
-- (void)uploadDeviceAddFailureLogsWithSN:(NSString *)sn errCode:(NSString *)errCode errMsg:(NSString *)errMsg configMode:(NSString *)configMode success:(MeariSuccess)success failure:(MeariFailure)failure;
+- (void)uploadDeviceAddFailureLogsWithSN:(NSString *)sn errCode:(NSString *)errCode errMsg:(NSString *)errMsg configMode:(NSString *)configMode netInfo:(NSString *)netInfo success:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
  上传升级设备日志
  
@@ -1244,6 +1356,16 @@ deviceList.count must  ==  modeList.count
  */
 
 - (void)uploadDeviceUpgradeLogsWithParams:(NSArray *)paramsArray success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ 上传点击量日志
+ 
+ @param paramsArray ota数据数组
+ @param success Successful callback (成功回调)
+ @param failure failure callback (失败回调)
+ */
+- (void)uploadAppClickLogsWithParams:(NSArray *)paramsArray success:(MeariSuccess)success failure:(MeariFailure)failure;
+
 /**
  上传App错误码
  
@@ -2061,6 +2183,25 @@ get all the alarm messgae of one device  by day
  停止监听
  */
 + (void)HttpStopMonitor;
+
+/*
+ 添加 multiClientId
+ */
+
++ (NSDictionary *)addMultiClientIDWithParams:(NSDictionary *) params;
+/*
+ 获取 multiClientId
+ */
++ (NSString *)_getMultiClientID;
+/*
+ 设置 multiClientId
+ */
++ (void)_setMultiClientID:(NSString *)multiClientID;
+/*
+ 处理 multiClientId
+ */
++ (void)processMultiClientWithData:(NSDictionary *)data;
+
 /**
  user session valid
  用户是否退出被异地登录
@@ -2401,6 +2542,41 @@ download file from server
 //发送个人隐私信息到邮箱（隐私政策）
 - (void)privacyPolicySendEmail:(NSString *)email success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 
+#pragma mark -- Device Transfer
+/**
+ Check whether the device can be transferred
+ 检测设备能否转移
+ */
+- (void)deviceTransferCheckStatusWithDeviceID:(NSString *)deviceId success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ Obtain the device transfer verification code
+ 获取设备转移验证码
+*/
+- (void)getDeviceTransferCodeWithAccount:(NSString *)account success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ Verify that the verification code is correct
+ 验证验证码是否正确
+*/
+- (void)deviceTransferCheckCodeWithAccount:(NSString *)account code:(NSString *)verificationCode success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ Obtain the QR code through the other party's account information
+ 通过对方账号信息获取二维码
+*/
+
+- (void)getDeviceTransferQRCodeWithOtherAccount:(NSString *)otherAccount withDeviceID:(NSString *)deviceId success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ Start transferring equipment
+ 开始转移设备
+*/
+
+- (void)startDeviceTransferWithQRCode:(NSString *)qrCode withNetworkToken:(NSString *)token success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ Obtain the status of the device transfer
+ 获取设备转移的状态
+*/
+- (void)getDeviceTransferStatusWithKey:(NSString *)deviceTransferKey withDeviceID:(NSString *)deviceID success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 #pragma mark - Cancel
 /**
 Clean user info
@@ -2559,15 +2735,20 @@ Get User Preference
 */
 - (void)createDeviceTrafficOrderWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID packageID:(NSString *)packageID payType:(NSString *)payType payMoney:(NSString *)payMoney paymentMethodNonce:(NSString *)paymentMethodNonce quantity:(NSInteger)quantity success:(MeariSuccess)success failure:(MeariFailure)failure;
 /**
- Create a 4G Device SIM Package Purchase Order 2.0
- 创建4G设备SIM卡套餐购买订单2.0（随设备携带SIM卡）
+ Create a 4G Device SIM Package Purchase Order 2.0 (Single device)
+ 创建4G设备SIM卡套餐购买订单2.0（随设备携带SIM卡）(单台)
 */
-- (void)createDeviceTrafficOrder2WithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID packageID:(NSString *)packageID payType:(NSInteger)payType payMoney:(NSString *)payMoney quantity:(NSInteger)quantity currencyCode:(NSString *)currencyCode currencySymbol:(NSString *)currencySymbol receiptData:(NSString *)receiptData transactionId:(NSString *)transactionId success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+- (void)createDeviceTrafficOrder2WithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID packageID:(NSString *)packageID payType:(NSInteger)payType payMoney:(NSString *)payMoney quantity:(NSInteger)quantity currencyCode:(NSString *)currencyCode currencySymbol:(NSString *)currencySymbol receiptData:(NSString *)receiptData transactionId:(NSString *)transactionId saleId:(NSString *)saleId success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+/**
+ Create a 4G Device SIM Package Purchase Order 2.0  (Multiple devices)
+ 创建4G设备SIM卡套餐购买订单2.0（随设备携带SIM卡）(多台)
+*/
+- (void)createDeviceTrafficOrder2WithUUID:(NSString *)uuid deviceIdList:(NSArray *)deviceIdList packageID:(NSString *)packageID payType:(NSInteger)payType payMoney:(NSString *)payMoney quantity:(NSInteger)quantity currencyCode:(NSString *)currencyCode currencySymbol:(NSString *)currencySymbol receiptData:(NSString *)receiptData transactionId:(NSString *)transactionId saleId:(NSString *)saleId success:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
 /**
  Capture a 4G Device SIM Package Purchase Order
  捕获4G设备SIM卡套餐购买订单是否购买（随设备携带SIM卡）
 */
--(void)captureTrafficOrderWithOrderID:(NSString *)orderID payType:(int)payType success:(void(^)(NSString *orderNum))success failure:(MeariFailure)failure;
+-(void)captureTrafficOrderWithOrderID:(NSString *)orderID payType:(int)payType saleId:(NSString *)saleId success:(void(^)(NSString *orderNum))success failure:(MeariFailure)failure;
 /**
  Try 4G device data plan
  试用4G设备流量套餐订单列表
@@ -2589,6 +2770,13 @@ Get User Preference
  4G设备激活码激活流量套餐
 */
 - (void)activeDeviceTrafficWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID activeCode:(NSString *)code success:(MeariSuccess)success failure:(MeariFailure)failure;
+
+/**
+ active  data plan for 4G devices
+ 4G设备激活码激活流量套餐
+ originType表示激活码来源类型, 1:首页
+*/
+- (void)activeDeviceTrafficWithUUID:(NSString *)uuid deviceID:(NSInteger)deviceID activeCode:(NSString *)code originType:(NSString *)originType success:(MeariSuccess)success failure:(MeariFailure)failure;
 
 /**
  Get 4G device apns information
@@ -2614,4 +2802,22 @@ Get User Preference
 
 - (void)subscribeMeariIotDeviceWithDeviceSN:(NSArray <MeariDevice *> *)devices;
 
+#pragma mark - 商城
+/**
+ 获取商城信息
+ Get shop mall information
+ */
+-(void)getShopMallInfo:(MeariSuccess_Dictionary)success failure:(MeariFailure)failure;
+
+/**
+ 商城点击记录
+ Shop Mall click record
+ */
+-(void)shopMallClickMonitorWithClickNew:(BOOL)clickNew success:(MeariSuccess)success failure:(MeariFailure)failure;
+#pragma mark - 获取首页列表非核心信息
+/**
+ 获取首页列表非核心信息
+ Get home device list noncore info
+ */
+-(void)getDeviceNoncoreInfo:(void(^)(NSDictionary *info))success failure:(MeariFailure)failure;
 @end

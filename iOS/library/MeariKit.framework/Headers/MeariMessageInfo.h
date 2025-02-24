@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, MeariAlarmMessageType) {
     MeariAlarmMessageTypeMotion = 1,               // motion alarm, alarm when device detect something has been moved (移动侦测报警)
     MeariAlarmMessageTypePir = 2,                  // pir alarm, alarm when device detect moved things in night mode (红外侦测报警)
     MeariAlarmMessageTypeVisitor = 3,              // visitor alarm, available on bell device, alarm when somebody tap the ring.(访客报警)
-    MeariAlarmMessageTypeNoise = 6,                // Noise alarm (噪声报警 )
+    MeariAlarmMessageTypeNoise = 6,                // Noise alarm (噪声报警)
     MeariAlarmMessageTypeCry = 7,                   // Cry alarm (哭声报警)
     MeariAlarmMessageTypeFace = 8 ,                 // face alarm (人脸报警)
     MeariAlarmMessageTypeSomeoneCall = 9,           // visitor alarm, available on ipc device, alarm when somebody tap the ring.(有人来访)
@@ -47,6 +47,14 @@ typedef NS_ENUM(NSInteger, MeariAlarmMessageType) {
     MeariAlarmMessageTypeBird = 26,               //(智能检测到鸟)
     MeariAlarmMessageTypeCoverFace = 28,               //(遮脸报警)
     MeariAlarmMessageTypeDownSleep = 29,               //(趴睡报警)
+    MeariAlarmMessageTypeInSafeArea = 30,              //(进入安全区域报警)
+    MeariAlarmMessageTypeOutSafeArea = 31,             //(离开安全区域报警)
+    MeariAlarmMessageTypeInDangerArea = 32,            //(进入危险区域报警)
+    MeariAlarmMessageTypeOutDangerArea = 33,           //(离开危险区域报警)
+    MeariAlarmMessageTypeInWifiArea = 34,              //(进入Wifi围栏区域报警)
+    MeariAlarmMessageTypeOutWifiArea = 35,             //(离开Wifi围栏区域报警)
+    MeariAlarmMessageTypeNoFace = 38,                  //cant detected face(没有检测到脸部)
+    MeariAlarmMessageTypeAIFire= 39,               //Intelligent detection of fire (智能检测到焰火)
 };
 
 typedef NS_ENUM(NSInteger, MeariVisitorMessageType) {

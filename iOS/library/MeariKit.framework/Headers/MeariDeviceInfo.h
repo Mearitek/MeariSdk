@@ -195,6 +195,8 @@
 @property (nonatomic, assign) NSInteger mts;
 /** 是否支持夜灯设置  0-不支持，1-支持*/
 @property (nonatomic, assign) NSInteger rgb;
+/** 是否支持暖光灯控制功能，0-不支持 ，bit0=1：支持灯控开关 ，bit1：定时开启使能，bit2：亮灯模式使能， bit3：亮度使能 */
+@property (nonatomic, assign) MeariWarmLightFuncType wml;
 /** 是否支持抗闪烁设置  0-不支持,1-支持+关闭+50HZ+60HZ,2-支持支持+关闭+50HZ+60HZ+自动*/
 @property (nonatomic, assign) NSInteger flk;
 /** 是否支持自动升级设置  0-不支持,1-支持*/
@@ -254,8 +256,17 @@
 
 /**ptz 2.0版本 */
 @property (nonatomic, assign) NSInteger ptz2;
-/**智能检测相关功能开关 */
+/**智能检测相关功能开关 (后端智能)*/
 @property (nonatomic, assign) NSInteger idt;
+/**智能检测相关功能开关 (前端智能)*/
+@property (nonatomic, assign) NSInteger aid;
+/**智能侦测布防时间是否支持跨天设置 (后端智能)*/
+@property (nonatomic, assign) NSInteger ict;
+/**智能侦测布防时间是否支持跨天设置 (前端智能)*/
+@property (nonatomic, assign) NSInteger nct;
+/**APP页面是否支持设备时区设置*/
+@property (nonatomic, assign) NSInteger tz;
+
 /** IPC 设备是否支持显示低功耗*/
 @property (nonatomic, assign) NSInteger lem;
 /** 支持事件报警类型设置 0-不支持, >=1-支持设置选项; 设备evt2>=1,*/
@@ -287,6 +298,12 @@
 @property (nonatomic, assign) NSInteger pms;
 /** 设备是否支持一键投食，0-不是 1-是, 默认0*/
 @property (nonatomic, assign) NSInteger pvs;
+/** 设备是否支持逗宠激光灯，0-不是 1-是, 默认0*/
+@property (nonatomic, assign) NSInteger las;
+/** 设备是否支持逗宠计划，0-不是 1-是, 默认0*/
+@property (nonatomic, assign) NSInteger tpp;
+/** 设备是否支持逗宠时长设置，0-不是 1-是, 默认0*/
+@property (nonatomic, copy) NSString *tpt;
 
 /** 是否支持扫机身码直接添加功能, 0-不支持, 1(非0)-支持*/
 @property (nonatomic, assign) NSInteger sqr;
@@ -301,6 +318,8 @@
 
 /** 是否支持wifi切换*/
 @property (nonatomic, assign) NSInteger swi;
+/** 是否支持显示配置网络*/
+@property (nonatomic, assign) NSInteger swi2;
 /**Base设备是否支持音量设置，0-不支持，1-支持*/
 @property (nonatomic, assign) NSInteger svt;
 /** 设备是否支持安全访问密码设置*/
@@ -347,6 +366,23 @@
 /**是否支云台守望位配置*/
 @property (nonatomic, assign) NSInteger wtl;
 
+//宠物定位器
+/**是否支蓝牙开关配置，0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger ble;
+/**是否支持蜂鸣器开关，0-不支持，1支持*/
+@property (nonatomic, assign) NSInteger bzr;
+/**是否支持宠物寻回指示灯，0-不支持，1支持*/
+@property (nonatomic, assign) NSInteger pfl;
+
+/**是否支持定位上报间隔设置，0-不支持，bit0-2min，bit1-5min, bit2-15min*/
+@property (nonatomic, assign) NSInteger pri;
+/**是否支持WiFi围栏设置 0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger wff;
+/**支持位置定位的类型，可或运算，bit0：支持GPS定位,；bit1：支持WiFi定位；bit2：支持基站定位。*/
+@property (nonatomic, assign) NSInteger gps;
+/**是否支持GPS信号强度显示，0-不支持, 1-支持*/
+@property (nonatomic, assign) NSInteger gss;
+
 //狩猎相机
 /** 设置唤醒后抓拍保存图像方式能力级，枚举类型 0-不支持，1-支持三个选项（录像or拍照or录像+拍照）*/
 @property (nonatomic, assign) NSInteger vop;
@@ -388,6 +424,9 @@
 /** 双目设备能力级 */
 @property (nonatomic, strong) NSString *msc;
 
+/** SMB Cloud 2.0 设备能力级 */
+@property (nonatomic, strong) NSString *csf;
+
 /** 是否支持对讲格式  0b1 G711  0b10 Aac */
 @property (nonatomic, assign) NSInteger auf;
 
@@ -420,9 +459,57 @@
 
 /** 是否支持云AI识别设置，格式为json数组，例如[1,2,3,4,5]，含义见MeariDeviceAIAnalysisType*/
 @property (nonatomic, strong) NSArray *cai;
+/**
+ 回放分辨率能力集，格式为JSON格式的字符串，例如：{"0": "640x360", "1": "2304x1296"}，0/1/2/3/4是码流编号，0/1/2/3/4分别指向"标清/高清/超清/超高清/4K"；同时对应到P2P取流的ID；目前支持的分辨率以设备上报为准
+ */
+@property (nonatomic, strong) NSString *pbr;
 
 /** 是否支持时光相册(album), bit0 = 时光相册v0, 后续若有版本2, 版本3，通过bit1, bit2...进行区分 */
 @property (nonatomic, assign) NSInteger alb;
+
+/** 双卡设备是否支持用户选择使用哪张SIM卡，0-不支持 1-支持*/
+@property (nonatomic, assign) NSInteger ssc;
+
+/**低功耗相机PTZ操作电量阈值能力集，大于等于该电量才能操作PTZ，用以APP操作PTZ时错误提示*/
+@property (nonatomic, assign) NSInteger elt;
+/**NVR下子设备能力集，NVR套装子设备是否支持4G功能，用以APP信号显示，设备信息展现，省流提醒等4G特有功能展示 0-不支持 1-支持*/
+@property (nonatomic, assign) NSInteger sdm;
+/** Compatibility issues between the old and new versions of the pet feeding device */
+/** 用于召唤宠物在投食机的新老版本兼容问题 */
+@property (nonatomic, assign) NSInteger plm;
+/** baby新老UI界面的版本区分，0表示用老版的UI界面，1表示用新版的UI界面 */
+/** The version distinction between the new and old UI interfaces of the  baby, 0 - old UI interface, 1 - new UI interface*/
+@property (nonatomic, assign) NSInteger uvd;
+/** 是否支持智能看护能力集，[1,2,3,4,5,6,7]：1、趴睡检测 2、遮脸检测 3、哭声检测 4、夜灯设置 5、移动侦测 6、移动追踪 7、噪声检测 ，有相关数字表示支持该能力，没有则表示不支持，数字顺序表示APP端显示的UI顺序，调整数字顺序控制APP端UI的显示顺序 */
+/** Whether to support the smart care capability set, [1,2,3,4,5,6,7]: 1. Sleeping detection 2. Face cover detection 3. Crying detection 4. Night light setting 5. Motion detection 6. Motion tracking 7. Noise detection. If there is a relevant number, it means that the capability is supported. If there is no relevant number, it means that it is not supported. The order of numbers indicates the order of UI displayed on the APP side. Adjusting the order of numbers controls the display order of UI on the APP side. */
+@property (nonatomic,   copy) NSString *stc;
+/** Whether to support baby status icon display, 0 means not supported, 1 means supported */
+/** 是否支持baby的状态图标显示，0表示不支持，1表示支持 */
+@property (nonatomic, assign) NSInteger bsi;
+/** 鱼眼设备参数 {"r":0.5, "x":0.5, "y":0.5}*/
+@property (nonatomic, copy) NSString *fey;
+/** 是否禁用流量管理，0-支持流量管理 1-不支持流量管理 */
+@property (nonatomic, assign) NSInteger fme;
+/**  是否支持夜灯模式下亮灯模式，0不支持亮灯模式设置 bit1--支持常亮模式设置 bit2 ---支持跑马灯模式设置 bit3 --支持呼吸灯模式设置(复用dp点200控制亮灯模式)  */
+@property (nonatomic, assign) MeariDeviceLightMode rgbm;
+/** 是否支持IPC离线时APP弹出提示框，0表示不支持，1表示支持 */
+@property (nonatomic, assign) NSInteger dis;
+/** 设备是否支持电量显示(复用dp 154：电池电量） bit0: 是否支持设备上报电量, 上报则app侧显示图标; bit1: app电量以格数方式显示(4格) **/
+@property (nonatomic, assign) NSInteger pbat;
+/** NVR设备是否支持子设备蓝牙添加绑定到NVR上(NVR端能力级), 0=不支持, 1=支持*/
+@property (nonatomic, assign) NSInteger sba;
+
+/** 是否支持预置点(非贝斯德设备)，0-不支持，1-支持(单次操作预置点只下发单个数据) **/
+@property (nonatomic, assign) NSInteger ppl;
+/** 是否支持图像质量等级配置，0-不支持，1-支持 **/
+@property (nonatomic, assign) NSInteger vdq;
+/** 是否支持单独对设备码率设置能力级，0-不支持**/
+@property (nonatomic, assign) NSInteger sbt;
+/** 是否支持激光灯亮度调节，0-不支持 1-支持, 默认0 **/
+@property (nonatomic, assign) NSInteger lbr;
+/** 是否支持设备转移功能，0-不支持 1-支持, 默认0 **/
+@property (nonatomic, assign) NSInteger flit;
+
 @end
 
 
@@ -436,6 +523,24 @@
 /** Supported features */
 /** 支持的功能 */
 @property (nonatomic, strong) MeariDeviceInfoCapabilityFunc *caps;
+@end
+
+@interface MeariDeviceIPInfo: MeariBaseModel
+/** Whether static IP can be configured*/
+/** 是否可配置静态IP*/
+@property (nonatomic, assign) BOOL configStaticIP;
+/** IP Address*/
+/** ip地址*/
+@property (nonatomic, copy) NSString *ip;
+/** Ethernet Address*/
+/** mac地址*/
+@property (nonatomic, copy) NSString *mac;
+/** Subnet Mask*/
+/** 子网掩码*/
+@property (nonatomic, copy) NSString *subnetMask;
+/** gatway*/
+/** 网关*/
+@property (nonatomic, copy) NSString *gatway;
 @end
 
 #import "MeariDeviceParam.h"
@@ -461,6 +566,9 @@
 /** Wire device Password*/
 /** 有线设备安全协议密码*/
 @property (nonatomic, assign) BOOL needDevicePassword;
+/** LAN IP information*/
+/** 局域网IP信息*/
+@property (nonatomic, strong) MeariDeviceIPInfo *ipInfo;
 /** Wire device  ip*/
 /** 有线设备配网IP */
 @property (nonatomic, copy) NSString *wireConfigIp;
