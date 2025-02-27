@@ -181,6 +181,14 @@
     * 12.2 [Cloud Storage Trial](#122-Cloud-Storage-Trial)
     * 12.3 [Cloud storage activation code usage](#123-Cloud-storage-activation-code-usage)
     * 12.4 [Cloud storage purchases](#124-Cloud-storage-purchases)
+        * 12.4.1 [Service purchase related classes](#1241-Service-purchase-related-classes)
+        * 12.4.2 [Payment related error codes](#1242-Payment-related-error-codes)
+        * 12.4.3 [PayPal Web payment purchase process](#1243-PayPal-Web-payment-purchase-process)
+        * 12.4.4 [PayPal Web credit card payment purchase process](#1244-PayPal-Web-credit-card-payment-purchase-process)
+        * 12.4.5 [Google payment purchase process](#1245-Google-payment-purchase-process)
+        * 12.4.6 [Alipay purchase process](#1246-Alipay-purchase--process)
+        * 12.4.7 [WeChat payment purchase process](#1247-WeChat-payment-purchase-process)
+    * 12.5 [Services and Orders](#125-Service-and-Orders)
 * 13 [NVR](#13-NVR)
     * 13.1 [Add NVR](#131-Add-NVR)
     * 13.2 [Add camera to NVR channel](#132-Add-camera-to-NVR-channel)
@@ -6240,8 +6248,646 @@ MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IR
 }, this);
 ```
 ## 12.4 Cloud storage purchases
+
+### 12.4.1 Service purchase related classes
 ```
-See Demo for details
+Cloud storage related capability set
+- int cst; Whether to support cloud storage service: 0-not supported; 1-supported
+- int evt; Whether to support cloud storage service 2.0: 0-not supported; 1-supported; SDK access users' devices are all 2.0
+
+BuyServiceType: service type
+int CLOUD = 0; // Cloud storage service
+int AI = 1; // AI service
+int TRAFFIC = 2; // 4G traffic service
+int CLOUD1 = 3; // Old cloud storage service, SDK access users do not need to consider
+
+PayType: payment type
+int ALI = 1; // Alipay
+int PAYPAL = 2; // PayPal
+int GOOGLE = 3; // Google
+int APPLE = 4; // Apple
+int CREDIT_CARD = 5; // PayPal credit card
+int YOO_MONEY = 6; // Russian payment
+int WECHAT = 7; // WeChat payment
+
+ServicePackageInfo: Service package information
+private List<ServicePackageBean> packageList; // Package service package list
+private List<ServicePackageBean> discountsPackageList; // Discount package service package list
+private List<Integer> notSupportPayList; // Unsupported payment method list, empty by default if not configured
+
+ServicePackageBean: Service package class
+private String id; // Package id
+private String productId; // Google Pay product ID
+private int payType; // Payment type
+private int storageTime; // Days of cloud video storage: 3, 7, 30
+private String mealType; // Y-year; X-half year; S-quarter; M-month
+private int storageType; // 0-event storage; 1-all day storage
+private BigDecimal money; // amount
+private int bindDeviceNum; // The number of devices that can be bound
+private String currencyCode; // Country code
+private String currencySymbol; // Currency symbol
+private boolean subscribe; // Is it a subscription package
+private int subState; // Google subscription status: 0-unsubscribed; 1-subscribed
+private String clientId; // Parameters used for PayPal payment
+private int AiType; // Whether to support cloud storage with ai: 0-not supported; 1-supported;
+// Attributes related to promotional activities
+private boolean discountSaleNew; // Is it a promotional package
+private String discountProductId; // Product ID of Google payment for promotional packages only in the promotional package service package list
+private BigDecimal discountMoney; // Promotional price only in the promotional package service package list
+private String originalPackageId; // Used to determine non-Google packages, the ID of the non-promotional package corresponding to the current promotional package
+private long startTime; // Start timestamp of the promotional activity
+private long endTime; // End timestamp of the promotional activity
+// Attributes related to 4G traffic packages
+private int unlimited; // Is it an unlimited package: 0-no; 1-yes; SDK access is unlimited
+private int cloudType; // Is it a 4G traffic plus cloud storage package: 0-no; 1-yes
+```
+
+### 12.4.2 Payment related error codes
+```
+1203: The current package has been subscribed
+1208: You already have a valid subscription, which has been restored. Changing the account and device is not supported during the validity period
+1209: The subscription has been restored
+1211: Cross-region subscription is not supported
+1212: Paypal will review your funds within 24 hours. Please check the review results in the paypal wallet
+1213: Duplicate capture, process as successful
+1240: Unable to obtain your payment, please confirm whether your payment method has enough money
+1241: Paypal payment platform is busy, please switch payment methods or try again later
+1242: Paypal platform failed to process your payment, please apply for a refund and repurchase later
+1243: GOOGLE payment platform is busy, and a refund will be automatically made later. Please repurchase
+1244: APPLE payment platform is busy, please apply for a refund and repurchase later
+```
+
+### 12.4.3 PayPal Web payment purchase process
+```
+1. Get cloud storage package and display package information
+// deviceIdList: "[xx]", "[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object: IServicePackageCallback{
+override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. Select package and create order
+// currentPackageBean: selected service package
+val currentPrice = currentPackageBean.money.toString()
+val id = currentPackageBean.id
+// deviceIdList: selected device id list
+val deviceIdList: MutableList<String> = mutableListOf()
+deviceIdList.add(cameraInfo.deviceID)
+val currencySymbol = currentPackageBean.currencySymbol
+MeariUser.getInstance().createPaymentOrder(BuyServiceType.CLOUD, currentPrice, PayType.PAYPAL, 1,
+id, deviceIdList, currencySymbol, "", "", object : IStringResultCallback {
+    override fun onSuccess(result: String) {
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+3. WebView loads the paypal payment webpage, completes the payment and captures the order
+// For detailed code, refer to PaypalCheckoutActivity in the demo
+MeariUser.getInstance().capturePaymentOrder(BuyServiceType.CLOUD, "orderId", PayType.PAYPAL, object :IStringResultCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(result: String?) {
+    }
+})
+```
+
+### 12.4.4 PayPal Web credit card payment purchase process
+```
+1. Get cloud storage package and display package information
+// deviceIdList: "[xx]", "[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object: IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. Initialize webView and load PayPal credit card payment url
+private var baseUrl = MeariSmartSdk.apiServer + "/html/paypalCardH5/dist/index.html"
+private fun initWebView() {
+    webView.webViewClient = object : WebViewClient() {
+        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+            return super.shouldOverrideUrlLoading(view, url)
+        }
+
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
+            return super.shouldOverrideUrlLoading(view, request)
+        }
+
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+            super.onPageStarted(view, url, favicon)
+        }
+
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+        }
+    }
+    webView.addJavascriptInterface(
+        NativeBridge(this@Activity),
+        "NativeBridge"
+    )
+    webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+    val webSettings = webView.settings
+    webSettings.javaScriptEnabled = true
+    webSettings.defaultTextEncodingName = "UTF-8"
+    webSettings.setSupportZoom(false)
+    webSettings.builtInZoomControls = true
+    webSettings.useWideViewPort = true
+    webSettings.loadWithOverviewMode = true
+    webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+    webSettings.domStorageEnabled = true
+
+    val url: String = if (isSubscribe) {
+        "$baseUrl?paypalType=subscription&currency=${currentPackageBean?.currencyCode}&clientId=${currentPackageBean?.clientId}"
+    } else {
+        "$baseUrl?paypalType=createOrder&currency=${currentPackageBean?.currencyCode}&clientId=${currentPackageBean?.clientId}"
+    }
+    webView.loadUrl(url)
+}
+
+3. Perform subsequent interactions through the bridge object NativeBridge
+class NativeBridge(val context: Context) {
+    @JavascriptInterface
+    fun NativeAndroidBridgePaypalCallback(resData: String) {
+        val paypalResData: PaypalResData = GsonUtil.fromJson(resData, PaypalResData::class.java)
+        if (paypalResData.type == "buttonInit") {
+            // Payment button initialization completed
+            (context as Activity).initButton(full = false)
+        } else if (paypalResData.type == "createOrder") {
+            // Create an order
+            (context as Activity).createCreditCardOrder()
+        } else if (paypalResData.type == "createSubscription") {
+            // Create a subscription order
+            (context as Activity).createCreditCardOrder()
+        } else if (paypalResData.type == "capture") {
+            // Capture transaction
+            (context as Activity).captureCreditCardOrder(paypalResData.token)
+        } else if (paypalResData.type == "cancel") {
+            // Transaction canceled
+        } else if (paypalResData.type == "error") {
+            // Transaction failed
+        }
+    }
+}
+
+// The payment button on the web page does not support customization. You can overlay WebView on the Android customized button and set WebView to transparent and invisible to achieve the effect of the customized button.
+// After the order is successfully created, WebView expands to full screen, restores transparency and background, and displays the normal payment web page for payment.
+private fun initButton(full: Boolean) {
+    webView.post {
+        webView.visibility = View.VISIBLE
+        val params = webView.layoutParams
+        if (full) {
+            webView.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.bg_color_white,
+                    null
+                )
+            )
+            webView.background.alpha = 255
+            params.width = RelativeLayout.LayoutParams.MATCH_PARENT
+            params.height = RelativeLayout.LayoutParams.MATCH_PARENT
+        } else {
+            webView.setBackgroundColor(0)
+            webView.background.alpha = 0
+        }
+        webView.layoutParams = params
+    }
+}
+
+private fun createCreditCardOrder() {
+    // PayType： PayType.PAYPAL
+    MeariUser.getInstance().createPaymentCreditCardOrder(BuyServiceType.CLOUD, currentPrice, PayType.PAYPAL, 1,
+        id, deviceIdList, currencySymbol, object : IStringResultCallback {
+            override fun onError(errorCode: Int, errorMsg: String?) {
+            }
+
+            override fun onSuccess(result: String?) {
+                val dataObject = BaseJSONObject()
+                if (isSubscribe) {
+                    dataObject.put("type", "subscriptionId")
+                } else {
+                    dataObject.put("type", "orderId")
+                }
+                dataObject.put("value", result)
+                val data = dataObject.toString()
+                initButton(full = true)
+                webView.loadUrl("javascript:NativeBridgePaypalCallback('$data')")
+            }
+    })
+}
+
+private fun captureCreditCardOrder(orderId: String) {
+    // PayType： PayType.PAYPAL
+    MeariUser.getInstance().capturePaymentOrder(BuyServiceType.CLOUD, orderId, PayType.PAYPAL, object : IStringResultCallback {
+        override fun onSuccess(result: String) {
+        }
+
+        override fun onError(errorCode: Int, errorMsg: String) {
+        }
+    })
+}
+```
+### 12.4.5 Google Pay purchase process
+```
+Note: Please refer to the official documentation for access to Google Pay. Here we only explain the purchase process of Google Pay
+
+1. Get the cloud storage package and display the package information
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. Check Google plans
+public void queryProductDetails(Activity activity, String productId, boolean isSubscribe) {
+    QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
+            .setProductList(ImmutableList.of(QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId(productId)
+                    .setProductType(isSubscribe ? BillingClient.ProductType.SUBS : BillingClient.ProductType.INAPP)
+                    .build())
+            ).build();
+
+    billingClient.queryProductDetailsAsync(queryProductDetailsParams,
+            new ProductDetailsResponseListener() {
+                public void onProductDetailsResponse(BillingResult billingResult,
+                                                     List<ProductDetails> productDetailsList) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        launchBilling(activity, productDetailsList.get(0), isSubscribe);
+                    }
+                }
+            }
+    );
+}
+
+3. Open the payment page and complete the payment
+private void launchBilling(Activity activity, ProductDetails productDetails, boolean isSubscribe) {
+    // An activity reference from which the billing flow will be launched.
+    // Activity activity = ...;
+    String selectedOfferToken = "";
+    if (productDetails.getSubscriptionOfferDetails() != null && !productDetails.getSubscriptionOfferDetails().isEmpty()) {
+        selectedOfferToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
+    }
+    ImmutableList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList;
+    if (isSubscribe) {
+        productDetailsParamsList = ImmutableList.of(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                        // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
+                        .setProductDetails(productDetails)
+                        // to get an offer token, call ProductDetails.getSubscriptionOfferDetails()
+                        // for a list of offers that are available to the user
+                        .setOfferToken(selectedOfferToken)
+                        .build()
+        );
+    } else {
+        productDetailsParamsList = ImmutableList.of(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                        // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
+                        .setProductDetails(productDetails)
+                        .build()
+        );
+    }
+
+    BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+            .setProductDetailsParamsList(productDetailsParamsList)
+            .setIsOfferPersonalized(true)
+            .build();
+
+    // Launch the billing flow
+    BillingResult billingResult = billingClient.launchBillingFlow(activity, billingFlowParams);
+}
+
+4. Handle callback status in Google payment listener
+private final PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
+        // To be implemented in a later section.
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (Purchase purchase : purchases) {
+                if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                    // Payment is successful, go to create an order
+                    createOrder(purchase)
+                }
+            }
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+            // Cancel payment
+        } else {
+            // Other errors
+        }
+    }
+};
+
+5. Create an order
+private fun createOrder(purchase: Purchase) {
+    // currentPackageBean: Selected Service Packages
+    val currentPrice = currentPackageBean.money.toString()
+    val id = currentPackageBean.id
+    // deviceIdList: List of selected device ids
+    val deviceIdList: MutableList<String> = mutableListOf()
+    deviceIdList.add(cameraInfo.deviceID)
+    val currencySymbol = currentPackageBean.currencySymbol
+    val currencyCode = currentPackageBean.currencyCode
+    val devNum = currentPackageBean.bindDeviceNum
+    val productId = currentPackageBean.productId
+    MeariUser.getInstance().createCloudGooglePayOrder(devNum, deviceIdList, id, currentPrice, purchase.quantity,
+        productId, purchase.orderId, purchase.purchaseToken, currencySymbol, currencyCode, object :IPayCallback{
+            override fun onError(errorCode: Int, errorMsg: String?) {
+            }
+
+            override fun onSuccess(orderInfo: OrderInfo?) {
+                handlePurchase(purchase)
+            }
+        })
+}
+
+6. Confirm purchase
+public void handlePurchase(Purchase purchase) {
+    if (purchase.isAutoRenewing()) {
+        //Confirm subscription purchase
+        handleSubscriptionPurchase(purchase);
+    }else {
+        //Confirm one-time purchase
+        handleOncePurchase(purchase);
+    }
+}
+
+public void handleSubscriptionPurchase(GooglePurchase purchase) {
+    AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
+        @Override
+        public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                // Handle the success of the consume operation.
+            }
+        }
+    };
+
+    if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+        if (!purchase.isAcknowledged()) {
+            AcknowledgePurchaseParams acknowledgePurchaseParams =
+                    AcknowledgePurchaseParams.newBuilder()
+                            .setPurchaseToken(purchase.getPurchaseToken())
+                            .build();
+            billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
+        }
+    }
+}
+
+public void handleOncePurchase(GooglePurchase purchase) {
+    ConsumeParams consumeParams =
+            ConsumeParams.newBuilder()
+                    .setPurchaseToken(purchase.getPurchaseToken())
+                    .build();
+
+    ConsumeResponseListener listener = new ConsumeResponseListener() {
+        @Override
+        public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                // Handle the success of the consume operation.
+            }
+        }
+    };
+    billingClient.consumeAsync(consumeParams, listener);
+}
+```
+
+### 12.4.6 Alipay purchase process
+```
+Note: For Alipay access, please refer to the official documentation. Here we only explain the Alipay purchase process
+
+1. Get cloud storage packages and display package information
+// deviceIdList: "[xx]", "[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object: IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. Create an order
+// List<String> deviceIdList: deviceId list of purchased devices; others are attributes in ServicePackageBean
+MeariUser.getInstance().createCloudAliPayOrder(bindDeviceNum, deviceIdList, id, money.toString(), currencySymbol, 1, new IPayCallback() {
+    @Override
+    public void onSuccess(OrderInfo orderInfo) {
+    payAlipay(orderInfo.getPayUrl());
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+
+3. Call up the payment page and complete the payment
+public void payAlipay(final String sigPay) {
+    Runnable payRunnable = () -> {
+        // Construct PayTask object
+        PayTask alipay = new PayTask(CloudPayNewActivity.this);
+        // Call the payment interface to obtain the payment result
+        Map<String, String> result = alipay.payV2(sigPay, true);
+
+        Message msg = Message.obtain();
+        msg.what = SDK_PAY_FLAG;
+        msg.obj = result;
+        mHandler.sendMessage(msg);
+    };
+    Thread payThread = new Thread(payRunnable);
+    payThread.start();
+}
+
+4. Process payment callback
+private final Handler mHandler = new Handler(msg -> {
+    if (msg.what == SDK_PAY_FLAG) {
+        PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+        String resultStatus = payResult.getResultStatus();
+        // If resultStatus is "9000", it means payment is successful. For the specific meaning of the status code, please refer to the interface document
+        if (TextUtils.equals(resultStatus, "9000")) {
+            // Payment is successful
+        } else {
+            // Payment failed
+        }
+    }
+    return false;
+});
+```
+
+### 12.4.7 WeChat payment purchase process
+```
+Note: Please refer to the official documentation for WeChat payment access. Here we only explain the WeChat payment purchase process
+
+1. Get the cloud storage package and display the package information
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. Select a package and create an order
+// currentPackageBean: selected service package
+val currentPrice = currentPackageBean.money.toString()
+val id = currentPackageBean.id
+// deviceIdList: selected device id list
+val deviceIdList: MutableList<String> = mutableListOf()
+deviceIdList.add(cameraInfo.deviceID)
+val currencySymbol = currentPackageBean.currencySymbol
+MeariUser.getInstance().createPaymentOrder(BuyServiceType.CLOUD, currentPrice, PayType.WECHAT, 1,
+    id, deviceIdList, currencySymbol, "", "", object : IStringResultCallback {
+    override fun onSuccess(result: String) {
+        toWechatPay(result)
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+3. Jump to the payment page and complete the payment
+private fun toWechatPay(result: String) {
+    WechatPayManager.init(this@Activity)
+    val obj = BaseJSONObject(result)
+    wechatOrderId = obj.optString("thirdOrderId")
+    val partnerId = obj.optString("partnerId")
+    val prepayId = obj.optString("prepayId")
+    val nonceStr = obj.optString("noncestr")
+    val timeStamp = obj.optLong("timeStamp")
+    val sign = obj.optString("sign")
+    WechatPayManager.toWechatPay(partnerId, prepayId, nonceStr, timeStamp, sign)
+}
+object WechatPayManager {
+    lateinit var api: IWXAPI
+
+    fun init(context: Context) {
+        api = WXAPIFactory.createWXAPI(context, Config.WECHART_APPID)
+        api.registerApp(Config.WECHART_APPID)
+    }
+
+    fun toWechatPay(partnerId: String, prepayId: String, nonceStr: String, timeStamp: Long, sign: String) {
+        Thread {
+            val request = PayReq()
+            request.appId = Config.WECHART_APPID
+            request.partnerId = partnerId
+            request.prepayId = prepayId
+            request.packageValue = "Sign=WXPay"
+            request.nonceStr = nonceStr
+            request.timeStamp = timeStamp.toString()
+            request.sign = sign
+            api.sendReq(request)
+        }.start()
+    }
+}
+
+4. Process payment callback results
+public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
+    private IWXAPI api;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        api = WXAPIFactory.createWXAPI(this, Config.WECHART_APPID);
+        api.handleIntent(getIntent(), this);
+    }
+    @Override
+    public void onReq(BaseReq baseReq) {
+
+    }
+    @Override
+    public void onResp(BaseResp baseResp) {
+        int type = baseResp.getType();
+        if (type == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            int code = baseResp.errCode;
+            Logger.i("tag", "--->WeChart-ErrCode: " + code);
+            switch (code) {
+                case BaseResp.ErrCode.ERR_OK:
+                    //success
+                    paySuccess(0);
+                    break;
+                case BaseResp.ErrCode.ERR_USER_CANCEL:
+                    //User Cancellation
+                    paySuccess(-2);
+                    break;
+                case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                case BaseResp.ErrCode.ERR_SENT_FAILED:
+                case BaseResp.ErrCode.ERR_UNSUPPORT:
+                case BaseResp.ErrCode.ERR_COMM:
+                default:
+                    //fail
+                    break;
+            }
+        }
+    }
+}
+```
+
+## 12.5 Services and Orders
+
+```
+[Description]
+Get the service and order list and return them in the same interface
+
+[Code Example]
+MeariUser.getInstance().getAllDeviceServiceInfo(object : IAllDeviceServiceCallback {
+    override fun onSuccess(allDeviceServiceInfo: AllDeviceServiceInfo) {
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+AllDeviceServiceInfo
+- List<ServiceOrderInfo> orderList； // Service Order List
+
+ServiceOrderInfo // Service Order Class
+// Common Properties
+- private int packageType; // Service Type: 0-Cloud Storage; 1-AI; 2-4G;
+- private String orderNum; // Order Number
+- private String money; // Order Price
+- private String currencySymbol; // Order price currency
+- private long startTime; // Order start time
+- private long endTime; // Order end time
+- private long allServerEndTime; // Final end time of all services
+- private int bindedNum; // Number of bound devices
+- private int bindDeviceNum; // Total number of bindable devices
+- private String mealType; // Service cycle type: Y-year; S-quarter; M-month; W-week; D-day;
+- private int serverTime; // Service times such as: one month, two months, etc.
+- private int isSubPackage; // Is it a subscription?
+- private int trialDays; // Trial days, indicating that the current package is a trial package
+- private int supportCancelSub; // Cancel subscription: 1-Can cancel subscription; 2-Already canceled subscription
+- private String subID; // Subscription ID
+- private boolean reBindDeviceSupport; // Whether to support rebinding
+- private List<ServiceDevice> deviceList = new ArrayList<>(); // Device list
+- private List<ServiceDevice> bindedDeviceList = new ArrayList<>(); // Bound device list
+- private List<ServiceDevice> bindableDeviceList = new ArrayList<>(); // Reusable device list
+// Cloud storage service related properties
+- private int storageType; // Cloud storage type: 0-Event storage; 1-Continuous storage
+- private int AiType; // Is it a cloud plus AI package: 0-No; 1-Yes
+// 4G service related properties
+- private int cloudType; // Is it a 4G plus cloud storage package: 0-No; 1-Yes
+
+ServiceDevice // Service device information
+- private long deviceId; // Device ID
+- private String deviceName; // Device name
+- private String deviceIcon; // Device icon
+- private long cloudServerStartTime; // Cloud storage service start time
+- private long cloudServerEndTime; // Cloud storage service end time
+- private long aiServerStartTime; // AI service start time
+- private long aiServerEndTime; // AI service end time
+- private long flow4gServerStartTime; // 4G service start time
+- private long flow4gServerEndTime; // 4G service end time
+- private boolean unbindable; // Can be unbound?
+- private boolean binded; // Already bound?
 ```
 
 # 13 NVR
