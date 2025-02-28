@@ -7637,6 +7637,11 @@ Parameter BuyServiceType.CLOUD is replaced by BuyServiceType.AI
 
 # 18 Release Notes
 
+## 2025-2-28(5.7.0)
+```
+Added new service order documents and supplemented the missing English documents
+```
+
 ## 2025-2-8(5.5.0)
 ```
 1. Added AI service documentation
