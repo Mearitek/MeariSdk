@@ -192,6 +192,7 @@
         * 12.4.5 [谷歌支付购买流程](#1245-谷歌支付购买流程)
         * 12.4.6 [支付宝购买流程](#1246-支付宝购买流程)
         * 12.4.7 [微信支付购买流程](#1247-微信支付购买流程)
+    * 12.5 [服务和订单](#125-服务和订单)
 * 13 [NVR](#13-NVR)
     * 13.1 [添加NVR](#131-添加NVR)
     * 13.2 [添加摄像机到NVR通道](#132-添加摄像机到NVR通道)
@@ -6588,7 +6589,7 @@ public void queryProductDetails(Activity activity, String productId, boolean isS
     );
 }
 
-2.调起支付页面，并完成支付
+3.调起支付页面，并完成支付
 private void launchBilling(Activity activity, ProductDetails productDetails, boolean isSubscribe) {
     // An activity reference from which the billing flow will be launched.
     // Activity activity = ...;
@@ -6625,7 +6626,7 @@ private void launchBilling(Activity activity, ProductDetails productDetails, boo
     BillingResult billingResult = billingClient.launchBillingFlow(activity, billingFlowParams);
 }
 
-3.在谷歌支付监听中处理回调状态
+4.在谷歌支付监听中处理回调状态
 private final PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
     @Override
     public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
@@ -6645,7 +6646,7 @@ private final PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesU
     }
 };
 
-4.创建订单
+5.创建订单
 private fun createOrder(purchase: Purchase) {
     // currentPackageBean: 选中的服务包
     val currentPrice = currentPackageBean.money.toString()
@@ -6668,7 +6669,7 @@ private fun createOrder(purchase: Purchase) {
         })
 }
 
-5.确认购买
+6.确认购买
 public void handlePurchase(Purchase purchase) {
     if (purchase.isAutoRenewing()) {
         // 确认订阅购买
@@ -6884,6 +6885,65 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
         }
     }
 }
+```
+
+## 12.5 服务和订单
+
+```
+【描述】
+获取服务和订单列表，在同一个接口返回
+
+【代码范例】
+MeariUser.getInstance().getAllDeviceServiceInfo(object : IAllDeviceServiceCallback {
+    override fun onSuccess(allDeviceServiceInfo: AllDeviceServiceInfo) {
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+AllDeviceServiceInfo
+- List<ServiceOrderInfo> orderList； // 服务订单列表
+
+ServiceOrderInfo // 服务订单类
+// 通用属性
+- private int packageType; // 服务类型：0-云存储；1-AI；2-4G；
+- private String orderNum; // 订单号
+- private String money; // 订单价格
+- private String currencySymbol; // 订单价格币种
+- private long startTime; // 订单开始时间
+- private long endTime; // 订单结束时间
+- private long allServerEndTime; // 所有服务的最后结束时间
+- private int bindedNum; // 已绑定设备数量
+- private int bindDeviceNum; // 可绑定设备总量
+- private String mealType; // 服务周期类型：Y-年；S-季；M-月；W-周；D-日；
+- private int serverTime; // 服务次数如：一个月，两个月等
+- private int isSubPackage; // 是否是订阅
+- private int trialDays; // 试用天数，表明当前是试用套餐
+- private int supportCancelSub; // 取消订阅：1-可以取消订阅；2-已经取消订阅
+- private String subID; // 订阅ID
+- private boolean reBindDeviceSupport; // 是否支持换绑
+- private List<ServiceDevice> deviceList = new ArrayList<>(); // 设备列表
+- private List<ServiceDevice> bindedDeviceList = new ArrayList<>(); // 已绑定设备列表
+- private List<ServiceDevice> bindableDeviceList = new ArrayList<>(); // 可换绑设备列表
+// 云存储服务相关属性
+- private int storageType; // 云存储类型：0-事件存储；1-连续存储
+- private int AiType; // 是否是云加AI的套餐：0-否；1-是
+// 4G服务相关属性
+- private int cloudType; // 是否是4G加云存储的套餐：0-否；1-是
+
+ServiceDevice // 服务设备信息
+- private long deviceId; // 设备ID
+- private String deviceName; // 设备名称
+- private String deviceIcon; // 设备图标
+- private long cloudServerStartTime; // 云存储服务开始时间
+- private long cloudServerEndTime; // 云存储服务结束时间
+- private long aiServerStartTime; // AI服务开始时间
+- private long aiServerEndTime; // AI服务结束时间
+- private long flow4gServerStartTime; // 4G服务开始时间
+- private long flow4gServerEndTime; // 4G服务结束时间
+- private boolean unbindable; // 是否可解绑
+- private boolean binded; // 是否已绑定
 ```
 
 # 13 NVR
