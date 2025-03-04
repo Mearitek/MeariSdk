@@ -55,4 +55,6 @@ signature = Base64.encode(HmacSha1("partnerKey=test&signatureMethod=HMAC-SHA1&si
   1003    The parameter is invalid
   1005    System exception
   1023    Location Login/Invalid User Token/Invalid signature
+  4001    server not found. cancel order fail
+  4002    The service has been used and exceeded 7 days.  cancel order fail
   ```
