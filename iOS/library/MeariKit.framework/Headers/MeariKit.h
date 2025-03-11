@@ -23,11 +23,15 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 #import <MeariKit/MeariSDK.h>
 #import <MeariKit/MeariBaseModel.h>
 #import <MeariKit/MeariDevice.h>
+#import <MeariKit/MeariDevice+Capability.h>
 #import <MeariKit/MeariDevice+NVR.h>
+#import <MeariKit/MeariDevice+Pet.h>
+#import <MeariKit/MeariPetInfo.h>
 #import <MeariKit/MeariDeviceInfo.h>
 #import <MeariKit/MeariDeviceParam.h>
 #import <MeariKit/MeariDeviceTime.h>
 #import <MeariKit/MeariDeviceFirmwareInfo.h>
+#import <MeariKit/MeariDeviceServiceModel.h>
 #import <MeariKit/MeariDeviceHostMessage.h>
 
 #import <MeariKit/MeariMusicInfo.h>
@@ -63,3 +67,5 @@ FOUNDATION_EXPORT const unsigned char MeariKitVersionString[];
 #import <MeariKit/MeariFamilyModel.h>
 
 #import <MeariKit/MeariDevicePetFeedPlanModel.h>
+#import <MeariKit/MeariRadarMonitorModel.h>
+#import <MeariKit/MeariTeaseTimeModel.h>

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "MeariBlock.h"
 #import "MeariFamilyModel.h"
 #import "MeariDevice.h"
 
@@ -17,8 +17,6 @@ typedef void(^MeariSuccess_FamilyList)(NSArray <MeariFamilyModel *> *familyList)
 typedef void(^MeariSuccess_FamilyMessageList)(NSArray <MeariMessageFamilyShare *> *familyMessageList);
 typedef void(^MeariSuccess_Family)(MeariFamilyModel *familyModel);
 typedef void(^MeariSuccess_Member)(MeariMemberModel *member);
-typedef void(^MeariSuccess)(void);
-typedef void(^MeariFailure)(NSError *error);
 
 // family list need refresh (家庭更新)
 UIKIT_EXTERN  NSString *const MeariFamilyFamilyRefreshNotification;
@@ -222,7 +220,7 @@ NS_ASSUME_NONNULL_BEGIN
 */
 - (void)addRoomWithRoomName:(NSString *)roomName
                      homeID:(NSString *)homeID
-                    success:(MeariSuccess)success
+                    success:(MeariSuccess_Dictionary)success
                     failure:(MeariFailure)failure;
 
 /// 房间管理-房间名称修改

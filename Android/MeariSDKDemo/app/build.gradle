@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 34
     buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "com.meari.xtest"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -50,21 +50,21 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // aar required
-    implementation(name: 'core-sdk-device-500-20230602', ext: 'aar')
-    implementation(name: 'core-sdk-meari-500-20230602', ext: 'aar')
+    implementation(name: 'core-sdk-device-570-20250222', ext: 'aar')
+    implementation(name: 'core-sdk-meari-570-20250222', ext: 'aar')
 
-    implementation 'com.tencent:mmkv-static:1.0.23'
+    implementation 'com.tencent:mmkv-static:1.2.15'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
     implementation 'com.alibaba:fastjson:1.1.67.android'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.zxing:core:3.3.3'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-    def aws_version = "2.16.+"
-    implementation("com.amazonaws:aws-android-sdk-iot:$aws_version") {
-        exclude group: 'org.eclipse.paho'
-    }
-    implementation ("com.amazonaws:aws-android-sdk-mobile-client:$aws_version") { transitive = true }
+//    def aws_version = "2.16.+"
+//    implementation("com.amazonaws:aws-android-sdk-iot:$aws_version") {
+//        exclude group: 'org.eclipse.paho'
+//    }
+//    implementation ("com.amazonaws:aws-android-sdk-mobile-client:$aws_version") { transitive = true }
     implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 

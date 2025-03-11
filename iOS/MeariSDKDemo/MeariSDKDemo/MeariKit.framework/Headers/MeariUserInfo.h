@@ -34,12 +34,14 @@ typedef NS_ENUM(NSInteger, MeariThirdLoginType) {
 
 @property (nonatomic, assign) BOOL notificationSound;   // Whether the message is pushed or not (消息推送是否有声音)
 @property (nonatomic, assign, readonly) MeariThirdLoginType thirdLoginType; // Login type (登录类型)
+@property (nonatomic, strong) NSString *emailAuthFlag;
+@property (nonatomic, assign) BOOL promotion;
 @end
 
 @interface MeariUserFaceInfo : MeariBaseModel
 
-@property (nonatomic, strong) NSString * faceUrl;     // user's avatar (用户头像)
-@property (nonatomic, strong) NSString * userName;      // user's nickname (用户昵称)
+@property (nonatomic, strong) NSString * imgUrl;     // user's avatar (用户头像)
+@property (nonatomic, strong) NSString * faceName;      // user's nickname (用户昵称)
 @property (nonatomic, strong) NSString * faceID;      // user's nickname (用户人脸ID)
 
 @end

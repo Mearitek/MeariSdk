@@ -4,7 +4,7 @@
 //
 //  Created by Meari on 2017/12/12.
 //  Copyright © 2017年 Meari. All rights reserved.
-//
+
 
 #import <Foundation/Foundation.h>
 
@@ -44,7 +44,14 @@ typedef void(^Failure)(NSString *failure);
  @param info App的重定向信息 通过云云对接获取
  */
 - (void)startSDKWithRedirectInfo:(NSDictionary *)info;
+/**
+ Set debug print file Encrypyion
+ 设置日志文件是否加密
 
+ @param encryption encryption (是否加密)
+ */
+
+- (void)setLogFileEncryption:(BOOL)encryption;
 /**
  Set debug print level
  设置调试打印级别
@@ -74,5 +81,7 @@ typedef void(^Failure)(NSString *failure);
 
 
 - (void)configAutoTokenTest:(BOOL)enable;
+
+- (void)removeLogfileCache;
 
 @end

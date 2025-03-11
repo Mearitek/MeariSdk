@@ -20,7 +20,7 @@ public class MeariApplication extends Application {
         MeariSdk.init(MeariApplication.this, new MyMessageHandler());
         meariLog.createlibrarylog();
         meariLog.getInstance().setlevel(0);
-        // set Debug model
+        // set Debug mode
         MeariSdk.getInstance().setDebug(true);
         // 设置开发环境，正式发布时去除
         // Set up the development environment and remove it when it is officially released

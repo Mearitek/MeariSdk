@@ -8,14 +8,11 @@
 
 #import "MRCloudServerVC.h"
 #import "MRAliWebPayVC.h"
-#import <Braintree/BraintreePayPal.h>
-@interface MRCloudServerVC ()<BTAppSwitchDelegate,BTViewControllerPresentingDelegate>
+@interface MRCloudServerVC ()
 //paypal
 @property (nonatomic, strong) NSString *payToken;
 @property (nonatomic,   copy) NSString *payNonce;
 @property (nonatomic,   copy) NSString *payAccount;
-@property (nonatomic, strong) BTAPIClient *apiClient;
-@property (nonatomic, strong) BTPayPalDriver *payPalDriver;
 
 //aliwebPay
 @property (nonatomic,   copy) NSString *aliwebUrl;
@@ -159,56 +156,14 @@
 #pragma makr --- Paypal
 // Initialize the paypal client
 - (void)initPayPalEnvironment {
-    self.apiClient = [[BTAPIClient alloc] initWithAuthorization:self.payToken];
-    self.payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
-    self.payPalDriver.viewControllerPresentingDelegate = self;
-    self.payPalDriver.appSwitchDelegate = self;
+
 }
 #pragma mark - GetPayPalNonce
 - (void)createPayPalNonce {
     //totalPrice
-    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"32"];
-    request.currencyCode = @"USD";
-    request.displayName = @"Cloud Storage Service";
-    WY_WeakSelf
-    [self.payPalDriver requestOneTimePayment: request completion:^(BTPayPalAccountNonce *_Nullable tokenizedPayPalAccount, NSError *_Nullable error) {
-        
-        NSLog(@"---BTPayPalDriver--%@", tokenizedPayPalAccount.nonce ? tokenizedPayPalAccount.nonce : error);
-        
-        if (tokenizedPayPalAccount) {
-            weakSelf.payNonce = tokenizedPayPalAccount.nonce ? tokenizedPayPalAccount.nonce : @"";
-            weakSelf.payAccount = tokenizedPayPalAccount.email ? tokenizedPayPalAccount.email : tokenizedPayPalAccount.phone;
-            if (weakSelf.payNonce.length) {
-                [self createOrderToServer:nil];
-            }
-        } else if (error) {
-            NSLog(@"error --- %@",error);
-        }
-    }];
-}
-
-#pragma mark --- BTAppSwitchDelegate
-- (void)appSwitcherWillPerformAppSwitch:(__unused id)appSwitcher {
     
 }
 
-- (void)appSwitcherWillProcessPaymentInfo:(__unused id)appSwitcher {
-    
-}
-
-- (void)appSwitcher:(__unused id)appSwitcher didPerformSwitchToTarget:(BTAppSwitchTarget)target {
-    switch (target) {
-        case BTAppSwitchTargetWebBrowser:
-            
-            break;
-        case BTAppSwitchTargetNativeApp:
-            
-            break;
-        case BTAppSwitchTargetUnknown:
-            
-            break;
-    }
-}
 
 #pragma mark --- BTViewControllerPresentingDelegate
 - (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {

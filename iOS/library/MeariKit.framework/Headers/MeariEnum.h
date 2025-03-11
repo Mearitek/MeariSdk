@@ -182,6 +182,12 @@ typedef NS_ENUM(NSInteger, MeariUserCode) {
     MeariUserCodeNoPermissionDealMessage = 1113,
     MeariUserCodeFamilyNameExist        = 1114,
     
+    MeariUserCodeLoginLimit             = 1224,
+    MeariUserRefundForbidden            = 1250,
+    MeariUserRefundExcessive            = 1251,
+    MeariUserCodeDeviceTransferAccountError = 3005,
+    MeariUserCodeDeviceTransferAccountLoading = 3009,
+    
     MeariUserCodeNetworkProxyError      = 9999,//自定义code 网络代理
 };
 
@@ -225,6 +231,7 @@ typedef NS_ENUM(NSInteger, MeariDeviceCode) {
     MeariDeviceCodeVideoClipRecording             = -1050,
     MeariDeviceCodeConnectVideoPasswordError      = -1051,
     MeariDeviceCodeInvalidOperation               = -1200,
+    MeariDeviceCodeApConfigOperationInvalid       = -1052,
     MeariDeviceCodeDeviceParamFail                = -10000
 };
 

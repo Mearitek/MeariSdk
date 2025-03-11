@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.meari.sdk.CloudPlayerController;
 import com.meari.sdk.MeariUser;
 import com.meari.sdk.VideoInfo;
 import com.meari.sdk.bean.CameraInfo;
@@ -27,6 +26,7 @@ import com.meari.sdk.callback.ICloudShortVideoTimeRecordCallback;
 import com.meari.sdk.callback.ICloudVideoTimeRecordCallback;
 import com.meari.sdk.utils.CloudPlaybackUtil;
 import com.meari.sdk.utils.Logger;
+import com.meari.sdk.utils.SdkUtils;
 import com.meari.test.R;
 import com.ppstrong.weeye.widget.media.IjkVideoView;
 
@@ -36,8 +36,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloudPlayerCallback {
 
@@ -183,6 +185,7 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
     }
 
     private int mCurIndex;
+    private String mCurUrl;
 
     private void getCloudVideoTimeRecordInDay(int year, int month, int day) {
         mYear = year;
@@ -237,6 +240,35 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
         VideoTimeRecord videoInfo = recordList.get(0);
         int min = videoInfo.StartHour * 60 + videoInfo.StartMinute;
         return cameraInfo.getEvt() == 1? min / 20 : min / 30;
+    }
+
+    // seek video
+    private void seek(int hour, int minute, int second) {
+        String format = "%04d%02d%02d%02d%02d%02d";
+        {
+            int min = hour * 60 + minute;
+            boolean isNewCloudVersion = cameraInfo.getEvt() == 1;
+            int dex = isNewCloudVersion? min / 20 : min / 30;;
+            if ((isNewCloudVersion && dex >= 72) || (!isNewCloudVersion && dex >= 48)) {
+                return;
+            }
+            Logger.i("playbackCloud", dex + " " + mCurIndex);
+            if (dex != mCurIndex) {
+                mSeekString = String.format(Locale.CHINA, format, mYear, mMonth, mDay, hour, minute, second);
+                mCurIndex = dex;
+                getCloudVideo(mCurIndex);
+                return;
+            }
+            if (mCurUrl != null) {
+                mSeekString = String.format(Locale.CHINA, format, mYear, mMonth, mDay, hour, minute, second);
+                Set<String> curDecKey = new HashSet<>();
+                String license = SdkUtils.formatLicenceId(cameraInfo.getSnNum());
+                curDecKey.add(license);
+                cloudPlayerController.setDecKey(curDecKey);
+                cloudPlayerController.play(mCurUrl, mSeekString);
+                mSeekString = null;
+            }
+        }
     }
 
     private void getCloudVideo(int index) {
@@ -300,7 +332,12 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
             mSeekString = String.format(Locale.CHINA, "%04d%02d%02d%02d%02d%02d", mYear, mMonth, mDay,
                     video.StartHour, video.StartMinute, video.StartSecond);
         }
+        Set<String> curDecKey = new HashSet<>();
+        String license = SdkUtils.formatLicenceId(cameraInfo.getSnNum());
+            curDecKey.add(license);
+        cloudPlayerController.setDecKey(curDecKey);
         cloudPlayerController.play(path, mSeekString);
+        mCurUrl = path;
     }
 
     private void toM3U8(String content, String startTime, String endTime) {
@@ -331,7 +368,12 @@ public class DeviceCloudPlayActivity extends AppCompatActivity implements ICloud
             mSeekString = String.format(Locale.CHINA, "%04d%02d%02d%02d%02d%02d", mYear, mMonth, mDay,
                     video.StartHour, video.StartMinute, video.StartSecond);
         }
+        String license = SdkUtils.formatLicenceId(cameraInfo.getSnNum());
+        Set<String> curDecKey = new HashSet<>();
+        curDecKey.add(license);
+        cloudPlayerController.setDecKey(curDecKey);
         cloudPlayerController.play(path, mSeekString);
+        mCurUrl = path;
     }
 
     private void postEventTime(int year, int month, int day) {

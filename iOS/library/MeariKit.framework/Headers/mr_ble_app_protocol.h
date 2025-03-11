@@ -42,7 +42,7 @@ void mr_ble_clean_app_packet(MR_BLE_APP_PACKET *packet);
 int mr_ble_get_app_data1(MR_BLE_APP_PACKET* packet, unsigned char** out);
 
 int mr_ble_get_app_data(int cmd, unsigned char *data, int len,
-                        MR_BLE_ENC_TYPE enc_type, MR_BLE_KEY* key, unsigned char** out);
+                        MR_BLE_ENC_TYPE enc_type, MR_BLE_KEY* key, unsigned char** out, int *seq);
 
 int mr_ble_parse_app_packet_with_dec(MR_BLE_APP_PACKET* packet, MR_BLE_KEY* key, const unsigned char* app_data, int len);
 

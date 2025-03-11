@@ -11,12 +11,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MeariNoticeModel : MeariBaseModel
-@property (nonatomic, assign) NSInteger Id;
-@property (nonatomic, copy) NSString *content;
-@property (nonatomic, assign) NSInteger startTime;
-@property (nonatomic, assign) NSInteger endTime;
-@property (nonatomic, assign) NSInteger jumpState;
-@property (nonatomic, copy) NSString *jumpUrl;
+@property (nonatomic, assign) NSInteger Id;         //公告ID
+@property (nonatomic, copy)   NSString *content;    //公告内容
+@property (nonatomic, assign) NSInteger startTime;  //开始时间
+@property (nonatomic, assign) NSInteger endTime;    //结束时间
+@property (nonatomic, assign) NSInteger jumpState;  //是否跳转 0-否 1-显示去查看"
+@property (nonatomic, copy)   NSString *jumpUrl;    //跳转URL
 @property (nonatomic, copy) NSString *appProtocolVer;
 @end
 

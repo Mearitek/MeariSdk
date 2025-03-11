@@ -7,187 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-typedef NS_ENUM(NSInteger, MeariDeviceType) {
-    MeariDeviceTypeNVR = 0,
-    MeariDeviceTypeIpc = 1,
-    MeariDeviceTypeChime = 2,
-};
-typedef NS_ENUM(NSInteger, MeariDeviceSubType) {
-    MeariDeviceSubTypeNVR = 0,
-    MeariDeviceSubTypeIpcCommon = 1,
-    MeariDeviceSubTypeIpcBaby = 2,
-    MeariDeviceSubTypeIpcBell = 3,
-    MeariDeviceSubTypeIpcBattery = 4,
-    MeariDeviceSubTypeIpcVoiceBell = 5,
-    MeariDeviceSubTypeIpcFloodlight = 6,
-    MeariDeviceSubTypeIpcForthGeneration = 7,
-    MeariDeviceSubTypeChime = 8,
-    MeariDeviceSubTypeJing = 9,
-    MeariDeviceSubTypeIpcPhotoBell = 15,
-    MeariDeviceSubTypeIpcHunting = 16,
-};
-
-typedef NS_ENUM(NSInteger, MeariDeviceAddStatus) {
-    MeariDeviceAddStatusSelf = 1, // Your device (你的设备)
-    MeariDeviceAddStatusUnShare, //  Not shared (未分享)
-    MeariDeviceAddStatusNone, // Not added (未添加)
-    MeariDeviceAddStatusShared, // Already shared (已经添加)
-    MeariDeviceAddStatusSharing, // Sharing (已经分享中)
-    MeariDeviceAddStatusFailure, // device abnormal (设备不正常)
-    MeariDeviceAddStatusOverLimit,// device count over limit (设备超出限制)
-    MeariDeviceAddStatusByOther,  // device has been added by other 
-};
-typedef NS_ENUM(NSInteger, MeariDeviceLimitLevel) {
-    MeariDeviceLimitLevelNone,
-    MeariDeviceLimitLevelForbidden,
-};
-typedef NS_ENUM(NSInteger, MeariDeviceVoiceTalkType) {// Voice intercom type (设备语音对讲类型)
-    MeariDeviceVoiceTalkTypeNone         = 0,    //No speakers and microphone (没有扬声器和麦克)
-    MeariDeviceVoiceTalkTypeSpeekerOnly  = 1,    //Speaker only (仅有扬声器)
-    MeariDeviceVoiceTalkTypeMicOnly      = 2,    //Only Mike (仅有麦克)
-    MeariDeviceVoiceTalkTypeHalfDuplex   = 3,    //Half duplex (半双工)
-    MeariDeviceVoiceTalkTypeFullDuplex   = 4,    //Full duplex (全双工)
-};
-typedef NS_ENUM(NSInteger, MeariDeviceCapabilityVSTType) {
-    MeariDeviceCapabilityVSTTypeNormal       = 0,    // HD/SD ( h_264高清/标清)
-    MeariDeviceCapabilityVSTTypeOnlyHD       = 1     // HD (h_264高清)
-};
-typedef NS_ENUM (NSUInteger, MeariDeviceSupportBellType) {
-    MeariDeviceSupportBellTypeWireless,       //Wireless bell is supported by default (默认支持无线铃铛)
-    MeariDeviceSupportBellTypeMachinery = 0b1,//mechanical bell (机械铃铛)
-    MeariDeviceSupportBellTypeWirelessBell = 0b10,//Wireless Bell (无线铃铛)
-    MeariDeviceSupportBellTypeWirelessBellEnable = 0b100,//Wireless Bell (无线铃铛使能)
-    MeariDeviceSupportBellTypeWirelessBellPair = 0b1000,//Wireless Bell (无线铃铛配对)
-    MeariDeviceSupportBellTypeWirelessBellVolume = 0b10000,//Wireless Bell (无线铃铛音量)
-    MeariDeviceSupportBellTypeWirelessBellSongs = 0b100000,//Wireless Bell (无线铃铛铃声选择)
-    MeariDeviceSupportBellTypeWirelessEnable = 0b10000000,//Wireless enable (无线使能)
-};
-typedef NS_ENUM (NSUInteger, MeariDeviceSupportFlickerType) {
-    MeariDeviceSupportFlickerTypeNone = 0,       //Does not support flicker (不支持抗闪烁)
-    MeariDeviceSupportFlickerTypeFiftyHz = 0b1,//50HZ
-    MeariDeviceSupportFlickerTypeSixtyHz = 0b10,//60HZ
-    MeariDeviceSupportFlickerTypeAuto = 0b100,//自动
-    MeariDeviceSupportFlickerTypeClose = 0b1000,//关闭
-};
-typedef NS_ENUM(NSInteger, MeariDeviceSupportHostType) {
-    MeariDeviceSupportHostTypeNone               = 0,    //Does not support messages (不支持留言)
-    MeariDeviceSupportHostTypeOne                = 1,    //Support a message only (支持一段留言)
-    MeariDeviceSupportHostTypeMultiple           = 2,    //Support 3 messages (支持3段留言)
-};
-typedef NS_ENUM(NSInteger, MeariDeviceSupportProtocolType) {
-    MeariDeviceSupportProtocolP2p               = 0b1,    //p2p
-    MeariDeviceSupportProtocolIot               = 0b10,    //iot
-};
-typedef NS_ENUM (NSUInteger, MeariDeviceLocalServerType) {
-    MeariDeviceLocalServerTypeChangePSW = 0b1,    // Support password modification (支持密码修改)
-    MeariDeviceLocalServerTypeOnvif     = 0b10,   // Support Onvif (支持Onvif)
-};
-typedef NS_OPTIONS(NSUInteger, MeariDevicePeopleDetect) {
-    MeariDevicePeopleDetectEnable = 0b1, // 人形检测开关设置
-    MeariDevicePeopleDetectBnddraw = 0b10, // 画框开关设置
-    MeariDevicePeopleDetectDay = 0b100, // 白天人形开关设置
-    MeariDevicePeopleDetectNight = 0b1000, // 夜间人形开关设置
-};
-typedef NS_OPTIONS(NSUInteger, MeariDevicePtzAdvanceType) {
-    MeariDevicePtzPoint = 0b1, // ptz高级功能 内置预置点（pre point）
-    MeariDevicePtzCruise = 0b10, // ptz高级功能 多点巡航 (Cruise between multiple points)
-    MeariDevicePtzPatrol = 0b100, // ptz高级功能 巡逻一周 （Patrol for a week）
-};
-typedef NS_ENUM (NSUInteger, MeariDeviceNightVisionMode) {
-    MeariDeviceNightVisionModeAuto, // auto mode (自动改变)
-    MeariDeviceNightVisionModeDay, // day mode (白天)
-    MeariDeviceNightVisionModeNight // night mode (黑夜)
-};
-typedef NS_ENUM (NSUInteger, MeariDeviceFullColorMode) {
-    MeariDeviceFullColorModeAuto, // auto mode 智能夜视（默认黑白夜视效果，检测到移动或人形时自动切换为全彩）
-    MeariDeviceFullColorModeNormal, // full color 全彩夜视（暖光灯开启，彩色画面呈现，同时起到照明作用）
-    MeariDeviceFullColorModeNightVision // night mode 黑白夜视（红外灯开启，黑白画面呈现，暖光灯自动关闭）
-};
-// 是否支持日夜切换开关(自动/日/夜)的能力级
-typedef NS_ENUM(NSUInteger, MeariDeviceDayNightMode) {
-    MeariDeviceDayNightModeNone, // 0=不支持
-    MeariDeviceDayNightModeNightVision, // 1=支持非暖光灯的夜视模式(自动/日/夜)
-    MeariDeviceDayNightModeFullColor, // 2=支持暖光灯的夜视模式（智能夜视/全彩夜视/黑白夜视）
-};
-typedef NS_ENUM(NSInteger, MeariDeviceTokenType) {
-    MeariDeviceTokenTypeSmartWifi, // use SmartWifi Configure the network (SmartWifi 配网)
-    MeariDeviceTokenTypeAP, // use ap Configure the network (AP配网)
-    MeariDeviceTokenTypeQRCode // use QRCode  Configure the network (二维码配网)
-};
-
-typedef NS_ENUM(NSInteger, MeariDeviceGatewayTokenType) {
-    MeariDeviceGatewayToken, // token use for geteway(网关)
-    MeariDeviceGatewayTokenSubDevice, //token use for gateway subdevice (网关子设备)
-};
-
-typedef NS_ENUM (NSInteger, MeariDeviceCloudState) {
-    MeariDeviceCloudStateCloseCanTry = 0,      //Not open but can trial (未开通可试用)
-    MeariDeviceCloudStateCloseNotTry,          //Not open and cant trial (未开通不可试用)
-    MeariDeviceCloudStateOpenNotOverDue,       //open (已开通)
-    MeariDeviceCloudStateOpenOverDue           //expired (已过期)
-};
-
-typedef NS_ENUM (NSInteger, MeariDevicePirSensitivity) {
-    MeariDevicePirSensitivityNone = 0, // not support (不支持)
-    MeariDevicePirSensitivityAll = 1, // Support all (支持PIR使能开关+设置选项(高中低))
-    MeariDevicePirSensitivityOnlySwitch = 2,//Support enable (只支持PIR的使能开关)
-    MeariDevicePirSensitivitySwitchAndHighLow= 4,//Support enable And high,low level (支持PIR使能开关+设置选项(高低))
-    MeariDevicePirSensitivityIpcDoublePir = 5, // Support dual PIR enable switch (left and right) + unified sensitivity setting options (high and low) (used in constant current equipment, such as Flight 4T) (支持双PIR的使能开关(左和右)+统一的灵敏度设置选项(高低)(用于常电设备，如Flight 4T))
-    
-    MeariDevicePirSensitivityLowPowerDoublePir = 6, // Support dual PIR enable switch (left and right) + unified sensitivity setting options (high and low) (for low power consumption devices, such as Flight 3T) 支持双PIR的使能开关(左和右)+统一的灵敏度设置选项(高低)(用于低功耗设备，如Flight 3T)
-    MeariDevicePirSensitivityFlight5s7s = 7, // 支持pir使能开关+pir灵敏度档位设置（10档）(用于常电设备，如flight5s,flight7s)
-    MeariDevicePirSensitivityFlight5s7sPic = 8, // 支持pir使能开关+pir灵敏度档位设置（10档）图形显示 (用于常电高级设备类型，如flight5s,flight7s)
-};
-
-typedef NS_ENUM (NSInteger, MeariDeviceVideoType) {
-    // Wlh : width less height ， 宽大于高
-    MeariDeviceVideoTypeNoSupportWlh = 0, // 默认 16 : 9 , default
-    MeariDeviceVideoTypeSupportWlhSourceRight = 1, // // 9 : 16 , source also is 9 : 16
-    MeariDeviceVideoTypeSupportWlhSourceError = 2, // // 9 : 16 , but source also is 16 : 9, The decoder needs to flip by itself
-};
-
-typedef NS_ENUM(NSInteger, MeariDeviceFloodCameraType) {
-    MeariDeviceFloodCameraTypeNone, // not support FloodLight Camera
-    MeariDeviceFloodCameraTypeNormal, // support FloodLight Camera
-    MeariDeviceFloodCameraTypeLowPower,
-    // LowPower FloodLight Camera
-};
-typedef NS_ENUM (NSUInteger, MeariDeviceStatisticType) {
-    MeariDeviceStatisticTypeRealTime = 0b1,    // Real-time information reporting (实时信息上报)
-    MeariDeviceStatisticTypeInterval  = 0b10,   // Daily/Monthly Information Report (天/月信息上报)
-};
-typedef NS_ENUM(NSUInteger, MeariDeviceAuthority) {
-    MeariDeviceAuthorityOnlyView, // 仅查看
-    MeariDeviceAuthorityControl, // 允许控制
-    MeariDeviceAuthorityUnUseAble, // 不可使用
-};
-typedef NS_ENUM(NSUInteger, MeariAddSubDeviceMode) {
-    MeariAddSubDeviceModeSetNVRQRcode = 0b1, // 是否支持生成Camera连接NVR的二维码(NVR设置页）
-    MeariAddSubDeviceModeSetRouterQRcode = 0b10, // 是否支持camera连接路由器的二维码(NVR设置页面)
-    MeariAddSubDeviceModeAddNVRQRcode = 0b100, // 是否支持生成Camera连接NVR的二维码(NVR展示页面)
-    MeariAddSubDeviceModeAddRouterQRcode = 0b1000, // 是否支持camera连接路由器的二维码(NVR展示页面)
-};
-typedef NS_ENUM(NSUInteger, MeariDeviceIntelligentDetectionType) {
-    MeariDeviceIntelligentDetectionTypeTotal = 0b1, // 是否支持智能侦测总开关设置
-    MeariDeviceIntelligentDetectionTypePerson = 0b10, // 是否支持人形检测开关设置
-    MeariDeviceIntelligentDetectionTypePet = 0b100, // 是否支持宠物检测开关设置
-    MeariDeviceIntelligentDetectionTypeCar = 0b1000, // 是否支持车辆检测开关设置
-    MeariDeviceIntelligentDetectionTypePackage = 0b10000, // 是否支持包裹检测开关设置
-    MeariDeviceIntelligentDetectionTypeFrame = 0b100000, // 是否支持智能检测画框开关设置
-    MeariDeviceIntelligentDetectionTypeTime = 0b1000000, // 是否支持智能检测布防时间
-};
-typedef NS_ENUM(NSUInteger, MeariDeviceVoiceLightAlarmType) {
-    MeariDeviceVoiceLightAlarmTypeTotal = 0b1, // 是否支持声光报警总开关
-    MeariDeviceVoiceLightAlarmTypePlan = 0b10, // 是否支持声光报警时间段
-    MeariDeviceVoiceLightAlarmTypeRing = 0b100, // 是否支持声光报警铃声
-};
-
-// 是否支持日夜切换开关(自动/日/夜)的能力级
-typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
-    MeariDevicePlaybackSpeedAllFrame = 0b1, // 支持 0.5、1、 2、 4 倍速度
-    MeariDevicePlaybackSpeedSubFrame = 0b10, // 支持 8、 16 倍速度
-};
+#import <MeariKit/MeariDeviceEnum.h>
 @interface MeariDeviceInfoCapabilityFunc : MeariBaseModel
 // Voice intercom type
 /** 语音对讲类型 */
@@ -232,8 +52,16 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 /** 云存储开关*/
 @property (nonatomic, assign) NSInteger cse;
 /** Day and night mode*/
-/* 是否支持日夜切换开关(自动/日/夜)的能力级, 0/1, default: 0，0=不支持，1=支持非照明灯的夜视模式(自动/日/夜)， 2=支持照明灯的夜视模式（智能夜视/全彩夜视/黑白夜视） 能力级版本56**/
+/* 是否支持日夜切换开关(自动/日/夜)的能力级, 0/1, default: 0，0=不支持，1=支持非照明灯的夜视模式(自动/日/夜)， 2=支持照明灯的夜视模式（智能夜视/全彩夜视/黑白夜视，3=支持微光全彩式（智能夜视/全彩夜视/黑白夜视/微光全彩）  能力级版本56**/
 @property (nonatomic, assign) NSInteger dnm;
+
+/** 新版Day and night mode */
+/* description: 是否支持日夜切换开关(自动/日/夜)的能力级,
+ default: 0；
+ bit0 表示是否支持非照明灯的夜视模式(自动/日/夜)；
+ bit1 表示是否支持照明灯的夜视模式（智能夜视/全彩夜视/黑白夜视）；
+ bit2 表示是否支持照明灯的微光模式（智能夜视/全彩夜视/黑白夜视/微光模式）*/
+@property (nonatomic, assign) NSInteger dnm2;
 /** Second generation cloud storage*/
 /** 二代云存储*/
 @property (nonatomic, assign) NSInteger cs2;
@@ -337,6 +165,10 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 @property (nonatomic, assign) NSInteger crm;
 /** 声光报警*/
 @property (nonatomic, assign) NSInteger sla;
+/** 声光报警可录音  是否支持声光报警录音提示音,  高16位代表支持能录制报警提示音的个数，低16位代表每段录制报警提示音最长时长秒数；
+ 比如：高16位数值为1---表示能录制一段报警提示音，高16位数值为2---能录制二段报警提示音....
+       低16位数值为1---每段录制报警提示音最长时长为1s，低16位数值为2---每段录制报警提示音最长时长为2s....*/
+@property (nonatomic, assign) NSInteger slv;
 /** 时间风格设置*/
 @property (nonatomic, assign) NSInteger ttp;
 /** 音乐播放能力级*/
@@ -363,6 +195,8 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 @property (nonatomic, assign) NSInteger mts;
 /** 是否支持夜灯设置  0-不支持，1-支持*/
 @property (nonatomic, assign) NSInteger rgb;
+/** 是否支持暖光灯控制功能，0-不支持 ，bit0=1：支持灯控开关 ，bit1：定时开启使能，bit2：亮灯模式使能， bit3：亮度使能 */
+@property (nonatomic, assign) MeariWarmLightFuncType wml;
 /** 是否支持抗闪烁设置  0-不支持,1-支持+关闭+50HZ+60HZ,2-支持支持+关闭+50HZ+60HZ+自动*/
 @property (nonatomic, assign) NSInteger flk;
 /** 是否支持自动升级设置  0-不支持,1-支持*/
@@ -383,7 +217,7 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 @property (nonatomic, assign) NSInteger lgl;
 /** 是否支持录像声音开关，0-不支持，1-支持，备注：如果麦克声音也关闭了，则录像声音开启也是无效的*/
 @property (nonatomic, assign) NSInteger rae;
-/** 是否支持链接加密  - 0-不支持，1-支持 需要设置device.info.connectPwd 字段*/
+/** 设备是否支持用户密码设置，0-不支持；bit0=1-支持(需要设置device.info.connectPwd 字段)；bit1=1-支持AI分析使用用户密码(APP购买AI界面需要提示用户授权用户密码) */
 @property (nonatomic, assign) NSInteger mup;
 /** 是否支持上报警报最大时间*/
 @property (nonatomic, assign) NSInteger sot;
@@ -409,8 +243,6 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 @property (nonatomic, assign) NSInteger fls;
 /** 是否支持连接NVR私有协议能力*/
 @property (nonatomic, assign) NSInteger cpn;
-/**是否支持报警总开关 */
-@property (nonatomic, assign) NSInteger gal;
 /** 是否支持生成配网的二维码*/
 @property (nonatomic, assign) NSInteger rwm;
 /** 是否支持水印*/
@@ -419,14 +251,28 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 @property (nonatomic, assign) NSInteger ai;
 /** IPC 设备是否支持显示电量*/
 @property (nonatomic, assign) NSInteger bat;
+/**是否支持报警总开关 */
+@property (nonatomic, assign) NSInteger gal;
+
 /**ptz 2.0版本 */
 @property (nonatomic, assign) NSInteger ptz2;
-/**智能检测相关功能开关 */
+/**智能检测相关功能开关 (后端智能)*/
 @property (nonatomic, assign) NSInteger idt;
+/**智能检测相关功能开关 (前端智能)*/
+@property (nonatomic, assign) NSInteger aid;
+/**智能侦测布防时间是否支持跨天设置 (后端智能)*/
+@property (nonatomic, assign) NSInteger ict;
+/**智能侦测布防时间是否支持跨天设置 (前端智能)*/
+@property (nonatomic, assign) NSInteger nct;
+/**APP页面是否支持设备时区设置*/
+@property (nonatomic, assign) NSInteger tz;
+
 /** IPC 设备是否支持显示低功耗*/
 @property (nonatomic, assign) NSInteger lem;
 /** 支持事件报警类型设置 0-不支持, >=1-支持设置选项; 设备evt2>=1,*/
 @property (nonatomic, assign) NSInteger evt2;
+/** 4G设备是否支持云存储*/
+@property (nonatomic, assign) NSInteger evt3;
 
 /** 支持多边形报警区域设置*/
 @property (nonatomic, assign) NSInteger plg;
@@ -450,10 +296,92 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 @property (nonatomic, assign) NSInteger pfv;
 /** 是否支持主人投食留言语音设置，0-不是 1-是, 默认0*/
 @property (nonatomic, assign) NSInteger pms;
+/** 设备是否支持一键投食，0-不是 1-是, 默认0*/
+@property (nonatomic, assign) NSInteger pvs;
+/** 设备是否支持逗宠激光灯，0-不是 1-是, 默认0*/
+@property (nonatomic, assign) NSInteger las;
+/** 设备是否支持逗宠计划，0-不是 1-是, 默认0*/
+@property (nonatomic, assign) NSInteger tpp;
+/** 设备是否支持逗宠时长设置，0-不是 1-是, 默认0*/
+@property (nonatomic, copy) NSString *tpt;
+
 /** 是否支持扫机身码直接添加功能, 0-不支持, 1(非0)-支持*/
 @property (nonatomic, assign) NSInteger sqr;
 
+//高低温报警
+/*** 是否支持 温湿度报警 */
+@property (nonatomic, assign) NSInteger tha;
+/** 是否支持温度阈值 */
+@property (nonatomic, assign) NSInteger ttc;
+/** 是否支持湿度阈值 */
+@property (nonatomic, assign) NSInteger hts;
 
+/** 是否支持wifi切换*/
+@property (nonatomic, assign) NSInteger swi;
+/** 是否支持显示配置网络*/
+@property (nonatomic, assign) NSInteger swi2;
+/**Base设备是否支持音量设置，0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger svt;
+/** 设备是否支持安全访问密码设置*/
+@property (nonatomic, assign) NSInteger sap;
+/** 4G设备是否支持双卡，0-不支持  1-支持*/
+@property (nonatomic, assign) NSInteger sdc;
+
+/** 设备是否支持码率、帧率设置*/
+@property (nonatomic, copy) NSString *sbf;
+/** 4G设备是否支持AOV码流单帧间隔配置，0-不支持 bit0-1秒，bit1-2秒，bit2-3秒，bit3-5秒，bit4-10秒，bit5-15秒，bit6-20秒，bit7-30秒，bit8-60秒*/
+@property (nonatomic, assign) NSInteger sfi;
+/** 是否支持Aov播放速度模式*/
+/** 4G设备 AOV录像回放一秒几帧  0-不支持 1-1秒1帧 2-1秒2帧 3-1秒3帧 4-1秒4帧 5-1秒5帧*/
+@property (nonatomic, assign) NSInteger ars;
+/**是否支持低功耗休眠电量阈值 设置, 0=不支持，1=支持*/
+@property (nonatomic, assign) NSInteger slt;
+/**4G设备限流能力集, 0:不支持 1:支持*/
+@property (nonatomic, assign) NSInteger lmf;
+/**是否支持全时低功耗的工作模式设置*/
+@property (nonatomic, assign) NSInteger alm;
+/**
+ 是否支持wifi aov  低功耗的工作模式设置，0-不支持，bit0-支持省电模式，bit1-支持性能模式，bit2-支持自定义模式，bit3-支持常电模式
+ */
+@property (nonatomic, assign) NSInteger lwm2;
+/**
+ 是否支持 wifi aov 预览模式设置，0-不支持，bit0-支持实时模式，bit1-支持省流模式; 能力集版本号大于或等于91时，根据pvm显示预览模式设置功能；能力集版本号小于91时，根据sfi非0时显示预览模式设置功能
+ */
+@property (nonatomic, assign) NSInteger pvm;
+
+/** 是否支持事件录像延时 （事件录像结束后，再多录一定时间的录像）*/
+@property (nonatomic, assign) NSInteger erd;
+/**是否支持补光距离配置*/
+@property (nonatomic, assign) NSInteger sld;
+/**是否支持夜景模式配置*/
+@property (nonatomic, assign) NSInteger nms;
+/**是否支持定时录像计划*/
+@property (nonatomic, assign) NSInteger trp;
+
+/**是否支持音乐播放时长设置*/
+@property (nonatomic, assign) NSInteger mul;
+/**是否支持音乐播放模式设置*/
+@property (nonatomic, assign) NSInteger mpm;
+
+/**是否支云台守望位配置*/
+@property (nonatomic, assign) NSInteger wtl;
+
+//宠物定位器
+/**是否支蓝牙开关配置，0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger ble;
+/**是否支持蜂鸣器开关，0-不支持，1支持*/
+@property (nonatomic, assign) NSInteger bzr;
+/**是否支持宠物寻回指示灯，0-不支持，1支持*/
+@property (nonatomic, assign) NSInteger pfl;
+
+/**是否支持定位上报间隔设置，0-不支持，bit0-2min，bit1-5min, bit2-15min*/
+@property (nonatomic, assign) NSInteger pri;
+/**是否支持WiFi围栏设置 0-不支持，1-支持*/
+@property (nonatomic, assign) NSInteger wff;
+/**支持位置定位的类型，可或运算，bit0：支持GPS定位,；bit1：支持WiFi定位；bit2：支持基站定位。*/
+@property (nonatomic, assign) NSInteger gps;
+/**是否支持GPS信号强度显示，0-不支持, 1-支持*/
+@property (nonatomic, assign) NSInteger gss;
 
 //狩猎相机
 /** 设置唤醒后抓拍保存图像方式能力级，枚举类型 0-不支持，1-支持三个选项（录像or拍照or录像+拍照）*/
@@ -483,8 +411,104 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 /** 是否支持语言设置，0-不支持，1-支持*/
 @property (nonatomic, assign) NSInteger lange;
 
+/** 设备是否支持云台一键校准，0-不支持 1-支持, 默认0 */
+@property (nonatomic, assign) NSInteger ptc;
+/** 0：wifi铃铛  1：中继铃铛 */
+@property (nonatomic, assign) NSInteger rly;
 
+/** 是否支持犬吠检测参数设置， 0=不支持， 1=支持（开关设置) */
+@property (nonatomic, assign) NSInteger dbd;
+/** 是否支持本地宠物检测参数设置， 0=不支持， 1=支持（开关设置)*/
+@property (nonatomic, assign) NSInteger ptd;
 
+/** 双目设备能力级 */
+@property (nonatomic, strong) NSString *msc;
+
+/** SMB Cloud 2.0 设备能力级 */
+@property (nonatomic, strong) NSString *csf;
+
+/** 是否支持对讲格式  0b1 G711  0b10 Aac */
+@property (nonatomic, assign) NSInteger auf;
+
+/** 是否支持毫米波雷达 bit0=1支持开关 bit1:呼吸使能 bit2:心跳使能 bit3:身体状态使能 bit4:身体运动状态量 */
+@property (nonatomic, assign) NSInteger mrda;
+
+/** 0：不支持, bit0=1倍速回放，bit1=2倍速回放，bit2=4倍速回放，bit3=8倍速回放，bit4=16倍速回放 bit5=0.5倍速回放 */
+@property (nonatomic, assign) NSInteger pbs;
+
+/** 倍速回放抽帧能力级,bit0=1倍速回放抽帧，bit1=2倍速回放抽帧，bit2=4倍速回放抽帧，bit3=8倍速回放抽帧，bit4=16倍速回放抽帧 */
+@property (nonatomic, assign) NSInteger pbe;
+
+/**是否支持变倍聚焦控制 0:不支持 1:支持*/
+@property (nonatomic, assign) NSInteger zmf;
+
+/**获取SIM卡运营商信息, 0:不支持 1:支持*/
+@property (nonatomic, assign) NSInteger cqr;
+
+/**是否支持呼吸和心率数据展示， 0表示不支持 1表示支持（毫米雷达波）*/
+@property (nonatomic, assign) NSInteger hhs;
+
+/**是否支持遮脸报警，0表示不支持 1表示支持*/
+@property (nonatomic, assign) NSInteger cfs;
+
+/** 是否支持趴睡报警，0表示不支持 1表示支持 */
+@property (nonatomic, assign) NSInteger lds;
+
+/** 是否支持本地AI识别设置，格式为json数组，例如[1,2,3,4,5] ，含义见MeariDeviceAIAnalysisType*/
+@property (nonatomic, strong) NSArray *dai;
+
+/** 是否支持云AI识别设置，格式为json数组，例如[1,2,3,4,5]，含义见MeariDeviceAIAnalysisType*/
+@property (nonatomic, strong) NSArray *cai;
+/**
+ 回放分辨率能力集，格式为JSON格式的字符串，例如：{"0": "640x360", "1": "2304x1296"}，0/1/2/3/4是码流编号，0/1/2/3/4分别指向"标清/高清/超清/超高清/4K"；同时对应到P2P取流的ID；目前支持的分辨率以设备上报为准
+ */
+@property (nonatomic, strong) NSString *pbr;
+
+/** 是否支持时光相册(album), bit0 = 时光相册v0, 后续若有版本2, 版本3，通过bit1, bit2...进行区分 */
+@property (nonatomic, assign) NSInteger alb;
+
+/** 双卡设备是否支持用户选择使用哪张SIM卡，0-不支持 1-支持*/
+@property (nonatomic, assign) NSInteger ssc;
+
+/**低功耗相机PTZ操作电量阈值能力集，大于等于该电量才能操作PTZ，用以APP操作PTZ时错误提示*/
+@property (nonatomic, assign) NSInteger elt;
+/**NVR下子设备能力集，NVR套装子设备是否支持4G功能，用以APP信号显示，设备信息展现，省流提醒等4G特有功能展示 0-不支持 1-支持*/
+@property (nonatomic, assign) NSInteger sdm;
+/** Compatibility issues between the old and new versions of the pet feeding device */
+/** 用于召唤宠物在投食机的新老版本兼容问题 */
+@property (nonatomic, assign) NSInteger plm;
+/** baby新老UI界面的版本区分，0表示用老版的UI界面，1表示用新版的UI界面 */
+/** The version distinction between the new and old UI interfaces of the  baby, 0 - old UI interface, 1 - new UI interface*/
+@property (nonatomic, assign) NSInteger uvd;
+/** 是否支持智能看护能力集，[1,2,3,4,5,6,7]：1、趴睡检测 2、遮脸检测 3、哭声检测 4、夜灯设置 5、移动侦测 6、移动追踪 7、噪声检测 ，有相关数字表示支持该能力，没有则表示不支持，数字顺序表示APP端显示的UI顺序，调整数字顺序控制APP端UI的显示顺序 */
+/** Whether to support the smart care capability set, [1,2,3,4,5,6,7]: 1. Sleeping detection 2. Face cover detection 3. Crying detection 4. Night light setting 5. Motion detection 6. Motion tracking 7. Noise detection. If there is a relevant number, it means that the capability is supported. If there is no relevant number, it means that it is not supported. The order of numbers indicates the order of UI displayed on the APP side. Adjusting the order of numbers controls the display order of UI on the APP side. */
+@property (nonatomic,   copy) NSString *stc;
+/** Whether to support baby status icon display, 0 means not supported, 1 means supported */
+/** 是否支持baby的状态图标显示，0表示不支持，1表示支持 */
+@property (nonatomic, assign) NSInteger bsi;
+/** 鱼眼设备参数 {"r":0.5, "x":0.5, "y":0.5}*/
+@property (nonatomic, copy) NSString *fey;
+/** 是否禁用流量管理，0-支持流量管理 1-不支持流量管理 */
+@property (nonatomic, assign) NSInteger fme;
+/**  是否支持夜灯模式下亮灯模式，0不支持亮灯模式设置 bit1--支持常亮模式设置 bit2 ---支持跑马灯模式设置 bit3 --支持呼吸灯模式设置(复用dp点200控制亮灯模式)  */
+@property (nonatomic, assign) MeariDeviceLightMode rgbm;
+/** 是否支持IPC离线时APP弹出提示框，0表示不支持，1表示支持 */
+@property (nonatomic, assign) NSInteger dis;
+/** 设备是否支持电量显示(复用dp 154：电池电量） bit0: 是否支持设备上报电量, 上报则app侧显示图标; bit1: app电量以格数方式显示(4格) **/
+@property (nonatomic, assign) NSInteger pbat;
+/** NVR设备是否支持子设备蓝牙添加绑定到NVR上(NVR端能力级), 0=不支持, 1=支持*/
+@property (nonatomic, assign) NSInteger sba;
+
+/** 是否支持预置点(非贝斯德设备)，0-不支持，1-支持(单次操作预置点只下发单个数据) **/
+@property (nonatomic, assign) NSInteger ppl;
+/** 是否支持图像质量等级配置，0-不支持，1-支持 **/
+@property (nonatomic, assign) NSInteger vdq;
+/** 是否支持单独对设备码率设置能力级，0-不支持**/
+@property (nonatomic, assign) NSInteger sbt;
+/** 是否支持激光灯亮度调节，0-不支持 1-支持, 默认0 **/
+@property (nonatomic, assign) NSInteger lbr;
+/** 是否支持设备转移功能，0-不支持 1-支持, 默认0 **/
+@property (nonatomic, assign) NSInteger flit;
 
 @end
 
@@ -501,6 +525,24 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 @property (nonatomic, strong) MeariDeviceInfoCapabilityFunc *caps;
 @end
 
+@interface MeariDeviceIPInfo: MeariBaseModel
+/** Whether static IP can be configured*/
+/** 是否可配置静态IP*/
+@property (nonatomic, assign) BOOL configStaticIP;
+/** IP Address*/
+/** ip地址*/
+@property (nonatomic, copy) NSString *ip;
+/** Ethernet Address*/
+/** mac地址*/
+@property (nonatomic, copy) NSString *mac;
+/** Subnet Mask*/
+/** 子网掩码*/
+@property (nonatomic, copy) NSString *subnetMask;
+/** gatway*/
+/** 网关*/
+@property (nonatomic, copy) NSString *gatway;
+@end
+
 #import "MeariDeviceParam.h"
 @interface MeariDeviceInfo : MeariBaseModel
 /** camera type */
@@ -515,9 +557,18 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 /** Device auto-bind */
 /** 设备自动绑定 */
 @property (nonatomic, assign) BOOL autobind;
+/** Device weak binding type */
+/** 设备弱绑定类型 */
+@property (nonatomic, assign) BOOL weakBind;
 /** Wire device */
 /** 是否为有线设备 */
 @property (nonatomic, assign) BOOL wireDevice;
+/** Wire device Password*/
+/** 有线设备安全协议密码*/
+@property (nonatomic, assign) BOOL needDevicePassword;
+/** LAN IP information*/
+/** 局域网IP信息*/
+@property (nonatomic, strong) MeariDeviceIPInfo *ipInfo;
 /** Wire device  ip*/
 /** 有线设备配网IP */
 @property (nonatomic, copy) NSString *wireConfigIp;
@@ -546,6 +597,16 @@ typedef NS_ENUM(NSUInteger, MeariDevicePlaybackSpeed) {
 @property (nonatomic, assign) NSInteger userID;
 // device bind sim id(the device is 4G)
 @property (nonatomic, assign) NSInteger simID;
+// device sim card nedd to buy data(the device is 4G)
+@property (nonatomic, assign) BOOL needBuy;
+// device sim card data expired date(the device is 4G)
+@property (nonatomic, copy) NSString *dataExpireDate;
+// Whether the device sim card data is expired(the device is 4G)
+@property (nonatomic, assign) BOOL dataExpired;
+//是否是试用套餐 Is it a trial plan?
+@property (nonatomic, assign) BOOL trialPlan;
+// Whether the device supports unlimited traffic
+@property (nonatomic, assign) BOOL unlimited;
 // device bind id(the device is jingle)
 @property (nonatomic, assign) NSInteger bindDeviceID;
 // device had be bind

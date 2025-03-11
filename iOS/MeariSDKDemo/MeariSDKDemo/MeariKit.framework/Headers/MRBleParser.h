@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (int)addSessionWithToken:(NSString *)token;
 
+- (NSString *)getOfflineTokenWithSN:(NSString *)sn;
+
 - (int)removeSessionWithContext:(int)context;
 
 //解析广播数据

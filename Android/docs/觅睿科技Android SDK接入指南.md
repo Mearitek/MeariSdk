@@ -29,8 +29,15 @@
         * 5.3.2 [添加设备](#532-添加设备)
     * 5.4 [扫码即添加](#54-扫码即添加) 
         * 5.4.1 [扫描机身码](#541-扫描机身码)
-        * 5.3.2 [获取设备状态](#542-获取设备状态)
-        * 5.3.2 [添加设备](#543-添加设备)
+        * 5.4.2 [获取设备状态](#542-获取设备状态)
+        * 5.4.3 [添加设备](#543-添加设备)
+    * 5.5 [蓝牙添加](#55-蓝牙添加) 
+        * 5.5.1 [搜索设备](#551-搜索设备)
+        * 5.5.2 [连接设备](#552-连接设备)
+        * 5.5.3 [获取WiFi列表](#553-获取WiFi列表)
+        * 5.5.4 [添加设备](#554-添加设备)
+    * 5.6 [机身二维码](#56-机身二维码) 
+        * 5.6.1 [获取设备信息](#561-获取设备信息)
 * 6 [设备控制](#6-设备控制)
     * 6.1 [设备基本操作](#61-设备基本操作)
         * 6.1.1 [设备相关类介绍](#611-设备相关类介绍)
@@ -39,6 +46,7 @@
         * 6.1.4 [设备昵称修改](#614-设备昵称修改)
         * 6.1.5 [获取设备报警消息时间片段](#615-获取设备报警消息时间片段)
         * 6.1.6 [获取设备在线状态](#616-获取设备在线状态)
+        * 6.1.7 [重启设备](#617-重启设备)
     * 6.2 [设备预览和回放](#62-设备预览和回放)
         * 6.2.1 [设备预览](#621-设备预览)
         * 6.2.2 [设备SD卡回放](#622-设备SD卡回放)
@@ -61,8 +69,9 @@
         * 8.1.1 [获取设备分享消息列表](#811-获取设备分享消息列表)
         * 8.1.2 [删除设备分享消息](#812-删除设备分享消息)
     * 8.2 [设备报警消息](#82-设备报警消息)
-        * 8.2.1 [获取所有设备是否有消息](#821-获取所有设备是否有消息)
+        * 8.2.1 [获取所有设备最新的消息](#821-获取所有设备最新的消息)
         * 8.2.2 [获取单个设备的报警消息](#822-获取单个设备的报警消息)
+        * 8.2.3 [删除设备的报警消息](#823-删除设备的报警消息)
     * 8.3 [系统消息](#83-系统消息)
         * 8.3.1 [获取系统消息列表](#831-获取系统消息列表)
         * 8.3.2 [删除系统消息](#832-删除系统消息)
@@ -96,6 +105,17 @@
         * 9.5.22 [SD卡录像类型和时间设置](#9522-SD卡录像类型和时间设置)
         * 9.5.23 [设备全彩模式设置](#9523-设备全彩模式设置)
         * 9.5.24 [设备声光报警设置](#9524-设备声光报警设置)
+        * 9.5.25 [设备12小时开关设置](#9525-设备12小时开关设置)
+        * 9.5.26 [设备抗闪烁设置](#9526-设备抗闪烁设置)
+        * 9.5.27 [设备麦克风、录音、扬声器设置](#9527-设备麦克风、录音、扬声器设置)
+        * 9.5.28 [设备视频加密设置](#9528-设备视频加密设置)
+        * 9.5.29 [设备防拆报警设置](#9529-设备防拆报警设置)
+        * 9.5.30 [设备变声设置](#9530-设备变声设置)    
+        * 9.5.31 [设备工作模式](#9531-设备工作模式)
+        * 9.5.32 [人形报警区域（画框）设置](#9532-人形报警区域（画框）设置)
+        * 9.5.33 [人形开关设置](#9533-人形开关设置)
+        * 9.5.34 [录像时长设置](#9534-录像时长设置)
+        * 9.5.35 [音乐播放设置](#9535-音乐播放设置)
     * 9.6 [门铃参数设置](#96-门铃参数设置)
         * 9.6.1 [设备对讲音量设置](#961-设备对讲音量设置)
         * 9.6.2 [解锁电池锁](#962-解锁电池锁)
@@ -114,6 +134,10 @@
         * 9.7.6 [灯具摄像机亮度设置](#976-灯具摄像机亮度设置)
         * 9.7.7 [灯具摄像机手动亮灯时长设置](#977-灯具摄像机手动亮灯时长设置)
         * 9.7.8 [灯具摄像机联动报警开关设置](#978-灯具摄像机联动报警开关设置)
+    * 9.8 [AOV摄像机参数设置](#98-AOV摄像机参数设置)  
+        * 9.8.1 [预览切换实时省流](#981-预览切换实时省流)
+        * 9.8.2 [工作模式](#982-工作模式)
+        * 9.8.3 [自定义参数设置](#983-自定义参数设置)
 * 10 [家庭](#10-家庭)
     * 10.1 [家庭操作](#101-家庭操作)
         * 10.1.1 [获取家庭列表](#1011-获取家庭列表)
@@ -157,10 +181,18 @@
     * 11.3 [集成谷歌推送](#113-集成谷歌推送)
     * 11.4 [集成其他推送](#114-集成其他推送)
 * 12 [云存储服务](#12-云存储服务)
-    * 12.1 [云存储服务状态](#121-云存储服务状态)
-    * 12.2 [云存储试用](#122-云存储试用)
+    * 12.1 [云存储服务介绍](#121-云存储服务介绍)
+    * 12.2 [免费6s云存储](#122-免费6s云存储)
     * 12.3 [云存储激活码使用](#123-云存储激活码使用)
     * 12.4 [云存储购买](#124-云存储购买)
+        * 12.4.1 [服务购买相关类](#1241-服务购买相关类)
+        * 12.4.2 [支付相关错误码](#1242-支付相关错误码)
+        * 12.4.3 [PayPal Web 支付购买流程](#1243-PayPal-Web-支付购买流程)
+        * 12.4.4 [PayPal Web 信用卡支付购买流程](#1244-PayPal-Web-信用卡支付购买流程)
+        * 12.4.5 [谷歌支付购买流程](#1245-谷歌支付购买流程)
+        * 12.4.6 [支付宝购买流程](#1246-支付宝购买流程)
+        * 12.4.7 [微信支付购买流程](#1247-微信支付购买流程)
+    * 12.5 [服务和订单](#125-服务和订单)
 * 13 [NVR](#13-NVR)
     * 13.1 [添加NVR](#131-添加NVR)
     * 13.2 [添加摄像机到NVR通道](#132-添加摄像机到NVR通道)
@@ -177,15 +209,27 @@
         * 13.5.3 [NVR通道摄像机固件升级](#1353-NVR通道摄像机固件升级)
 * 14 [4G](#14-4G) 
     * 14.1 [添加4G](#141-添加4G)
-    * 14.2 [4G流量](#142-4G流量)
-        * 14.2.1 [流量充值套餐](#1421-流量充值套餐) 
-        * 14.2.2 [流量查询（不可频繁查询）](#1422-流量查询（不可频繁查询）)
-        * 14.2.3 [兑换流量](#1423-兑换流量)
-        * 14.2.4 [试用流量开通](#1424-试用流量开通) 
-        * 14.2.5 [流量购买](#1425-流量购买)
-        * 14.2.6 [流量订单](#1426-流量订单)
-
-* 15 [更新说明](#15-更新说明)
+    * 14.2 [4G流量服务](#142-4G流量服务)
+        * 14.2.1 [流量服务激活码使用](#1421-流量服务激活码使用)
+        * 14.2.2 [获取流量服务信息](#1422-获取流量服务信息)
+        * 14.2.3 [购买流量服务](#1423-购买流量服务)
+* 15 [宠物类设备](#15-宠物类设备) 
+    * 15.1 [添加设备](#151-添加设备)
+    * 15.2 [设置](#152-设置)
+        * 15.2.1 [投食喂食](#1521-投食喂食) 
+        * 15.2.2 [音效设置](#1522-音效设置)
+        * 15.2.3 [一键呼唤](#1523-一键呼唤)
+        * 15.2.4 [投食喂食计划](#1524-投食喂食计划)       
+* 16 [婴儿类设备](#16-婴儿类设备)
+    * 16.1 [添加设备](#161-添加设备)
+    * 16.2 [健康服务](#162-健康服务)
+        * 16.2.1 [获取监测数据](#1621-获取监测数据)
+* 17 [AI服务](#17-AI服务)
+    * 17.1 [AI服务介绍](#171-AI服务介绍)
+    * 17.2 [AI服务状态](#172-AI服务状态)
+    * 17.3 [AI服务激活码使用](#173-AI服务激活码使用)
+    * 17.4 [AI服务购买](#164-AI服务购买)
+* 18 [更新说明](#18-更新说明)
 
 <center>
 
@@ -195,6 +239,7 @@
 3.1.0 | 觅睿技术团队 | 2020.07.02 | 优化
 4.1.0 | 觅睿技术团队 | 2022.03.31 | 优化
 5.0.0 | 觅睿技术团队 | 2023.06.09 | 4G,云存储2.0
+5.3.0 | 觅睿技术团队 | 2023.08.28 | 机身码说明,蓝牙配网
 
 <center>
 
@@ -603,8 +648,10 @@ MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(ssid, pwd, wi
 }, false);
 
 // 开始搜索
-mangerCameraScan.startSearchDevice(false, -1, 100, ActivityType.ACTIVITY_SEARCHCANERARESLUT, token)
-
+// 130*1000:搜索时间
+// FLAG：任意int类型标志位，值相同会使用同一个对象，值不同会创建新的对象
+// token：MeariUser.getInstance().getToken()
+mangerCameraScan.startSearchDevice(false, -1, 130*1000, FLAG, token)
 
 MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
     @Override
@@ -745,7 +792,9 @@ MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(null, null, 0
 }, false);
 
 // 开始搜索
-mangerCameraScan.startSearchDevice(false, -1, ACTIVITY_WIRED_OPERATION);
+// 130*1000:搜索时间
+// FLAG：任意int类型标志位，值相同会使用同一个对象，值不同会创建新的对象
+mangerCameraScan.startSearchDevice(false, -1, 130*1000, FLAG)
 
 // 检测设备状态
 MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
@@ -879,72 +928,313 @@ status = 1时，返回 capability 能力级
 
 ```
 【描述】
-添加设备（区分新旧机身码）
-
-【函数调用】
-
-/**
- * 添加设备（旧码）
- *
- * @param result      机身码结果
- * return      ture:新机身码    false：旧机身码
- *
- */
-public static boolean dealUUiDisNew(String result)
-
-【代码范例】
-SdkUtils.dealUUiDisNew(scanResult)
-
-
-
-/**
- * 添加设备（旧码）
- *
- * @param sn       设备的licenseID
- * @param sn       设备的licenseID
- *
- */
-
-public void add4GDeviceNew(String sn, IStringResultCallback callback) 
-
-【代码范例】
-MeariUser.getInstance().add4GDeviceNew(uuid, object : IStringResultCallback {
-            override fun onSuccess(result: String) {
-                
-            }
-
-            override fun onError(code: Int, error: String) {
-                //(返回1150是设备未激活，1013被别的绑定)
-            }
-        })
-
-
+添加设备
 
 /**
  * 下发token给设备 （新码）
  *
- * @param licenseID       设备的licenseID
- * 
+ * @param sn       getDeviceStatus()接口返回的sn
+ * @param safePwd   设备密码，没有设置的传 “” 空字符串
  *
  */
 
-public void addDeviceServerSendToken(String licenseID,IStringResultCallback callback)
+public void addDeviceServerSendToken(String sn,String safePwd,IStringResultCallback callback)
 
 【代码范例】
-MeariUser.getInstance().getDeviceStatusGet(sn, new IGetDeviceStatusCallback() {
+MeariUser.getInstance().addDeviceServerSendToken(sn, safePwd, new IStringResultCallback() {
             @Override
-            public void onSuccess(boolean isOnline) {
+            public void onSuccess(String result) {
                 //仅代表添加指令发送成功，添加成功还需等待mqtt或者轮询设备列表确认是否添加成功
             }
 
             @Override
-            public void onFailed(int errorCode, String errorMsg) {
-                
+            public void onError(int errorCode, String errorMsg) {
+
             }
         });
 
  ```
 
+
+## 5.5 蓝牙添加
+```
+蓝牙添加方式
+```
+### 5.5.1 搜索设备
+搜索周围蓝牙设备
+
+```
+【描述】
+搜索设备工具类
+
+【代码范例】
+public class DeviceBleHelper {
+    
+    public static final int AUTO_CLOSE_BLE_TIME_MS = 130_000;
+    
+    private static volatile DeviceBleHelper helper;
+    private final DeviceNetConfigBle deviceNetConfigBle;
+
+    private final Handler closeHandler = new Handler(Looper.getMainLooper());
+    private Runnable r = new Runnable() {
+        @Override
+        public void run() {
+            Logger.i("deviceBleHelper", "auto " +
+                    "disconnect ble device! not impl!!!!!!!!!!!!!!!!!!");
+//            deviceNetConfigBle.stopConnect();
+        }
+    };
+
+    public static DeviceBleHelper getInstance() {
+        if (helper == null) {
+            synchronized (DeviceBleHelper.class) {
+                if (helper == null) {
+                    helper = new DeviceBleHelper();
+                }
+            }
+        }
+        return helper;
+    }
+
+    private DeviceBleHelper() {
+        deviceNetConfigBle = new DeviceNetConfigBle(){
+            @Override
+            public void stopConnect() {
+                super.stopConnect();
+            }
+        };
+    }
+
+    public DeviceNetConfigBle getDeviceNetConfigBle() {
+        if(closeHandler!=null) {
+            closeHandler.removeCallbacks(r);
+            closeHandler.postDelayed(r, AUTO_CLOSE_BLE_TIME_MS);
+        }
+        return deviceNetConfigBle;
+    }
+}
+
+
+/**
+**
+* 初始化     activity-onCreate
+*/
+【代码范例】
+DeviceNetConfigBle.init(getApplication());
+deviceNetConfigBle = DeviceBleHelper.getInstance().getDeviceNetConfigBle();
+
+/**
+ * 开始搜索蓝牙
+ *
+ *
+ */
+
+【代码范例】
+if (!DeviceNetConfigBle.bleEnable()) {
+ //蓝牙无法使用   
+     return;
+}
+deviceNetConfigBle.setScanDeviceTimeoutMs(Constant.ADD_DEVICE_WAIT_TIME_MS);
+        deviceScanCallback = new DeviceScanCallback() {
+            @Override
+            public void finish(Set<MeariBleDevice> data) {
+                
+            }
+
+            @Override
+            public void scanning(MeariBleDevice device) {
+                
+            }
+
+            @Override
+            public void onScanStarted(boolean success) {
+                
+            }
+        };
+        deviceNetConfigBle.scanDevice(deviceScanCallback);
+
+
+```
+### 5.5.2 连接设备
+
+连接蓝牙设备
+
+```
+
+/**
+ * 连接设备
+ * 
+ *
+ */
+
+【代码范例】
+        if (bleCallback == null) {
+            bleCallback = new MeariBleCallback() {
+                @Override
+                public void tokenCallback(String token) {
+                    
+                }
+
+                @Override
+                public void connect() {
+                    //连接成功
+                }
+
+                @Override
+                public void disconnect() {
+                    
+        //       showToast("设备蓝牙断开连接");
+                }
+
+                @Override
+                public void failed(String err) {
+                    
+                }
+            };
+        }
+       deviceNetConfigBle.startConnectByDevice(meariBleDevice, bleCallback);
+
+```
+### 5.5.3 获取WiFi列表
+
+获取设备可连接的WiFi列表
+
+```
+【代码范例】
+deviceNetConfigBle.startDeviceWifiScan(new MeariBleOpCallback() {
+                @Override
+                public void onFail(int code, String error) {
+                    //失败了再重新获取几次
+                }
+
+                @Override
+                public void onSuccess() {
+                    
+                }
+            }, new DeviceWifiCallback() {
+                @Override
+                public void callback(Set<DeviceWifi> data) {
+                    //wifi列表
+                }
+            });
+```
+### 5.5.4 添加设备
+
+添加设备
+
+```
+【代码范例】
+        DeviceNetConfigBle deviceNetConfigBle = DeviceBleHelper.getInstance().getDeviceNetConfigBle();
+        if (setWifiInfoErrorListener == null) {
+            setWifiInfoErrorListener = new DeviceNetConfigErrorListener() {
+                @Override
+                public void onError(int code, String msg) {
+                    //错误原因
+                }
+            };
+        }
+        deviceNetConfigBle.setNetConfigErrorListener(setWifiInfoErrorListener);
+
+        if (deviceNetConfigBle.getDeviceBtWifiMode() == 1 || deviceNetConfigBle.getDeviceBtWifiMode() == 2) {
+            deviceNetConfigBle.enableAutoConnect(true);
+            deviceNetConfigBle.enableGetLastSetWifiResultOnConnect(true);
+            Logger.i(TAG, "enable bt auto connect! auto get errorCode");
+        } else {
+            Logger.i(TAG, "not bt auto connect. mode=" + deviceNetConfigBle.getDeviceBtWifiMode());
+        }
+
+        //连接
+        if (bleDevice != null && (deviceNetConfigBle.getDeviceBtWifiMode() == -1 || deviceNetConfigBle.getDeviceBtWifiMode() == 1)) {
+            Logger.i(TAG, "ble device[not support get-wifi] need connect first.");
+            deviceNetConfigBle.enableAutoConnect(true);
+            if (meariBleCallback == null) {
+                meariBleCallback = new MeariBleCallback() {
+                    @Override
+                    public void connect() {
+                        //关闭重连
+                        deviceNetConfigBle.enableAutoConnect(false);
+                        //连接上在发送信息
+                        setWifiInfo();
+                    }
+
+                    @Override
+                    public void disconnect() {
+
+                    }
+
+                    @Override
+                    public void failed(String err) {
+                        Logger.i(TAG, "ble connect error.");
+                    }
+                };
+            }
+            deviceNetConfigBle.startConnectByDevice(bleDevice, meariBleCallback);
+        } else {
+            setWifiInfo();
+        }
+
+        //发送配网信息
+        deviceNetConfigBle.setWifiInfo(ssid, pwd, token, new MeariBleOpCallback() {
+                @Override
+                public void onFail(int code, String error) {
+
+                    //失败后立即重试
+                    
+                }
+
+                @Override
+                public void onSuccess() {
+                    //设备接收信息成功，遍历设备列表判断是否添加成功
+                    getdevicelist();
+                }
+            });
+
+            //判断设备列表中是否有新增的设备
+            MeariUser.getInstance().getDeviceList(new IDevListCallback()
+
+```
+## 5.6 机身二维码
+```
+机身二维码处理，包括从二维码信息中分析出设备类型和配网方式等，方便快捷
+```
+### 5.6.1 获取设备信息
+```
+通过uuid获取设备信息，uuid为机身码扫描结果
+【函数调用】
+
+/**
+ * 机身码获取设备在线状态
+ *
+ * @param uuid       设备的uuid
+ * 机身码规则
+ 二维码格式 = 产品类别代号 + 设备代码 + 添加设备方式代码 + 销售国家
+ 完整示例： LWCN056565099123AL
+ 解释示例： 
+ N056565099 表示 SN 号 056565099
+ 123 表示 AP 优先、二维码和局域网其次
+      无配网选项 0
+      AP 配网 1
+      二维码配网 2
+      局域网添加 3 
+      蓝牙配网 4
+      扫码即添加 5
+ *
+ */
+
+public void getDeviceStatus(String uuid, IStringResultCallback callback)
+
+【代码范例】
+MeariUser.getInstance().getDeviceStatus(uuid, object : IStringResultCallback {
+            override fun onSuccess(result: String) {
+                
+            }
+
+            override fun onError(code: Int, error: String) {
+                
+            }
+        })
+
+ ```
 
 
 
@@ -1139,6 +1429,31 @@ public Map<String, Integer> queryDeviceStatus();
 【代码范例】
 // 获取了设备列表后，循环获取设备状态，如果状态有改变，则更新设备状态
 Map<String, Integer> temStatus = MeariIotController.getInstance().queryDeviceStatus();
+```
+
+### 6.1.7 重启设备
+```
+【描述】
+重启设备
+
+【函数调用】
+
+/**
+ * 重启设备
+ * @param callback 回调
+ */
+public void setDevicesReboot(ISetDeviceParamsCallback callback);
+
+【代码范例】
+MeariUser.getInstance().setDevicesReboot(new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
 ```
 
 ## 6.2 设备预览和回放
@@ -1898,7 +2213,7 @@ ShareUserInfo 被分享者用户信息
 - String userAccount; 用户账号
 - String userName; 用户名称
 - String userIcon; 用户头像
-- String shareStatus; 分享状态
+- String shareStatus; 分享状态。0-未分享；1-已分享；2-等待接收
 
 ShareDeviceInfo 被分享的设备信息
 - long deviceID; 设备 ID
@@ -2183,39 +2498,59 @@ MeariUser.getInstance().deleteShareMessage(msgIDList, new IResultCallback() {
 ```
 ## 8.2 设备报警消息
 
-### 8.2.1 获取所有设备是否有消息
+### 8.2.1 获取所有设备最新的消息
 ```
 【描述】
-获取所有设备是否有消息
+获取所有设备最新的消息
 
 【函数调用】
 /**
- * 获取所有设备是否有报警消息
+ * 获取cameraInfo.getEvt() < 1的所有设设备最新的消息
  *
  * @param callback function callback
  */
-public void getDeviceMessageStatusList(IDeviceMessageStatusCallback callback);
+public void getAllDeviceAlarmListWithNewestMsg(IBaseModelCallback callback);
+
+/**
+ * 获取cameraInfo.getEvt() == 1的所有设设备最新的消息
+ *
+ * @param callback function callback
+ */
+public void getAllDeviceAlarmListWithNewestMsgNew(IBaseModelCallback callback);
+
+如果同时存在cameraInfo.getEvt() < 1和cameraInfo.getEvt() == 1的设备，需要同时请求上面两个接口并合并数据
 
 【方法调用】
 
-DeviceMessageStatus
-- long deviceID;  设备ID
-- String deviceName; 设备名称
-- String snNum; 设备SN
-- String deviceIcon; 设备图标
-- boolean hasMessage; 该设备是否有报警消息
+MeariUser.getInstance().getAllDeviceAlarmListWithNewestMsgNew(new IBaseModelCallback<List<DevicesWithNewestMsg>>() {
+                    @Override
+                    public void onSuccess(List<DevicesWithNewestMsg> devicesWithNewestMsgs) {
+                        
+                    }
 
-MeariUser.getInstance().getDeviceMessageStatusList(new IDeviceMessageStatusCallback() {
-    @Override
-    public void onSuccess(List<DeviceMessageStatus> deviceMessageStatusList) {
-        //如果设备有报警消息，则可以获取报警消息
-    }
+                    @Override
+                    public void onFailed(int code, String errorMsg) {
+                        
+                    }
+                });
+MeariUser.getInstance().getAllDeviceAlarmListWithNewestMsg(new IBaseModelCallback<List<DevicesWithNewestMsg>>() {
+                    @Override
+                    public void onSuccess(List<DevicesWithNewestMsg> devicesWithNewestMsgs) {
 
-    @Override
-    public void onError(int code, String error) {
+                    }
 
-    }
-});
+                    @Override
+                    public void onFailed(int code, String errorMsg) {
+                        
+                    }
+                });
+
+DevicesWithNewestMsg
+devLocalTime 20230613101425
+deviceID 设备ID
+imageAlertType 消息类型     1:PIR报警类型   2:移动侦测报警类型  3:访客报警类型   6:噪音报警类型  7:哭声检查报警类型  8:人脸识别
+9:呼叫消息类型   10:防拆报警类型  11:人形侦测  12:人脸侦测  17:智能车辆侦测  18:智能宠物侦测  19:智能包裹侦测  20:智能人形侦测
+deviceName 设备名称需要从首页接口中根据设备ID获取
 ```
 
 ### 8.2.2 获取单个设备的报警消息
@@ -2265,6 +2600,7 @@ public void getAlertMsg(long deviceID, String day, IDeviceAlarmMessagesCallback 
  * @param callback function callback
  */
  public void getAlertMsgWithVideo(long deviceId, String day, String index, int direction, int eventType, int[] aiType, IDeviceAlarmMessagesCallback callback);
+ 如果想要获取所有的报警消息，eventType=0, aiType=null
 
 
 【方法调用】
@@ -2467,6 +2803,121 @@ if (isEnd) {
 } else  {
     cloudPlayerController.seekTo(millisecond);
 }
+```
+
+### 8.2.3 删除设备的报警消息
+```
+【描述】
+删除设备的报警消息
+
+【函数调用】
+刪除设备的报警消息
+如果设备能力级cameraInfo.getEvt() < 1使用如下方法：
+/**
+ * 刪除设备的报警消息
+ *
+ * @param deviceIDs 设备ID列表
+ * @param callback function callback
+ */
+public void deleteDevicesAlarmMessage(List<Long> deviceIDs, IResultCallback callback);
+
+如果设备能力级cameraInfo.getEvt() == 1使用如下方法：
+/**
+ * 刪除设备的报警消息
+ *
+ * @param deviceID 设备ID
+ * @param callback function callback
+ */
+ public void delAlertEventByDevice(String deviceID, IResultCallback callback);
+
+刪除设备的报警消息(按天)
+如果设备能力级cameraInfo.getEvt() < 1，请根据日期删除缓存下来的消息
+
+如果设备能力级cameraInfo.getEvt() == 1使用如下方法：
+/**
+ * 刪除设备的报警消息(按天)
+ *
+ * @param deviceID 设备ID
+ * @param day 日期 yyyyMMdd
+ * @param callback function callback
+ */
+ public void delAlertEventByDay(String deviceID, String day, IResultCallback callback);
+
+刪除设备的报警消息(按索引)
+如果设备能力级cameraInfo.getEvt() < 1，请根据msgID删除缓存下来的消息
+
+如果设备能力级cameraInfo.getEvt() == 1使用如下方法：
+/**
+ * 刪除设备的报警消息(按索引)
+ *
+ * @param deviceID 设备ID
+ * @param indexList 索引列表，索引：deviceAlarmMessage.getEventTime()
+ * @param callback function callback
+ */
+ public void delAlertEventByIndex(String deviceID, List<String> indexList, IResultCallback callback);
+
+【方法调用】
+
+刪除设备的报警消息
+如果设备能力级cameraInfo.getEvt() < 1时调用:
+MeariUser.getInstance().deleteDevicesAlarmMessage(deviceIDList, new IResultCallback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError(int code, String error) {
+                    
+                }
+            });
+
+如果设备能力级cameraInfo.getEvt() == 1时调用:
+MeariUser.getInstance().delAlertEventByDevice(deviceID, new IResultCallback() {
+                            @Override
+                            public void onSuccess() {
+                                
+                            }
+
+                            @Override
+                            public void onError(int errorCode, String errorMsg) {
+                                
+                            }
+                        });
+
+刪除设备的报警消息(按天)
+如果设备能力级cameraInfo.getEvt() == 1时调用:
+MeariUser.getInstance().delAlertEventByDay(String.valueOf(cameraInfo.getDeviceID()), day, new IResultCallback() {
+                @Override
+                public void onError(int errorCode, String errorMsg) {
+
+                }
+
+                @Override
+                public void onSuccess() {
+                    
+                }
+            });
+
+刪除设备的报警消息(按索引)
+如果设备能力级cameraInfo.getEvt() == 1时调用:
+List<String> _index = new ArrayList<>();
+for (DeviceAlarmMessage message : deleteMessages) {
+    if (!TextUtils.isEmpty(message.getEventTime())) {
+        _index.add(message.getEventTime());
+    }        
+}  
+MeariUser.getInstance().delAlertEventByIndex(String.valueOf(cameraInfo.getDeviceID()), _index, new IResultCallback() {
+                    @Override
+                    public void onSuccess() {
+                        
+                    }
+
+                    @Override
+                    public void onError(int errorCode, String errorMsg) {
+                        
+                    }
+                });
 ```
 
 ## 8.3 系统消息
@@ -3623,6 +4074,644 @@ MeariUser.getInstance().setFloodCameraVoiceLightAlarmType(type, new ISetDevicePa
 });
 ```
 
+### 9.5.25 设备12小时开关设置
+```
+
+【描述】
+设备12小时开关设置
+
+【函数调用】
+/**
+ * 设备12小时开关设置
+ *
+ * @param isOpen true代表12小时制
+ * @param callback Function callback
+ */
+public void postTimeFormat(boolean isOpen, IResultCallback callback) 
+
+
+【代码范例】
+//12小时制是否开启的标志位存储在本地，设备复位后就会重置成24小时。
+MeariUser.getInstance().postTimeFormat(isOpen, new IResultCallback() {
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                
+            }
+
+            @Override
+            public void onSuccess() {
+                
+            }
+        });
+```
+
+
+### 9.5.26 设备抗闪烁设置
+```
+
+【描述】
+设备抗闪烁设置
+
+【函数调用】
+/**
+ * 设备抗闪烁设置
+ *
+ * @param antiflicker true代表12小时制
+ * @param callback Function callback
+ */
+public void setAntiflicker(int antiflicker, ISetDeviceParamsCallback callback) 
+
+
+【代码范例】
+1.是否支持抗闪烁
+/**
+     *
+     * 属性  抗闪烁设置
+     * - type: integer
+     * - description: 是否支持抗闪烁能力级：
+     * 0-不支持, 按比特来赋值, 0x1-支持50HZ, 0x2-支持60HZ, 0x4-支持自动, 0x8=支持关闭, 对应DP点202
+     */
+flk=cameraInfo.getFlk()
+if (flk > 0) {
+            if (1 << 3 == (1 << 3 & flk)) {
+//                0x8=支持关闭
+            }
+            if (1 == (1 & flk)) {
+              //0x1-支持50HZ
+            }
+            if (1 << 1 == (1 << 1 & flk)) {
+//               0x2-支持60HZ
+               
+            }
+            if (1 << 2 == (1 << 2 & flk)) {
+//                0x4-支持自动
+                
+            }
+        }
+
+2.当前抗闪烁的设置
+/**
+     * 抗闪烁设置 //0-关闭, 1-50HZ, 2-60HZ, 3-自动
+     */
+    private int antiflicker;
+antiflicker=deviceParams.getAntiflicker();
+
+3.设置抗闪烁
+MeariUser.getInstance().setAntiflicker(antiflicker, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+### 9.5.27 设备麦克风、录音、扬声器设置
+```
+
+【描述】
+设备麦克风、录音、扬声器设置
+【注意事项】
+1.麦克风（关闭同时关闭录像声音）
+2.麦克风打开，录像声音才可以打开
+
+【代码范例】
+1.麦克风
+/**
+     *  - microphone
+     *         - description: 麦克风使能开关, 0=禁用， 1=使能
+     *         - type: integer
+     */
+    private int microphone;
+    //获取当前麦克风开关状态
+    microphone=deviceParams.getMicrophone()
+//设置麦克风开关
+MeariUser.getInstance().setMicroPhone(microphone, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_Micro_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_Micro_FAILED);
+            }
+        });
+
+2.扬声器
+/**
+     *
+     *     - speaker
+     *         - description: 喇叭使能开关，0=禁用，1=使能
+     *         - type: integer
+     */
+    private int speaker;
+    //获取当前扬声器开关状态
+    speaker=deviceParams.getSpeaker()
+//设置扬声器开关
+MeariUser.getInstance().setSpeaker(speaker, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_SEN_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_SEN_FAILED);
+            }
+        });    
+
+ 3.音量
+/**
+     * 对讲时(门铃、电池摄像机)的喇叭音量：0-100
+     */
+    private int speakVolume;
+    //获取当前音量
+    speakVolume=deviceParams.getSpeakVolume()
+//设置音量开关
+MeariUser.getInstance().setSpeakVolume(volume, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SET_SPEAK_VOLUME_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SET_SPEAK_VOLUME_FAILED);
+            }
+        });     
+
+ 4.录像声音开关
+/**
+     *
+     *     录像声音开关
+     *     rec_audio_en
+     *         - type: integer
+     *         - description: 录像声音开关, 全局开关，保护SD卡和云存储
+     */
+    private int rec_audio_en;
+    //获取当前录像声音开关
+    rec_audio_en=deviceParams.getRec_audio_en()
+//设置录像声音开关
+
+MeariUser.getInstance().setRae(rec_audio_en, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_REC_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_REC_FAILED);
+            }
+        });        
+
+```
+
+
+### 9.5.28 设备视频加密设置
+```
+【描述】
+设备视频加密设置
+【注意事项】
+1.视频加密的密码全部保存在本地，不存储云端，增加隐私性。
+2.设备重新添加后视频加密会关闭，可以重新设置密码，但是想查看之前的本地录像和云录像就需要当时设置的视频密码来解密。如果本地没有存储当时的密码需要让用户输入。
+3.一个设备每个密码使用时期使用了那个密码查看对应时期需要对应的密码，无法通用，本地如果存储了可以遍历去打洞。
+4.视频加密可以校验当前密码后才能关闭，可以不校验直接关闭，防止用户忘记密码后不知道能通过重新添加设备重置状态。
+5.主人才允许设置密码camerainfo.isMaster()
+
+【代码范例】
+//是否设置了视频加密
+/**
+     * 用户访问密码是否设置  未设置 - 0；已设置 - 1；
+     * @return
+     */
+int isVideoSetPwd= deviceParams.getIsVideoSetPwd()
+获取到数值后存储本地
+MMKVUtil.setData(DEVICE_VIDEO_PASSWORD_IS_SET+snNum,isVideoSetPwd);
+//如果设置了视频密码，就需要从本地获取存储的密码或者让用户输入，将密码存储到对应的
+MMKVUtil.setData(DEVICE_VIDEO_PASSWORD+snNum,pwd);中。
+打洞时会从对应的本地取出密码校验，打洞如果失败返回错误码-18代表密码错误，需要用户重新输入。
+
+//设置密码（修改密码）并打开视频加密
+MeariUser.getInstance().setVidePwd(pwd, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                //该设备是否设置密码
+                MMKVUtil.setData(DEVICE_VIDEO_PASSWORD_IS_SET+snNum,1);
+                //更新密码值
+                MMKVUtil.setData(DEVICE_VIDEO_PASSWORD+snNum,pwd);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+//关闭视频加密
+MeariUser.getInstance().setVidePwdSwitch(new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+            MMKVUtil.setData(DEVICE_VIDEO_PASSWORD_IS_SET + cameraInfo.getSnNum(), 0);
+                                               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                                                
+            }
+            });
+//修改密码前打洞校验用户输入的密码是否正确    
+private MeariDeviceController controller;  
+controller = new MeariDeviceController(cameraInfo);
+        controller.startConnect(pwdOldTxt,new MeariDeviceListener() {
+            @Override
+            public void onSuccess(String successMsg) {
+                //校验通过
+                
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                dismissLoading();
+                try {
+                    BaseJSONObject object = new BaseJSONObject(errorMsg);
+                    int errorCode = object.optInt("code");
+                    if (errorCode == -18) {
+                        //鉴权密码错误
+                        
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });                                  
+
+```
+
+
+### 9.5.29 设备防拆报警设置
+```
+
+【代码范例】
+/**
+     * 
+     * 防拆报警能力级，0=不支持，1=支持
+     */
+    private int fcb;
+//fcb=1才支持防拆报警
+fcb=camerainfo.getFcb();
+//获取防拆报警开关设置
+    deviceParams.getRemoveProtectEnable()
+//设置防拆报警开关
+    MeariUser.getInstance().setRemoveProtectAlert(isCheck ? 1 : 0, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+### 9.5.30 设备变声设置
+```
+【描述】
+设备变声设置
+【注意事项】
+cameraInfo.getVtk() == 4
+表示支持双向对讲，支持双向对讲的才有变声
+【代码范例】
+/**
+*soundTouchType   变声参数 正常 0   大叔  1    小丑 2
+**/
+if (deviceController != null) {
+            deviceController.setVoiceTalk(new MeariDeviceListener() {
+                @Override
+                public void onSuccess(String successMsg) {
+
+                }
+
+                @Override
+                public void onFailed(String errorMsg) {
+
+                }
+            }, soundTouchType);
+        }
+```
+### 9.5.31 设备工作模式
+```
+【描述】
+设备工作模式
+【函数调用】
+/**
+*lwm：0-不支持，1-支持工作模式，2-支持工作模式增加持续录像模式
+* 描述：lwm=2，在原有的省电模式、性能模式、自定义模式基础上，增加持续录像模式选项
+如果不支持，则只支持自定义模式。
+**/
+cameraInfo.getLwm()
+//设置工作模式
+public void setWorkMode(int workmode, ISetDeviceParamsCallback callback)
+【代码范例】
+/**
+*workmode   省电模式 0    性能模式 1    自定义模式 2    常电模式 3 
+**/
+MeariUser.getInstance().setWorkMode(workmode, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+### 9.5.32 人形报警区域（画框）设置
+```
+【描述】
+人形报警区域（画框）设置
+【代码范例】
+int pdt = cameraInfo.getPdt();
+if (cameraInfo.getVer() >= 12 && pdt != -1 && 1 << 1 == (1 << 1 & pdt)) {
+            //支持
+        } else {
+            //不支持
+        }
+/**
+*status   switchHumanFrame(isChecked ? 1 : 0)
+**/
+MeariUser.getInstance().setHumanFrame(status, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+### 9.5.33 人形开关设置
+```
+【描述】
+人形开关设置
+【代码范例】
+val pdt: Int = cameraInfo.pdt
+if (info.ver >= 12) {
+            if (pdt != -1 && 1 == 1 and pdt) {
+                //支持设置人形开关
+            } 
+            if (pdt != -1 && 1 shl 2 == 1 shl 2 and pdt) {
+                //支持夜间，不再设置人形开关
+            } 
+            if (pdt != -1 && 1 shl 3 == 1 shl 3 and pdt) {
+                //支持白天，不再设置人形开关
+            }
+        }
+
+
+【人形侦测使能开关】：0-关；1-开；
+deviceParams.humanDetEnable == 1
+设置
+MeariUser.getInstance().setHumanDetection(status, object : ISetDeviceParamsCallback)
+
+
+【白天人形侦测使能开关】：0-关；1-开；
+deviceParams.humanDetDayEnable == 1
+
+MeariUser.getInstance().setHumanDetectionDay(status, object : ISetDeviceParamsCallback)
+
+【夜间人形侦测使能开关】：0-关；1-开；
+deviceParams.humanDetNightEnable == 1
+
+MeariUser.getInstance().setHumanDetectionNight(status, object : ISetDeviceParamsCallback)
+
+
+【灵敏度】
+//0-不支持，3-支持3档灵敏度，5-支持5档灵敏度，10-支持10档灵敏度
+pds = info.pds
+
+设置灵敏度（几档就设置几，不能超过最大支持档位）
+MeariUser.getInstance().setHumanDetectionSensitivity(pirLevel, object : ISetDeviceParamsCallback)
+```
+
+### 9.5.34 录像时长设置
+```
+【描述】
+录像时长设置
+【代码范例】
+val esd: Int = info.esd
+if (esd > 0) {
+            if (1 shl 6 == 1 shl 6 and esd) {
+                //10s
+            
+            }
+            if (1 shl 4 == 1 shl 4 and esd) {
+                //20s
+                
+            }
+            if (1 == 1 and esd) {
+                //30s
+                
+            }
+            if (1 shl 5 == 1 shl 5 and esd) {
+                //40s
+                
+            }
+            if (1 shl 1 == 1 shl 1 and esd) {
+                //60s
+               
+            }
+            if (1 shl 2 == 1 shl 2 and esd) {
+                //120s
+                
+            }
+            if (1 shl 3 == 1 shl 3 and esd) {
+                //180s
+            }
+        }
+
+获取录像时长（单位 s,比如180s值就是180）
+deviceParams.sdRecordDuration
+
+设置录像时长(value代表时长，单位 s,比如180s就传180)
+MeariUser.getInstance().setPlaybackRecordVideo(deviceParams.sdRecordType, value, object : ISetDeviceParamsCallback )
+```
+
+
+
+### 9.5.35 音乐播放设置
+```
+【描述】
+音乐播放设置（需要sd卡可用）
+【代码范例】
+·是否支持音乐播放设置：0-不支持,1-支持
+cameraInfo.getMpc()
+·获取音乐列表
+MeariUser.getInstance().getMusicListNew(new IGetMusicListCallback(){
+            @Override
+            public void onSuccess(ArrayList<MeariMusic> songInfos) {
+                
+            }
+
+            @Override
+            public void onError(int code, String error) {
+
+            }
+        });
+·获取当前音量
+MeariUser.getInstance().getMusicVolume(new IGetMusicVolumeCallback() {
+            @Override
+            public void onSuccess(int volume) {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });  
+·设置当前音量
+MeariUser.getInstance().setMusicVolume(value, new ISetDeviceParamsCallback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onFailed(int errorCode, String errorMsg) {
+
+                    }
+                });       
+·刷新当前歌曲状态
+MeariUser.getInstance().getPlayMusicStatus(new IRefreshMusicStatusCallback() {
+            @Override
+            public void onSuccess(String currentMusicId, boolean isPlaying, ArrayList<MeariMusic> musicList) {
+                当前歌曲-currentMusicId
+                是否正在播放-isPlaying
+                音乐列表-musicList
+                当前歌曲正在下载中-info.getDownloadPercent() < 100
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+            
+            }
+        });   
+·播放歌曲
+MeariUser.getInstance().playMusic(curMusicId, new IControlMusicCallback() {
+            @Override
+            public void onSuccess(String currentMusicID) {
+            
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+
+            }
+        });     
+·暂停歌曲
+MeariUser.getInstance().pauseMusic(curMusicId, new IControlMusicCallback() {
+            @Override
+            public void onSuccess(String currentMusicID) {
+            
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+
+            }
+        });                    
+·是否支持音乐播放时长设置 0-不支持, bit0-on(持续播放) bit1-10min bit2-30min bit3-60min
+cameraInfo.getMul()
+  -播放时长列表
+            ArrayList<Integer> times = new ArrayList<>();
+            if (1 == (1 & mul)) {
+                times.add(0);
+            }
+            if (1 << 1 == (1 << 1 & mul)) {
+                times.add(600);
+            }
+            if (1 << 2 == (1 << 2 & mul)) {
+                times.add(1800);
+            }
+            if (1 << 3 == (1 << 3 & mul)) {
+                times.add(3600);
+            }
+   -获取当前播放时长设置(s)
+   deviceParams.getMusicTime()  
+   -设置当前播放时长(s)
+   MeariUser.getInstance().setMusicTime(time, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+·是否支持音乐播放模式设置 0-不支持 bit1:顺序播放 bit2-单曲循环 bit3-随机播放
+cameraInfo.getMpm()
+   -获取当前播放模式（0表示顺序播放（默认）1表示单曲循环 2表示随机播放）
+   deviceParams.getMusicCyclical()
+   -设置播放模式（0表示顺序播放（默认）1表示单曲循环 2表示随机播放）
+   MeariUser.getInstance().setMusicCyclical(mode, new IControlMusicCallback() {
+                @Override
+                public void onSuccess(String currentMusicID) {
+                    
+                }
+
+                @Override
+                public void onFailed(int errorCode, String errorMsg) {
+
+                }
+            });
+
+
+```
+
+
+
+
 ## 9.6 门铃参数设置
 ### 9.6.1 设备对讲音量设置
 ```
@@ -4032,6 +5121,287 @@ MeariUser.getInstance().setFlightLinkSirenEnable(status, new ISetDeviceParamsCal
     public void onFailed(int errorCode, String errorMsg) {
     }
 });
+```
+
+## 9.8 AOV摄像机参数设置
+### 9.8.1 预览切换实时省流
+```
+【描述】
+预览页面切换实时省流
+
+【函数调用】
+/**
+ * 是否支持实时省流
+ */
+MeariDeviceUtil.isSupportFps(cameraInfo);
+
+/**
+*切换实时省流需要调用MeariDeviceController时将这段设置进去
+*isLowFps   实时：0   省流：1
+**/
+if (MeariDeviceUtil.isSupportFps(cameraInfo)) {
+     deviceController.setExtraPreviewParams(isLowFps);
+}
+
+【代码范例】
+//设置当前是省流还是实时模式
+if (MeariDeviceUtil.isSupportFps(cameraInfo)) {
+     deviceController.setExtraPreviewParams(isLowFps);
+}
+// 切换清晰度
+deviceController.changeVideoResolution(videoSurfaceView, videoId, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+
+    }
+}, new MeariDeviceVideoStopListener() {
+    @Override
+    public void onVideoClosed(int code) {
+        
+    }
+});
+```
+### 9.8.2 工作模式
+```
+【描述】
+工作模式
+【代码范例】
+/**
+*判断支持哪些模式
+**/
+        int lwm = -1;
+        //SMB-aov
+        int alm = cameraInfo.getAlm();
+        if (alm > 0) {
+            lwm = alm;
+            isSMB = true;
+        }
+        //CIV-aov  wifi aov
+        int lwm2 = cameraInfo.getLwm2();
+        if (lwm2 > 0) {
+            lwm = lwm2;
+            isSMB = false;
+        }
+        if (lwm > 0) {
+            if (1 == (1 & lwm)) {
+                //省电模式/Power Saving Mode
+            }
+            if (1 << 1 == (1 << 1 & lwm)) {
+                //性能模式/Performance Mode
+            }
+            if (1 << 2 == (1 << 2 & lwm)) {
+                //自定义模式/Custom Mode
+            }
+            if (1 << 3 == (1 << 3 & lwm)) {
+                //常电模式/Always-on Mode
+            }
+        }
+
+        /*
+        **当前处于哪种模式
+        *0-省电模式, 1-性能模式, 2-自定义模式  3-常电模式
+        */
+        mode = deviceParams.getAovWorkMode();
+        if(isSMB) {
+            mode = deviceParams.getAovWorkMode();
+        }else {
+            mode = deviceParams.getWorkMode();
+        }
+
+
+        //设置工作模式
+        if (isSMB) {
+            MeariUser.getInstance().setAOVWorkMode(mode, new ISetDeviceParamsCallback() {
+                @Override
+                public void onSuccess() {
+                    
+                }
+
+                @Override
+                public void onFailed(int errorCode, String errorMsg) {
+                    
+                }
+            });
+        } else {
+            MeariUser.getInstance().setWorkMode(mode, new ISetDeviceParamsCallback() {
+                @Override
+                public void onSuccess() {
+                    
+                }
+
+                @Override
+                public void onFailed(int errorCode, String errorMsg) {
+                    
+                }
+            });
+        }
+
+
+```
+### 9.8.3 自定义参数设置
+```
+【描述】
+自定义模式的参数设置
+【代码范例】
+1.事件录像延时
+        int erd = cameraInfo.getErd();
+        if (erd > 0) {
+    
+            if (1 == (1 & erd)) {
+                //3s（value=0）
+                 
+            }
+            if (1 << 1 == (1 << 1 & erd)) {
+                //6s（value=1）
+               
+            }
+            
+        }
+
+    //获取当前值
+     value=deviceParams.getAovRecordDelay();
+
+
+        //设置事件录像延时
+     MeariUser.getInstance().setAOVRecordDelay(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+
+        2.补光距离  
+        //- description: 是否支持补光距离配置，0-不支持, bit0-自动 bit1-10m bit2-20m bit3-30m
+        int sld = cameraInfo.getSld();
+        if (sld > 0) {
+           
+            if (1 == (1 & sld)) {
+                //自动（value=0）
+            
+            }
+            if (1 << 1 == (1 << 1 & sld)) {
+                //10m（value=1）
+                
+            }
+            if (1 << 2 == (1 << 2 & sld)) {
+                //20m（value=2）
+            
+            }
+            if (1 << 3 == (1 << 3 & sld)) {
+                //30m（value=3）
+            }
+
+        }
+
+        //获取当前值
+        value=deviceParams.getAovComplementaryDistance()
+        
+        //设置
+        MeariUser.getInstance().setAovComplementaryDistance(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+
+
+        3.夜景模式
+        //0-不支持, bit0-普通模式 bit1-增强模式
+        int nms = cameraInfo.getNms();
+        if (nms > 0) {
+            
+            if (1 == (1 & nms)) {
+                //普通模式/Normal Mode（value=0）
+            }
+            if (1 << 1 == (1 << 1 & nms)) {
+                //增强模式/Enhanced Mode（value=1）
+            }
+        }
+
+        //获取当前值
+        value=deviceParams.getAovNightMode()
+        //设置
+        MeariUser.getInstance().setAovNightMode(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+        4.全时录像帧率
+        if (cameraInfo.getSfi() > 0) {
+            //0-不支持, >0-支持;按bit位显示可设置的单帧间隔，bit0-1秒，bit1-2秒，bit2-3秒，bit3-5秒，bit4-10秒，bit5-15秒，bit6-20秒，bit7-30秒，bit8-60秒,bit9关闭
+            int sfi = cameraInfo.getSfi();
+            if (1 << 9 == (1 << 9 & sfi)) {
+                fpsList.add(0);
+            }
+            if (1 == (1 & sfi)) {
+                fpsList.add(1);
+            }
+            if (1 << 1 == (1 << 1 & sfi)) {
+                fpsList.add(2);
+            }
+            if (1 << 2 == (1 << 2 & sfi)) {
+                fpsList.add(3);
+            }
+            if (1 << 3 == (1 << 3 & sfi)) {
+                fpsList.add(5);
+            }
+            if (1 << 4 == (1 << 4 & sfi)) {
+                fpsList.add(10);
+            }
+            if (1 << 5 == (1 << 5 & sfi)) {
+                fpsList.add(15);
+            }
+            if (1 << 6 == (1 << 6 & sfi)) {
+                fpsList.add(20);
+            }
+            if (1 << 7 == (1 << 7 & sfi)) {
+                fpsList.add(30);
+            }
+            if (1 << 8 == (1 << 8 & sfi)) {
+                fpsList.add(60);
+            }
+        }
+
+        //获取值
+        value=deviceParams.getFullTimeFrameRate()
+
+        //设置
+        MeariUser.getInstance().setAOVFrameRate(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+               
+            }
+        });
+
 ```
 # 10 家庭
 
@@ -4671,8 +6041,7 @@ meari SDK 支持内部的MQTT推送消息，也支持FCM等厂商推送（后续
 
 ### 11.1.1 连接MQTT服务
 
-// 用户登录成功后调用
-MeariUser.getInstance().connectMqttServer(application);
+5.3.0不需要调用，内部会自动调用
 
 ### 11.1.2 退出MQTT服务
 
@@ -4828,10 +6197,20 @@ boolean isCheck; 是否选中
 ```
 
 # 12 云存储服务
-## 12.1 云存储服务状态
+## 12.1 云存储服务介绍
 ```
 【描述】
 获取云存储信息
+
+云存储相关能力集
+- int cst; 是否支持云存储服务：0-不支持；1-支持
+- int evt; 是否支持云存储服务2.0：0-不支持；1-支持；新接入的设备都是2.0
+
+- int evt3; 是否支持4G设备的云存储服务：0-不支持；1-支持；4G设备不判断cst，判断evt3
+
+
+// 云存储开通状态判断：1、未开通可试用（已不可试用，改为免费6s云存储）；2、未开通不可试用；3、已开通；4、已过期。
+int cloudStatus =  mCameraInfo.getCloudStatus();
 
 【函数调用】
 /**
@@ -4854,77 +6233,44 @@ MeariUser.getInstance().getCloudServiceInfo(mCameraInfo.getDeviceID(), new IClou
 
     }
 });
-
-
-// 1、未开通可试用；2、未开通不可试用；3、已开通；4、已过期。
-int cloudStatus =  mCameraInfo.getCloudStatus();
-
-CloudServiceInfo：
-
-// 云服务事件录像价格信息
-private CloudPriceInfo eventCloudPriceInfo;
-// 云服务全天录像价格信息
-private CloudPriceInfo continueCloudPriceInfo;
-// 视频保存时间
-private int storageTime;
-// 价格符号：￥ $
-private String currencySymbol;
-// 云服务可以试用的时间。默认为7
-private int tryTime = 7;
-// 云服务试用时间的单位。默认为天。
-private String tryUnit = "D";
-// 云服务的截止日期
-private long dueDate=0;
-
-
-CloudPriceInfo：
-
-// 3天包月价格
-private BigDecimal threeM;
-// 3天包季价格
-private BigDecimal threeS;
-// 3天包年价格
-private BigDecimal threeY;
-// 7天包月价格
-private BigDecimal sevenM;
-// 7天包季价格
-private BigDecimal sevenS;
-// 7天包年价格
-private BigDecimal sevenY;
-// 30天包月价格
-private BigDecimal thirtyM;
-// 30天包季价格
-private BigDecimal thirtyS;
-// 30天包年价格
-private BigDecimal thirtyY;
 ```
-## 12.2 云存储试用
+
+## 12.2 免费6s云存储
 ```
 【描述】
-云存储试用
+免费6s云存储
+
+// 能力集支持，且未开通云存储，显示6s开关
+- int evt2; 是否支持免费6s云存储服务：0-不支持；1-支持
+
+// 开关状态：0-关闭；1-开启；
+deviceParams.getUploadVideo()
 
 【函数调用】
 /**
- * 云存储试用
- *
- * @param deviceID deviceID
- * @param callback callback
+ * 6s云存储设置
+ * 
+ * @param SN       cameraInfo.getSnNum()
+ * @param enable   false-close；true-open；
+ * @param callback Function callback
  */
-public void freeTrialCloudService(String deviceID, IResultCallback callback)
+public void setUploadVideoEnable(String SN, boolean enable, IStringResultCallback callback)
 
 【代码范例】
-MeariUser.getInstance().freeTrialCloudService(mCameraInfo.getDeviceID(), new IResultCallback() {
+MeariUser.getInstance().setUploadVideoEnable(cameraInfo.getSnNum(), enable, new IStringResultCallback() {
     @Override
-    public void onSuccess() {
+    public void onSuccess(String result) {
         
     }
 
     @Override
-    public void onError(int code, String error) {
-        
+    public void onError(int errorCode, String errorMsg) {
+
     }
 });
+
 ```
+
 ## 12.3 云存储激活码使用
 ```
 【描述】
@@ -4934,28 +6280,670 @@ MeariUser.getInstance().freeTrialCloudService(mCameraInfo.getDeviceID(), new IRe
 /**
  * 云存储激活码使用
  *
+ * @param servicePackageType service type
  * @param actCode activation code
  * @param deviceID deviceID
+ * @param uuid If the 4G device does not have a deviceID, use the uuid
  * @param callback callback
  */
-public void requestActive(String actCode, String deviceID, final IResultCallback callback, Object tag)
+public void requestActive(int servicePackageType, String actCode, String deviceID, String uuid, final IResultCallback callback, Object tag)
 
 【代码范例】
-MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IResultCallback() {
+MeariUser.getInstance().requestActive(BuyServiceType.CLOUD, actCode, cameraInfo.getDeviceID(), "", new IResultCallback() {
     @Override
     public void onSuccess() {
-
+        
     }
 
     @Override
-    public void onError(int code, String error) {
+    public void onError(int errorCode, String errorMsg) {
 
     }
 }, this);
 ```
+
 ## 12.4 云存储购买
+### 12.4.1 服务购买相关类
 ```
-详见Demo
+云存储相关能力集
+- int cst; 是否支持云存储服务：0-不支持；1-支持
+- int evt; 是否支持云存储服务2.0：0-不支持；1-支持；sdk接入用户的设备都是2.0
+
+BuyServiceType：服务类型
+int CLOUD = 0; // 云存储服务
+int AI = 1; // AI服务
+int TRAFFIC = 2; // 4G流量服务
+int CLOUD1 = 3; // 老的云存储服务，sdk接入用户不用考虑
+
+PayType：支付类型
+int ALI = 1; // 支付宝
+int PAYPAL = 2; // PayPal
+int GOOGLE = 3; // 谷歌
+int APPLE = 4; // 苹果
+int CREDIT_CARD = 5; // PayPal 信用卡
+int YOO_MONEY = 6; // 俄罗斯支付
+int WECHAT = 7; // 微信支付
+
+ServicePackageInfo：服务套餐信息
+private List<ServicePackageBean> packageList; // 套餐服务包列表
+private List<ServicePackageBean> discountsPackageList; // 优惠套餐服务包列表
+private List<Integer> notSupportPayList; // 不支持的支付方式列表，不配置默认是空
+
+ServicePackageBean：服务套餐类
+private String id; //套餐id
+private String productId; // 谷歌支付的产品ID
+private int payType; // 支付类型
+private int storageTime; // 云视频存储的天数：3、7、30
+private String mealType; // Y-年；X-半年；S-季；M-月
+private int storageType; // 0-事件存储；1-全天存储
+private BigDecimal money; // 金额
+private int bindDeviceNum; // 可以绑定的设备数量
+private String currencyCode; // 国家代号
+private String currencySymbol; // 货币符号
+private boolean subscribe; // 是否是订阅套餐
+private int subState; // 谷歌订阅的状态：0-未订阅；1-已订阅
+private String clientId; // PayPal支付使用的参数
+private int AiType; // 是否支持带ai的云存储：0-不支持；1-支持；
+// 优惠活动相关的属性
+private boolean discountSaleNew; // 是否是优惠套餐
+private String discountProductId; // 优惠套餐服务包列表中才有的活动谷歌支付的产品ID
+private BigDecimal discountMoney; // 优惠套餐服务包列表中才有的活动价格
+private String originalPackageId; // 用于判断非谷歌套餐，当前优惠套餐对应的非优惠套餐的id
+private long startTime; // 优惠活动的开始时间戳
+private long endTime; //  优惠活动的结束时间戳
+// 4G流量套餐相关的属性
+private int unlimited; // 是否是不限量的套餐：0-否；1-是；sdk接入的都是不限量
+private int cloudType; // 是否是4G流量加云存储的套餐：0-否；1-是
+```
+
+### 12.4.2 支付相关错误码
+```
+1203：当前套餐已订阅
+1208：您已经有一个在有效期的订阅，已经恢复了此订阅，在有效期内暂时不支持更换账号和设备
+1209：订阅已恢复
+1211：不支持跨区域订阅
+1212：Paypal将在24小时内审核你的资金，请在paypal钱包查看审核结果
+1213：重复捕获，按成功处理
+1240：无法获取您的付款，请确认您的付款方式是否有足够金额
+1241：Paypal支付平台繁忙，请切换支付方式或稍后再试
+1242：Paypal平台处理您的付款失败，请申请退款，稍后重新购买
+1243：GOOGLE支付平台繁忙，稍后会自动退款，请重新购买
+1244：APPLE支付平台繁忙，请申请退款，稍后重新购买
+```
+
+### 12.4.3 PayPal Web 支付购买流程
+```
+1.获取云存储套餐，展示套餐信息
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2.选择套餐，创建订单
+// currentPackageBean: 选中的服务包
+val currentPrice = currentPackageBean.money.toString()
+val id = currentPackageBean.id
+// deviceIdList: 选中的设备id列表
+val deviceIdList: MutableList<String> = mutableListOf()
+deviceIdList.add(cameraInfo.deviceID)
+val currencySymbol = currentPackageBean.currencySymbol
+MeariUser.getInstance().createPaymentOrder(BuyServiceType.CLOUD, currentPrice, PayType.PAYPAL, 1,
+    id, deviceIdList, currencySymbol, "", "", object : IStringResultCallback {
+    override fun onSuccess(result: String) {
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+
+3.WebView加载paypal支付网页，完成支付并捕获订单
+// 详细代码参考 demo 中的 PaypalCheckoutActivity
+MeariUser.getInstance().capturePaymentOrder(BuyServiceType.CLOUD, "orderId", PayType.PAYPAL, object :IStringResultCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(result: String?) {
+    }
+})
+```
+
+### 12.4.4 PayPal Web 信用卡支付购买流程
+```
+1.获取云存储套餐，展示套餐信息
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2.初始化webView，并加载PayPal信用卡支付url
+private var baseUrl = MeariSmartSdk.apiServer + "/html/paypalCardH5/dist/index.html"
+private fun initWebView() {
+    webView.webViewClient = object : WebViewClient() {
+        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+            return super.shouldOverrideUrlLoading(view, url)
+        }
+
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
+            return super.shouldOverrideUrlLoading(view, request)
+        }
+
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+            super.onPageStarted(view, url, favicon)
+        }
+
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+        }
+    }
+    webView.addJavascriptInterface(
+        NativeBridge(this@Activity),
+        "NativeBridge"
+    )
+    webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+    val webSettings = webView.settings
+    webSettings.javaScriptEnabled = true
+    webSettings.defaultTextEncodingName = "UTF-8"
+    webSettings.setSupportZoom(false)
+    webSettings.builtInZoomControls = true
+    webSettings.useWideViewPort = true
+    webSettings.loadWithOverviewMode = true
+    webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+    webSettings.domStorageEnabled = true
+
+    val url: String = if (isSubscribe) {
+        "$baseUrl?paypalType=subscription&currency=${currentPackageBean?.currencyCode}&clientId=${currentPackageBean?.clientId}"
+    } else {
+        "$baseUrl?paypalType=createOrder&currency=${currentPackageBean?.currencyCode}&clientId=${currentPackageBean?.clientId}"
+    }
+    webView.loadUrl(url)
+}
+
+3.通过桥接对象 NativeBridge 来进行后续的交互
+class NativeBridge(val context: Context) {
+    @JavascriptInterface
+    fun NativeAndroidBridgePaypalCallback(resData: String) {
+        val paypalResData: PaypalResData = GsonUtil.fromJson(resData, PaypalResData::class.java)
+        if (paypalResData.type == "buttonInit") {
+            // 支付按钮初始化完成
+            (context as Activity).initButton(full = false)
+        } else if (paypalResData.type == "createOrder") {
+            // 创建订单
+            (context as Activity).createCreditCardOrder()
+        } else if (paypalResData.type == "createSubscription") {
+            // 创建订阅订单
+            (context as Activity).createCreditCardOrder()
+        } else if (paypalResData.type == "capture") {
+            // 捕获交易
+            (context as Activity).captureCreditCardOrder(paypalResData.token)
+        } else if (paypalResData.type == "cancel") {
+            // 交易取消
+        } else if (paypalResData.type == "error") {
+            // 交易失败
+        }
+    }
+}
+
+// 网页上的支付按钮不支持自定义，可以将WebView覆盖在Android自定义的按钮上，WebView设置成透明不可见，来达到自定义按钮的效果。
+// 订单创建成功以后，WebView扩大至全屏，并恢复透明度和背景，展示正常的支付网页进行支付。
+private fun initButton(full: Boolean) {
+    webView.post {
+        webView.visibility = View.VISIBLE
+        val params = webView.layoutParams
+        if (full) {
+            webView.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.bg_color_white,
+                    null
+                )
+            )
+            webView.background.alpha = 255
+            params.width = RelativeLayout.LayoutParams.MATCH_PARENT
+            params.height = RelativeLayout.LayoutParams.MATCH_PARENT
+        } else {
+            webView.setBackgroundColor(0)
+            webView.background.alpha = 0
+        }
+        webView.layoutParams = params
+    }
+}
+
+private fun createCreditCardOrder() {
+    // PayType： PayType.PAYPAL
+    MeariUser.getInstance().createPaymentCreditCardOrder(BuyServiceType.CLOUD, currentPrice, PayType.PAYPAL, 1,
+        id, deviceIdList, currencySymbol, object : IStringResultCallback {
+            override fun onError(errorCode: Int, errorMsg: String?) {
+            }
+
+            override fun onSuccess(result: String?) {
+                val dataObject = BaseJSONObject()
+                if (isSubscribe) {
+                    dataObject.put("type", "subscriptionId")
+                } else {
+                    dataObject.put("type", "orderId")
+                }
+                dataObject.put("value", result)
+                val data = dataObject.toString()
+                initButton(full = true)
+                webView.loadUrl("javascript:NativeBridgePaypalCallback('$data')")
+            }
+    })
+}
+
+private fun captureCreditCardOrder(orderId: String) {
+    // PayType： PayType.PAYPAL
+    MeariUser.getInstance().capturePaymentOrder(BuyServiceType.CLOUD, orderId, PayType.PAYPAL, object : IStringResultCallback {
+        override fun onSuccess(result: String) {
+        }
+
+        override fun onError(errorCode: Int, errorMsg: String) {
+        }
+    })
+}
+```
+
+### 12.4.5 谷歌支付购买流程
+```
+注意：谷歌支付的接入请参考官方文档，这里仅说明谷歌支付的购买流程
+
+1.获取云存储套餐，展示套餐信息
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2.查询谷歌套餐
+public void queryProductDetails(Activity activity, String productId, boolean isSubscribe) {
+    QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
+            .setProductList(ImmutableList.of(QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId(productId)
+                    .setProductType(isSubscribe ? BillingClient.ProductType.SUBS : BillingClient.ProductType.INAPP)
+                    .build())
+            ).build();
+
+    billingClient.queryProductDetailsAsync(queryProductDetailsParams,
+            new ProductDetailsResponseListener() {
+                public void onProductDetailsResponse(BillingResult billingResult,
+                                                     List<ProductDetails> productDetailsList) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        launchBilling(activity, productDetailsList.get(0), isSubscribe);
+                    }
+                }
+            }
+    );
+}
+
+3.调起支付页面，并完成支付
+private void launchBilling(Activity activity, ProductDetails productDetails, boolean isSubscribe) {
+    // An activity reference from which the billing flow will be launched.
+    // Activity activity = ...;
+    String selectedOfferToken = "";
+    if (productDetails.getSubscriptionOfferDetails() != null && !productDetails.getSubscriptionOfferDetails().isEmpty()) {
+        selectedOfferToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
+    }
+    ImmutableList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList;
+    if (isSubscribe) {
+        productDetailsParamsList = ImmutableList.of(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                        // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
+                        .setProductDetails(productDetails)
+                        // to get an offer token, call ProductDetails.getSubscriptionOfferDetails()
+                        // for a list of offers that are available to the user
+                        .setOfferToken(selectedOfferToken)
+                        .build()
+        );
+    } else {
+        productDetailsParamsList = ImmutableList.of(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                        // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
+                        .setProductDetails(productDetails)
+                        .build()
+        );
+    }
+
+    BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+            .setProductDetailsParamsList(productDetailsParamsList)
+            .setIsOfferPersonalized(true)
+            .build();
+
+    // Launch the billing flow
+    BillingResult billingResult = billingClient.launchBillingFlow(activity, billingFlowParams);
+}
+
+4.在谷歌支付监听中处理回调状态
+private final PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
+        // To be implemented in a later section.
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (Purchase purchase : purchases) {
+                if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                    // 支付成功，去创建订单
+                    createOrder(purchase)
+                }
+            }
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+            // 取消支付
+        } else {
+            // 其他错误
+        }
+    }
+};
+
+5.创建订单
+private fun createOrder(purchase: Purchase) {
+    // currentPackageBean: 选中的服务包
+    val currentPrice = currentPackageBean.money.toString()
+    val id = currentPackageBean.id
+    // deviceIdList: 选中的设备id列表
+    val deviceIdList: MutableList<String> = mutableListOf()
+    deviceIdList.add(cameraInfo.deviceID)
+    val currencySymbol = currentPackageBean.currencySymbol
+    val currencyCode = currentPackageBean.currencyCode
+    val devNum = currentPackageBean.bindDeviceNum
+    val productId = currentPackageBean.productId
+    MeariUser.getInstance().createCloudGooglePayOrder(devNum, deviceIdList, id, currentPrice, purchase.quantity,
+        productId, purchase.orderId, purchase.purchaseToken, currencySymbol, currencyCode, object :IPayCallback{
+            override fun onError(errorCode: Int, errorMsg: String?) {
+            }
+
+            override fun onSuccess(orderInfo: OrderInfo?) {
+                handlePurchase(purchase)
+            }
+        })
+}
+
+6.确认购买
+public void handlePurchase(Purchase purchase) {
+    if (purchase.isAutoRenewing()) {
+        // 确认订阅购买
+        handleSubscriptionPurchase(purchase);
+    } else {
+        // 确认一次性购买
+        handleOncePurchase(purchase);
+    }
+}
+
+public void handleSubscriptionPurchase(GooglePurchase purchase) {
+    AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
+        @Override
+        public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                // Handle the success of the consume operation.
+            }
+        }
+    };
+
+    if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+        if (!purchase.isAcknowledged()) {
+            AcknowledgePurchaseParams acknowledgePurchaseParams =
+                    AcknowledgePurchaseParams.newBuilder()
+                            .setPurchaseToken(purchase.getPurchaseToken())
+                            .build();
+            billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
+        }
+    }
+}
+
+public void handleOncePurchase(GooglePurchase purchase) {
+    ConsumeParams consumeParams =
+            ConsumeParams.newBuilder()
+                    .setPurchaseToken(purchase.getPurchaseToken())
+                    .build();
+
+    ConsumeResponseListener listener = new ConsumeResponseListener() {
+        @Override
+        public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                // Handle the success of the consume operation.
+            }
+        }
+    };
+    billingClient.consumeAsync(consumeParams, listener);
+}
+```
+
+### 12.4.6 支付宝购买流程
+```
+注意：支付宝的接入请参考官方文档，这里仅说明支付宝的购买流程
+
+1.获取云存储套餐，展示套餐信息
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. 创建订单
+// List<String> deviceIdList：购买设备的deviceId列表；其他是ServicePackageBean中的属性
+MeariUser.getInstance().createCloudAliPayOrder(bindDeviceNum, deviceIdList, id, money.toString(), currencySymbol, 1, new IPayCallback() {
+    @Override
+    public void onSuccess(OrderInfo orderInfo) {
+        payAlipay(orderInfo.getPayUrl());
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+
+3.调起支付页面，并完成支付
+public void payAlipay(final String sigPay) {
+    Runnable payRunnable = () -> {
+        // 构造PayTask 对象
+        PayTask alipay = new PayTask(CloudPayNewActivity.this);
+        // 调用支付接口，获取支付结果
+        Map<String, String> result = alipay.payV2(sigPay, true);
+
+        Message msg = Message.obtain();
+        msg.what = SDK_PAY_FLAG;
+        msg.obj = result;
+        mHandler.sendMessage(msg);
+    };
+    Thread payThread = new Thread(payRunnable);
+    payThread.start();
+}
+
+4.处理支付回调
+private final Handler mHandler = new Handler(msg -> {
+    if (msg.what == SDK_PAY_FLAG) {
+        PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+        String resultStatus = payResult.getResultStatus();
+        // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+        if (TextUtils.equals(resultStatus, "9000")) {
+            // 支付成功
+        } else {
+            // 支付失败
+        }
+    }
+    return false;
+});
+```
+
+### 12.4.7 微信支付购买流程
+```
+注意：微信支付的接入请参考官方文档，这里仅说明微信支付的购买流程
+
+1.获取云存储套餐，展示套餐信息
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2.选择套餐，创建订单
+// currentPackageBean: 选中的服务包
+val currentPrice = currentPackageBean.money.toString()
+val id = currentPackageBean.id
+// deviceIdList: 选中的设备id列表
+val deviceIdList: MutableList<String> = mutableListOf()
+deviceIdList.add(cameraInfo.deviceID)
+val currencySymbol = currentPackageBean.currencySymbol
+MeariUser.getInstance().createPaymentOrder(BuyServiceType.CLOUD, currentPrice, PayType.WECHAT, 1,
+    id, deviceIdList, currencySymbol, "", "", object : IStringResultCallback {
+    override fun onSuccess(result: String) {
+        toWechatPay(result)
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+3.跳转支付页面，完成支付
+private fun toWechatPay(result: String) {
+    WechatPayManager.init(this@Activity)
+    val obj = BaseJSONObject(result)
+    wechatOrderId = obj.optString("thirdOrderId")
+    val partnerId = obj.optString("partnerId")
+    val prepayId = obj.optString("prepayId")
+    val nonceStr = obj.optString("noncestr")
+    val timeStamp = obj.optLong("timeStamp")
+    val sign = obj.optString("sign")
+    WechatPayManager.toWechatPay(partnerId, prepayId, nonceStr, timeStamp, sign)
+}
+object WechatPayManager {
+    lateinit var api: IWXAPI
+
+    fun init(context: Context) {
+        api = WXAPIFactory.createWXAPI(context, Config.WECHART_APPID)
+        api.registerApp(Config.WECHART_APPID)
+    }
+
+    fun toWechatPay(partnerId: String, prepayId: String, nonceStr: String, timeStamp: Long, sign: String) {
+        Thread {
+            val request = PayReq()
+            request.appId = Config.WECHART_APPID
+            request.partnerId = partnerId
+            request.prepayId = prepayId
+            request.packageValue = "Sign=WXPay"
+            request.nonceStr = nonceStr
+            request.timeStamp = timeStamp.toString()
+            request.sign = sign
+            api.sendReq(request)
+        }.start()
+    }
+}
+
+4.处理支付回调结果
+public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
+    private IWXAPI api;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        api = WXAPIFactory.createWXAPI(this, Config.WECHART_APPID);
+        api.handleIntent(getIntent(), this);
+    }
+    @Override
+    public void onReq(BaseReq baseReq) {
+
+    }
+    @Override
+    public void onResp(BaseResp baseResp) {
+        int type = baseResp.getType();
+        if (type == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            int code = baseResp.errCode;
+            Logger.i("tag", "--->WeChart-ErrCode: " + code);
+            switch (code) {
+                case BaseResp.ErrCode.ERR_OK:
+                    //成功
+                    paySuccess(0);
+                    break;
+                case BaseResp.ErrCode.ERR_USER_CANCEL:
+                    //用户取消
+                    paySuccess(-2);
+                    break;
+                case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                case BaseResp.ErrCode.ERR_SENT_FAILED:
+                case BaseResp.ErrCode.ERR_UNSUPPORT:
+                case BaseResp.ErrCode.ERR_COMM:
+                default:
+                    //失败
+                    break;
+            }
+        }
+    }
+}
+```
+
+## 12.5 服务和订单
+
+```
+【描述】
+获取服务和订单列表，在同一个接口返回
+
+【代码范例】
+MeariUser.getInstance().getAllDeviceServiceInfo(object : IAllDeviceServiceCallback {
+    override fun onSuccess(allDeviceServiceInfo: AllDeviceServiceInfo) {
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+AllDeviceServiceInfo
+- List<ServiceOrderInfo> orderList； // 服务订单列表
+
+ServiceOrderInfo // 服务订单类
+// 通用属性
+- private int packageType; // 服务类型：0-云存储；1-AI；2-4G；
+- private String orderNum; // 订单号
+- private String money; // 订单价格
+- private String currencySymbol; // 订单价格币种
+- private long startTime; // 订单开始时间
+- private long endTime; // 订单结束时间
+- private long allServerEndTime; // 所有服务的最后结束时间
+- private int bindedNum; // 已绑定设备数量
+- private int bindDeviceNum; // 可绑定设备总量
+- private String mealType; // 服务周期类型：Y-年；S-季；M-月；W-周；D-日；
+- private int serverTime; // 服务次数如：一个月，两个月等
+- private int isSubPackage; // 是否是订阅
+- private int trialDays; // 试用天数，表明当前是试用套餐
+- private int supportCancelSub; // 取消订阅：1-可以取消订阅；2-已经取消订阅
+- private String subID; // 订阅ID
+- private boolean reBindDeviceSupport; // 是否支持换绑
+- private List<ServiceDevice> deviceList = new ArrayList<>(); // 设备列表
+- private List<ServiceDevice> bindedDeviceList = new ArrayList<>(); // 已绑定设备列表
+- private List<ServiceDevice> bindableDeviceList = new ArrayList<>(); // 可换绑设备列表
+// 云存储服务相关属性
+- private int storageType; // 云存储类型：0-事件存储；1-连续存储
+- private int AiType; // 是否是云加AI的套餐：0-否；1-是
+// 4G服务相关属性
+- private int cloudType; // 是否是4G加云存储的套餐：0-否；1-是
+
+ServiceDevice // 服务设备信息
+- private long deviceId; // 设备ID
+- private String deviceName; // 设备名称
+- private String deviceIcon; // 设备图标
+- private long cloudServerStartTime; // 云存储服务开始时间
+- private long cloudServerEndTime; // 云存储服务结束时间
+- private long aiServerStartTime; // AI服务开始时间
+- private long aiServerEndTime; // AI服务结束时间
+- private long flow4gServerStartTime; // 4G服务开始时间
+- private long flow4gServerEndTime; // 4G服务结束时间
+- private boolean unbindable; // 是否可解绑
+- private boolean binded; // 是否已绑定
 ```
 
 # 13 NVR
@@ -5353,7 +7341,6 @@ if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() &&
 }
 ```
 
-
 # 14 4G
 
 ## 14.1 添加4G
@@ -5363,317 +7350,401 @@ if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() &&
 
 ```
 
-## 14.2 4G流量
+## 14.2 4G流量服务
 
-### 14.2.1 流量充值套餐
+## 14.2.1 流量服务激活码使用
 ```
 【描述】
-随设备绑定的SIM卡的流量充值套餐获取
+流量服务激活码使用
 
 【函数调用】
 /**
- * 获取4G套餐
- * @param uuid   机身码解析的uuid
- * @param deviceId   设备的devivceid
- * @param payType   支付类型 1:alipay 2: paypal 3:google 4:apple
- * deviceID和uuid传其中1个，另一个传null或""
+ * 流量服务激活码使用
+ *
+ * @param servicePackageType service type
+ * @param actCode activation code
+ * @param deviceID deviceID
+ * @param uuid If the 4G device does not have a deviceID, use the uuid
+ * @param callback callback
  */
-public void get4GDeviceFlowV2(String uuid,String deviceId,String payType, IStringResultCallback callback)
-
+public void requestActive(int servicePackageType, String actCode, String deviceID, String uuid, final IResultCallback callback, Object tag)
 
 【代码范例】
-MeariUser.getInstance().get4GDeviceFlowV2(uuid,deviceId, "1",new IStringResultCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    
-                }
-                @Override
-                public void onError(int errorCode, String errorMsg) {
-
-                }
-            });
-
-【JSON】
-{
-    "resultCode":"1001",
-    "result":{
-        "simID":"",
-        "maxMonthQuantity":12,（限制最多买多少个月）
-        "trialStatus": false,  （套餐列表中是否有试用套餐）
-        "packageList":[
-            {
-                "id":"",  （套餐id，对应packageId）
-                "mealType":"M",  （M是月套餐，S是季套餐，Y是年套餐，X是半年套餐）
-                "money":"",
-                "currencyCode": "USD",
-                "currencySymbol": "$",
-                "trafficPackage":"M",   （M是MB，G是GB）
-                "quantity":500   （数量），
-                "unlimited": 1    (显示不限量)
-                "type":0   (0是试用套餐，需要单独筛选出来)
-            },
-            {
-                "id":"",
-                "mealType":"",
-                "money":"",
-                "currencyCode": "USD",
-                "currencySymbol": "$",
-                "trafficPackage":"G",
-                "quantity":3,
-                "unlimited": 0
-            }
-        ]
+MeariUser.getInstance().requestActive(BuyServiceType.TRAFFIC, actCode, cameraInfo.getDeviceID(), "", new IResultCallback() {
+    @Override
+    public void onSuccess() {
     }
-}
 
-【错误码】
-返回状态码1201，未绑定sim卡（不用展示套餐）
-返回状态码1202，无效的uuid
-
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+}, this);
 ```
-### 14.2.2 流量查询（不可频繁查询）
+
+### 14.2.2 获取流量服务信息
 ```
 【描述】
-随设备绑定的SIM卡的流量查询，频繁查询会被运营商停止。
+获取流量服务信息
 
 【函数调用】
 /**
- * 获取4G流量
- * @param uuid   机身码解析的uuid
+ * 获取流量服务信息
  * @param deviceId   设备的devivceid
- * deviceID和uuid传其中1个，另一个传null或""
+ * @param uuid   机身码解析的uuid，传""
  */
-public void getTrafficNumber(String uuid, String deviceId, IStringResultCallback callback)
+public void get4gTrafficInfo(String deviceID, String uuid, ITraffic4gInfoCallback callback)
 
 
 【代码范例】
-MeariUser.getInstance().getTrafficNumber(uuid,deviceId, new IStringResultCallback() {
+MeariUser.getInstance().get4gTrafficInfo(cameraInfo?.deviceID, "", object :ITraffic4gInfoCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(traffic4gInfo: Traffic4gInfo?) {
+    }
+})
+
+Traffic4gInfo
+- String simID; SIM卡编号
+- PackageInfo currentPackageInfo; 当前生效的套餐包信息
+- List<PackageInfo> prePackageInfoList; 待生效的套餐包信息
+
+PackageInfo
+- private int unlimited; 是否是不限量套餐(现在都是1)：0-不是；1-是
+- private int trialType; 是否是试用套餐：0-不是；1-是
+- private long expireTime; 过期时间
+- private String groupFlag; 不为空是订阅套餐，为空是非订阅套餐
+- private int cloudType; 是否是流量加云存储套餐：0-不是；1-是
+
+```
+
+### 14.2.3 购买流量服务
+
+```
+【描述】
+购买流量服务和购买云存储服务基本一致
+参数BuyServiceType.CLOUD 替换成 BuyServiceType.TRAFFIC
+```
+
+# 15 宠物类设备
+
+## 15.1 添加设备
+
+```
+添加参考(#51-二维码配网添加设备)。
+
+```
+
+## 15.2 设置
+
+### 15.2.1 投食喂食
+```
+【描述】
+投食和喂食（区分投食器和喂食器）
+
+【函数调用】
+    /**
+     * 版本80
+     * pet:
+     * type: int
+     * description: 设备是否为宠物设备，0-不是 1-是, 默认0
+     * 1-宠物投食机 2-宠物喂食器
+     * usage:app可以用作设备类型识别
+     */
+     cameraInfo.getPet()
+/**
+     * 一键投食：
+     * id: '845'
+     * name: 一键投食
+     * type:  bool（布尔型）
+     * definition:  bool（布尔型）
+     * description: 投食控制，发送1，抛投搅拌一次,属于一个瞬时控制指令'
+     * default: 1
+     */
+     void setPetFeed(ISetDeviceParamsCallback callback) 
+
+/**
+     * 一键喂食
+     * copies：喂食份数
+     */
+public void setPetFeed2(int copies,ISetDeviceParamsCallback callback)
+
+
+```
+
+### 15.2.2 音效设置
+```
+【描述】
+设置一键呼唤的音效
+
+【函数调用】
+    /**
+     * 获取音效列表
+     */
+     public void getVoicePetMailList(String deviceID, Object tag, IStringResultCallback callback)
+
+     /**
+     * 获取当前音效（url）
+     */
+     deviceParams.getPetSoundSetting()
+    /**
+     * 设置当前音效
+     */
+     public void setVoiceSetting(String url, IStringResultCallback callback)
+
+
+【代码范例】
+MeariUser.getInstance().getVoicePetMailList(presenter.getCameraInfo().getDeviceID(), this, new IStringResultCallback() {
+            @Override
+            public void onSuccess(String result) {
+                if(!TextUtils.isEmpty(result)){
+                    VoicePetMailInfo voicePetMailInfo= GsonUtil.fromJson(result, VoicePetMailInfo.class);
+                }
+            }
+
+            @Override
+            public void onError(int code, String error) {
+                
+            }
+        });
+
+```
+
+
+
+### 15.2.3 一键呼唤
+```
+【描述】
+设置一键呼唤
+
+【函数调用】
+    /**
+     * 一键呼唤
+     */
+     public void setFeedCall(int enable, ISetDeviceParamsCallback callback)
+
+    
+【代码范例】
+MeariUser.getInstance().setFeedCall(1, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+            }
+        });
+```
+
+### 15.2.4 投食喂食计划
+```
+【描述】
+设置投食喂食计划
+
+【函数调用】
+    /**
+     * 获取喂食计划
+     */
+     deviceParams.getPetFeedPlanList()
+/**
+     * 设置喂食计划
+     */
+     public void setFeedTimes(String timeList, ISetDeviceParamsCallback callback)
+
+    
+【代码范例】
+/**
+*planString: >-
+  如果是单次投食 则{ "enable":false, "time":"10:00", "count":1, "once": 1}
+  如果是按星期计划投食则：{ "enable":false, "time":"10:00", "count":1, "repeat":[1,2,3,4,5,6,7]}
+  repeat中1代表星期一
+  示例：最多允许设置8组，JSON字符串，[{ "enable":false, "time":"10:00",
+  "repeat":[1] , "count":1}, { "enable":false, "time":"10:00", "count":1, "once": 1}]
+**/
+MeariUser.getInstance().setFeedTimes(planString, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (handler == null || isViewClose()) {
+                    return;
+                }
+                Message msg = Message.obtain();
+                msg.what = MSG_SET_PLAN_TIME_SUCCESS;
+                msg.obj = planString;
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (handler == null || isViewClose()) {
+                    return;
+                }
+                Message msg = Message.obtain();
+                msg.what = MSG_SET_PLAN_TIME_FAILED;
+                mHandler.sendMessage(msg);
+            }
+        });
+```
+
+# 16 婴儿类设备
+
+## 16.1 添加设备
+
+```
+添加参考(#51-二维码配网添加设备)。
+
+```
+
+## 16.2 健康服务
+
+### 16.2.1 获取监测数据
+```
+【描述】
+获取监测数据
+
+【函数调用】
+    /**
+     * 获取监测数据
+     * deviceID:
+     * day:
+     * typeName: "bav"(呼吸),"hav"(心跳),"sleepState"(睡眠状态)
+     *          typeName = "bav","hav",返回数据字段: avgHeartRate//平均心率/分钟 heartRange//心率区间 avgBreathe//平均呼吸/分钟 breatheRange//呼吸区间 startTime//开始时间（时间戳秒级） minuteData//5分钟平均数据 {"index"(对应第几个5分钟索引):1, "bav"(平均呼吸):20, "hav"(平均心跳):79}
+     *          typeName = "sleepState",返回数据字段: lightSleep//睡眠时长（浅睡）（分钟） deepSleep//睡眠时长（深睡）（分钟） awake//清醒时长（分钟） startTime//开始时间（时间戳秒级） sleepTimeLine//睡眠时间轴（按分钟填充，默认值为 0，1：深睡，2：浅睡，3：没睡觉，4：清醒）
+     */
+     public void getMrdaMonitorData(String deviceID, String day, String typeName, Object tag, IStringResultCallback callback)
+
+    
+【代码范例】
+MeariUser.getInstance().getMrdaMonitorData(cameraInfo.getDeviceID(), date, type, this, new IStringResultCallback() {
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+
+            }
+
             @Override
             public void onSuccess(String result) {
                 
             }
-
-            @Override
-            public void onError(int errorCode, String errorMsg) {
-            }
-        });
-
-【JSON】
-{
-	"resultCode": "1001",
-	"simID": "4375345345",
-	"resultData": {
-		"subscriberQuota": { //当前使用套餐
-			"qtavalue": "2048.00", //总流量（M）
-			"qtabalance": "1960.57", //剩余流量（M）
-			"qtaconsumption": "87.43", //已使用流量（M）
-			"activeTime": "1658926803000", //激活时间
-			"mealType": "M", //套餐类型
-			"expireTime": "1658927512000", //过期时间，
-			"money": "0.01",
-			"unlimited": 1 //(显示不限量)
-		},
-		"preActivePackageList": [ //未使用套餐
-			{
-				"mealType": "",
-				"trafficPackage": "G",
-				"quantity": 3,
-				"money": "0.01",
-				"unlimited": 1 //(显示不限量)
-			}
-		],
-		"historyQuota": [{ //历史用量
-				"time": "20220720",
-				"qtaconsumption": "87.43"
-			},
-			{
-				"time": "20220721",
-				"qtaconsumption": "87.43"
-			}
-		]
-	}
-}
-
-1. 返回值中的subscriberQuota是正在使用中的套餐使用情况，如果设备从来没使用过流量，也就是没激活过sim卡，则这个值里面没有数据
-2. historyQuota中是正在使用的套餐的历史流量使用情况，但是因为提供商只能提供中国时区的按天的流量使用明细，所以流量使用明细这一块肯定是和用户本地时区的一天是对应不起来的，这个数据不准，因为时区问题，有可能返回的日期比用户本地时区还晚，有可能会出现流量明细有明天使用量的情况，这个需要app在本地加个逻辑，最少展示的时间不能超过用户本地时间
-
-```
-### 14.2.3 兑换流量
-```
-【描述】
-激活码兑换流量
-
-【函数调用】
-/**
- * 获取4G流量
- * @param uuid   机身码解析的uuid
- * @param deviceId   设备的devivceid
- * @param code       激活码
- * deviceID和uuid传其中1个，另一个传null或""
- */
-public void getTrafficCode(String uuid, String deviceId, String code, IStringResultCallback callback)
-
-
-【代码范例】
-MeariUser.getInstance().getTrafficCode(uuid,deviceId,code, new IStringResultCallback() {
-            @Override
-            public void onSuccess(String result) {
-            
-            }
-
-            @Override
-            public void onError(int errorCode, String errorMsg) {
-                showToast(CommonUtils.getRequestDesc(TrafficManagerActivity.this, errorCode));
-            }
         });
 
 
-
 ```
-### 14.2.4 试用流量开通
+
+# 17 AI服务
+
+## 17.1 AI服务介绍
 ```
-【描述】
-试用流量的开通
+AI相关能力集
+- int ai; 是否支持ai：0-不支持；1-支持
+- int cai; 是否支持云端ai：""/"[]"-不支持；非空数组-支持
+- int dai; 是否支持本地ai：""/"[]"-不支持；非空数组-支持
 
-【函数调用】
-/**
- * 获取4G流量
- * @param uuid   机身码解析的uuid
- * @param deviceId   设备的devivceid
- * @param code       激活码
- * deviceID和uuid传其中1个，另一个传null或""
- */
-public void getTrafficCode(String uuid, String deviceId, String code, IStringResultCallback callback)
+cai和dai的格式为json数组字符串，例如'[1,2,3,4,5]'，
+字段定义说明：1-人，2-车，3-宠物，4-包裹，5-哭声，6-犬吠，7-野生动物，8-鸟类，9-枪声，10-玻璃碎裂，11-婴儿遮挡，12-婴儿趴睡。
 
-
-【代码范例】
-MeariUser.getInstance().getTrafficCode(uuid,deviceId,code, new IStringResultCallback() {
-            @Override
-            public void onSuccess(String result) {
-            
-            }
-
-            @Override
-            public void onError(int errorCode, String errorMsg) {
-                showToast(CommonUtils.getRequestDesc(TrafficManagerActivity.this, errorCode));
-            }
-        });
-
-
-
+不通设备的AI支持说明：
+1.ai=0,不支持ai功能
+2.ai=1,dai=支持,cai=支持,支持本地AI和云端AI：未购买时展示本地AI开关和云端AI购买入口，购买后展示云端AI开关
+3.ai=1,dai=支持,cai=不支持,仅支持本地AI：显示本地AI开关，不显示购买云端AI入口
+4.ai=1,dai=不支持,cai=支持,仅支持云端AI：显示云端AI开关，但不可操作，显示云端AI购买入口，购买后可操作。
+5.ai=1,dai=不支持,cai=不支持,早期AI版本(仅支持人，车，宠物，包裹)：显示云端AI开关，但不可操作，显示云端AI购买入口，购买后可操作。
 ```
-### 14.2.5 流量购买
+
+## 17.2 AI服务状态
 ```
 【描述】
-流量的购买（已拥有的套餐加上正要购买的套餐不能超过流量充值套餐接口中的maxMonthQuantity，如果无值默认为12个月）
-
-【函数调用】
-/**
- * 获取4G流量
- * @param uuid   机身码解析的uuid
- * @param deviceID   设备的devivceid
- * @param packageId   套餐id 
- * @param payMoney   支付金额 
- * @param payType   支付类型 1:alipay 2: paypal 
- deviceID和uuid传其中1个，另一个传null或""
- */
-public void postTrafficPayOrderV2(String deviceID,String uuid,String packageId, String payMoney,String payType, IStringResultCallback callback)
-
+获取AI服务的开通状态和开关状态
 
 【代码范例】
-MeariUser.getInstance().postTrafficPayOrderV2("deviceId",
-                    "uuid",
-                    "packageId",
-                    payMoney, mPayType,
-                    new IStringResultCallback() {
-                        @Override
-                        public void onSuccess(String result) {
-                            
-                        }
+MeariUser.getInstance().getAiProjects(cameraInfo?.deviceID, object :IStringResultCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
 
-                        @Override
-                        public void onError(int errorCode, String errorMsg) {
-                            
-                        }
-                    });
-
-【JSON】
-payType = 1（即支付宝支付） 
-返回
-{
-      "resultCode": "1001",
-       "result": {
-              "payMoney": "108",
-              "orderNum": "",
-               "payUrl ": " ",
-               "LeastTime ": 9906,
-               "createDate ": 167940449392
+    override fun onSuccess(result: String?) {
+        val jsonResult = BaseJSONObject(result)
+        if (jsonResult.has("result")) {
+            val resultObject = jsonResult.optString("result")
+            val projects = GsonUtil.fromJson(resultObject, object : TypeToken<AiAnalyzeProjectBean?>() {})
         }
-}
+    }
+})
 
+// 更新AI开关状态：data：{"person":"1","car":"0"}
+// key："person"、"car"、"pet"、"packageAi"、"cry"、"bark"、"wild_animal"、"bird"、"shot"、"glassbroken"、"baby_cover_face"、"baby_lie_down"
+MeariUser.getInstance().updateAiProjects(data, cameraInfo.getDeviceID(), new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
 
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+AiAnalyzeProjectBean：AI分析
+private String packageAiType;//"0"-未开通；"2"-已开通
+private ProjectsDTO projects;//
+
+ProjectsDTO：AI开关状态
+private String person;//人："0"-关；"1"-开
+private String car;//车："0"-关；"1"-开
+private String pet;//宠物/："0"-关；"1"-开
+private String packageX;//包裹："0"-关；"1"-开
+private String cry;//哭声："0"-关；"1"-开
+private String bark;//犬吠："0"-关；"1"-开
+private String wildAnimal;//野生动物："0"-关；"1"-开
+private String bird;//鸟类："0"-关；"1"-开
+private String shot;//枪声："0"-关；"1"-开
+private String glassBroken;//玻璃碎裂："0"-关；"1"-开
+private String babyCoverFace;//婴儿遮挡："0"-关；"1"-开
+private String babyLieDown;//婴儿趴睡："0"-关；"1"-开
 ```
 
-### 14.2.6 流量订单
+## 17.3 AI服务激活码使用
 ```
 【描述】
-流量的订单查询
-
-【函数调用】
-/**
- * 获取4G流量
- * @param uuid   机身码解析的uuid
- * @param deviceID   设备的devivceid
- *deviceID和uuid传其中1个，另一个传null或""
- */
-public void getTrafficOrderList(String uuid, String deviceId, IStringResultCallback callback)
-
+使用激活码激活AI服务
 
 【代码范例】
-MeariUser.getInstance().getTrafficOrderList(uuid,deviceId, new IStringResultCallback() {
-            @Override
-            public void onSuccess(String result) {
-                if(!TextUtils.isEmpty(result)) {
-                    Logger.i(TAG, "--->getTrafficOrderList: " + result);
-                    trafficOrderBean = GsonUtil.fromJson(result, TrafficOrderBean.class);
-                    if(trafficOrderBean!=null){
-                        mHandler.sendEmptyMessage(GET_4G_TRAFFIC_ORDER_SUCCESS);
-                    }
-                }
-            }
+// actCode-激活码
+MeariUser.getInstance().requestActive(BuyServiceType.AI, actCode, cameraInfo.getDeviceID(), "", object : IResultCallback {
+    override fun onSuccess() {
+    }
 
-            @Override
-            public void onError(int errorCode, String errorMsg) {
-                mHandler.sendEmptyMessage(GET_4G_TRAFFIC_ORDER_FAIL);
-            }
-        });
-
-【JSON】
-{
-  "resultCode": "1001",
-  "result": {
-    "orderList": [
-      {
-        "orderNum": "",
-        "mealType": "M",
-        "payMoney": "",
-        "payDate": "",
-        "quantity": 3,
-        "trafficPackage": "G",
-        "trafficQuantity": 3,
-        "currencyCode": "USD",
-        "currencySymbol": "$",
-        "payType": 3,
-        "unlimited": 0
-      }
-    ]
-  }
-}
-
-
+    override fun onError(code: Int, error: String) {
+    }
+}, this)
 ```
 
-# 15 更新说明
+## 17.4 AI服务购买
+```
+【描述】
+购买AI服务和购买云存储服务基本一致
+参数BuyServiceType.CLOUD 替换成 BuyServiceType.AI
+```
+
+# 18 更新说明
+
+## 2025-2-28(5.7.0)
+```
+新增服务订单文档，补充缺失英文文档
+```
+
+## 2025-2-28(5.5.0)
+```
+新增AI服务文档
+```
+
+## 2024-10-22(5.5.0)
+```
+新增云存储服务购买文档
+```
+## 2024-08-28(5.3.0)
+```
+1. 新增蓝牙配网
+2. 新增机身码说明
+```
 
 ## 2022-10-10(4.4.0)
 ```

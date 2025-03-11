@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import <MeariKit/MeariKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import <Braintree/BTAppSwitch.h>
+#import <MJExtension/MJExtension.h>
 static  NSString *app_key = @"8a48b2105058489aba0c08b79325ef3f";
 static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
 @interface AppDelegate ()
@@ -27,11 +27,38 @@ static  NSString *app_secret = @"f6c33593133c44f98372f67213568411";
     //必须先通过云云对接 通过自己的服务器和Meari服务器交互 获取到重定向信息
     //将从Meari服务器获取的数据传递给App
     
+    NSDictionary *dic = @{
+        @"result": @{
+            @"pointUrlNew": @"",
+            @"countryCode": @"CN",
+            @"pointUrl": @"",
+            @"apiServer": @"",
+            @"cacheEndTime":@1739953511933,
+            @"partnerId": @8,
+            @"dcCode": @"CN",
+            @"gwCode": @"CN",
+            @"gwUrl": @"",
+            @"pfApi": @{
+                @"openapi": @{
+                    @"domain": @""
+                },
+                @"platform": @{
+                    @"signature": @"",
+                    @"domain": @""
+                }
+            }
+        },
+        @"t": @"",
+        @"resultCode": @"1001"
+    };
+    [[MeariSDK sharedInstance] startSDKWithRedirectInfo:dic];
+
+    
+    
     [[MeariSDK sharedInstance] startSDKWithRedirectInfo:@{}];
     
     [[MeariSDK sharedInstance] setLogLevel:MeariLogLevelVerbose];
     
-     [BTAppSwitch setReturnURLScheme:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"]];
     return YES;
 }
 

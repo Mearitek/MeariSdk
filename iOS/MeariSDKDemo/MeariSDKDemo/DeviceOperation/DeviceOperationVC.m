@@ -8,7 +8,7 @@
 
 #import "DeviceOperationVC.h"
 #import "MRDeviceSettingVC.h"
-
+#import <MJExtension/MJExtension.h>
 @import AVFoundation;
 @interface DeviceOperationVC ()
 @property (weak, nonatomic) IBOutlet MeariPlayView *playView;
@@ -85,6 +85,12 @@
     if(self.camera.sdkPlayRecord){
         [self stopPlayback:nil];
     }
+    if (self.camera.supportFisheye){
+        NSDictionary *fisheyeInfo = [self.camera.info.capability.caps.fey mj_JSONObject];
+        [self.playView.videoView setTimeZoneName:self.camera.info.region];
+        [self.playView.videoView setFisheyeInfo:[fisheyeInfo[@"a"] floatValue] rb:[fisheyeInfo[@"b"] floatValue] x:[fisheyeInfo[@"x"] floatValue] y:[fisheyeInfo[@"y"] floatValue]];
+    }
+
     [self.camera startPreviewWithPlayView:self.playView videoStream:videoStream success:^{
         NSLog(@"start preview success");
     } failure:^(NSError *error) {

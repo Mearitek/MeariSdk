@@ -29,10 +29,12 @@ extern "C" {
 #endif
 #endif
 
+int pps_log_encrypt(char* log, int len, char** out);
+int pps_enable_log_encrypt(int enable);
 int pps_set_log_path(char* path);
 int pps_set_level_print(int level);
-char* pps_get_log_filename();
-int pps_get_print_level();
+char* pps_get_log_filename(void);
+int pps_get_print_level(void);
 void pps_print_log(int level,const char* tag,const char * format, ...);
 typedef void (* pps_log_callback)(int level,const char* tag,char* buffer);
 void pps_set_callback(pps_log_callback callback);

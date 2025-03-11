@@ -27,6 +27,17 @@
     * 5.3 [Add device via wired network](#53-Add-device-via-wired-network)
         * 5.3.1 [Search device](#531-Search-device)
         * 5.3.2 [Add device](#532-Add-device)
+    * 5.4 [Scan QR Code to Add](#54-Scan-QR-Code-to-Add) 
+        * 5.4.1 [Scan QR Code](#541-Scan-QR-Code)
+        * 5.4.2 [Get Device Status](#542-Get-Device-Status)
+        * 5.4.3 [Add device](#543-Add-device)
+    * 5.5 [Bluetooth Distribution Network](#55-Bluetooth-Distribution-Network) 
+        * 5.5.1 [Search Devices](#551-Search-Devices)
+        * 5.5.2 [Connect Device](#552-Connect-Device)
+        * 5.5.3 [Get WiFi List](#553-Get-WiFi-List)
+        * 5.5.4 [Add device](#554-Add-device)
+    * 5.6 [Device QR Code](#56-Device-QR-Code) 
+        * 5.6.1 [Get Device Information](#561-Get-Device-Information)
 * 6 [Device Control](#6-Device-Control)
     * 6.1 [Basic device operations](#61-Basic-device-operations)
         * 6.1.1 [Introduction of device-related classes](#611-Introduction-of-device-related-classes)
@@ -35,6 +46,7 @@
         * 6.1.4 [Device nickname modification](#614-Device-nickname-modification)
         * 6.1.5 [Get time segment of device alarm message](#615-Get-time-segment-of-device-alarm-message)
         * 6.1.6 [Get device online status](#616-Get-device-online-status)
+        * 6.1.7 [Reboot the device](#617-Reboot-the-device)
     * 6.2 [Device preview and playback](#62-Device-preview-and-playback)
         * 6.2.1 [Device preview](#621-Device-preview)
         * 6.2.2 [Device SD card playback](#622-Device-SD-card-playback)
@@ -57,8 +69,9 @@
         * 8.1.1 [Get list of the device shared message](#811-Get-list-of-the-device-shared-message)
         * 8.1.2 [Delete shared messages of device](#812-Delete-shared-messages-of-device)
     * 8.2 [Device alarm message](#82-Device-alarm-message)
-        * 8.2.1 [Get whether all devices have messages](#821-Get-whether-all-devices-have-messages)
+        * 8.2.1 [Get the newest message of all device](#821-Get-the-newest-message-of-all-device)
         * 8.2.2 [Get alarm messages of a single device](#822-Get-alarm-messages-of-a-single-device)
+        * 8.2.3 [Delete device messages](#823-Delete-device-messages)
     * 8.3 [System message](#83-System-message)
         * 8.3.1 [Get system message list](#831-Get-system-message-list)
         * 8.3.2 [Delete system messages](#832-Delete-system-messages)
@@ -92,6 +105,17 @@
         * 9.5.22 [SD card recording type and time setting](#9522-SD-card-recording-type-and-time-setting)
         * 9.5.23 [Device Full Color Mode setting](#9523-Device-Full-Color-Mode-setting)
         * 9.5.24 [Device sound and light alarm setting](#9524-Device-sound-and-light-alarm-setting)
+        * 9.5.25 [Device 12-hour switch setting](#9525-Device-12-hour-switch-setting)
+        * 9.5.26 [Device anti-flicker Settings](#9526-Device-anti-flicker-Settings)
+        * 9.5.27 [Device microphone, recording, speaker Settings](#9527-Device-microphone,-recording,-speaker-Settings)
+        * 9.5.28 [Device video encryption Settings](#9528-Device-video-encryption-Settings)
+        * 9.5.29 [Device anti-demolition alarm Settings](#9529-Device-anti-demolition-alarm-Settings)
+        * 9.5.30 [Device Sound Touch Settings](#9530-Device-Sound-Touch-Settings)    
+        * 9.5.31 [Device Work Mode](#9531-Device-Work-Mode)
+        * 9.5.32 [Humanoid alarm area (picture frame) Settings](#9532-Humanoid-alarm-area-(picture-frame)-Settings)
+        * 9.5.33 [Humanoid switch setup](#9533-Humanoid-switch-setup)
+        * 9.5.34 [Recording duration setting](#9534-Recording-duration-setting)
+        * 9.5.35 [Music Playback Settings](#9535-Music-Playback-Settings)
     * 9.6 [Doorbell parameter setting](#96-Doorbell-parameter-setting)
         * 9.6.1 [Device Intercom volume settings](#961-Device-Intercom-volume-settings)
         * 9.6.2 [Unlock the battery lock](#962-Unlock-the-battery-lock)
@@ -157,8 +181,51 @@
     * 12.2 [Cloud Storage Trial](#122-Cloud-Storage-Trial)
     * 12.3 [Cloud storage activation code usage](#123-Cloud-storage-activation-code-usage)
     * 12.4 [Cloud storage purchases](#124-Cloud-storage-purchases)
-* 14 [Release Notes](#14-Release-Notes)
-
+        * 12.4.1 [Service purchase related classes](#1241-Service-purchase-related-classes)
+        * 12.4.2 [Payment related error codes](#1242-Payment-related-error-codes)
+        * 12.4.3 [PayPal Web payment purchase process](#1243-PayPal-Web-payment-purchase-process)
+        * 12.4.4 [PayPal Web credit card payment purchase process](#1244-PayPal-Web-credit-card-payment-purchase-process)
+        * 12.4.5 [Google payment purchase process](#1245-Google-payment-purchase-process)
+        * 12.4.6 [Alipay purchase process](#1246-Alipay-purchase--process)
+        * 12.4.7 [WeChat payment purchase process](#1247-WeChat-payment-purchase-process)
+    * 12.5 [Services and Orders](#125-Service-and-Orders)
+* 13 [NVR](#13-NVR)
+    * 13.1 [Add NVR](#131-Add-NVR)
+    * 13.2 [Add camera to NVR channel](#132-Add-camera-to-NVR-channel)
+        * 13.2.1 [Add online camera](#1321-Add-online-camera)
+        * 13.2.2 [Connect NVR to add camera](#1322-Connect-NVR-to-add-camera)
+        * 13.2.3 [Connect router to add camera](#1323-Connect-router-to-add-camera)
+    * 13.3 [NVR and channel judgment](#133-NVR-and-channel-judgment)
+    * 13.4 [NVR settings](#134-NVR-settings)
+        * 13.4.1 [NVR obtain parameters](#1341-NVR-obtain-parameters)
+        * 13.4.2 [NVR Disk Management](#1342-NVR-Disk-Management)
+    * 13.5 [NVR Channel Camera](#135-NVR-Channel-Camera)
+        * 13.5.1 [NVR Channel Camera Information](#1351-NVR-Channel-Camera-Information)
+        * 13.5.2 [NVR Channel Camera Parameters](#1352-NVR-Channel-Camera-Parameters)
+        * 13.5.3 [NVR Channel Camera Firmware Upgrade](#1353-NVR-Channel-Camera-Firmware-Upgrade)
+* 14 [4G](#14-4G)
+    * 14.1 [Add 4G](#141-Add-4G)
+    * 14.2 [4G traffic service](#142-4G-traffic-service)
+        * 14.2.1 [Use of traffic service activation code](#1421-Use-of-traffic-service-activation-code)
+        * 14.2.2 [Get traffic service information](#1422-Get-traffic-service-information)
+        * 14.2.3 [Purchase traffic service](#1423-Purchase-traffic-service)
+* 15 [Pet Camera](#15-Pet-Camera)
+    * 15.1 [Add Device](#151-Add-Device)
+    * 15.2 [Setting](#152-Setting)
+        * 15.2.1 [Feeding](#1521-Feeding) 
+        * 15.2.2 [Sound setting](#1522-Sound-setting)
+        * 15.2.3 [Summon pet](#1523-Summon-pet)
+        * 15.2.4 [Feeding plan](#1524-Feeding-plan)
+* 16 [Baby Camera](#16-Baby-Camera)
+    * 16.1 [Add Device](#161-Add-Device)
+    * 16.2 [Health Services](#162-Health-Services)
+        * 16.2.1 [Obtain monitoring data](#1621-Obtain-monitoring-data)
+* 17 [AI service](#17-AI-service)
+    * 17.1 [AI Service Introduction](#171-AI-Service-Introduction)
+    * 17.2 [AI service status](#172-AI-service-status)
+    * 17.3 [AI service activation code usage](#173-AI-service-activation-code-usage)
+    * 17.4 [AI service purchase](#174-AI-service-purchase)
+* 18 [Release Notes](#18-Release-Notes)
 <center>
 
 ---
@@ -166,6 +233,7 @@ Version number | Development team | Update date | Notes
 :-:|:-:|:-:|:-:
 3.1.0 | Meari Technical Team | 2021.07.02 | Optimization
 4.1.0 | Meari Technical Team | 2022.03.31 | Optimization
+5.3.0 | Meari Technical Team | 2023.08.28 | Bluetooth Distribution Network,Device QR Code
 
 <center>
 
@@ -563,8 +631,10 @@ MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils (ssid, pwd, w
 }, false);
 
 // start searching
-mangerCameraScan.startSearchDevice (false, -1, 100, ActivityType.ACTIVITY_SEARCHCANERARESLUT, token)
-
+// 130*1000:Search time
+// FLAG：Any int type flag bit, the same value will use the same object, different values will create a new object
+// token：MeariUser.getInstance().getToken()
+mangerCameraScan.startSearchDevice(false, -1, 130*1000, FLAG, token)
 
 MeariUser.getInstance (). CheckDeviceStatus (cameraInfos, deviceTypeID, new IDeviceStatusCallback () {
     @Override
@@ -703,7 +773,9 @@ MangerCameraScanUtils mangerCameraScan = new MangerCameraScanUtils(null, null, 0
 }, false);
 
 // start search
-mangerCameraScan.startSearchDevice(false, -1, ACTIVITY_WIRED_OPERATION);
+// 130*1000:Search time
+// FLAG：Any int type flag bit, the same value will use the same object, different values will create a new object
+mangerCameraScan.startSearchDevice(false, -1, 130*1000, FLAG)
 
 // Check device status
 MeariUser.getInstance().checkDeviceStatus(cameraInfos, deviceTypeID, new IDeviceStatusCallback() {
@@ -748,6 +820,422 @@ public void addDevice(CameraInfo info) {
     deviceController.setWireDevice(info.getWireConfigIp(), mToken);
 }
 ```
+## 5.4 Scan QR Code to Add
+```
+For wired devices or 4G devices, scan the QR code to start detecting the device status. If the device can be added, add the device directly.
+```
+### 5.4.1 Scan QR Code
+```
+Scan the fuselage code to obtain the value of the fuselage code.
+
+[Function call]
+
+/**
+ * Process the body QR Code and obtain the uuid of the device
+ *
+ * @param result      
+ * 
+ * return  uuid
+ */
+public static String dealUUiD(String result)
+
+【Code example】
+val dealUUiD = SdkUtils.dealUUiD(result)
+
+```
+
+### 5.4.2 Get Device Status
+```
+Get the online and offline status of the device through uuid. Only when the device is online can you continue to add it. Otherwise, the user will be guided to go through the power-on process.
+
+[Function call]
+
+/**
+ * Get device online status by body QR Code
+ *
+ * @param uuid       uuid
+ * 
+ *
+ */
+
+public void getDeviceStatus(String uuid, IStringResultCallback callback)
+
+【Code Example】
+MeariUser.getInstance().getDeviceStatus(uuid, object : IStringResultCallback {
+            override fun onSuccess(result: String) {
+                
+            }
+
+            override fun onError(code: Int, error: String) {
+                
+            }
+        })
+
+
+【JSON】
+{
+  "resultCode": "1001",
+  "result": {
+    "sn": "",
+    "licenseID": "",
+    "deviceTypeName": "",
+    "firmID": "8",
+    "capability ": "",
+    "model": "",
+    "status": 1
+  }
+}
+
+status
+1: online
+2: offline
+8: strong binding
+9: The app account number and the device encryption country code do not match
+
+
+ ```
+
+### 5.4.3 Add device
+A wired device or 4G device queries the online status and can add the device by calling the add interface.
+
+```
+【description】
+Add device
+
+[Function call]
+
+/**
+ * 
+ *
+ * @param result      QR code
+ * return      ture:new code    
+               false：old code
+ *
+ */
+public static boolean dealUUiDisNew(String result)
+
+【Code Example】
+SdkUtils.dealUUiDisNew(scanResult)
+
+
+
+
+
+/**
+ * Add device 
+ *
+ * @param sn       Interface getDeviceStatus()  returned sn
+ * @param safePwd   Device password. If no value is set, pass "" as an empty string
+ *
+ */
+
+public void addDeviceServerSendToken(String sn,String safePwdIStringResultCallback callback)
+
+【Code Example】
+MeariUser.getInstance().addDeviceServerSendToken(sn, safePwd, new IStringResultCallback() {
+            @Override
+            public void onSuccess(String result) {
+                //It only means that the adding command is sent successfully. If the adding is successful, you still need to wait for mqtt or poll the device list to confirm whether the adding is successful.
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+ ```
+
+
+## 5.5 Bluetooth Distribution Network
+```
+Bluetooth Distribution Network
+```
+### 5.5.1 Search Devices
+Search for surrounding Bluetooth devices
+
+```
+【description】
+Search device tools
+
+【Code Example】
+public class DeviceBleHelper {
+    
+    public static final int AUTO_CLOSE_BLE_TIME_MS = 130_000;
+    
+    private static volatile DeviceBleHelper helper;
+    private final DeviceNetConfigBle deviceNetConfigBle;
+
+    private final Handler closeHandler = new Handler(Looper.getMainLooper());
+    private Runnable r = new Runnable() {
+        @Override
+        public void run() {
+            Logger.i("deviceBleHelper", "auto " +
+                    "disconnect ble device! not impl!!!!!!!!!!!!!!!!!!");
+//            deviceNetConfigBle.stopConnect();
+        }
+    };
+
+    public static DeviceBleHelper getInstance() {
+        if (helper == null) {
+            synchronized (DeviceBleHelper.class) {
+                if (helper == null) {
+                    helper = new DeviceBleHelper();
+                }
+            }
+        }
+        return helper;
+    }
+
+    private DeviceBleHelper() {
+        deviceNetConfigBle = new DeviceNetConfigBle(){
+            @Override
+            public void stopConnect() {
+                super.stopConnect();
+            }
+        };
+    }
+
+    public DeviceNetConfigBle getDeviceNetConfigBle() {
+        if(closeHandler!=null) {
+            closeHandler.removeCallbacks(r);
+            closeHandler.postDelayed(r, AUTO_CLOSE_BLE_TIME_MS);
+        }
+        return deviceNetConfigBle;
+    }
+}
+
+
+/**
+**
+* init     activity-onCreate
+*/
+【Code Example】
+DeviceNetConfigBle.init(getApplication());
+deviceNetConfigBle = DeviceBleHelper.getInstance().getDeviceNetConfigBle();
+
+/**
+*activity-ondestory
+*/
+
+if (deviceNetConfigBle != null) {
+    deviceNetConfigBle.stopConnect();
+    deviceNetConfigBle.unregisterStateCallback(meariBleCallback);
+    deviceNetConfigBle.stopDeviceWifiScan();
+ }
+
+/**
+ * Start searching for Bluetooth
+ *
+ *
+ */
+
+【Code Example】
+if (!DeviceNetConfigBle.bleEnable()) {
+ //Bluetooth cannot be used  
+     return;
+}
+deviceNetConfigBle.setScanDeviceTimeoutMs(Constant.ADD_DEVICE_WAIT_TIME_MS);
+        deviceScanCallback = new DeviceScanCallback() {
+            @Override
+            public void finish(Set<MeariBleDevice> data) {
+                
+            }
+
+            @Override
+            public void scanning(MeariBleDevice device) {
+                
+            }
+
+            @Override
+            public void onScanStarted(boolean success) {
+                
+            }
+        };
+        deviceNetConfigBle.scanDevice(deviceScanCallback);
+
+
+```
+### 5.5.2 Connect Device
+
+Connect Device
+
+```
+
+/**
+ * Connect Device
+ * 
+ *
+ */
+
+【Code Example】
+        if (bleCallback == null) {
+            bleCallback = new MeariBleCallback() {
+                @Override
+                public void tokenCallback(String token) {
+                    
+                }
+
+                @Override
+                public void connect() {
+                    //Device connected successfully
+                }
+
+                @Override
+                public void disconnect() {
+                    
+        //       showToast("Device bluetooth disconnected");
+                }
+
+                @Override
+                public void failed(String err) {
+                    
+                }
+            };
+        }
+       deviceNetConfigBle.startConnectByDevice(meariBleDevice, bleCallback);
+
+```
+### 5.5.3 Get WiFi List
+
+Get the list of WiFi devices that the device can connect to
+
+```
+【Code Example】
+deviceNetConfigBle.startDeviceWifiScan(new MeariBleOpCallback() {
+                @Override
+                public void onFail(int code, String error) {
+                    //If it fails, try again.
+                }
+
+                @Override
+                public void onSuccess() {
+                    
+                }
+            }, new DeviceWifiCallback() {
+                @Override
+                public void callback(Set<DeviceWifi> data) {
+                    //wifi list
+                }
+            });
+```
+### 5.5.4 Add device
+
+Add device
+
+```
+【Code Example】
+        DeviceNetConfigBle deviceNetConfigBle = DeviceBleHelper.getInstance().getDeviceNetConfigBle();
+        if (setWifiInfoErrorListener == null) {
+            setWifiInfoErrorListener = new DeviceNetConfigErrorListener() {
+                @Override
+                public void onError(int code, String msg) {
+                    //Error reason
+                }
+            };
+        }
+        deviceNetConfigBle.setNetConfigErrorListener(setWifiInfoErrorListener);
+
+        if (deviceNetConfigBle.getDeviceBtWifiMode() == 1 || deviceNetConfigBle.getDeviceBtWifiMode() == 2) {
+            deviceNetConfigBle.enableAutoConnect(true);
+            deviceNetConfigBle.enableGetLastSetWifiResultOnConnect(true);
+            Logger.i(TAG, "enable bt auto connect! auto get errorCode");
+        } else {
+            Logger.i(TAG, "not bt auto connect. mode=" + deviceNetConfigBle.getDeviceBtWifiMode());
+        }
+
+        //connect
+        if (bleDevice != null && (deviceNetConfigBle.getDeviceBtWifiMode() == -1 || deviceNetConfigBle.getDeviceBtWifiMode() == 1)) {
+            Logger.i(TAG, "ble device[not support get-wifi] need connect first.");
+            deviceNetConfigBle.enableAutoConnect(true);
+            if (meariBleCallback == null) {
+                meariBleCallback = new MeariBleCallback() {
+                    @Override
+                    public void connect() {
+                        //Close reconnection
+                        deviceNetConfigBle.enableAutoConnect(false);
+                        //Sending information while connected
+                        setWifiInfo();
+                    }
+
+                    @Override
+                    public void disconnect() {
+
+                    }
+
+                    @Override
+                    public void failed(String err) {
+                        Logger.i(TAG, "ble connect error.");
+                    }
+                };
+            }
+            deviceNetConfigBle.startConnectByDevice(bleDevice, meariBleCallback);
+        } else {
+            setWifiInfo();
+        }
+
+        //Send distribution network information
+        deviceNetConfigBle.setWifiInfo(ssid, pwd, token, new MeariBleOpCallback() {
+                @Override
+                public void onFail(int code, String error) {
+
+                    //Retry immediately after failure
+                    
+                }
+
+                @Override
+                public void onSuccess() {
+                    //The device receives the information successfully and traverses the device list to determine whether the addition is successful.
+                    getdevicelist();
+                }
+            });
+
+            //Determine whether there is a new device in the device list
+            MeariUser.getInstance().getDeviceList(new IDevListCallback()
+
+```
+## 5.6 Device QR Code
+```
+Body QR code processing, including analyzing the device type and network distribution method from the QR code information, which is convenient and fast
+```
+### 5.6.1 Get Device Information
+```
+Obtain device information through uuid, which is the scan result of the fuselage code.
+【function call】
+
+/**
+ * Obtain device information by body code
+ *
+ * @param uuid       uuid
+ * QR Code rules
+ QR code format = Product category code + device code + Add device mode code + Sales country
+ Example： LWCN056565099123AL
+ Explain： 
+ N056565099 express sn: 056565099
+ 123 express AP first、QR code and LAN next
+      No distribution options 0
+      Add device via AP mode  1
+      Add device via QR code  2
+      Add device via wired network 3 
+      Bluetooth Distribution Network 4
+      Scan QR Code to Add     5
+ *
+ */
+
+public void getDeviceStatus(String uuid, IStringResultCallback callback)
+
+【Code Example】
+MeariUser.getInstance().getDeviceStatus(uuid, object : IStringResultCallback {
+            override fun onSuccess(result: String) {
+                
+            }
+
+            override fun onError(code: Int, error: String) {
+                
+            }
+        })
+
+ ```
 
 
 # 6 Device Control
@@ -942,6 +1430,31 @@ public Map<String, Integer> queryDeviceStatus();
 [Code example]
 // After obtaining the device list, obtain the device state in a loop, and update the device state if the state changes
 Map<String, Integer> temStatus = MeariIotController.getInstance().queryDeviceStatus();
+```
+
+### 6.1.7 Reboot the device
+```
+【description】
+Reboot the device
+
+[Function call]
+
+/**
+ * Reboot the device
+ * @param callback callback
+ */
+public void setDevicesReboot(ISetDeviceParamsCallback callback);
+
+[Code example]
+MeariUser.getInstance().setDevicesReboot(new ISetDeviceParamsCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
 ```
 
 ## 6.2 Device preview and playback
@@ -1703,7 +2216,7 @@ ShareUserInfo Share user information
 -String userAccount; User account
 -String userName; User name
 -String userIcon; User avatar
--String shareStatus; Share status
+-String shareStatus; Share status.0-Not shared; 1-Shared; 2-Wait to receive
 
 ShareDeviceInfo shared device information
 -long deviceID; device ID
@@ -1986,41 +2499,60 @@ MeariUser.getInstance (). DeleteShareMessage (msgIDList, new IResultCallback () 
     }
 });
 ```
-## 8.2 Device shared message
+## 8.2 Device alarm message
 
-### 8.2.1 Get whether all devices have messages
+### 8.2.1 Get the newest message of all device
 ```
 【description】
-Get whether all devices have messages
+Get the newest message of all device
 
 [Function call]
 /**
- * Get alarm messages of all devices
+ * Get the newest message of all device if cameraInfo.getEvt() < 1
  *
  * @param callback function callback
- * /
-public void getDeviceMessageStatusList (IDeviceMessageStatusCallback callback);
+ */
+public void getAllDeviceAlarmListWithNewestMsg(IBaseModelCallback callback);
+
+/**
+ * Get the newest message of all device if cameraInfo.getEvt() == 1
+ *
+ * @param callback function callback
+ */
+public void getAllDeviceAlarmListWithNewestMsgNew(IBaseModelCallback callback);
+
+Calling the above two methods and merge the data if you have the device which cameraInfo.getEvt < 1 and the device which cameaInfo.getEvt() == 1
 
 [Method call]
 
-DeviceMessageStatus
--long deviceID; device ID
--String deviceName; device name
--String snNum; device SN
--String deviceIcon; device icon
--boolean hasMessage; whether the device has an alarm message
+MeariUser.getInstance().getAllDeviceAlarmListWithNewestMsgNew(new IBaseModelCallback<List<DevicesWithNewestMsg>>() {
+                    @Override
+                    public void onSuccess(List<DevicesWithNewestMsg> devicesWithNewestMsgs) {
+                        
+                    }
 
-MeariUser.getInstance (). GetDeviceMessageStatusList (new IDeviceMessageStatusCallback () {
-    @Override
-    public void onSuccess (List <DeviceMessageStatus> deviceMessageStatusList) {
-        // If the device has an alarm message, you can get the alarm message
-    }
+                    @Override
+                    public void onFailed(int code, String errorMsg) {
+                        
+                    }
+                });
+MeariUser.getInstance().getAllDeviceAlarmListWithNewestMsg(new IBaseModelCallback<List<DevicesWithNewestMsg>>() {
+                    @Override
+                    public void onSuccess(List<DevicesWithNewestMsg> devicesWithNewestMsgs) {
 
-    @Override
-    public void onError (int code, String error) {
+                    }
 
-    }
-});
+                    @Override
+                    public void onFailed(int code, String errorMsg) {
+                        
+                    }
+                });
+
+DevicesWithNewestMsg
+devLocalTime 20230613101425
+deviceID device ID
+imageAlertType message type 1:PIR   2:movement detection  3:visitor   6:noise  7:cry  8:face recognition  9:calling   10:tamper alarm  11:human detection  12:face detection  17:smart car detection  18:smart pet detection  19:smart package detection  20:smart human detection
+deviceName get the device name from the device list by device ID
 ```
 
 ### 8.2.2 Get alarm messages of a single device
@@ -2070,6 +2602,7 @@ Use the following method if cameraInfo.getEvt() == 1:
  * @param callback function callback
  */
  public void getAlertMsgWithVideo(long deviceId, String day, String index, int direction, int eventType, int[] aiType, IDeviceAlarmMessagesCallback callback);
+ Passing eventType=0 and aiType=null if you want to get all messages
 
 
 【Method call】
@@ -2273,6 +2806,123 @@ if (isEnd) {
     // seek directly
     cloudPlayerController.seekTo(millisecond);
 }
+```
+
+### 8.2.3 Delete device messages
+```
+【description】
+Delete device messages
+
+[Function call]
+
+Delete device messages
+Use the following method if cameraInfo.getEvt() < 1:
+/**
+ * Delete device messages
+ *
+ * @param deviceIDs device ID list
+ * @param callback function callback
+ */
+public void deleteDevicesAlarmMessage(List<Long> deviceIDs, IResultCallback callback);
+
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * Delete device messages
+ *
+ * @param deviceID device ID
+ * @param callback function callback
+ */
+ public void delAlertEventByDevice(String deviceID, IResultCallback callback);
+
+Delete device messages(by day)
+Delete the cached messages by day if cameraInfo.getEvt() < 1
+
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * Delete device messages(by day)
+ *
+ * @param deviceID device ID
+ * @param day date yyyyMMdd
+ * @param callback function callback
+ */
+ public void delAlertEventByDay(String deviceID, String day, IResultCallback callback);
+
+Delete device messages(by index)
+Delete the cached messages by msgID if cameraInfo.getEvt() < 1
+
+Use the following method if cameraInfo.getEvt() == 1:
+/**
+ * Delete device messages(by index)
+ *
+ * @param deviceID device ID
+ * @param indexList index list  index:deviceAlarmMessage.getEventTime()
+ * @param callback function callback
+ */
+ public void delAlertEventByIndex(String deviceID, List<String> indexList, IResultCallback callback);
+
+
+【Method call】
+
+Delete device messages
+Use the following method if cameraInfo.getEvt() < 1:
+MeariUser.getInstance().deleteDevicesAlarmMessage(deviceIDList, new IResultCallback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError(int code, String error) {
+                    
+                }
+            });
+
+Use the following method if cameraInfo.getEvt() == 1:
+MeariUser.getInstance().delAlertEventByDevice(deviceID, new IResultCallback() {
+                            @Override
+                            public void onSuccess() {
+                                
+                            }
+
+                            @Override
+                            public void onError(int errorCode, String errorMsg) {
+                                
+                            }
+                        });
+
+Delete device messages(by day)
+Use the following method if cameraInfo.getEvt() == 1:
+MeariUser.getInstance().delAlertEventByDay(String.valueOf(cameraInfo.getDeviceID()), day, new IResultCallback() {
+                @Override
+                public void onError(int errorCode, String errorMsg) {
+
+                }
+
+                @Override
+                public void onSuccess() {
+                    
+                }
+            });
+
+Delete device messages(by index)
+Use the following method if cameraInfo.getEvt() == 1:
+List<String> _index = new ArrayList<>();
+for (DeviceAlarmMessage message : deleteMessages) {
+    if (!TextUtils.isEmpty(message.getEventTime())) {
+        _index.add(message.getEventTime());
+    }        
+}  
+MeariUser.getInstance().delAlertEventByIndex(String.valueOf(cameraInfo.getDeviceID()), _index, new IResultCallback() {
+                    @Override
+                    public void onSuccess() {
+                        
+                    }
+
+                    @Override
+                    public void onError(int errorCode, String errorMsg) {
+                        
+                    }
+                });
 ```
 
 ## 8.3 System Message
@@ -3357,6 +4007,636 @@ MeariUser.getInstance().setFloodCameraVoiceLightAlarmType(type, new ISetDevicePa
 });
 ```
 
+### 9.5.25 Device 12-hour switch setting
+```
+
+【description】
+Device 12-hour switch settinge
+
+【function call】
+/**
+ * Device 12-hour switch settinge
+ *
+ * @param isOpen true 12-hour time system
+ * @param callback Function callback
+ */
+public void postTimeFormat(boolean isOpen, IResultCallback callback) 
+
+
+【Code example】
+//The 12-hour enabled flag bit is stored locally and will be reset to 24 hours after the device is reset.
+MeariUser.getInstance().postTimeFormat(isOpen, new IResultCallback() {
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+                
+            }
+
+            @Override
+            public void onSuccess() {
+                
+            }
+        });
+```
+
+
+### 9.5.26 Device anti-flicker Settings
+```
+
+【description】
+Device anti-flicker Settings
+
+【function call】
+/**
+ * Device anti-flicker Settings
+ *
+ * @param antiflicker 
+ * @param callback Function callback
+ */
+public void setAntiflicker(int antiflicker, ISetDeviceParamsCallback callback) 
+
+
+【Code example】
+1.Whether anti-flicker is supported
+/**
+     *
+     * 
+     * - type: integer
+     * - description: Whether anti-flicker is supported 
+     * 0-nonsupport,  0x1-support 50HZ, 0x2-support 60HZ, 0x4-support Auto, 0x8=support close, Corresponding DP point 202
+     */
+flk=cameraInfo.getFlk()
+if (flk > 0) {
+            if (1 << 3 == (1 << 3 & flk)) {
+//                0x8=support close
+            }
+            if (1 == (1 & flk)) {
+              //0x1-support 50HZ
+            }
+            if (1 << 1 == (1 << 1 & flk)) {
+//               0x2-support 60HZ
+               
+            }
+            if (1 << 2 == (1 << 2 & flk)) {
+//                0x4-support Auto
+                
+            }
+        }
+
+2.Current anti-flicker Settings
+/**
+     * anti-flicker Settings  //0-close, 1-50HZ, 2-60HZ, 3-Auto
+     */
+    private int antiflicker;
+antiflicker=deviceParams.getAntiflicker();
+
+3.Set anti-flicker
+MeariUser.getInstance().setAntiflicker(antiflicker, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+### 9.5.27 Device microphone, recording, speaker Settings
+```
+
+【description】
+Device microphone, recording, speaker Settings
+【matters need attention】
+1.Microphone (Turn off recording sound at the same time)
+2.When the microphone is on, the recording sound can be turned on
+
+【Code example】
+1.microphone
+/**
+     *  - microphone
+     *         - description: Microphone enablement switch, 0=forbidden， 1=enabled
+     *         - type: integer
+     */
+    private int microphone;
+    //Obtain the current microphone switch status
+    microphone=deviceParams.getMicrophone()
+//Set microphone switch
+MeariUser.getInstance().setMicroPhone(microphone, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_Micro_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_Micro_FAILED);
+            }
+        });
+
+2.Speaker
+/**
+     *
+     *     - speaker
+     *         - description: Speaker ，0=forbidden， 1=enabled
+     *         - type: integer
+     */
+    private int speaker;
+    //Obtain the current speaker switch status
+    speaker=deviceParams.getSpeaker()
+//Set speaker switch
+MeariUser.getInstance().setSpeaker(speaker, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_SEN_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_SEN_FAILED);
+            }
+        });    
+
+ 3.volume
+/**
+     * Speaker volume during intercom (doorbell, battery camera)：0-100
+     */
+    private int speakVolume;
+    //Get current volume
+    speakVolume=deviceParams.getSpeakVolume()
+//
+MeariUser.getInstance().setSpeakVolume(volume, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SET_SPEAK_VOLUME_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SET_SPEAK_VOLUME_FAILED);
+            }
+        });     
+
+ 4.Video sound switch
+/**
+     *
+     *     Video sound switch
+     *     rec_audio_en
+     *         - type: integer
+     *         - description: Video sound switch
+     */
+    private int rec_audio_en;
+    //Get Video sound switch
+    rec_audio_en=deviceParams.getRec_audio_en()
+
+//Set Video sound switch
+MeariUser.getInstance().setRae(rec_audio_en, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_REC_SUCCESS);
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                if (mHandler == null || isViewClose()) {
+                    return;
+                }
+                mHandler.sendEmptyMessage(MSG_SWITCH_REC_FAILED);
+            }
+        });        
+
+```
+
+
+### 9.5.28 Device video encryption Settings
+```
+【description】
+Device video encryption Settings
+【matters need attention】
+1. All video encryption passwords are saved locally, not in the cloud, to increase privacy.
+2. After the device is added again, the video encryption will be turned off, and the password can be reset, but if you want to view the previous local video and cloud video, you need to set the video password to decrypt. If the current password is not stored locally, let the user enter it.
+3. A device uses the password for each password period to view the password required for the corresponding period, which cannot be universal. If it is stored locally, it can traverse to make holes.
+4. Video encryption can be turned off only after checking the current password, and can be turned off directly without checking, preventing users from forgetting the password and not knowing that they can reset the status of the device by adding it again.
+5.The owner is allowed to set a password.    camerainfo.isMaster()
+
+【Code example】
+
+/**
+     * Whether the user access password is set.  no set - 0； set - 1；
+     * @return
+     */
+int isVideoSetPwd= deviceParams.getIsVideoSetPwd()
+After obtaining the value, store it locally
+MMKVUtil.setData(DEVICE_VIDEO_PASSWORD_IS_SET+snNum,isVideoSetPwd);
+//If you set a video password, you need to either get the stored password locally or let the user enter it and store the password to the corresponding
+MMKVUtil.setData(DEVICE_VIDEO_PASSWORD+snNum,pwd);中。
+The password is retrieved from the local directory for verification. If the hole fails to be perforated, the error code -18 indicates that the password is incorrect. You need to enter the password again.
+
+//Set password (change password) and turn on video encryption
+MeariUser.getInstance().setVidePwd(pwd, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+//Turn off video encryption
+MeariUser.getInstance().setVidePwdSwitch(new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+            MMKVUtil.setData(DEVICE_VIDEO_PASSWORD_IS_SET + cameraInfo.getSnNum(), 0);
+                                               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                                                
+            }
+            });
+//Punch holes before changing the password to check whether the entered password is correct  
+private MeariDeviceController controller;  
+controller = new MeariDeviceController(cameraInfo);
+        controller.startConnect(pwdOldTxt,new MeariDeviceListener() {
+            @Override
+            public void onSuccess(String successMsg) {
+            
+                
+            }
+
+            @Override
+            public void onFailed(String errorMsg) {
+                dismissLoading();
+                try {
+                    BaseJSONObject object = new BaseJSONObject(errorMsg);
+                    int errorCode = object.optInt("code");
+                    if (errorCode == -18) {
+                        //password error
+                        
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });                                  
+
+```
+
+
+### 9.5.29 Device anti-demolition alarm Settings
+```
+
+【Code example】
+/**
+     * 
+     * Anti-demolition alarm capability level，0=no support，1=support
+     */
+    private int fcb;
+//
+fcb=camerainfo.getFcb();
+//Get anti-tamper alarm switch Settings
+    deviceParams.getRemoveProtectEnable()
+//Set anti-tamper alarm switch Settings
+    MeariUser.getInstance().setRemoveProtectAlert(isCheck ? 1 : 0, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+### 9.5.30 Device Sound Touch Settings
+```
+【description】
+Device Sound Touch Settings
+【matters need attention】
+cameraInfo.getVtk() == 4
+Support two-way intercom, support two-way intercom only change voice
+【Code example】
+/**
+*soundTouchType   normal 0  uncle  1    clown 2
+**/
+if (deviceController != null) {
+            deviceController.setVoiceTalk(new MeariDeviceListener() {
+                @Override
+                public void onSuccess(String successMsg) {
+
+                }
+
+                @Override
+                public void onFailed(String errorMsg) {
+
+                }
+            }, soundTouchType);
+        }
+```
+### 9.5.31 Device Work Mode
+```
+【description】
+Device Work Mode
+【function call】
+/**
+*lwm：0- Not supported, 1- Work mode is supported, 2- Work mode Added continuous recording mode
+* lwm=2，In addition to the original power saving mode, performance mode, custom mode, add continuous recording mode option
+If not, only the custom mode is supported.
+**/
+cameraInfo.getLwm()
+//Set Device Work Mode
+public void setWorkMode(int workmode, ISetDeviceParamsCallback callback)
+【Code example】
+/**
+*workmode   power saving mod 0    performance mode 1    custom mode 2     continuous recording mode 3 
+**/
+MeariUser.getInstance().setWorkMode(workmode, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+### 9.5.32 Humanoid alarm area (picture frame) Settings
+```
+【description】
+Humanoid alarm area (picture frame) Settings
+【Code example】
+int pdt = cameraInfo.getPdt();
+if (cameraInfo.getVer() >= 12 && pdt != -1 && 1 << 1 == (1 << 1 & pdt)) {
+            //support
+        } else {
+            //not support
+        }
+/**
+*status   switchHumanFrame(isChecked ? 1 : 0)
+**/
+MeariUser.getInstance().setHumanFrame(status, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+### 9.5.33 Humanoid switch setup
+```
+【description】
+Humanoid switch setup
+【Code example】
+val pdt: Int = cameraInfo.pdt
+if (info.ver >= 12) {
+            if (pdt != -1 && 1 == 1 and pdt) {
+                //Supports the humanoid switch
+            } 
+            if (pdt != -1 && 1 shl 2 == 1 shl 2 and pdt) {
+                //Support night，Not Supports the humanoid switch
+            } 
+            if (pdt != -1 && 1 shl 3 == 1 shl 3 and pdt) {
+                //Support day，Not Supports the humanoid switch
+            }
+        }
+
+
+【Humanoid detection enable switch】：0=forbidden， 1=enabled；
+deviceParams.humanDetEnable == 1
+
+MeariUser.getInstance().setHumanDetection(status, object : ISetDeviceParamsCallback)
+
+
+【Daytime humanoid detection enable switch】：0=forbidden， 1=enabled；
+deviceParams.humanDetDayEnable == 1
+
+MeariUser.getInstance().setHumanDetectionDay(status, object : ISetDeviceParamsCallback)
+
+【Nighttime humanoid detection enable switch】：0=forbidden， 1=enabled；
+deviceParams.humanDetNightEnable == 1
+
+MeariUser.getInstance().setHumanDetectionNight(status, object : ISetDeviceParamsCallback)
+
+
+【sensitivity】
+//0-Not support，3-Supports 3 levels of sensitivity，5-Supports 5 levels of sensitivity，10-Supports 10 levels of sensitivity
+pds = info.pds
+
+set sensitivity
+MeariUser.getInstance().setHumanDetectionSensitivity(pirLevel, object : ISetDeviceParamsCallback)
+```
+
+### 9.5.34 Recording duration setting
+```
+【description】
+Recording duration setting
+【Code example】
+val esd: Int = info.esd
+if (esd > 0) {
+            if (1 shl 6 == 1 shl 6 and esd) {
+                //10s
+            
+            }
+            if (1 shl 4 == 1 shl 4 and esd) {
+                //20s
+                
+            }
+            if (1 == 1 and esd) {
+                //30s
+                
+            }
+            if (1 shl 5 == 1 shl 5 and esd) {
+                //40s
+                
+            }
+            if (1 shl 1 == 1 shl 1 and esd) {
+                //60s
+               
+            }
+            if (1 shl 2 == 1 shl 2 and esd) {
+                //120s
+                
+            }
+            if (1 shl 3 == 1 shl 3 and esd) {
+                //180s
+            }
+        }
+
+Get recording duration（unit s）
+deviceParams.sdRecordDuration
+
+Set recording duration
+MeariUser.getInstance().setPlaybackRecordVideo(deviceParams.sdRecordType, value, object : ISetDeviceParamsCallback )
+```
+### 9.5.35 Music Playback Settings
+```
+【description】
+Music playback settings (requires SD card to be available)
+【Code Example】
+·Whether to support music playback settings: 0-not supported, 1-supported
+cameraInfo.getMpc()
+·Get music list
+MeariUser.getInstance().getMusicListNew(new IGetMusicListCallback(){
+            @Override
+            public void onSuccess(ArrayList<MeariMusic> songInfos) {
+                
+            }
+
+            @Override
+            public void onError(int code, String error) {
+
+            }
+        });
+·Get current volume
+MeariUser.getInstance().getMusicVolume(new IGetMusicVolumeCallback() {
+            @Override
+            public void onSuccess(int volume) {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });  
+·Set current volume
+MeariUser.getInstance().setMusicVolume(value, new ISetDeviceParamsCallback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onFailed(int errorCode, String errorMsg) {
+
+                    }
+                });       
+·Refresh current song status
+MeariUser.getInstance().getPlayMusicStatus(new IRefreshMusicStatusCallback() {
+            @Override
+            public void onSuccess(String currentMusicId, boolean isPlaying, ArrayList<MeariMusic> musicList) {
+                current song -currentMusicId
+                is playing-isPlaying
+                music list-musicList
+                The current song is being downloaded-info.getDownloadPercent() < 100
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+            
+            }
+        });   
+·play song
+MeariUser.getInstance().playMusic(curMusicId, new IControlMusicCallback() {
+            @Override
+            public void onSuccess(String currentMusicID) {
+            
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+
+            }
+        });     
+·pause song
+MeariUser.getInstance().pauseMusic(curMusicId, new IControlMusicCallback() {
+            @Override
+            public void onSuccess(String currentMusicID) {
+            
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+
+            }
+        });                    
+·Whether to support music playback duration setting 0-not supported, bit0-on(Play continuously) bit1-10min bit2-30min bit3-60min
+cameraInfo.getMul()
+  -Play time list
+            ArrayList<Integer> times = new ArrayList<>();
+            if (1 == (1 & mul)) {
+                times.add(0);
+            }
+            if (1 << 1 == (1 << 1 & mul)) {
+                times.add(600);
+            }
+            if (1 << 2 == (1 << 2 & mul)) {
+                times.add(1800);
+            }
+            if (1 << 3 == (1 << 3 & mul)) {
+                times.add(3600);
+            }
+   -Get the current playback duration setting(s)
+   deviceParams.getMusicTime()  
+   -Set the current playback duration(s)
+   MeariUser.getInstance().setMusicTime(time, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+·Whether to support music playback mode setting 0-not supported bit1: sequential playback bit2-single loop bit3-random playback
+cameraInfo.getMpm()
+   -Get the current playback mode (0 means sequential playback (default), 1 means single loop, 2 means random playback)
+   deviceParams.getMusicCyclical()
+   -Set the current playback mode (0 means sequential playback (default), 1 means single loop, 2 means random playback)
+   MeariUser.getInstance().setMusicCyclical(mode, new IControlMusicCallback() {
+                @Override
+                public void onSuccess(String currentMusicID) {
+                    
+                }
+
+                @Override
+                public void onFailed(int errorCode, String errorMsg) {
+
+                }
+            });
+
+
+```
+
+
 ## 9.6 Doorbell parameter setting
 ### 9.6.1 Device Intercom volume settings
 ```
@@ -3765,6 +5045,287 @@ MeariUser.getInstance().setFlightLinkSirenEnable(status, new ISetDeviceParamsCal
     public void onFailed(int errorCode, String errorMsg) {
     }
 });
+```
+## 9.8 AOV Camera Setting
+### 9.8.1 Preview Change Real Time or Save Data
+```
+【description】
+Preview Change Real Time or Save Data
+
+【Function call】
+/**
+ * Whether Support Real Time or Save Data
+ */
+MeariDeviceUtil.isSupportFps(cameraInfo);
+
+/**
+*Change Real Time or Save Data
+*isLowFps   Real Time：0   Save Data：1
+**/
+if (MeariDeviceUtil.isSupportFps(cameraInfo)) {
+     deviceController.setExtraPreviewParams(isLowFps);
+}
+
+【Code example】
+//Set the current stream saving mode or real-time mode
+
+if (MeariDeviceUtil.isSupportFps(cameraInfo)) {
+     deviceController.setExtraPreviewParams(isLowFps);
+}
+deviceController.changeVideoResolution(videoSurfaceView, videoId, new MeariDeviceListener() {
+    @Override
+    public void onSuccess(String successMsg) {
+
+    }
+
+    @Override
+    public void onFailed(String errorMsg) {
+
+    }
+}, new MeariDeviceVideoStopListener() {
+    @Override
+    public void onVideoClosed(int code) {
+        
+    }
+});
+```
+### 9.8.2 WorkMode
+```
+【description】
+WorkMode
+【Code example】
+/**
+*Determine which mode are supported
+**/
+        int lwm = -1;
+        //SMB-aov
+        int alm = cameraInfo.getAlm();
+        if (alm > 0) {
+            lwm = alm;
+            isSMB = true;
+        }
+        //CIV-aov  wifi aov
+        int lwm2 = cameraInfo.getLwm2();
+        if (lwm2 > 0) {
+            lwm = lwm2;
+            isSMB = false;
+        }
+        if (lwm > 0) {
+            if (1 == (1 & lwm)) {
+                //Power Saving Mode
+            }
+            if (1 << 1 == (1 << 1 & lwm)) {
+                //Performance Mode
+            }
+            if (1 << 2 == (1 << 2 & lwm)) {
+                //Custom Mode
+            }
+            if (1 << 3 == (1 << 3 & lwm)) {
+                //Always-on Mode
+            }
+        }
+
+        /*
+        **Which mode is it currently in
+        *0-Power Saving Mode, 1-Performance Mode, 2-Custom Mode  3-Always-on Mode
+        */
+        mode = deviceParams.getAovWorkMode();
+        if(isSMB) {
+            mode = deviceParams.getAovWorkMode();
+        }else {
+            mode = deviceParams.getWorkMode();
+        }
+
+
+        //Set WorkMode
+        if (isSMB) {
+            MeariUser.getInstance().setAOVWorkMode(mode, new ISetDeviceParamsCallback() {
+                @Override
+                public void onSuccess() {
+                    
+                }
+
+                @Override
+                public void onFailed(int errorCode, String errorMsg) {
+                    
+                }
+            });
+        } else {
+            MeariUser.getInstance().setWorkMode(mode, new ISetDeviceParamsCallback() {
+                @Override
+                public void onSuccess() {
+                    
+                }
+
+                @Override
+                public void onFailed(int errorCode, String errorMsg) {
+                    
+                }
+            });
+        }
+
+
+```
+### 9.8.3 Custom Mode Setting
+```
+【description】
+Custom Mode Setting
+【Code example】
+1.Event video time lapse
+        int erd = cameraInfo.getErd();
+        if (erd > 0) {
+    
+            if (1 == (1 & erd)) {
+                //3s（value=0）
+                 
+            }
+            if (1 << 1 == (1 << 1 & erd)) {
+                //6s（value=1）
+               
+            }
+            
+        }
+
+    //Get Current Value
+     value=deviceParams.getAovRecordDelay();
+
+
+        //Set Value
+     MeariUser.getInstance().setAOVRecordDelay(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+
+        2.Fill Light Distance
+        //- description: Whether Support Fill Light Distance，0-Not Support, bit0-Auto bit1-10m bit2-20m bit3-30m
+        int sld = cameraInfo.getSld();
+        if (sld > 0) {
+           
+            if (1 == (1 & sld)) {
+                //Auto（value=0）
+            
+            }
+            if (1 << 1 == (1 << 1 & sld)) {
+                //10m（value=1）
+                
+            }
+            if (1 << 2 == (1 << 2 & sld)) {
+                //20m（value=2）
+            
+            }
+            if (1 << 3 == (1 << 3 & sld)) {
+                //30m（value=3）
+            }
+
+        }
+
+        //Get Current Value
+        value=deviceParams.getAovComplementaryDistance()
+        
+        //Set Value
+        MeariUser.getInstance().setAovComplementaryDistance(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+
+
+        3.Night Scene Mode
+        //0-Not Support, bit0-Normal Mode bit1-Enhanced Mode
+        int nms = cameraInfo.getNms();
+        if (nms > 0) {
+            
+            if (1 == (1 & nms)) {
+                //Normal Mode（value=0）
+            }
+            if (1 << 1 == (1 << 1 & nms)) {
+                //Enhanced Mode（value=1）
+            }
+        }
+
+        //Get Current Value
+        value=deviceParams.getAovNightMode()
+        //Set Value
+        MeariUser.getInstance().setAovNightMode(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+               
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+
+        4.Full-Time Video Frame Rate
+        if (cameraInfo.getSfi() > 0) {
+            //0-Not Support, >0-Support;
+            //bit0-1，bit1-2，bit2-3，bit3-5，bit4-10，bit5-15，bit6-20，bit7-30，bit8-60,bit9-Close
+            int sfi = cameraInfo.getSfi();
+            if (1 << 9 == (1 << 9 & sfi)) {
+                fpsList.add(0);
+            }
+            if (1 == (1 & sfi)) {
+                fpsList.add(1);
+            }
+            if (1 << 1 == (1 << 1 & sfi)) {
+                fpsList.add(2);
+            }
+            if (1 << 2 == (1 << 2 & sfi)) {
+                fpsList.add(3);
+            }
+            if (1 << 3 == (1 << 3 & sfi)) {
+                fpsList.add(5);
+            }
+            if (1 << 4 == (1 << 4 & sfi)) {
+                fpsList.add(10);
+            }
+            if (1 << 5 == (1 << 5 & sfi)) {
+                fpsList.add(15);
+            }
+            if (1 << 6 == (1 << 6 & sfi)) {
+                fpsList.add(20);
+            }
+            if (1 << 7 == (1 << 7 & sfi)) {
+                fpsList.add(30);
+            }
+            if (1 << 8 == (1 << 8 & sfi)) {
+                fpsList.add(60);
+            }
+        }
+
+        //Get Current Value
+        value=deviceParams.getFullTimeFrameRate()
+
+        //Set Value
+        MeariUser.getInstance().setAOVFrameRate(value, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+               
+            }
+        });
+
 ```
 # 10 Family
 
@@ -4403,8 +5964,7 @@ Used to receive messages such as device add success message, doorbell call messa
 
 ### 11.1.1 Connect to MQTT Service
 
-// Called after the user login successfully
-MeariUser.getInstance (). ConnectMqttServer (application);
+No need to call in 5.3.0, it will be called in sdk.
 
 ### 11.1.2 Exit MQTT Service
 
@@ -4688,11 +6248,1415 @@ MeariUser.getInstance().requestActive(actCode, mCameraInfo.getDeviceID(), new IR
 }, this);
 ```
 ## 12.4 Cloud storage purchases
+
+### 12.4.1 Service purchase related classes
 ```
-See Demo for details
+Cloud storage related capability set
+- int cst; Whether to support cloud storage service: 0-not supported; 1-supported
+- int evt; Whether to support cloud storage service 2.0: 0-not supported; 1-supported; SDK access users' devices are all 2.0
+
+BuyServiceType: service type
+int CLOUD = 0; // Cloud storage service
+int AI = 1; // AI service
+int TRAFFIC = 2; // 4G traffic service
+int CLOUD1 = 3; // Old cloud storage service, SDK access users do not need to consider
+
+PayType: payment type
+int ALI = 1; // Alipay
+int PAYPAL = 2; // PayPal
+int GOOGLE = 3; // Google
+int APPLE = 4; // Apple
+int CREDIT_CARD = 5; // PayPal credit card
+int YOO_MONEY = 6; // Russian payment
+int WECHAT = 7; // WeChat payment
+
+ServicePackageInfo: Service package information
+private List<ServicePackageBean> packageList; // Package service package list
+private List<ServicePackageBean> discountsPackageList; // Discount package service package list
+private List<Integer> notSupportPayList; // Unsupported payment method list, empty by default if not configured
+
+ServicePackageBean: Service package class
+private String id; // Package id
+private String productId; // Google Pay product ID
+private int payType; // Payment type
+private int storageTime; // Days of cloud video storage: 3, 7, 30
+private String mealType; // Y-year; X-half year; S-quarter; M-month
+private int storageType; // 0-event storage; 1-all day storage
+private BigDecimal money; // amount
+private int bindDeviceNum; // The number of devices that can be bound
+private String currencyCode; // Country code
+private String currencySymbol; // Currency symbol
+private boolean subscribe; // Is it a subscription package
+private int subState; // Google subscription status: 0-unsubscribed; 1-subscribed
+private String clientId; // Parameters used for PayPal payment
+private int AiType; // Whether to support cloud storage with ai: 0-not supported; 1-supported;
+// Attributes related to promotional activities
+private boolean discountSaleNew; // Is it a promotional package
+private String discountProductId; // Product ID of Google payment for promotional packages only in the promotional package service package list
+private BigDecimal discountMoney; // Promotional price only in the promotional package service package list
+private String originalPackageId; // Used to determine non-Google packages, the ID of the non-promotional package corresponding to the current promotional package
+private long startTime; // Start timestamp of the promotional activity
+private long endTime; // End timestamp of the promotional activity
+// Attributes related to 4G traffic packages
+private int unlimited; // Is it an unlimited package: 0-no; 1-yes; SDK access is unlimited
+private int cloudType; // Is it a 4G traffic plus cloud storage package: 0-no; 1-yes
 ```
 
-# 14 Release Notes
+### 12.4.2 Payment related error codes
+```
+1203: The current package has been subscribed
+1208: You already have a valid subscription, which has been restored. Changing the account and device is not supported during the validity period
+1209: The subscription has been restored
+1211: Cross-region subscription is not supported
+1212: Paypal will review your funds within 24 hours. Please check the review results in the paypal wallet
+1213: Duplicate capture, process as successful
+1240: Unable to obtain your payment, please confirm whether your payment method has enough money
+1241: Paypal payment platform is busy, please switch payment methods or try again later
+1242: Paypal platform failed to process your payment, please apply for a refund and repurchase later
+1243: GOOGLE payment platform is busy, and a refund will be automatically made later. Please repurchase
+1244: APPLE payment platform is busy, please apply for a refund and repurchase later
+```
+
+### 12.4.3 PayPal Web payment purchase process
+```
+1. Get cloud storage package and display package information
+// deviceIdList: "[xx]", "[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object: IServicePackageCallback{
+override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. Select package and create order
+// currentPackageBean: selected service package
+val currentPrice = currentPackageBean.money.toString()
+val id = currentPackageBean.id
+// deviceIdList: selected device id list
+val deviceIdList: MutableList<String> = mutableListOf()
+deviceIdList.add(cameraInfo.deviceID)
+val currencySymbol = currentPackageBean.currencySymbol
+MeariUser.getInstance().createPaymentOrder(BuyServiceType.CLOUD, currentPrice, PayType.PAYPAL, 1,
+id, deviceIdList, currencySymbol, "", "", object : IStringResultCallback {
+    override fun onSuccess(result: String) {
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+3. WebView loads the paypal payment webpage, completes the payment and captures the order
+// For detailed code, refer to PaypalCheckoutActivity in the demo
+MeariUser.getInstance().capturePaymentOrder(BuyServiceType.CLOUD, "orderId", PayType.PAYPAL, object :IStringResultCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(result: String?) {
+    }
+})
+```
+
+### 12.4.4 PayPal Web credit card payment purchase process
+```
+1. Get cloud storage package and display package information
+// deviceIdList: "[xx]", "[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object: IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. Initialize webView and load PayPal credit card payment url
+private var baseUrl = MeariSmartSdk.apiServer + "/html/paypalCardH5/dist/index.html"
+private fun initWebView() {
+    webView.webViewClient = object : WebViewClient() {
+        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+            return super.shouldOverrideUrlLoading(view, url)
+        }
+
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
+            return super.shouldOverrideUrlLoading(view, request)
+        }
+
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+            super.onPageStarted(view, url, favicon)
+        }
+
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+        }
+    }
+    webView.addJavascriptInterface(
+        NativeBridge(this@Activity),
+        "NativeBridge"
+    )
+    webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+    val webSettings = webView.settings
+    webSettings.javaScriptEnabled = true
+    webSettings.defaultTextEncodingName = "UTF-8"
+    webSettings.setSupportZoom(false)
+    webSettings.builtInZoomControls = true
+    webSettings.useWideViewPort = true
+    webSettings.loadWithOverviewMode = true
+    webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+    webSettings.domStorageEnabled = true
+
+    val url: String = if (isSubscribe) {
+        "$baseUrl?paypalType=subscription&currency=${currentPackageBean?.currencyCode}&clientId=${currentPackageBean?.clientId}"
+    } else {
+        "$baseUrl?paypalType=createOrder&currency=${currentPackageBean?.currencyCode}&clientId=${currentPackageBean?.clientId}"
+    }
+    webView.loadUrl(url)
+}
+
+3. Perform subsequent interactions through the bridge object NativeBridge
+class NativeBridge(val context: Context) {
+    @JavascriptInterface
+    fun NativeAndroidBridgePaypalCallback(resData: String) {
+        val paypalResData: PaypalResData = GsonUtil.fromJson(resData, PaypalResData::class.java)
+        if (paypalResData.type == "buttonInit") {
+            // Payment button initialization completed
+            (context as Activity).initButton(full = false)
+        } else if (paypalResData.type == "createOrder") {
+            // Create an order
+            (context as Activity).createCreditCardOrder()
+        } else if (paypalResData.type == "createSubscription") {
+            // Create a subscription order
+            (context as Activity).createCreditCardOrder()
+        } else if (paypalResData.type == "capture") {
+            // Capture transaction
+            (context as Activity).captureCreditCardOrder(paypalResData.token)
+        } else if (paypalResData.type == "cancel") {
+            // Transaction canceled
+        } else if (paypalResData.type == "error") {
+            // Transaction failed
+        }
+    }
+}
+
+// The payment button on the web page does not support customization. You can overlay WebView on the Android customized button and set WebView to transparent and invisible to achieve the effect of the customized button.
+// After the order is successfully created, WebView expands to full screen, restores transparency and background, and displays the normal payment web page for payment.
+private fun initButton(full: Boolean) {
+    webView.post {
+        webView.visibility = View.VISIBLE
+        val params = webView.layoutParams
+        if (full) {
+            webView.setBackgroundColor(
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.bg_color_white,
+                    null
+                )
+            )
+            webView.background.alpha = 255
+            params.width = RelativeLayout.LayoutParams.MATCH_PARENT
+            params.height = RelativeLayout.LayoutParams.MATCH_PARENT
+        } else {
+            webView.setBackgroundColor(0)
+            webView.background.alpha = 0
+        }
+        webView.layoutParams = params
+    }
+}
+
+private fun createCreditCardOrder() {
+    // PayType： PayType.PAYPAL
+    MeariUser.getInstance().createPaymentCreditCardOrder(BuyServiceType.CLOUD, currentPrice, PayType.PAYPAL, 1,
+        id, deviceIdList, currencySymbol, object : IStringResultCallback {
+            override fun onError(errorCode: Int, errorMsg: String?) {
+            }
+
+            override fun onSuccess(result: String?) {
+                val dataObject = BaseJSONObject()
+                if (isSubscribe) {
+                    dataObject.put("type", "subscriptionId")
+                } else {
+                    dataObject.put("type", "orderId")
+                }
+                dataObject.put("value", result)
+                val data = dataObject.toString()
+                initButton(full = true)
+                webView.loadUrl("javascript:NativeBridgePaypalCallback('$data')")
+            }
+    })
+}
+
+private fun captureCreditCardOrder(orderId: String) {
+    // PayType： PayType.PAYPAL
+    MeariUser.getInstance().capturePaymentOrder(BuyServiceType.CLOUD, orderId, PayType.PAYPAL, object : IStringResultCallback {
+        override fun onSuccess(result: String) {
+        }
+
+        override fun onError(errorCode: Int, errorMsg: String) {
+        }
+    })
+}
+```
+### 12.4.5 Google Pay purchase process
+```
+Note: Please refer to the official documentation for access to Google Pay. Here we only explain the purchase process of Google Pay
+
+1. Get the cloud storage package and display the package information
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. Check Google plans
+public void queryProductDetails(Activity activity, String productId, boolean isSubscribe) {
+    QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
+            .setProductList(ImmutableList.of(QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId(productId)
+                    .setProductType(isSubscribe ? BillingClient.ProductType.SUBS : BillingClient.ProductType.INAPP)
+                    .build())
+            ).build();
+
+    billingClient.queryProductDetailsAsync(queryProductDetailsParams,
+            new ProductDetailsResponseListener() {
+                public void onProductDetailsResponse(BillingResult billingResult,
+                                                     List<ProductDetails> productDetailsList) {
+                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                        launchBilling(activity, productDetailsList.get(0), isSubscribe);
+                    }
+                }
+            }
+    );
+}
+
+3. Open the payment page and complete the payment
+private void launchBilling(Activity activity, ProductDetails productDetails, boolean isSubscribe) {
+    // An activity reference from which the billing flow will be launched.
+    // Activity activity = ...;
+    String selectedOfferToken = "";
+    if (productDetails.getSubscriptionOfferDetails() != null && !productDetails.getSubscriptionOfferDetails().isEmpty()) {
+        selectedOfferToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
+    }
+    ImmutableList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList;
+    if (isSubscribe) {
+        productDetailsParamsList = ImmutableList.of(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                        // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
+                        .setProductDetails(productDetails)
+                        // to get an offer token, call ProductDetails.getSubscriptionOfferDetails()
+                        // for a list of offers that are available to the user
+                        .setOfferToken(selectedOfferToken)
+                        .build()
+        );
+    } else {
+        productDetailsParamsList = ImmutableList.of(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                        // retrieve a value for "productDetails" by calling queryProductDetailsAsync()
+                        .setProductDetails(productDetails)
+                        .build()
+        );
+    }
+
+    BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+            .setProductDetailsParamsList(productDetailsParamsList)
+            .setIsOfferPersonalized(true)
+            .build();
+
+    // Launch the billing flow
+    BillingResult billingResult = billingClient.launchBillingFlow(activity, billingFlowParams);
+}
+
+4. Handle callback status in Google payment listener
+private final PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
+    @Override
+    public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
+        // To be implemented in a later section.
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
+            for (Purchase purchase : purchases) {
+                if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                    // Payment is successful, go to create an order
+                    createOrder(purchase)
+                }
+            }
+        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+            // Cancel payment
+        } else {
+            // Other errors
+        }
+    }
+};
+
+5. Create an order
+private fun createOrder(purchase: Purchase) {
+    // currentPackageBean: Selected Service Packages
+    val currentPrice = currentPackageBean.money.toString()
+    val id = currentPackageBean.id
+    // deviceIdList: List of selected device ids
+    val deviceIdList: MutableList<String> = mutableListOf()
+    deviceIdList.add(cameraInfo.deviceID)
+    val currencySymbol = currentPackageBean.currencySymbol
+    val currencyCode = currentPackageBean.currencyCode
+    val devNum = currentPackageBean.bindDeviceNum
+    val productId = currentPackageBean.productId
+    MeariUser.getInstance().createCloudGooglePayOrder(devNum, deviceIdList, id, currentPrice, purchase.quantity,
+        productId, purchase.orderId, purchase.purchaseToken, currencySymbol, currencyCode, object :IPayCallback{
+            override fun onError(errorCode: Int, errorMsg: String?) {
+            }
+
+            override fun onSuccess(orderInfo: OrderInfo?) {
+                handlePurchase(purchase)
+            }
+        })
+}
+
+6. Confirm purchase
+public void handlePurchase(Purchase purchase) {
+    if (purchase.isAutoRenewing()) {
+        //Confirm subscription purchase
+        handleSubscriptionPurchase(purchase);
+    }else {
+        //Confirm one-time purchase
+        handleOncePurchase(purchase);
+    }
+}
+
+public void handleSubscriptionPurchase(GooglePurchase purchase) {
+    AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
+        @Override
+        public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                // Handle the success of the consume operation.
+            }
+        }
+    };
+
+    if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+        if (!purchase.isAcknowledged()) {
+            AcknowledgePurchaseParams acknowledgePurchaseParams =
+                    AcknowledgePurchaseParams.newBuilder()
+                            .setPurchaseToken(purchase.getPurchaseToken())
+                            .build();
+            billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
+        }
+    }
+}
+
+public void handleOncePurchase(GooglePurchase purchase) {
+    ConsumeParams consumeParams =
+            ConsumeParams.newBuilder()
+                    .setPurchaseToken(purchase.getPurchaseToken())
+                    .build();
+
+    ConsumeResponseListener listener = new ConsumeResponseListener() {
+        @Override
+        public void onConsumeResponse(BillingResult billingResult, String purchaseToken) {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                // Handle the success of the consume operation.
+            }
+        }
+    };
+    billingClient.consumeAsync(consumeParams, listener);
+}
+```
+
+### 12.4.6 Alipay purchase process
+```
+Note: For Alipay access, please refer to the official documentation. Here we only explain the Alipay purchase process
+
+1. Get cloud storage packages and display package information
+// deviceIdList: "[xx]", "[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object: IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. Create an order
+// List<String> deviceIdList: deviceId list of purchased devices; others are attributes in ServicePackageBean
+MeariUser.getInstance().createCloudAliPayOrder(bindDeviceNum, deviceIdList, id, money.toString(), currencySymbol, 1, new IPayCallback() {
+    @Override
+    public void onSuccess(OrderInfo orderInfo) {
+    payAlipay(orderInfo.getPayUrl());
+    }
+
+    @Override
+    public void onError(int code, String error) {
+    }
+});
+
+3. Call up the payment page and complete the payment
+public void payAlipay(final String sigPay) {
+    Runnable payRunnable = () -> {
+        // Construct PayTask object
+        PayTask alipay = new PayTask(CloudPayNewActivity.this);
+        // Call the payment interface to obtain the payment result
+        Map<String, String> result = alipay.payV2(sigPay, true);
+
+        Message msg = Message.obtain();
+        msg.what = SDK_PAY_FLAG;
+        msg.obj = result;
+        mHandler.sendMessage(msg);
+    };
+    Thread payThread = new Thread(payRunnable);
+    payThread.start();
+}
+
+4. Process payment callback
+private final Handler mHandler = new Handler(msg -> {
+    if (msg.what == SDK_PAY_FLAG) {
+        PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+        String resultStatus = payResult.getResultStatus();
+        // If resultStatus is "9000", it means payment is successful. For the specific meaning of the status code, please refer to the interface document
+        if (TextUtils.equals(resultStatus, "9000")) {
+            // Payment is successful
+        } else {
+            // Payment failed
+        }
+    }
+    return false;
+});
+```
+
+### 12.4.7 WeChat payment purchase process
+```
+Note: Please refer to the official documentation for WeChat payment access. Here we only explain the WeChat payment purchase process
+
+1. Get the cloud storage package and display the package information
+// deviceIdList ： "[xx]"、"[xx,xx,xx]"
+MeariUser.getInstance().getAllServerPackageInfo(BuyServiceType.CLOUD, deviceIdList, "", object :IServicePackageCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(serviceInfo: ServicePackageInfo?) {
+    }
+})
+
+2. Select a package and create an order
+// currentPackageBean: selected service package
+val currentPrice = currentPackageBean.money.toString()
+val id = currentPackageBean.id
+// deviceIdList: selected device id list
+val deviceIdList: MutableList<String> = mutableListOf()
+deviceIdList.add(cameraInfo.deviceID)
+val currencySymbol = currentPackageBean.currencySymbol
+MeariUser.getInstance().createPaymentOrder(BuyServiceType.CLOUD, currentPrice, PayType.WECHAT, 1,
+    id, deviceIdList, currencySymbol, "", "", object : IStringResultCallback {
+    override fun onSuccess(result: String) {
+        toWechatPay(result)
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+3. Jump to the payment page and complete the payment
+private fun toWechatPay(result: String) {
+    WechatPayManager.init(this@Activity)
+    val obj = BaseJSONObject(result)
+    wechatOrderId = obj.optString("thirdOrderId")
+    val partnerId = obj.optString("partnerId")
+    val prepayId = obj.optString("prepayId")
+    val nonceStr = obj.optString("noncestr")
+    val timeStamp = obj.optLong("timeStamp")
+    val sign = obj.optString("sign")
+    WechatPayManager.toWechatPay(partnerId, prepayId, nonceStr, timeStamp, sign)
+}
+object WechatPayManager {
+    lateinit var api: IWXAPI
+
+    fun init(context: Context) {
+        api = WXAPIFactory.createWXAPI(context, Config.WECHART_APPID)
+        api.registerApp(Config.WECHART_APPID)
+    }
+
+    fun toWechatPay(partnerId: String, prepayId: String, nonceStr: String, timeStamp: Long, sign: String) {
+        Thread {
+            val request = PayReq()
+            request.appId = Config.WECHART_APPID
+            request.partnerId = partnerId
+            request.prepayId = prepayId
+            request.packageValue = "Sign=WXPay"
+            request.nonceStr = nonceStr
+            request.timeStamp = timeStamp.toString()
+            request.sign = sign
+            api.sendReq(request)
+        }.start()
+    }
+}
+
+4. Process payment callback results
+public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
+    private IWXAPI api;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        api = WXAPIFactory.createWXAPI(this, Config.WECHART_APPID);
+        api.handleIntent(getIntent(), this);
+    }
+    @Override
+    public void onReq(BaseReq baseReq) {
+
+    }
+    @Override
+    public void onResp(BaseResp baseResp) {
+        int type = baseResp.getType();
+        if (type == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            int code = baseResp.errCode;
+            Logger.i("tag", "--->WeChart-ErrCode: " + code);
+            switch (code) {
+                case BaseResp.ErrCode.ERR_OK:
+                    //success
+                    paySuccess(0);
+                    break;
+                case BaseResp.ErrCode.ERR_USER_CANCEL:
+                    //User Cancellation
+                    paySuccess(-2);
+                    break;
+                case BaseResp.ErrCode.ERR_AUTH_DENIED:
+                case BaseResp.ErrCode.ERR_SENT_FAILED:
+                case BaseResp.ErrCode.ERR_UNSUPPORT:
+                case BaseResp.ErrCode.ERR_COMM:
+                default:
+                    //fail
+                    break;
+            }
+        }
+    }
+}
+```
+
+## 12.5 Services and Orders
+
+```
+[Description]
+Get the service and order list and return them in the same interface
+
+[Code Example]
+MeariUser.getInstance().getAllDeviceServiceInfo(object : IAllDeviceServiceCallback {
+    override fun onSuccess(allDeviceServiceInfo: AllDeviceServiceInfo) {
+    }
+
+    override fun onError(errorCode: Int, errorMsg: String) {
+    }
+})
+
+AllDeviceServiceInfo
+- List<ServiceOrderInfo> orderList； // Service Order List
+
+ServiceOrderInfo // Service Order Class
+// Common Properties
+- private int packageType; // Service Type: 0-Cloud Storage; 1-AI; 2-4G;
+- private String orderNum; // Order Number
+- private String money; // Order Price
+- private String currencySymbol; // Order price currency
+- private long startTime; // Order start time
+- private long endTime; // Order end time
+- private long allServerEndTime; // Final end time of all services
+- private int bindedNum; // Number of bound devices
+- private int bindDeviceNum; // Total number of bindable devices
+- private String mealType; // Service cycle type: Y-year; S-quarter; M-month; W-week; D-day;
+- private int serverTime; // Service times such as: one month, two months, etc.
+- private int isSubPackage; // Is it a subscription?
+- private int trialDays; // Trial days, indicating that the current package is a trial package
+- private int supportCancelSub; // Cancel subscription: 1-Can cancel subscription; 2-Already canceled subscription
+- private String subID; // Subscription ID
+- private boolean reBindDeviceSupport; // Whether to support rebinding
+- private List<ServiceDevice> deviceList = new ArrayList<>(); // Device list
+- private List<ServiceDevice> bindedDeviceList = new ArrayList<>(); // Bound device list
+- private List<ServiceDevice> bindableDeviceList = new ArrayList<>(); // Reusable device list
+// Cloud storage service related properties
+- private int storageType; // Cloud storage type: 0-Event storage; 1-Continuous storage
+- private int AiType; // Is it a cloud plus AI package: 0-No; 1-Yes
+// 4G service related properties
+- private int cloudType; // Is it a 4G plus cloud storage package: 0-No; 1-Yes
+
+ServiceDevice // Service device information
+- private long deviceId; // Device ID
+- private String deviceName; // Device name
+- private String deviceIcon; // Device icon
+- private long cloudServerStartTime; // Cloud storage service start time
+- private long cloudServerEndTime; // Cloud storage service end time
+- private long aiServerStartTime; // AI service start time
+- private long aiServerEndTime; // AI service end time
+- private long flow4gServerStartTime; // 4G service start time
+- private long flow4gServerEndTime; // 4G service end time
+- private boolean unbindable; // Can be unbound?
+- private boolean binded; // Already bound?
+```
+
+# 13 NVR
+
+## 13.1 Add NVR
+```
+For details, see: Add device to wired network
+```
+## 13.2 Add camera to NVR channel
+
+### 13.2.1 Add online camera
+```
+[Description]
+If the camera is already online, make the camera and NVR in the same LAN, and enable the camera to be connected by NVR. Within 5 minutes, NVR searches and adds the camera to the channel
+
+[Function call]
+/**
+* Get the status of being allowed to be discovered by NVR
+*/
+public void getNvrConnectableStatus(INvrConnectableCallback callback)
+/**
+* Set whether to allow connection by NVR: 0-no; 1-yes
+* Automatically close after 5 minutes of opening
+*/
+public void setNvrConnectable(int enable, IStringResultCallback callback)
+/**
+* Get the remaining time allowed to be connected by NVR, in seconds
+*/
+public void getNvrConnectableTimeLeft(IIntegerPropertyCallback callback)
+
+/**
+* nvr starts searching for devices
+*/
+public void nvrStartSearchDevice(IStringResultCallback callback)
+/**
+* nvr gets search results
+*/
+public void nvrGetSearchResult(INVRSearchCallback callback)
+/**
+* nvr adds meari devices
+* ip-searched IP address of the device
+*/
+public void nvrAddDevice(String ip, INVRAddCallback callback)
+/**
+* nvr adds onvif devices
+* ip-searched IP address of the device; user-onvif user name; pwd-onvif password
+*/
+public void nvrAddOnvifDevice(String ip, String user, String pwd, INVRAddCallback callback)
+
+[Code Example]
+
+// Does the camera support being connected by Nvr?
+if (cameraInfo.getCpn() > 0) {
+}
+
+MeariUser.getInstance().getNvrConnectableStatus(new INvrConnectableCallback() {
+    @Override
+    public void onSuccess(NvrConnectableInfo nvrConnectableInfo) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+NvrConnectableInfo：
+// Has the camera been added to the NVR?
+private boolean isAdded;
+// Can the camera be connected to the NVR?
+private int connectable;
+// ID of the NVR to which the camera is connected?
+private String NvrId;
+
+MeariUser.getInstance().setNvrConnectable(1, new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+
+    }
+});
+
+MeariUser.getInstance().getNvrConnectableTimeLeft(new IIntegerPropertyCallback() {
+    @Override
+    public void onSuccess(int value) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().nvrStartSearchDevice(new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().nvrGetSearchResult(new INVRSearchCallback() {
+    @Override
+    public void onSuccess(boolean finish, List<NvrAddInfo> nvrAddInfoList) {
+    // finish: false-searching, continue to get results; true-searching is over, stop getting results
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+NvrAddInfo:
+// Unique identifier
+private String id;
+// 0-Meari camera; 1-onvif camera
+private int type;
+// Meari camera sn
+private String sn;
+// Camera IP address
+private String ip;
+// 0-Not added; 1-Added; 2-Add failed
+private int addStatus;
+
+MeariUser.getInstance().nvrAddDevice(nvrAddInfo.getIp(), new INVRAddCallback() {
+    @Override
+    public void onSuccess(NvrAddInfo nvrAddInfo) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().nvrAddOnvifDevice(nvrAddInfo.getIp(), "user", "pwd", new INVRAddCallback() {
+    @Override
+    public void onSuccess(NvrAddInfo nvrAddInfo) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+```
+### 13.2.2 Connect to NVR to add camera
+```
+[Description]
+If the camera is not online, get the token of NVR to generate QR code. After scanning the code, the camera will connect to NVR and add it to NVR channel
+
+[Function call]
+/**
+* Create Token QR code
+*/
+public void createNvrTokenQRCode(String token, ICreateQRCodeCallback callback)
+
+[Code example]
+
+MeariUser.getInstance().getDeviceParams(new IGetDeviceParamsCallback() {
+    @Override
+    public void onSuccess(DeviceParams deviceParams) {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().createNvrTokenQRCode(deviceParams.nvrNeutralParams.getQrCodeToken(), new ICreateQRCodeCallback() {
+    @Override
+    public void onSuccess(Bitmap bitmap) {
+    }
+});
+```
+
+### 13.2.3 Connect to the router and add the camera
+```
+[Description]
+If the camera is not online, obtain the key and wifi name of the NVR, and the password to generate a QR code. After the camera scans the code, it will connect to the router, and the NVR will automatically add the device to the channel, search for the addition results, and display them.
+
+【Function call】
+/**
+* Create key QR code
+* ssid-WiFi name; password-WiFi password; key-nvr Key
+*/
+public void createNvrKeyQRCode(String ssid, String password, String key, ICreateQRCodeCallback callback)
+/**
+* Get NVR add result
+*/
+MeariUser.getInstance().nvrGetAddResult(new INVRGetAddResultCallback()
+
+【Code example】
+
+MeariUser.getInstance().createNvrKeyQRCode("wifi_name", "pwd", deviceParams.nvrNeutralParams.getQrCodeKey(), new ICreateQRCodeCallback() {
+    @Override
+    public void onSuccess(Bitmap bitmap) {
+    }
+});
+
+// Set the timeout (130s) and loop to get the add result. If the add fails due to the timeout, stop searching
+MeariUser.getInstance().nvrGetAddResult(new INVRGetAddResultCallback() {
+@Override
+public void onSuccess(List<NvrAddInfo> nvrAddInfoList) {
+        List<NvrAddInfo> list = filterOnvif(nvrAddInfoList);
+        if (list.size() > 0) {
+        // Add successfully, display the result
+        } else {
+            if (!isFinishSearch) {
+                nvrGetAddResult();
+            }
+        }
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+        if (!isFinishSearch) {
+            nvrGetAddResult();
+        }
+    }
+});
+
+private List<NvrAddInfo> filterOnvif(List<NvrAddInfo> nvrAddInfoList) {
+    List<NvrAddInfo> list = new ArrayList<>();
+    if (nvrAddInfoList != null && nvrAddInfoList.size() > 0) {
+        for (NvrAddInfo nvrAddInfo : nvrAddInfoList) {
+            if (nvrAddInfo.getType() == 0) {
+                list.add(nvrAddInfo);
+            }
+        }
+    }
+    return list;
+}
+``` 
+## 13.4 NVR settings
+### 13.4.1 NVR get parameters
+```
+[Description]
+Get NVR channel, hard disk and other parameter information
+
+[Function call]
+/**
+* Get the params of the device
+* Get the device parameters
+*
+* @param callback Function callback
+*/
+public void getDeviceParams(IGetDeviceParamsCallback callback)
+
+[Code example]
+// Only need to set once to operate the same device
+MeariUser.getInstance().setCameraInfo(cameraInfo);
+// Get device parameters
+MeariUser.getInstance().getDeviceParams(new IGetDeviceParamsCallback() {
+    @Override
+    public void onSuccess(DeviceParams deviceParams) {
+        NvrNeutralParams nvrNeutralParams = deviceParams.nvrNeutralParams;
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+NvrNeutralParams：
+// nvr maximum number of channels
+private int maxChannelNumber;
+// nvr QR code Token
+private String qrCodeToken;
+// nvr QR code key
+private String qrCodeKey;
+// Whether to enable all-day recording
+private int allDayRecordEnable;
+// Channel information
+private List<NvrNeutralChannel> channels = new ArrayList<>();
+// Hard disk information
+private List<NvrNeutralDisk> disks = new ArrayList<>();
+// Channel capability set
+private List<String> caps = new ArrayList<>();
+
+NvrNeutralChannel：
+private int id;
+private String name;
+// state: 0-unbound; 1-online; 2-offline; 3-sleep;
+private int state;
+// 0-private protocol; 1-onvif protocol
+private int type;
+
+NvrNeutralDisk:
+private int name;
+// 0: no SD card; 1: normal use; 2: card read and write abnormality; 3: formatting; 4: file system not supported; 5: card is being identified; 6: not formatted; 7: other errors;
+private int state;
+// total capacity
+private String total;
+// remaining capacity
+private String free;
+// used capacity
+private String used;
+
+```
+### 13.4.2 NVR disk management
+```
+[Description]
+NVR format hard disk
+
+[Function call]
+/**
+ * Start formatting hard disk
+ * @param seq hard disk serial number, starting from 1
+ */
+public void startSDCardFormat(int seq, ISDCardFormatCallback callback) 
+/** 
+ * Get the progress of formatting hard disk 
+ */ public void getSDCardFormatPercent(ISDCardFormatPercentCallback callback) 
+【Code example】 
+MeariUser.getInstance().startSDCardFormat(1, new ISDCardFormatCallback() {
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+
+MeariUser.getInstance().getSDCardFormatPercent(new ISDCardFormatPercentCallback() {
+    @Override
+    public void onSuccess(int percent) {
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+## 13.5 NVR channel camera
+```
+The use of NVR channel camera is basically the same as that of ordinary camera. You can preview, replay and set it by using CameraInfo of NVR channel camera information. For the specific process, refer to the preview, playback and setting of ordinary camera.
+NVR channel camera does not support cloud playback.
+The differences will be explained in detail below.
+```
+
+### 13.5.1 NVR channel camera information
+```
+// Get NVR channel camera information
+if (DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID()) {
+List<CameraInfo> channelCameraInfoList = cameraInfo.getNvrChannelList();
+}
+```
+
+### 13.5.2 NVR channel camera parameters
+```
+// Only need to set once to operate the same NVR channel
+MeariUser.getInstance().setCameraInfo(channelCameraInfo);
+// Get device parameters
+MeariUser.getInstance().getDeviceParams(new IGetDeviceParamsCallback() {
+    @Override
+    public void onSuccess(DeviceParams deviceParams) {
+        DeviceParams channelDeviceParams = deviceParams;
+    }
+
+    @Override
+    public void onFailed(int errorCode, String errorMsg) {
+    }
+});
+```
+
+### 13.5.3 NVR channel camera firmware upgrade
+```
+// The sn and tp in checkNewFirmwareForDev are obtained in different ways
+if (cameraInfo != null && DeviceType.NVR_NEUTRAL == cameraInfo.getDevTypeID() && cameraInfo.getNvrChannelId() > 0) {
+    sn = channelDeviceParams.getSnNum();
+    tp = channelDeviceParams.getTp();
+}
+```
+
+# 14 4G
+
+## 14.1 Add 4G
+
+```
+Add reference (#51-QR code network configuration to add devices) or (#54-Scan the code to add).
+
+```
+
+## 14.2 4G traffic service
+
+## 14.2.1 Use of traffic service activation code
+```
+[Description]
+Use of traffic service activation code
+
+[Function call]
+/**
+* Use of traffic service activation code
+*
+* @param servicePackageType service type
+* @param actCode activation code
+* @param deviceID deviceID
+* @param uuid If the 4G device does not have a deviceID, use the uuid
+* @param callback callback
+*/
+public void requestActive(int servicePackageType, String actCode, String deviceID, String uuid, final IResultCallback callback, Object tag)
+
+[Code example]
+MeariUser.getInstance().requestActive(BuyServiceType.TRAFFIC, actCode, cameraInfo.getDeviceID(), "", new IResultCallback() {
+@Override
+public void onSuccess() {
+}
+
+@Override
+public void onError(int errorCode, String errorMsg) {
+}
+}, this);
+```
+
+### 14.2.2 Get traffic service information
+```
+[Description]
+Get traffic service information
+
+[Function call]
+/**
+* Get traffic service information
+* @param deviceId device devivceid
+* @param uuid uuid parsed from the body code, pass ""
+*/
+public void get4gTrafficInfo(String deviceID, String uuid, ITraffic4gInfoCallback callback)
+
+[Code example]
+MeariUser.getInstance().get4gTrafficInfo(cameraInfo?.deviceID, "", object :ITraffic4gInfoCallback{
+override fun onError(errorCode: Int, errorMsg: String?) {
+}
+
+override fun onSuccess(traffic4gInfo: Traffic4gInfo?) {
+}
+})
+
+Traffic4gInfo
+- String simID; SIM card number
+- PackageInfo currentPackageInfo; Current effective package information
+- List<PackageInfo> prePackageInfoList; To-be-effective package information
+
+PackageInfo
+- private int unlimited; Is it an unlimited package (now all 1): 0-no; 1-yes
+- private int trialType; Is it a trial package: 0-No; 1-Yes
+- private long expireTime; Expiration time
+- private String groupFlag; If not empty, it is a subscription package, if empty, it is a non-subscription package
+- private int cloudType; Is it a traffic plus cloud storage package: 0-No; 1-Yes
+
+```
+
+### 14.2.3 Purchase traffic service
+
+```
+[Description]
+Purchasing traffic service is basically the same as purchasing cloud storage service
+Parameter BuyServiceType.CLOUD is replaced by BuyServiceType.TRAFFIC
+```
+
+# 15 Pet Camera
+
+## 15.1 Add Device
+
+```
+Add reference (#51 - Add device via QR code).
+
+```
+
+## 15.2 Setting
+
+### 15.2.1 Feeding
+```
+【Description】
+Feeding
+
+【Function call】
+
+    /**
+     *
+     * pet:
+     * type: int
+     * description: Whether the device is a pet device, 0- not 1- Yes, the default is 0.
+     * 1. Automatic Pet Feeder   2. Manual Pet Feeder
+     * 
+     */
+     cameraInfo.getPet()
+/**
+     * One click feed：
+     * description: Feed control, send 1, instantaneous control command
+     * default: 1
+     */
+     void setPetFeed(ISetDeviceParamsCallback callback) 
+
+/**
+     * One-click feeding
+     * copies：Feeding portion
+     */
+public void setPetFeed2(int copies,ISetDeviceParamsCallback callback)
+
+
+```
+
+### 15.2.2 Sound setting
+```
+【Description】
+Set the sound for summoning pets
+
+【Function call】
+    /**
+     * Get sound list
+     */
+     public void getVoicePetMailList(String deviceID, Object tag, IStringResultCallback callback)
+
+     /**
+     * Get current sound（url）
+     */
+     deviceParams.getPetSoundSetting()
+    /**
+     * Set current sound
+     */
+     public void setVoiceSetting(String url, IStringResultCallback callback)
+
+
+【Code example】
+MeariUser.getInstance().getVoicePetMailList(presenter.getCameraInfo().getDeviceID(), this, new IStringResultCallback() {
+            @Override
+            public void onSuccess(String result) {
+                if(!TextUtils.isEmpty(result)){
+                    VoicePetMailInfo voicePetMailInfo= GsonUtil.fromJson(result, VoicePetMailInfo.class);
+                }
+            }
+
+            @Override
+            public void onError(int code, String error) {
+                
+            }
+        });
+
+```
+
+
+
+### 15.2.3 Summon pet
+```
+【Description】
+Set Summon pet
+
+【Function call】
+    /**
+     * Summon pet
+     */
+     public void setFeedCall(int enable, ISetDeviceParamsCallback callback)
+
+    
+【Code example】
+MeariUser.getInstance().setFeedCall(1, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+            }
+        });
+```
+
+### 15.2.4 Feeding plan
+```
+【Description】
+Set Feeding plan
+
+【Function call】
+    /**
+     * Get Feeding plan
+     */
+     deviceParams.getPetFeedPlanList()
+/**
+     * Set Feeding plan
+     */
+     public void setFeedTimes(String timeList, ISetDeviceParamsCallback callback)
+
+    
+【Code example】
+/**
+*planString: >-
+  If it is a single feeding{ "enable":false, "time":"10:00", "count":1, "once": 1}
+  If the feeding is on a weekly schedule：{ "enable":false, "time":"10:00", "count":1, "repeat":[1,2,3,4,5,6,7]}
+  1 in repeat represents Monday
+  Example: A maximum of 8 groups of JSON strings are allowed，[{ "enable":false, "time":"10:00",
+  "repeat":[1] , "count":1}, { "enable":false, "time":"10:00", "count":1, "once": 1}]
+**/
+MeariUser.getInstance().setFeedTimes(planString, new ISetDeviceParamsCallback() {
+            @Override
+            public void onSuccess() {
+                
+            }
+
+            @Override
+            public void onFailed(int errorCode, String errorMsg) {
+                
+            }
+        });
+```
+
+# 16 Baby Camera
+
+## 16.1 Add Device
+
+```
+Add reference (#51 - Add device via QR code).
+
+```
+
+## 16.2 Health Services
+
+### 16.2.1 Obtain monitoring data
+```
+【Description】
+Obtain monitoring data
+
+【Function call】
+    /**
+     * Obtain monitoring data
+     * deviceID:
+     * day:
+     * typeName: "bav"(Breathe),"hav"(Heartbeat),"sleepState"(Sleep state)
+     *          typeName = "bav","hav",Return data field: avgHeartRate//Average heart rate/minute heartRange//Heart rate zones avgBreathe//Average respiration/minute breatheRange//Breathing interval startTime//Start time (timestamp in seconds) minuteData//5-minute average data {"index" (corresponding to the 5-minute index): 1, "bav" (average breathing): 20, "hav" (average heart rate): 79}
+     *          typeName = "sleepState",Return data field: lightSleep//Sleep duration (light sleep)(minute) deepSleep//Sleep duration (deep sleep)(minute) awake//Length of wakefulness(minute) startTime//Start time (timestamp in seconds) sleepTimeLine//Sleep timeline (filled in minutes, default value is 0, 1: deep sleep, 2: light sleep, 3: no sleep, 4: awake)
+     */
+     public void getMrdaMonitorData(String deviceID, String day, String typeName, Object tag, IStringResultCallback callback)
+
+    
+【Code example】
+MeariUser.getInstance().getMrdaMonitorData(cameraInfo.getDeviceID(), date, type, this, new IStringResultCallback() {
+
+            @Override
+            public void onError(int errorCode, String errorMsg) {
+
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                
+            }
+        });
+
+
+```
+
+# 17 AI service
+
+## 17.1 AI service introduction
+```
+AI related capability set
+- int ai; Whether to support ai: 0-not supported; 1-supported
+- int cai; Whether to support cloud ai: ""/"[]"-not supported; non-empty array-supported
+- int dai; Whether to support local AI: ""/"[]"-not supported; non-empty array-supported
+
+The format of cai and dai is JSON array string, such as '[1,2,3,4,5]',
+Field definition description: 1-person, 2-car, 3-pet, 4-package, 5-crying, 6-barking, 7-wild animal, 8-bird, 9-gunshot, 10-glass shattering, 11-baby blocking, 12-baby sleeping on their stomach.
+
+AI support description for unconnected devices:
+1.ai=0, does not support AI function
+2.ai=1,dai=support,cai=support, supports local AI and cloud AI: displays the local AI switch and cloud AI purchase entrance when not purchased, and displays the cloud AI switch after purchase
+3.ai=1,dai=support,cai=unsupport, only supports local AI: displays the local AI switch, does not display the purchase entrance of cloud AI
+4.ai=1,dai=unsupport,cai=support, only supports cloud AI: displays the cloud AI switch, but cannot be operated, displays the cloud AI purchase entrance, and can be operated after purchase.
+5. ai=1, dai=not supported, cai=not supported, early AI version (only supports people, cars, pets, packages): cloud AI switch is displayed, but it cannot be operated. Cloud AI purchase entrance is displayed and can be operated after purchase.
+```
+
+## 17.2 AI service status
+```
+[Description]
+Get the activation status and switch status of AI service
+
+[Code example]
+MeariUser.getInstance().getAiProjects(cameraInfo?.deviceID, object :IStringResultCallback{
+    override fun onError(errorCode: Int, errorMsg: String?) {
+    }
+
+    override fun onSuccess(result: String?) {
+        val jsonResult = BaseJSONObject(result)
+        if (jsonResult.has("result")) {
+            val resultObject = jsonResult.optString("result")
+            val projects = GsonUtil.fromJson(resultObject, object : TypeToken<AiAnalyzeProjectBean?>() {})
+        }
+    }
+})
+
+// Update AI switch status: data: {"person":"1","car":"0"}
+// key: "person", "car", "pet", "packageAi", "cry", "bark", "wild_animal", "bird", "shot", "glassbroken", "baby_cover_face", "baby_lie_down"
+MeariUser.getInstance().updateAiProjects(data, cameraInfo.getDeviceID(), new IStringResultCallback() {
+    @Override
+    public void onSuccess(String result) {
+    }
+
+    @Override
+    public void onError(int errorCode, String errorMsg) {
+    }
+});
+
+AiAnalyzeProjectBean: AI analysis
+private String packageAiType; //"0"-Not enabled; "2"-Enabled
+private ProjectsDTO projects; //
+
+ProjectsDTO: AI switch status
+private String person; //Person: "0"-Off; "1"-On
+private String car;//Car: "0"-off; "1"-on
+private String pet;//Pet/: "0"-off; "1"-on
+private String packageX;//Package: "0"-off; "1"-on
+private String cry;//Crying: "0"-off; "1"-on
+private String bark;//Barking: "0"-off; "1"-on
+private String wildAnimal;//Wild Animal: "0"-off; "1"-on
+private String bird;//Bird: "0"-off; "1"-on
+private String shot;//Gunshot: "0"-off; "1"-on
+private String glassBroken;//GlassBroken: "0"-off; "1"-on
+private String babyCoverFace;//BabyCover: "0"-off; "1"-on
+private String babyLieDown; //Baby lying on its stomach: "0"-off; "1"-on
+```
+
+## 17.3 Use of AI service activation code
+```
+[Description]
+Use activation code to activate AI service
+
+[Code example]
+// actCode-activation code
+MeariUser.getInstance().requestActive(BuyServiceType.AI, actCode, cameraInfo.getDeviceID(), "", object : IResultCallback {
+    override fun onSuccess() {
+    }
+
+    override fun onError(code: Int, error: String) {
+    }
+}, this)
+```
+
+## 17.4 AI service purchase
+```
+[Description]
+Purchasing AI service is basically the same as purchasing cloud storage service
+Parameter BuyServiceType.CLOUD is replaced by BuyServiceType.AI
+```
+
+# 18 Release Notes
+
+## 2025-2-28(5.7.0)
+```
+Added new service order documents and supplemented the missing English documents
+```
+
+## 2025-2-8(5.5.0)
+```
+1. Added AI service documentation
+```
+
+## 2024-10-22(5.5.0)
+```
+1. Added cloud storage service purchase documentation
+```
+
+## 2024-08-28(5.3.0)
+```
+1. Bluetooth Distribution Network
+2. Device QR Code
+```
 
 ## 2022-10-10(4.4.0)
 ```

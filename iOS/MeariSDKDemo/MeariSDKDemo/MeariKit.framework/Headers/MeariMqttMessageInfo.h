@@ -55,6 +55,7 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
     MeariMqttCodeTypeDeviceAutobundleFailure    = 171,
     MeariMqttCodeTypeDeviceAutobundleByOtherFailure = 172,
     MeariMqttCodeTypeDeviceAutobundleOverLimit  = 173,
+    MeariMqttCodeTypeDeviceAutobundleRegionMismatch  = 177,
     MeariMqttCodeTypeDeviceShare                = 180,
     MeariMqttCodeTypeNewDeviceShareToMeRequest  = 181,
     MeariMqttCodeTypeNewDeviceShareToHimRequest = 182,
@@ -89,10 +90,17 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
     MeariMqttCodeTypeCloudSubscription          = 232,
     MeariMqttCodeTypeAISubscription             = 233,
     
+    MeariMqttCodeTypeLocationInfo               = 239,
+    
     MeariMqttCodeTypeAutoReduceSensitivity      = 241,
     
     MeariMqttCodeTypeSimTrafficExpired          = 250,
     MeariMqttCodeTypeSimTrafficShortage         = 251,
+    
+    MeariMqttCodeTypeAddDeviceCheckPassword     = 252,
+    MeariMqttCodeTypeCleanMqttCache             = 253,
+    
+    MeariMqttCodeTypeBabyScreenConnectedStatus  = 261, //baby屏幕连接状态: 0 : 接入 ，1：断开
     
     MeariMqttCodeTypeNotice                     = 200,
     MeariMqttCodeTypeSomebodyCall               = 201,
@@ -102,20 +110,20 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 };
 
 @interface MeariMqttMessageInfoDevice : MeariBaseModel
-@property (assign, nonatomic) BOOL online;   // Whether the device is online (设备在线状态)
-@property (assign, nonatomic) NSInteger deviceID;   // device ID (设备ID)
+@property (nonatomic, assign) BOOL online;   // Whether the device is online (设备在线状态)
+@property (nonatomic, assign) NSInteger deviceID;   // device ID (设备ID)
 @property (nonatomic, assign) MeariDeviceType devType; // Large type (总类）
 @property (nonatomic, assign) MeariDeviceSubType devSubType; // Subtype (子类)
-@property (copy, nonatomic) NSString *deviceType;   // Device type (设备类型)
-@property (copy, nonatomic) NSString *deviceName;   // Device nickname (设备昵称)
-@property (copy, nonatomic) NSString *msgID;        // Message ID (消息ID)
-@property (assign, nonatomic) NSInteger devTypeID;  //设备类型ID
-@property (copy, nonatomic) NSString *hostKey;      // device token (设备token)
-@property (copy, nonatomic) NSString *deviceUUID;   // device uuid (设备uuid)
-@property (copy, nonatomic) NSString *imgUrl;       // Device icon (设备图标)
-@property (copy, nonatomic) NSString *bellVoice;    // Device doorbell (设备门铃)
-@property (copy, nonatomic) NSString *p2pInit;
-@property (copy, nonatomic) NSString *deviceP2P;
+@property (nonatomic, copy) NSString *deviceType;   // Device type (设备类型)
+@property (nonatomic, copy) NSString *deviceName;   // Device nickname (设备昵称)
+@property (nonatomic, copy) NSString *msgID;        // Message ID (消息ID)
+@property (nonatomic, assign) NSInteger devTypeID;  //设备类型ID
+@property (nonatomic, copy) NSString *hostKey;      // device token (设备token)
+@property (nonatomic, copy) NSString *deviceUUID;   // device uuid (设备uuid)
+@property (nonatomic, copy) NSString *imgUrl;       // Device icon (设备图标)
+@property (nonatomic, copy) NSString *bellVoice;    // Device doorbell (设备门铃)
+@property (nonatomic, copy) NSString *p2pInit;
+@property (nonatomic, copy) NSString *deviceP2P;
 @property (nonatomic, assign) MeariDeviceAddStatus  addStatus;
 @property (nonatomic, strong) NSString *sn;
 @property (nonatomic, strong) NSString *iconUrl;
@@ -136,6 +144,10 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, assign) NSInteger endTime; // notice end time(公告结束时间)
 @property (nonatomic, assign) NSInteger noticeID; // notice end time(公告结束时间)
 @property (nonatomic, copy) NSString *appProtocolVer; // notice end time(公告最低支持协议版本)
+@property (nonatomic, assign) NSInteger bindDeviceType; // 拍照门铃绑定设置
+@property (nonatomic, copy) NSString *bindSnNum; // 拍照门铃Sn
+@property (nonatomic, strong) NSArray *faceInfo;//人脸识别信息
+@property (nonatomic, assign) NSInteger status;//屏幕连接状态: 0 : 接入 ，1：断开
 @end
 
 @interface MeariEventInfo : MeariBaseModel
@@ -151,8 +163,8 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, assign) BOOL      floodCameraStatus;        // 灯具摄像机开关状态
 @property (nonatomic, assign) BOOL      floodCameraRGBSwitchStatus;        // 灯具摄像机RGB开关状态
 @property (nonatomic, assign) NSInteger sirenTimeout;             // 警报倒计时
-@property (nonatomic, assign) NSDictionary *musicStateDic;        // 音乐下载进度
-@property (nonatomic,   copy) NSString  *lisenceID;               // 
+@property (nonatomic, strong) NSDictionary *musicStateDic;        // 音乐下载进度
+@property (nonatomic,   copy) NSString  *lisenceID;               //
 
 // 扩展
 @property (nonatomic, assign, readonly) BOOL hasWifiStrength;             // 是否存在Wi-Fi信号强度
@@ -170,15 +182,18 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @end
 
 @interface MeariMqttMessageInfo : MeariBaseModel
-@property (assign, nonatomic) double t;              // timestamp (时间戳)
-@property (strong, nonatomic) MeariMqttMessageInfoDevice *data;
-@property (assign, nonatomic) NSInteger msgid;          // mqtt Message ID (消息ID)
+@property (nonatomic, assign) double t;              // timestamp (时间戳)
+@property (nonatomic, strong) MeariMqttMessageInfoDevice *data;
+@property (nonatomic, assign) NSInteger msgid;          // mqtt Message ID (消息ID)
 @property (nonatomic, assign) MeariMqttCodeType type;   // Message type (消息类型)
 @property (nonatomic, copy) NSString *requestID;
 @property (nonatomic, assign) NSInteger iotType;
 @property (nonatomic, assign) NSString *pushType;
 @property (nonatomic, copy) NSString *deviceUrl;
-@property (nonatomic, copy) MeariEventInfo *eventInfo; //Service incident reporting (服务事件上报)
+//流量提醒
+@property (nonatomic, assign) NSInteger isForce;
+@property (nonatomic, assign) NSInteger countDownSecond;
+@property (nonatomic, strong) MeariEventInfo *eventInfo; //Service incident reporting (服务事件上报)
 
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, assign) double answerTime;
@@ -203,10 +218,12 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 
 @property (nonatomic, assign) NSInteger iotSignID;
 @property (nonatomic, copy) NSString *pfCompatID;
-
+//留言工单消息提醒
 @property (nonatomic, copy) NSString *leaveTopic;
 @property (nonatomic, copy) NSString *snNum;
+//报警频繁
 @property (nonatomic, assign) double endTime;
+//客服消息提醒
 @property (nonatomic, copy) NSString *workOrderNo;
 @property (nonatomic, copy) NSString *customerId;
 @property (nonatomic, assign) NSInteger cloudType;
@@ -214,6 +231,14 @@ typedef NS_ENUM(NSInteger, MeariMqttCodeType) {
 @property (nonatomic, copy) NSString *tp;
 
 @property (nonatomic, assign) NSInteger discountPeriod;
+@property (nonatomic, strong) NSArray *faceInfo;//人脸识别信息
+
+@property (nonatomic, copy) NSString *method;
+@property (nonatomic, assign) double lon;
+@property (nonatomic, assign) double lat;
+@property (nonatomic, assign) double alt;
+@property (nonatomic, assign) double spd;
+@property (nonatomic, strong) NSArray *users;//转发用户ID
 @end
 
 
